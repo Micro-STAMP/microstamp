@@ -7,7 +7,6 @@ import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionUpdateDto;
 import step3.entity.*;
 import step3.infra.exceptions.OperationNotAllowedException;
-import step3.proxy.step2.ControllerProxy;
 import step3.repository.*;
 
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ public class UnsafeControlActionService {
     private final HazardRepository hazardRepository;
     private final RuleRepository ruleRepository;
     private final ProjectRepository projectRepository;
-    private final ControllerProxy controllerProxy;
 
     // Create -----------------------------------------
 
