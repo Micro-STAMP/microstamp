@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="addResponsibilityModal" aria-hidden="true" class="modal fade" id="addResponsibilityModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Responsibility</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="responsibility-name">Responsibility:</label>
+                        <input class="form-control" id="responsibility-name" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="responsibility-ssc">System Safety Constraint
+                            Associated:</label>
+                        <input class="form-control" id="responsibility-ssc" type="text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=addResponsibility() type="button">Add Responsibility</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="editResponsibilityModal" aria-hidden="true" class="modal fade" id="editResponsibilityModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Responsibility</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="responsibility-edit-name">Responsibility:</label>
+                        <input class="form-control" id="responsibility-edit-name" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="responsibility-edit-ssc">System Safety Constraint
+                            Associated:</label>
+                        <input class="form-control" id="responsibility-edit-ssc" type="text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=sendEditedResponsibility() type="button">Edit Responsibility
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="confirmResponsibilityDeleteModal" aria-hidden="true" class="modal fade" id="confirmResponsibilityDeleteModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Responsibility</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the following Responsibility ?
+                <br/><br/>
+                <span id="responsibility_delete_name"></span>
+                <br/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=deleteResponsibility() type="button">Delete Responsibility
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

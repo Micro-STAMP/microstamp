@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="addVariableModal" aria-hidden="true" class="modal fade" id="addVariableModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Variable</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="variable-name">Name:</label>
+                        <input class="form-control" id="variable-name" type="text">
+                    </div>
+                    <div>
+                        <label class="col-form-label" for="variable-component">Component:</label>
+                        <select class="form-control" id="variable-component">
+                            <option th:each="p : ${controllersControlledProcess}" th:text="${p.name}"
+                                    th:value="${p.id}"/>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=addVariable() type="button">Add Variable</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="editVariableModal" aria-hidden="true" class="modal fade" id="editVariableModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Variable</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="variable-edit-name">Name:</label>
+                        <input class="form-control" id="variable-edit-name" type="text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=sendEditedVariable() type="button">Edit Variable</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="confirmVariableDeleteModal" aria-hidden="true" class="modal fade" id="confirmVariableDeleteModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Variable</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the following Variable ?
+                <br/><br/>
+                <span id="variable_delete_name"></span>
+                <br/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=deleteVariable() type="button">Delete Variable</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

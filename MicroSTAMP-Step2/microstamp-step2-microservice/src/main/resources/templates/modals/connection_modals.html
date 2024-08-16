@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="addConnectionModal" aria-hidden="true" class="modal fade" id="addConnectionModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addConnectionLabel">Add Connection</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-source">Source:</label>
+                        <select class="form-control" id="connection-source">
+                            <option th:each="s : ${components}" th:text="${s.name}" th:value="${s.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-target">Target:</label>
+                        <select class="form-control" id="connection-target">
+                            <option th:each="t : ${components}" th:text="${t.name}" th:value="${t.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-type">Connection Type:</label>
+                        <select class="form-control" id="connection-type">
+                            <option th:each="p : ${connectionType}" th:text="${p}" th:value="${p}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-style">Style:</label>
+                        <select class="form-control" id="connection-style">
+                            <option th:each="p : ${style}" th:text="${p}" th:value="${p}"/>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=addConnection() type="button">Add Connection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="editConnectionModal" aria-hidden="true" class="modal fade" id="editConnectionModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editConnectionLabel">Edit Connection</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-edit-source">Source:</label>
+                        <select class="form-control" id="connection-edit-source">
+                            <option th:each="s : ${components}" th:text="${s.name}" th:value="${s.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-edit-target">Target:</label>
+                        <select class="form-control" id="connection-edit-target">
+                            <option th:each="t : ${components}" th:text="${t.name}" th:value="${t.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-edit-type">Connection Type:</label>
+                        <select class="form-control" id="connection-edit-type">
+                            <option th:each="p : ${connectionType}" th:text="${p}" th:value="${p}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="connection-edit-style">Style:</label>
+                        <select class="form-control" id="connection-edit-style">
+                            <option th:each="p : ${style}" th:text="${p}" th:value="${p}"/>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=sendEditedConnection() type="button">Edit Connection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="confirmConnectionDeleteModal" aria-hidden="true" class="modal fade" id="confirmConnectionDeleteModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Connection</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the following connection ?
+                <br/><br/>
+                <span id="connectionToBeDeletedType"></span>
+                <br/>
+                <span id="connectionToBeDeletedSourceName"></span>
+                --->
+                <span id="connectionToBeDeletedTargetName"></span>
+                <br/>
+                <ul id="labelsToBeDeleted"/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=deleteConnection() type="button">Delete Connection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="addControlStructureModal" aria-hidden="true" class="modal fade" id="addControlStructureModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Control Structure</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="control_structure-name">Name:</label>
+                        <input class="form-control" id="control_structure-name" type="text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=addControlStructure() type="button">Add Control Structure
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="editControlStructureModal" aria-hidden="true" class="modal fade" id="editControlStructureModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Control Structure</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="control_structure-edit-name">Name:</label>
+                        <input class="form-control" id="control_structure-edit-name" type="text">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=editControlStructure() type="button">Edit Control Structure
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="confirmControlStructureDeleteModal" aria-hidden="true" class="modal fade" id="confirmControlStructureDeleteModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Control Structure</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the following Control Structure ?
+                <br/><br/>
+                <span id="control_structure_delete_name"></span>
+                <br/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=deleteControlStructure() type="button">Delete Control
+                    Structure
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

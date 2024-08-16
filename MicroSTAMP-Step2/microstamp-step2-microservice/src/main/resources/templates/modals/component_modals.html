@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="addComponentModal" aria-hidden="true" class="modal fade" id="addComponentModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addComponentLabel">Add Component</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-name">Name:</label>
+                        <input class="form-control" id="component-name" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-type">Type:</label>
+                        <select class="form-control" id="component-type">
+                            <option value="controller">Controller</option>
+                            <option value="controlled-process">Controlled Process</option>
+                            <option value="actuator">Actuator</option>
+                            <option value="sensor">Sensor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-border">Border:</label>
+                        <select class="form-control" id="component-border">
+                            <option th:each="p : ${style}" th:text="${p}" th:value="${p}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-father">Father:</label>
+                        <select class="form-control" id="component-father">
+                            <option value="null">NO FATHER</option>
+                            <option th:each="p : ${componentsWithoutEnvironment}" th:text="${p.name}"
+                                    th:value="${p.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">is visible? </label>
+                        <input checked id="isVisible" name="visible" style="margin-left: 5%;" type="radio" value="true">
+                        <label class="col-form-label" for="isVisible">True</label>
+                        <input id="isNotVisible" name="visible" style="margin-left: 5%;" type="radio" value="false">
+                        <label class="col-form-label" for="isNotVisible">False</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=addComponent() type="button">Add Component</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="editComponentModal" aria-hidden="true" class="modal fade" id="editComponentModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editComponentLabel">Edit Component</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-edit-name">Name:</label>
+                        <input class="form-control" id="component-edit-name" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-edit-type">Type:</label>
+                        <select class="form-control" id="component-edit-type">
+                            <option value="controller">Controller</option>
+                            <option value="controlled-process">Controlled Process</option>
+                            <option value="actuator">Actuator</option>
+                            <option value="sensor">Sensor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-edit-border">Border:</label>
+                        <select class="form-control" id="component-edit-border">
+                            <option th:each="p : ${style}" th:text="${p}" th:value="${p}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="component-edit-father">Father:</label>
+                        <select class="form-control" id="component-edit-father">
+                            <option value="null">NO FATHER</option>
+                            <option th:each="p : ${componentsWithoutEnvironment}" th:text="${p.name}"
+                                    th:value="${p.id}"/>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">is visible? </label>
+                        <input checked id="editIsVisible" name="visible" style="margin-left: 5%;" type="radio"
+                               value="true">
+                        <label class="col-form-label" for="isVisible">True</label>
+                        <input id="editIsNotVisible" name="visible" style="margin-left: 5%;" type="radio" value="false">
+                        <label class="col-form-label" for="isNotVisible">False</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=sendEditedComponent() type="button">Edit Component</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="confirmComponentDeleteModal" aria-hidden="true" class="modal fade" id="confirmComponentDeleteModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Component</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete
+                <span id="componentToBeDeletedName"></span>
+                ?
+                <br/>
+                <span id="itemsToBeDeletedSpan">The following items will be deleted:</span>
+                <ul id="itemsToBeDeleted">
+                    <li id="componentsToBeDeletedLi">Components</li>
+                    <ul id="componentsToBeDeleted">
+                    </ul>
+                    <li id="connectionsToBeDeletedLi">Connections</li>
+                    <ul id="connectionsToBeDeleted">
+                    </ul>
+                    <li id="variablesToBeDeletedLi">Variables</li>
+                    <ul id="variablesToBeDeleted">
+                    </ul>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" onclick=deleteComponent() type="button">Delete Component</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
