@@ -11,7 +11,13 @@
     <packaging>pom</packaging>
     <name>MicroSTAMP</name>
     <description>Root (parent) project for MicroSTAMP</description>
-    
+
+    <modules>
+        <module>microstamp-api-gateway</module>
+        <module>microstamp-service-registry</module>
+        <module>microstamp-authorization-server</module>
+    </modules>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>

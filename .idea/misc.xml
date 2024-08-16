@@ -5,6 +5,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/microstamp-authorization-server/pom.xml" />
+        <option value="$PROJECT_DIR$/microstamp-api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/microstamp-service-registry/pom.xml" />
       </list>
     </option>
   </component>
