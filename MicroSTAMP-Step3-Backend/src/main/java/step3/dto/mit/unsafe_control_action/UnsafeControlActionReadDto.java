@@ -1,24 +1,25 @@
 package step3.dto.mit.unsafe_control_action;
 
-import step3.entity.UnsafeControlAction;
+import step3.entity.mit.UnsafeControlAction;
+
+import java.util.UUID;
 
 public record UnsafeControlActionReadDto(
-        Long id,
+        UUID id,
         String name,
-        String project_name,
-        String hazard_tag,
-        String rule_tag
+        String hazard_code,
+        String rule_code
 ) {
 
     // Constructors -----------------------------------
 
-    public UnsafeControlActionReadDto(UnsafeControlAction uca) {
-        this(
-                uca.getId(),
-                uca.getName(),
-                uca.getProject().getName(),
-                uca.getHazard().getTagName(),
-                uca.getRuleTag()
-        );
-    }
+//    public UnsafeControlActionReadDto(UnsafeControlAction uca) {
+//        this(
+//                uca.getId(),
+//                uca.getName(),
+//                uca.getProject().getName(),
+//                uca.getHazard().getTagName(),
+//                uca.getRuleTag()
+//        );
+//    }
 }
