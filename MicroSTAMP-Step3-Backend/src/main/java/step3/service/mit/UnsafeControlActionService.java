@@ -73,74 +73,74 @@ public class UnsafeControlActionService {
         return new UnsafeControlActionReadDto(createdUCA.getId(), createdUCA.getName(), hazard.code(), ucaCreateDto.rule_code());
     }
 
-    public List<UnsafeControlActionReadDto> createUCAsByRule(Long rule_id) {
-        Rule rule = ruleRepository.getReferenceById(rule_id);
-        List<UnsafeControlActionReadDto> createdUCAs = new ArrayList<>();
-        // ! Gambiarra? Mas foi a única coisa que funcionou
-        for (UCAType type : rule.getTypes()) {
-            UnsafeControlActionCreateDto dto = new UnsafeControlActionCreateDto(
-                    rule.getControlAction().getId(),
-                    rule.getValues().stream().map(Value::getId).toList(),
-                    rule.getHazard().getId(),
-                    type,
-                    rule.getControlAction().getController().getProject().getId(),
-                    rule.getTagName()
-            );
-            createdUCAs.add(createUnsafeControlAction(dto));
-        }
-        return createdUCAs;
-    }
-
-    // Read -------------------------------------------
-
-    public UnsafeControlActionReadDto readUnsafeControlAction(Long id) {
-        return new UnsafeControlActionReadDto(unsafeControlActionRepository.getReferenceById(id));
-    }
-
-    public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
-        return unsafeControlActionRepository.findAll().stream().map(UnsafeControlActionReadDto::new).toList();
-    }
-
-    public List<UnsafeControlActionReadDto> readAllUCAByControlActionId(Long controlActionId) {
-        return unsafeControlActionRepository
-                .findByControlActionId(controlActionId)
-                .stream()
-                .map(UnsafeControlActionReadDto::new)
-                .toList();
-    }
-
-    public List<UnsafeControlActionReadDto> readAllUCAByControllerId(Long controllerId) {
-        return unsafeControlActionRepository
-                .findByControlActionControllerId(controllerId)
-                .stream()
-                .map(UnsafeControlActionReadDto::new)
-                .toList();
-    }
-
-    // Update -----------------------------------------
-
-    public UnsafeControlActionReadDto updateUnsafeControlAction(Long id, UnsafeControlActionUpdateDto ucaDto) {
-        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
-
-        if (!uca.getRuleTag().isEmpty())
-            throw new OperationNotAllowedException("Updating unsafe control actions created by rules is not allowed");
-
-        uca.setName(ucaDto.name());
-        UnsafeControlAction updatedUca = unsafeControlActionRepository.save(uca);
-
-        return new UnsafeControlActionReadDto(unsafeControlActionRepository.save(updatedUca));
-    }
-
-    // Delete -----------------------------------------
-
-    public void deleteUnsafeControlAction(Long id) {
-        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
-
-        if (!uca.getRuleTag().isEmpty())
-            throw new OperationNotAllowedException("Removing unsafe control actions created by rules is not allowed");
-
-        unsafeControlActionRepository.deleteById(id);
-    }
+//    public List<UnsafeControlActionReadDto> createUCAsByRule(Long rule_id) {
+//        Rule rule = ruleRepository.getReferenceById(rule_id);
+//        List<UnsafeControlActionReadDto> createdUCAs = new ArrayList<>();
+//        // ! Gambiarra? Mas foi a única coisa que funcionou
+//        for (UCAType type : rule.getTypes()) {
+//            UnsafeControlActionCreateDto dto = new UnsafeControlActionCreateDto(
+//                    rule.getControlAction().getId(),
+//                    rule.getValues().stream().map(Value::getId).toList(),
+//                    rule.getHazard().getId(),
+//                    type,
+//                    rule.getControlAction().getController().getProject().getId(),
+//                    rule.getTagName()
+//            );
+//            createdUCAs.add(createUnsafeControlAction(dto));
+//        }
+//        return createdUCAs;
+//    }
+//
+//    // Read -------------------------------------------
+//
+//    public UnsafeControlActionReadDto readUnsafeControlAction(Long id) {
+//        return new UnsafeControlActionReadDto(unsafeControlActionRepository.getReferenceById(id));
+//    }
+//
+//    public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
+//        return unsafeControlActionRepository.findAll().stream().map(UnsafeControlActionReadDto::new).toList();
+//    }
+//
+//    public List<UnsafeControlActionReadDto> readAllUCAByControlActionId(Long controlActionId) {
+//        return unsafeControlActionRepository
+//                .findByControlActionId(controlActionId)
+//                .stream()
+//                .map(UnsafeControlActionReadDto::new)
+//                .toList();
+//    }
+//
+//    public List<UnsafeControlActionReadDto> readAllUCAByControllerId(Long controllerId) {
+//        return unsafeControlActionRepository
+//                .findByControlActionControllerId(controllerId)
+//                .stream()
+//                .map(UnsafeControlActionReadDto::new)
+//                .toList();
+//    }
+//
+//    // Update -----------------------------------------
+//
+//    public UnsafeControlActionReadDto updateUnsafeControlAction(Long id, UnsafeControlActionUpdateDto ucaDto) {
+//        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
+//
+//        if (!uca.getRuleTag().isEmpty())
+//            throw new OperationNotAllowedException("Updating unsafe control actions created by rules is not allowed");
+//
+//        uca.setName(ucaDto.name());
+//        UnsafeControlAction updatedUca = unsafeControlActionRepository.save(uca);
+//
+//        return new UnsafeControlActionReadDto(unsafeControlActionRepository.save(updatedUca));
+//    }
+//
+//    // Delete -----------------------------------------
+//
+//    public void deleteUnsafeControlAction(Long id) {
+//        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
+//
+//        if (!uca.getRuleTag().isEmpty())
+//            throw new OperationNotAllowedException("Removing unsafe control actions created by rules is not allowed");
+//
+//        unsafeControlActionRepository.deleteById(id);
+//    }
 
     // Methods ----------------------------------------
 
