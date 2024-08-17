@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/connectionActions")
+@RequestMapping("/connection-actions")
 @Tag(name = "ConnectionAction")
 public class ConnectionActionController {
 
