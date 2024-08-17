@@ -2,20 +2,21 @@ package step3.dto.mit.unsafe_control_action;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import step3.entity.UCAType;
+import step3.entity.mit.UCAType;
 
 import java.util.List;
+import java.util.UUID;
 
 public record UnsafeControlActionCreateDto(
         @NotNull
-        Long control_action_id,
+        UUID control_action_id,
         @NotEmpty
-        List<Long> values_ids,
+        List<UUID> states_ids,
         @NotNull
-        Long hazard_id,
+        UUID hazard_id,
         @NotNull
         UCAType type,
         @NotNull
-        Long project_id,
-        String rule_tag
+        UUID analysis_id,
+        String rule_code
 ) {}
