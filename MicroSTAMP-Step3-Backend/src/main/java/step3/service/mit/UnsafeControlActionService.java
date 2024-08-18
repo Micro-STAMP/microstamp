@@ -2,6 +2,7 @@ package step3.service.mit;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import step3.dto.mit.mapper.UnsafeControlActionMapper;
 import step3.dto.mit.step1.HazardReadDto;
 import step3.dto.mit.step2.ControlActionReadDto;
 import step3.dto.mit.step2.StateReadDto;
@@ -82,7 +83,7 @@ public class UnsafeControlActionService {
         Rule rule = ruleRepository.getReferenceById(ruleId);
         List<UnsafeControlActionReadDto> createdUCAs = new ArrayList<>();
         // ! Gambiarra? Mas foi a única coisa que funcionou
-        for (UCAType type : rule.getTypes()) {
+        for (UCAType ignored : rule.getTypes()) {
             UnsafeControlActionCreateDto dto = UnsafeControlActionCreateDto.builder()
                     .control_action_id(rule.getControlActionId())
                     .hazard_id(rule.getHazardId())
@@ -100,37 +101,43 @@ public class UnsafeControlActionService {
     }
 
 //    // Read -------------------------------------------
-//
-//    public UnsafeControlActionReadDto readUnsafeControlAction(Long id) {
-//        return new UnsafeControlActionReadDto(unsafeControlActionRepository.getReferenceById(id));
-//    }
-//
-//    public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
-//        return unsafeControlActionRepository.findAll().stream().map(UnsafeControlActionReadDto::new).toList();
-//    }
-//
-//    public List<UnsafeControlActionReadDto> readAllUCAByControlActionId(Long controlActionId) {
-//        return unsafeControlActionRepository
-//                .findByControlActionId(controlActionId)
-//                .stream()
-//                .map(UnsafeControlActionReadDto::new)
-//                .toList();
-//    }
-//
-//    public List<UnsafeControlActionReadDto> readAllUCAByControllerId(Long controllerId) {
-//        return unsafeControlActionRepository
-//                .findByControlActionControllerId(controllerId)
-//                .stream()
-//                .map(UnsafeControlActionReadDto::new)
-//                .toList();
-//    }
-//
+
+    public UnsafeControlActionReadDto readUnsafeControlAction(UUID id) {
+        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
+
+        return UnsafeControlActionMapper.toUcaReadDto(uca);
+    }
+
+    public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
+        return unsafeControlActionRepository.findAll()
+                .stream()
+                .map(UnsafeControlActionMapper::toUcaReadDto)
+                .toList();
+    }
+
+    public List<UnsafeControlActionReadDto> readAllUCAByControlActionId(UUID controlActionId) {
+        return unsafeControlActionRepository
+                .findByControlActionId(controlActionId)
+                .stream()
+                .map(UnsafeControlActionMapper::toUcaReadDto)
+                .toList();
+    }
+
+    public List<UnsafeControlActionReadDto> readAllUCAByControllerId(UUID controllerId) {
+        return unsafeControlActionRepository
+                .findByControllerId(controllerId)
+                .stream()
+                .map(UnsafeControlActionMapper::toUcaReadDto)
+                .toList();
+    }
+
 //    // Update -----------------------------------------
-//
-//    public UnsafeControlActionReadDto updateUnsafeControlAction(Long id, UnsafeControlActionUpdateDto ucaDto) {
+
+    //acho que não vai mais ter a opção de atualizar nome de uca
+//    public UnsafeControlActionReadDto updateUnsafeControlAction(UUID id, UnsafeControlActionUpdateDto ucaDto) {
 //        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
 //
-//        if (!uca.getRuleTag().isEmpty())
+//        if (!uca.getRuleCode().isEmpty())
 //            throw new OperationNotAllowedException("Updating unsafe control actions created by rules is not allowed");
 //
 //        uca.setName(ucaDto.name());
@@ -138,7 +145,7 @@ public class UnsafeControlActionService {
 //
 //        return new UnsafeControlActionReadDto(unsafeControlActionRepository.save(updatedUca));
 //    }
-//
+
 //    // Delete -----------------------------------------
 
     public void deleteUnsafeControlAction(UUID id) {
