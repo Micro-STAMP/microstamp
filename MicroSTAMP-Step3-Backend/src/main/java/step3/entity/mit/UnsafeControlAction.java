@@ -3,8 +3,13 @@ package step3.entity.mit;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import step3.dto.mit.step2.ControlActionReadDto;
+import step3.dto.mit.step2.StateReadDto;
+import step3.dto.mit.step2.VariableReadDto;
+import step3.entity.mit.association.ContextState;
 import step3.entity.mit.association.UnsafeControlActionState;
 import step3.entity.mit.step2.ControlAction;
+import step3.proxy.Step2Proxy;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -28,6 +33,9 @@ public class UnsafeControlAction {
     private String name;  // NAME : <Source> <Type> <Control Action> <Context>
 
     @JdbcTypeCode(Types.VARCHAR)
+    private UUID controllerId; //v ver depois onde é o melhor lugar para isso
+
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID controlActionId;
 
 //    @ManyToMany
@@ -40,6 +48,11 @@ public class UnsafeControlAction {
             mappedBy = "unsafeControlActionId",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+//    @JoinTable(
+//            name = "unsafe_control_action_state",
+//            joinColumns = @JoinColumn(name = "unsafe_control_action_id"),
+//            inverseJoinColumns = @JoinColumn(name = "state_id")
+//    )
     private List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)
@@ -81,13 +94,16 @@ public class UnsafeControlAction {
 //    }
 
     // acho que vai precisar migrar isso para as classes de serviço
-//    public String generateName() {
-//        String source = getControlAction().getController().getName();
-//        String typeAndCA = getTypeAndControlActionString();
-//        String context = getContextString();
-//
-//        return source + " " + typeAndCA + " when " + context;
-//    }
+    public String generateName(Step2Proxy step2Proxy) {
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(this.controlActionId);
+
+        String source = controlAction.name();
+        String typeAndCA = getTypeAndControlActionString(controlAction.name());
+        String context = generateContextString(step2Proxy);
+
+        return source + " " + typeAndCA + " when " + context;
+    }
+
 //    public SafetyConstraint generateConstraint() {
 //        String source = getControlAction().getController().getName();
 //        String typeAndCA = getTypeAndControlActionString();
@@ -97,17 +113,19 @@ public class UnsafeControlAction {
 //
 //        return new SafetyConstraint(scName, this);
 //    }
-//    public String getTypeAndControlActionString() {
-//        return switch (getType()) {
-//            case PROVIDED -> "provide " + getControlAction().getName();
-//            case NOT_PROVIDED -> "not provide " + getControlAction().getName();
-//            case TOO_EARLY -> "provide " + getControlAction().getName() + " too early";
-//            case TOO_LATE -> "provide " + getControlAction().getName() + " too late";
-//            case OUT_OF_ORDER -> "provide " + getControlAction().getName() + " out of order";
-//            case STOPPED_TOO_SOON -> "stop providing " + getControlAction().getName() + " too soon";
-//            case APPLIED_TOO_LONG -> "provide " + getControlAction().getName() + " too long";
-//        };
-//    }
+
+    public String getTypeAndControlActionString(String controlActionName) {
+        return switch (getType()) {
+            case PROVIDED -> "provide " + controlActionName;
+            case NOT_PROVIDED -> "not provide " + controlActionName;
+            case TOO_EARLY -> "provide " + controlActionName + " too early";
+            case TOO_LATE -> "provide " + controlActionName + " too late";
+            case OUT_OF_ORDER -> "provide " + controlActionName + " out of order";
+            case STOPPED_TOO_SOON -> "stop providing " + controlActionName + " too soon";
+            case APPLIED_TOO_LONG -> "provide " + controlActionName + " too long";
+        };
+    }
+
 //    public String getContextString() {
 //        StringJoiner context = new StringJoiner(" AND ");
 //        for (Value value : values) {
@@ -115,6 +133,27 @@ public class UnsafeControlAction {
 //        }
 //        return context.toString();
 //    }
+
+    public String generateContextString(Step2Proxy step2) {
+        List<VariableReadDto> variables = step2.getAllVariables();
+        List<UUID> contextStatesIds = stateAssociations.stream()
+                .map(UnsafeControlActionState::getStateId)
+                .toList();
+        StringJoiner context = new StringJoiner(" AND ");
+
+        for (VariableReadDto variable : variables) {
+            List<StateReadDto> states = variable.states();
+
+            for (StateReadDto state : states){
+                if (contextStatesIds.contains(state.id())){
+                    String contextModel = "{ " + variable.name() + " = " + state.name() + " }";
+                    context.add(contextModel);
+                }
+            }
+        }
+
+        return context.toString();
+    }
 
     // ------------------------------------------------
 }
