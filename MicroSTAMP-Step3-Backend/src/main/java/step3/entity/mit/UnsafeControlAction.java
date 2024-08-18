@@ -40,6 +40,11 @@ public class UnsafeControlAction {
             mappedBy = "unsafeControlActionId",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+//    @JoinTable(
+//            name = "unsafe_control_action_state",
+//            joinColumns = @JoinColumn(name = "unsafe_control_action_id"),
+//            inverseJoinColumns = @JoinColumn(name = "state_id")
+//    )
     private List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)
