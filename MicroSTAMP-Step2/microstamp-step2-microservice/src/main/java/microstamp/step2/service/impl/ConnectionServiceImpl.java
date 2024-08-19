@@ -4,14 +4,11 @@ import microstamp.step2.client.MicroStampAuthClient;
 import microstamp.step2.dto.connection.ConnectionReadDto;
 import microstamp.step2.dto.connection.ConnectionUpdateDto;
 import microstamp.step2.entity.Connection;
-import microstamp.step2.entity.ConnectionAction;
-import microstamp.step2.enumeration.ConnectionActionType;
 import microstamp.step2.dto.connection.ConnectionInsertDto;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.mapper.ConnectionMapper;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ConnectionRepository;
-import microstamp.step2.repository.ConnectionActionRepository;
 import microstamp.step2.service.ConnectionActionService;
 import microstamp.step2.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +29,6 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Autowired
     private ComponentRepository componentRepository;
-
-    @Autowired
-    private ConnectionActionRepository connectionActionRepository;
 
     @Autowired
     private ConnectionActionService connectionActionService;

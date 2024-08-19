@@ -12,4 +12,8 @@ public class ComponentInsertDto extends ComponentBaseInsertDto{
 
     private ComponentType type;
 
+    public ComponentInsertDto(ComponentBaseInsertDto componentBaseInsertDto, ComponentType type) {
+        super(componentBaseInsertDto.getName(), componentBaseInsertDto.getCode(), componentBaseInsertDto.getIsVisible(), componentBaseInsertDto.getFatherId(), componentBaseInsertDto.getBorder(), componentBaseInsertDto.getAnalysisId());
+        this.type = type;
+    }
 }

@@ -33,7 +33,6 @@ public class SecurityFilterConfig {
             "/swagger/**",
             "/swagger-ui/**",
             "/v3/**"
-            //"/oauth2/token"
     };
 
     @Bean

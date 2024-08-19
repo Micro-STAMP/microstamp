@@ -32,7 +32,7 @@ public class ComponentMapper {
                         .map(VariableMapper::toDto)
                         .sorted(Comparator.comparing(VariableReadDto::getCode))
                         .toList()
-                    : null) //todo control actions
+                    : null)
                 .build();
     }
 
