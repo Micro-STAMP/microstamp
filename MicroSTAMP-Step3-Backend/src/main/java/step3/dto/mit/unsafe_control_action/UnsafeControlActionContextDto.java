@@ -1,14 +1,15 @@
 package step3.dto.mit.unsafe_control_action;
 
-import step3.dto.value.ValueReadDto;
-import step3.entity.UnsafeControlAction;
+import step3.dto.mit.step2.StateReadDto;
+import step3.entity.mit.UnsafeControlAction;
 
 import java.util.List;
+import java.util.UUID;
 
 public record UnsafeControlActionContextDto(
-        Long ucaId,
+        UUID ucaId,
         String ucaName,
-        List<ValueReadDto> values,
+//        List<StateReadDto> values,
         String type,
         String rule
     ) {
@@ -16,9 +17,9 @@ public record UnsafeControlActionContextDto(
         this(
                 uca.getId(),
                 uca.getName(),
-                uca.getValues().stream().map(ValueReadDto::new).toList(),
+//                uca.getValues().stream().map(ValueReadDto::new).toList(),
                 uca.getType().toString(),
-                uca.getRuleTag()
+                uca.getRuleCode()
         );
     }
 }

@@ -6,9 +6,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import step3.dto.mit.step2.ControlActionReadDto;
 import step3.dto.mit.step2.StateReadDto;
 import step3.dto.mit.step2.VariableReadDto;
-import step3.entity.mit.association.ContextState;
 import step3.entity.mit.association.UnsafeControlActionState;
-import step3.entity.mit.step2.ControlAction;
 import step3.proxy.Step2Proxy;
 
 import java.sql.Types;
