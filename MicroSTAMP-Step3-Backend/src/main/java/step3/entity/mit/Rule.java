@@ -19,6 +19,7 @@ public class Rule {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
+    private UUID analysisId;
     private String name;
     private int code;
     @JdbcTypeCode(Types.VARCHAR)
@@ -57,7 +58,7 @@ public class Rule {
         types.add(type);
     }
 
-    public String getTagName() {
+    public String getCodeName() {
         return "R" + this.code;
     }
 

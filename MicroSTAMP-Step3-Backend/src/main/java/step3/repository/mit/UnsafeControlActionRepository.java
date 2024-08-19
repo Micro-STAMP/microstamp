@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface UnsafeControlActionRepository extends JpaRepository<UnsafeControlAction, UUID> {
     List<UnsafeControlAction> findByControlActionId(UUID id);
-    List<UnsafeControlAction> findByRuleTag(String tag);
-    List<UnsafeControlAction> findByControlActionControllerId(UUID id);
+    List<UnsafeControlAction> findByRuleCode(String code);
+    List<UnsafeControlAction> findByControllerId(UUID id);
     Optional<UnsafeControlAction> findFirstByName(String name);
 }
