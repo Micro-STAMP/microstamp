@@ -1,8 +1,8 @@
-package step3.dto.mit.safety_constraint;
+package step3.dto.safety_constraint;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record SafetyContraintUpdateDto(
+public record SafetyConstraintUpdateDto(
         @NotBlank String name
 ) {
 }
