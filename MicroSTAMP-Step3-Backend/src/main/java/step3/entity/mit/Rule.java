@@ -19,6 +19,7 @@ public class Rule {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;
     private String name;
     private int code;
@@ -39,6 +40,7 @@ public class Rule {
             orphanRemoval = true)
     private List<RuleState> stateAssociations = new ArrayList<>();
 
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID hazardId;
 
     @ElementCollection(targetClass = UCAType.class)
