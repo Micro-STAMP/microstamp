@@ -2,7 +2,9 @@ package step3.entity.mit;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
+import java.sql.Types;
 import java.util.UUID;
 
 @Table(name = "safety_constraint")
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class SafetyConstraint {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
     private String name;

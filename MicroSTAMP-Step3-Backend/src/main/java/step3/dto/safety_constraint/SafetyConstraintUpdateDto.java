@@ -1,8 +1,8 @@
-//package step3.dto.controller;
+//package step3.dto.safety_constraint;
 //
 //import jakarta.validation.constraints.NotBlank;
 //
-//public record ControllerUpdateDto(
+//public record SafetyConstraintUpdateDto(
 //        @NotBlank String name
 //) {
 //}

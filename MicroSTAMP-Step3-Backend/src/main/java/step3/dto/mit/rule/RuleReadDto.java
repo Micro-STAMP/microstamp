@@ -1,63 +1,69 @@
 package step3.dto.mit.rule;
 
-import step3.entity.*;
+import lombok.Builder;
+import step3.dto.mit.step1.HazardReadDto;
+import step3.dto.mit.step2.ControlActionReadDto;
+import step3.dto.mit.step2.StateReadDto;
+import step3.entity.mit.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
+@Builder
 public record RuleReadDto(
-        Long id,
+        UUID id,
         String name,
-        ControlActionDto control_action,
-        List<ValueDto> values,
+        ControlActionReadDto control_action,
+        List<StateReadDto> states,
         Set<UCAType> types,
-        HazardDto hazard,
-        String tag
+        HazardReadDto hazard,
+        String code
 ) {
 
     // Constructors -----------------------------------
 
-    public RuleReadDto(Rule rule) {
+    public RuleReadDto(Rule rule, ControlActionReadDto controlAction, List<StateReadDto> states, HazardReadDto hazard) {
         this(
                 rule.getId(),
                 rule.getName(),
-                new ControlActionDto(rule.getControlAction()),
-                rule.getValues().stream().map(ValueDto::new).toList(),
+                controlAction,
+                states,
                 rule.getTypes(),
-                new HazardDto(rule.getHazard()),
-                rule.getTagName()
+                hazard,
+                rule.getCodeName()
         );
     }
 
     // DTOs -------------------------------------------
 
-    private record ControlActionDto(Long id, String name) {
-        public ControlActionDto(ControlAction controlAction) {
-            this(
-                    controlAction.getId(),
-                    controlAction.getName()
-            );
-        }
-    }
-
-    private record ValueDto(Long value_id, String variable_name, String value_name) {
-        public ValueDto(Value value) {
-            this(
-                    value.getId(),
-                    value.getVariable().getName(),
-                    value.getName()
-            );
-        }
-    }
-
-    public record HazardDto(Long id, String name) {
-        public HazardDto(Hazard hazard) {
-            this(
-                    hazard.getId(),
-                    hazard.getName()
-            );
-        }
-    }
+//    private record ControlActionDto(UUID id, String name) {
+//        public ControlActionDto(ControlActionReadDto controlAction) {
+//            this(
+//                    controlAction.id(),
+//                    controlAction.name()
+//            );
+//        }
+//    }
+//
+//    private record ValueDto(UUID value_id, /*String variable_name,*/ String state_name) {
+//        public ValueDto(StateReadDto state) {
+//            this(
+//                    state.id(),
+//                    /*state.getVariable().getName(),*/
+//                    state.name()
+//            );
+//        }
+//    }
+//
+//    public record HazardDto(UUID id, String name) {
+//        public HazardDto(HazardReadDto hazard) {
+//            this(
+//                    hazard.id(),
+//                    hazard.name()
+//            );
+//        }
+//    }
 
     // ------------------------------------------------
 }
