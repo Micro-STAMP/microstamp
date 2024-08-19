@@ -102,7 +102,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = { Step2InvalidConnectionActionException.class })
-    protected ResponseEntity<Object> handleStep2InvalidConnection(Step2InvalidConnectionActionException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleStep2InvalidConnectionAction(Step2InvalidConnectionActionException ex, WebRequest request) {
         Step2ErrorResponse errorResponse = new Step2ErrorResponse();
         errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"InvalidConnection",ex.getMessage()));
         return handleExceptionInternal(ex, errorResponse,
@@ -113,6 +113,30 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleStep2SelfParentingComponentException(Step2SelfParentingComponentException ex, WebRequest request) {
         Step2ErrorResponse errorResponse = new Step2ErrorResponse();
         errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"SelfParentingComponentException",ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = { Step2UniqueEnvironmentException.class })
+    protected ResponseEntity<Object> handleStep2UniqueEnvironmentException(Step2UniqueEnvironmentException ex, WebRequest request) {
+        Step2ErrorResponse errorResponse = new Step2ErrorResponse();
+        errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"Step2UniqueEnvironmentException",ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = { Step2EnvironmentParentException.class })
+    protected ResponseEntity<Object> handleStep2EnvironmentParentException(Step2EnvironmentParentException ex, WebRequest request) {
+        Step2ErrorResponse errorResponse = new Step2ErrorResponse();
+        errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"Step2EnvironmentParentException",ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = { Step2EnvironmentResponsibilityException.class })
+    protected ResponseEntity<Object> handleStep2EnvironmentResponsibilityException(Step2EnvironmentResponsibilityException ex, WebRequest request) {
+        Step2ErrorResponse errorResponse = new Step2ErrorResponse();
+        errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"Step2EnvironmentResponsibilityException",ex.getMessage()));
         return handleExceptionInternal(ex, errorResponse,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }

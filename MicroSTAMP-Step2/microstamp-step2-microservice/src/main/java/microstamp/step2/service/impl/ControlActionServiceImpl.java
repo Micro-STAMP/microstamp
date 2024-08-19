@@ -43,9 +43,12 @@ public class ControlActionServiceImpl implements ControlActionService {
 
     public List<ControlActionReadDto> findByComponentId(UUID id) {
         List<Connection> connections = connectionRepository.findBySourceId(id);
-
-
-        return List.of();
+        return connections.stream()
+                .flatMap(connection -> connection.getConnectionActions().stream()
+                        .filter(c -> c.getConnectionActionType() == ConnectionActionType.CONTROL_ACTION)
+                        .map(ControlActionMapper::toDto))
+                .sorted(Comparator.comparing(ControlActionReadDto::getCode))
+                .toList();
     }
 
     public List<ControlActionReadDto> findByConnectionId(UUID id) {

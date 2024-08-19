@@ -17,9 +17,9 @@ public interface ComponentRepository extends JpaRepository<Component, UUID> {
     List<Component> findByAnalysisId(UUID id);
 
     @Query(value = "SELECT * FROM components c WHERE c.father_id = ?1", nativeQuery = true)
-    List<Component> findChildrenByComponentId(UUID id);
+    List<Component> findChildrenByComponentId(String id);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE components SET dtype = ?2 WHERE id = ?1", nativeQuery = true)
-    void updateType(UUID id, String type);
+    void updateType(String id, String type);
 }

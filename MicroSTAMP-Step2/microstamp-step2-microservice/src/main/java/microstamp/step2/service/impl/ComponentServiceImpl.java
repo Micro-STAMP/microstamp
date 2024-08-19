@@ -114,7 +114,7 @@ public class ComponentServiceImpl implements ComponentService {
 
     public ComponentReadDto insert(ComponentBaseInsertDto componentBaseInsertDto, ComponentType componentType) throws Step2NotFoundException {
 
-        ComponentInsertDto componentInsertDto = (ComponentInsertDto) componentBaseInsertDto;
+        ComponentInsertDto componentInsertDto = new ComponentInsertDto(componentBaseInsertDto, componentType);
         componentInsertDto.setType(componentType);
 
         return insert(componentInsertDto);
@@ -123,16 +123,12 @@ public class ComponentServiceImpl implements ComponentService {
     public void update(UUID id, ComponentUpdateDto componentUpdateDto) throws Step2NotFoundException {
         microstamp.step2.entity.Component component = findComponentById(id);
         updateComponent(component, componentUpdateDto);
-
-        componentRepository.updateType(id, componentUpdateDto.getType().name());
     }
 
     public void update(UUID id, ComponentUpdateDto componentUpdateDto, ComponentType componentType) throws Step2NotFoundException {
         microstamp.step2.entity.Component component = findComponentById(id,componentType);
+        componentUpdateDto.setType(componentType);
         updateComponent(component, componentUpdateDto);
-
-        if(componentType != componentUpdateDto.getType())
-            componentRepository.updateType(id, componentUpdateDto.getType().name());
     }
 
     public void delete(UUID id) {
@@ -211,10 +207,14 @@ public class ComponentServiceImpl implements ComponentService {
         component.setIsVisible(componentUpdateDto.getIsVisible());
 
         componentRepository.save(component);
+
+        String componentTypeName = componentUpdateDto.getType().name().toLowerCase();
+        componentRepository.updateType(component.getId().toString(), componentTypeName.substring(0, 1).toUpperCase()
+                + componentTypeName.substring(1));
     }
 
     private void deleteComponent(UUID id){
-        List<microstamp.step2.entity.Component> children = componentRepository.findChildrenByComponentId(id);
+        List<microstamp.step2.entity.Component> children = componentRepository.findChildrenByComponentId(id.toString());
         children.forEach(c -> delete(c.getId()));
 
         List<Connection> connectionsSource = connectionRepository.findBySourceId(id);
@@ -227,7 +227,7 @@ public class ComponentServiceImpl implements ComponentService {
     }
 
     private void getChildren(microstamp.step2.entity.Component parent, List<microstamp.step2.entity.Component> children) {
-        List<microstamp.step2.entity.Component> directChildren = componentRepository.findChildrenByComponentId(parent.getId());
+        List<microstamp.step2.entity.Component> directChildren = componentRepository.findChildrenByComponentId(parent.getId().toString());
         for (microstamp.step2.entity.Component child : directChildren) {
             children.add(child);
             getChildren(child, children);
@@ -257,7 +257,7 @@ public class ComponentServiceImpl implements ComponentService {
                 .sorted(Comparator.comparing(VariableReadDto::getCode))
                 .toList());
 
-        List<microstamp.step2.entity.Component> children = componentRepository.findChildrenByComponentId(component.getId());
+        List<microstamp.step2.entity.Component> children = componentRepository.findChildrenByComponentId(component.getId().toString());
         for (microstamp.step2.entity.Component child : children)
             getDependencies(child, dependenciesDto, seen);
     }
