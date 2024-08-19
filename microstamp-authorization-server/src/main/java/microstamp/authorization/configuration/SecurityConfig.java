@@ -34,19 +34,26 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String GATEWAY_URL = "http://127.0.0.1:9191/";
+    private static final String[] CORS_WHITELIST = {
+            "http://127.0.0.1:9000",
+            "http://127.0.0.1:9001",
+            "http://127.0.0.1:9002",
+            "http://127.0.0.1:9003",
+            "http://127.0.0.1:9004",
+            "http://127.0.0.1:9191"
+    };
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger/**",
             "/swagger-ui/**",
-            "/v3/**"
+            "/v3/**",
+            "/oauth2/token"
     };
 
     @Bean
@@ -125,9 +132,16 @@ public class SecurityConfig {
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer() {
         return (context) -> {
+            String username = context.getPrincipal().getName();
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+
+                /*if(context.getAuthorizationGrantType() == AuthorizationGrantType.CLIENT_CREDENTIALS) {
+                    username = "admin";
+                    context.getClaims().audience(List.of("fbefbe1f-933d-4012-b730-16db007cd13e"));
+                }
+*/
                 UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService()
-                        .loadUserByUsername(context.getPrincipal().getName());
+                        .loadUserByUsername(username);
 
                 context.getClaims().claims((claims) -> {
                     claims.put("userId", userDetails.getUserId());
@@ -148,12 +162,13 @@ public class SecurityConfig {
 
     private UrlBasedCorsConfigurationSource corsConfig() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Collections.singletonList(GATEWAY_URL));
+        corsConfig.setAllowedOrigins(Arrays.asList(CORS_WHITELIST));
         corsConfig.setAllowedMethods(Collections.singletonList("*"));
         corsConfig.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfig.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
-        configSource.registerCorsConfiguration("/*", corsConfig);
+        configSource.registerCorsConfiguration("/**", corsConfig);
         return configSource;
     }
 
