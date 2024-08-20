@@ -35,7 +35,7 @@ public class Context {
 //    private List<step3.entity.Value> values = new ArrayList<>();
 
     @OneToMany(
-            mappedBy = "contextId",
+            mappedBy = "context",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<ContextState> stateAssociations = new ArrayList<>();
@@ -47,7 +47,8 @@ public class Context {
         for (UUID stateId : statesId) {
             ContextState contextState = ContextState.builder()
                     .stateId(stateId)
-                    .contextId(this.id).build();
+                    .context(this)
+                    .build();
             this.stateAssociations.add(contextState);
         }
     }

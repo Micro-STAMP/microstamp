@@ -62,7 +62,7 @@ public class RuleService {
         List<RuleState> statesAssociations = new ArrayList<>();
         for (UUID stateId : ruleCreateDto.values_ids()) {
             RuleState ruleState = RuleState.builder()
-                    .ruleId(createdRule.getId())
+                    .rule(createdRule)
                     .stateId(stateId)
                     .build();
             statesAssociations.add(ruleState);

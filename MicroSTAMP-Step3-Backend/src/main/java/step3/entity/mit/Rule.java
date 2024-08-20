@@ -35,7 +35,7 @@ public class Rule {
 //    private List<step3.entity.Value> values = new ArrayList<>();
 
     @OneToMany(
-            mappedBy = "ruleId",
+            mappedBy = "rule",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<RuleState> stateAssociations = new ArrayList<>();

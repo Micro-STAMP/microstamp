@@ -9,7 +9,7 @@ import step3.infra.feign.FeignClientConfig;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "MICROSTAMP-STEP1", configuration = FeignClientConfig.class)
+@FeignClient(name = "MICROSTAMP-STEP1", url = "http://localhost:8091", configuration = FeignClientConfig.class)
 public interface Step1Proxy {
     @GetMapping("/hazards")
     List<HazardReadDto> getHazards();
