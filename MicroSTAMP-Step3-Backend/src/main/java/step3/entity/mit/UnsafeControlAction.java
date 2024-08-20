@@ -42,15 +42,15 @@ public class UnsafeControlAction {
 //            joinColumns = @JoinColumn(name = "uca_id"),
 //            inverseJoinColumns = @JoinColumn(name = "value_id")
 //    )
-    @OneToMany(
-            mappedBy = "unsafeControlActionId",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
 //    @JoinTable(
 //            name = "unsafe_control_action_state",
 //            joinColumns = @JoinColumn(name = "unsafe_control_action_id"),
 //            inverseJoinColumns = @JoinColumn(name = "state_id")
 //    )
+    @OneToMany(
+            mappedBy = "unsafeControlAction",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)

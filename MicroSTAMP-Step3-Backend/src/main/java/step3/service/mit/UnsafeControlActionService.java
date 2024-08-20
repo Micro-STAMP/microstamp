@@ -68,7 +68,7 @@ public class UnsafeControlActionService {
         List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
         for (UUID stateId : ucaCreateDto.states_ids()) {
             UnsafeControlActionState stateAssociation = UnsafeControlActionState.builder()
-                    .unsafeControlActionId(createdUCA.getId())
+                    .unsafeControlAction(createdUCA)
                     .stateId(stateId)
                     .build();
             stateAssociations.add(stateAssociation);
