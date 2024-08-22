@@ -29,7 +29,7 @@ public class StateController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<StateReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<StateReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(stateService.findById(id), HttpStatus.OK);
     }
 
@@ -45,7 +45,7 @@ public class StateController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws Step2NotFoundException {
         stateService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

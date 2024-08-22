@@ -27,12 +27,12 @@ public class AnalysisController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnalysisReadDto> findById(@PathVariable(name = "id") UUID id) throws NotFoundException {
+    public ResponseEntity<AnalysisReadDto> findById(@PathVariable("id") UUID id) throws NotFoundException {
         return new ResponseEntity<>(analysisService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"user/{id}"})
-    public ResponseEntity<List<AnalysisReadDto>> findByUserId(@PathVariable UUID id) {
+    public ResponseEntity<List<AnalysisReadDto>> findByUserId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(analysisService.findByUserId(id), HttpStatus.OK);
     }
 
@@ -42,13 +42,13 @@ public class AnalysisController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnalysisReadDto> update(@PathVariable(name = "id") UUID id, @Valid @RequestBody AnalysisUpdateDto analysisUpdateDto) throws NotFoundException {
+    public ResponseEntity<AnalysisReadDto> update(@PathVariable("id") UUID id, @Valid @RequestBody AnalysisUpdateDto analysisUpdateDto) throws NotFoundException {
         analysisService.update(id, analysisUpdateDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable(name = "id") UUID id) throws NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws NotFoundException {
         analysisService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -20,12 +20,12 @@ public class EnvironmentController {
     private EnvironmentService environmentService;
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<EnvironmentReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<EnvironmentReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(environmentService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/analysis/{id}"})
-    public ResponseEntity<EnvironmentReadDto> findByAnalysisId(@PathVariable UUID id) {
+    public ResponseEntity<EnvironmentReadDto> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(environmentService.findByAnalysisId(id), HttpStatus.OK);
     }
 
@@ -35,7 +35,7 @@ public class EnvironmentController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws Step2NotFoundException {
         environmentService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

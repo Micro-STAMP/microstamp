@@ -29,7 +29,7 @@ public class ResponsibilityController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<ResponsibilityReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<ResponsibilityReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(responsibilityService.findById(id), HttpStatus.OK);
     }
 
@@ -45,7 +45,7 @@ public class ResponsibilityController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws Step2NotFoundException {
         responsibilityService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

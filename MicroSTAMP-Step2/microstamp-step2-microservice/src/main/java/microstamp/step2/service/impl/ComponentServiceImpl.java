@@ -127,7 +127,6 @@ public class ComponentServiceImpl implements ComponentService {
 
     public void update(UUID id, ComponentUpdateDto componentUpdateDto, ComponentType componentType) throws Step2NotFoundException {
         microstamp.step2.entity.Component component = findComponentById(id,componentType);
-        componentUpdateDto.setType(componentType);
         updateComponent(component, componentUpdateDto);
     }
 
@@ -186,10 +185,13 @@ public class ComponentServiceImpl implements ComponentService {
     private void updateComponent(microstamp.step2.entity.Component component, ComponentUpdateDto componentUpdateDto) throws Step2NotFoundException {
         if (componentUpdateDto.getFatherId() != null) {
 
-            if (componentUpdateDto.getFatherId() == component.getId())
+            if (componentUpdateDto.getFatherId().equals(component.getId()))
                 throw new Step2SelfParentingComponentException();
 
             microstamp.step2.entity.Component father = findComponentById(componentUpdateDto.getFatherId());
+
+            if(father instanceof Environment)
+                throw new Step2EnvironmentParentException();
 
             List<ComponentReadDto> children = getComponentChildren(component.getId());
 

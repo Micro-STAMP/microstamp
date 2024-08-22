@@ -22,7 +22,7 @@ public class ControlStructureController {
     private ControlStructureService controlStructureService;
 
     @GetMapping("/analysis/{id}")
-    public ResponseEntity<ControlStructureReadDto> findByAnalysisId(@PathVariable UUID id) {
+    public ResponseEntity<ControlStructureReadDto> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(controlStructureService.findByAnalysisId(id), HttpStatus.OK);
     }
 }

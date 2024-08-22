@@ -28,17 +28,17 @@ public class ControlActionController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<ControlActionReadDto> findById(@PathVariable UUID id) {
+    public ResponseEntity<ControlActionReadDto> findById(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(controlActionService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/component/{id}"})
-    public ResponseEntity<List<ControlActionReadDto>> findByComponentId(@PathVariable UUID id) {
+    public ResponseEntity<List<ControlActionReadDto>> findByComponentId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(controlActionService.findByComponentId(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/connection/{id}"})
-    public ResponseEntity<List<ControlActionReadDto>> findByConnectionId(@PathVariable UUID id) {
+    public ResponseEntity<List<ControlActionReadDto>> findByConnectionId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(controlActionService.findByConnectionId(id), HttpStatus.OK);
     }
 }
