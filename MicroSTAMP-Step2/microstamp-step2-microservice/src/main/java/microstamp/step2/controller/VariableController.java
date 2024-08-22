@@ -29,12 +29,12 @@ public class VariableController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<VariableReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<VariableReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(variableService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/analysis/{id}"})
-    public ResponseEntity<List<VariableReadDto>> findByAnalysisId(@PathVariable UUID id) {
+    public ResponseEntity<List<VariableReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(variableService.findByAnalysisId(id), HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class VariableController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws Step2NotFoundException {
         variableService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

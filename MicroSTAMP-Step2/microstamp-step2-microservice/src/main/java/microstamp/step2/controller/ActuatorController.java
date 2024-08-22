@@ -30,12 +30,12 @@ public class ActuatorController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<ComponentReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<ComponentReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(componentService.findById(id, ComponentType.ACTUATOR), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/analysis/{id}"})
-    public ResponseEntity<List<ComponentReadDto>> findByAnalysisId(@PathVariable UUID id) {
+    public ResponseEntity<List<ComponentReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(componentService.findByAnalysisId(id, ComponentType.ACTUATOR), HttpStatus.OK);
     }
 
@@ -51,7 +51,7 @@ public class ActuatorController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws Step2NotFoundException {
         componentService.delete(id, ComponentType.ACTUATOR);
         return new ResponseEntity<>(HttpStatus.OK);
     }

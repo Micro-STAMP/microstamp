@@ -27,12 +27,12 @@ public class ComponentController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<ComponentReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<ComponentReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(componentService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/analysis/{id}"})
-    public ResponseEntity<List<ComponentReadDto>> findByAnalysisId(@PathVariable UUID id) {
+    public ResponseEntity<List<ComponentReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(componentService.findByAnalysisId(id), HttpStatus.OK);
     }
 
@@ -48,19 +48,19 @@ public class ComponentController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         componentService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}/children"})
-    public ResponseEntity<List<ComponentReadDto>> getComponentChildren(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<List<ComponentReadDto>> getComponentChildren(@PathVariable("id") UUID id) throws Step2NotFoundException {
         List<ComponentReadDto> list = componentService.getComponentChildren(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}/dependencies"})
-    public ResponseEntity<ComponentDependenciesDto> getComponentDependencies(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<ComponentDependenciesDto> getComponentDependencies(@PathVariable("id") UUID id) throws Step2NotFoundException {
         ComponentDependenciesDto list = componentService.getComponentDependencies(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

@@ -22,7 +22,7 @@ public class ResponsibilityReadDto {
     @NotBlank
     private String code;
 
-    @NotBlank
+    @NotNull
     private UUID systemSafetyConstraintId;
 
 }

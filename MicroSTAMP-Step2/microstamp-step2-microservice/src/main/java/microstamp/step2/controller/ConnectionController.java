@@ -29,12 +29,12 @@ public class ConnectionController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<ConnectionReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<ConnectionReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(connectionService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/analysis/{id}"})
-    public ResponseEntity<List<ConnectionReadDto>> findByAnalysisId(@PathVariable UUID id) {
+    public ResponseEntity<List<ConnectionReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(connectionService.findByAnalysisId(id), HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class ConnectionController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws Step2NotFoundException {
         connectionService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

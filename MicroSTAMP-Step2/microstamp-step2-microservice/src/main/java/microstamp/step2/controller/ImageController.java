@@ -28,12 +28,12 @@ public class ImageController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<ImageReadDto> findById(@PathVariable UUID id) throws Step2NotFoundException {
+    public ResponseEntity<ImageReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(imageService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/analysis/{id}"})
-    public ResponseEntity<List<ImageReadDto>> findByAnalysisId(@PathVariable UUID id) {
+    public ResponseEntity<List<ImageReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(imageService.findByAnalysisId(id), HttpStatus.OK);
     }
 
@@ -43,7 +43,7 @@ public class ImageController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> delete(@PathVariable UUID id) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) throws Exception {
         imageService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
