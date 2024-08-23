@@ -26,14 +26,6 @@ public class Context {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
-//    @ManyToMany
-//    @JoinTable(
-//        name = "context_value",
-//        joinColumns = @JoinColumn(name = "context_id"),
-//        inverseJoinColumns = @JoinColumn(name = "value_id")
-//    )
-//    private List<step3.entity.Value> values = new ArrayList<>();
-
     @OneToMany(
             mappedBy = "context",
             cascade = CascadeType.ALL,
@@ -52,16 +44,6 @@ public class Context {
             this.stateAssociations.add(contextState);
         }
     }
-
-    // migrar para o service
-//    @Override
-//    public String toString() {
-//        StringJoiner context = new StringJoiner(" AND ");
-//        for (Value value : values) {
-//            context.add(value.toString());
-//        }
-//        return context.toString();
-//    }
 
     public String generateContext(Step2Proxy step2) {
         List<VariableReadDto> variables = step2.getAllVariables();

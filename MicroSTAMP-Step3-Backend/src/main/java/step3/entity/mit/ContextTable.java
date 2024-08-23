@@ -21,18 +21,17 @@ public class ContextTable {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
-    @OneToMany(mappedBy = "contextTable", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "contextTable",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Context> contexts = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)
     private UUID controllerId;
 
-    // Methods ----------------------------------------
-
     public void addContext(Context context) {
         this.contexts.add(context);
         context.setContextTable(this);
     }
-
-    // ------------------------------------------------
 }

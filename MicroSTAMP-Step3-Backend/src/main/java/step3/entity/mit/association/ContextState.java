@@ -20,8 +20,6 @@ public class ContextState {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
-//    @JdbcTypeCode(Types.VARCHAR)
-//    private UUID contextId;
     @JdbcTypeCode(Types.VARCHAR)
     private UUID stateId;
     @ManyToOne

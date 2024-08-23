@@ -46,8 +46,6 @@ public class RuleService {
         this.nextCode = ruleListSize == 0 ? 1 : ruleListSize + 1;
     }
 
-    // Create -----------------------------------------
-
     public RuleReadDto createRule(RuleCreateDto ruleCreateDto) {
         List<StateReadDto> states = getRuleStates(ruleCreateDto.values_ids());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ruleCreateDto.control_action_id());
@@ -78,8 +76,6 @@ public class RuleService {
         return mapper.toRuleReadDto(createdRule);
     }
 
-    // Read -------------------------------------------
-
     public RuleReadDto readRule(UUID id) {
         Rule rule = ruleRepository.getReferenceById(id);
         return mapper.toRuleReadDto(rule);
@@ -97,10 +93,6 @@ public class RuleService {
                 .toList();
     }
 
-    // Update -----------------------------------------
-
-    // Delete -----------------------------------------
-
     public void deleteRule(UUID id) {
         var rule = ruleRepository.getReferenceById(id);
         ucaRepository.deleteAll(ucaRepository.findByRuleCode(rule.getCodeName()));
@@ -109,17 +101,6 @@ public class RuleService {
         this.nextCode--;
         updateTags();
     }
-
-    // Methods ----------------------------------------
-
-//    public List<Value> getRuleValues(List<Long> valuesIds) {
-//        List<Value> values = new ArrayList<>();
-//        for (Long value_id : valuesIds) {
-//            Value value = valueRepository.getReferenceById(value_id);
-//            values.add(value);
-//        }
-//        return values;
-//    }
 
     public List<StateReadDto> getRuleStates(List<UUID> statesIds) {
         List<StateReadDto> states = new ArrayList<>();

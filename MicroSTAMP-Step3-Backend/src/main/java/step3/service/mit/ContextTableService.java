@@ -32,8 +32,6 @@ public class ContextTableService {
     private final Step2Proxy step2Proxy;
     private final ContextTableMapper mapper;
 
-    // Create -----------------------------------------
-
     public ContextTableReadDto createContextTable(ContextTableCreateDto contextTableCreateDto) {
         ComponentReadDto controller = step2Proxy.getControllerById(contextTableCreateDto.controller_id());
 
@@ -57,8 +55,6 @@ public class ContextTableService {
         return new ContextTableReadDto(createContextTable);
     }
 
-    // Read -------------------------------------------
-
     public ContextTableReadDto readContextTableById(UUID id) {
         ContextTable contextTable = contextTableRepository.getReferenceById(id);
         return new ContextTableReadDto(contextTable);
@@ -77,27 +73,6 @@ public class ContextTableService {
         return mapper.toContextTableReadWithPageDto(contextTable, contextsPage);
     }
 
-//    public ContextTableReadDto readContextTableByController(Long controller_id) {
-//        List<ContextTable> contextTables = contextTableRepository.findAll();
-//        ContextTable contextTable = null;
-//        for (ContextTable ct : contextTables) {
-//            if (ct.getController().getId().equals(controller_id)) {
-//                contextTable = ct;
-//            }
-//        }
-//
-//        // controllerRepository.getReferenceById(controller_id);
-//        if (contextTable != null) {
-//            return new ContextTableReadDto(contextTable);
-//        } else {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Controller not found with id: " + controller_id);
-//        }
-//    }
-
-    // Update -----------------------------------------
-
-
-    // Delete -----------------------------------------
     @Transactional
     public void deleteContextTable(UUID id) {
         var contextTable = contextTableRepository
@@ -106,15 +81,8 @@ public class ContextTableService {
         contextTable.getContexts().clear();
         contextTableRepository.save(contextTable);
 
-        //acho que não precisa disso aqui
-//        var controller = controllerRepository.getReferenceById(contextTable.getController().getId());
-//        controller.setContextTable(null);
-//        controllerRepository.save(controller);
-
         contextTableRepository.deleteById(id);
     }
-
-    // Methods ----------------------------------------
 
     public ContextTable generateContextTable(List<VariableReadDto> variables) {
         ContextTable contextTable = new ContextTable();
@@ -141,6 +109,4 @@ public class ContextTableService {
             generateAllContexts(variables, index + 1, updatedStates, contextTable);
         }
     }
-
-    // ------------------------------------------------
 }
