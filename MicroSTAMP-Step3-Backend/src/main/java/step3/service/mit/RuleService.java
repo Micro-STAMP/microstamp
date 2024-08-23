@@ -28,17 +28,20 @@ public class RuleService {
     private final UnsafeControlActionRepository ucaRepository;
     private final Step1Proxy step1Proxy;
     private final Step2Proxy step2Proxy;
+    private final RuleMapper mapper;
     private int nextCode;
 
     public RuleService(
             RuleRepository ruleRepository,
             UnsafeControlActionRepository ucaRepository,
             Step1Proxy step1Proxy,
-            Step2Proxy step2Proxy) {
+            Step2Proxy step2Proxy,
+            RuleMapper mapper) {
         this.ruleRepository = ruleRepository;
         this.ucaRepository = ucaRepository;
         this.step1Proxy = step1Proxy;
         this.step2Proxy = step2Proxy;
+        this.mapper = mapper;
         int ruleListSize = ruleRepository.findAll().size();
         this.nextCode = ruleListSize == 0 ? 1 : ruleListSize + 1;
     }
@@ -70,25 +73,25 @@ public class RuleService {
         createdRule.setStateAssociations(statesAssociations);
         createdRule = ruleRepository.save(createdRule);
 
-        return RuleMapper.toRuleReadDto(createdRule);
+        return mapper.toRuleReadDto(createdRule);
     }
 
     // Read -------------------------------------------
 
     public RuleReadDto readRule(UUID id) {
         Rule rule = ruleRepository.getReferenceById(id);
-        return RuleMapper.toRuleReadDto(rule);
+        return mapper.toRuleReadDto(rule);
     }
 
     public List<RuleReadListDto> readAllRules() {
         return ruleRepository.findAll().stream()
-                .map(RuleMapper::toRuleReadListDto)
+                .map(mapper::toRuleReadListDto)
                 .toList();
     }
 
     public List<RuleReadListDto> readRulesByControlActionId(UUID controlActionId) {
         return ruleRepository.findByControlActionId(controlActionId).stream()
-                .map(RuleMapper::toRuleReadListDto)
+                .map(mapper::toRuleReadListDto)
                 .toList();
     }
 

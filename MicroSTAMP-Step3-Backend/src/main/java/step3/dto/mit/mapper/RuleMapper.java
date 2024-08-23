@@ -1,5 +1,6 @@
 package step3.dto.mit.mapper;
 
+import org.springframework.stereotype.Component;
 import step3.dto.mit.rule.RuleReadDto;
 import step3.dto.mit.rule.RuleReadListDto;
 import step3.dto.mit.step1.HazardReadDto;
@@ -12,11 +13,17 @@ import step3.proxy.Step2Proxy;
 
 import java.util.List;
 
+@Component
 public class RuleMapper {
-    private static Step1Proxy step1Proxy;
-    private static Step2Proxy step2Proxy;
+    private final Step1Proxy step1Proxy;
+    private final Step2Proxy step2Proxy;
 
-    public static RuleReadDto toRuleReadDto(Rule rule) {
+    public RuleMapper(Step1Proxy step1Proxy, Step2Proxy step2Proxy) {
+        this.step1Proxy = step1Proxy;
+        this.step2Proxy = step2Proxy;
+    }
+
+    public RuleReadDto toRuleReadDto(Rule rule) {
         HazardReadDto hazard = step1Proxy.getHazardById(rule.getHazardId());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(rule.getControlActionId());
         List<StateReadDto> states = getStatesByRule(rule);
@@ -33,7 +40,7 @@ public class RuleMapper {
                 .build();
     }
 
-    public static RuleReadListDto toRuleReadListDto(Rule rule) {
+    public RuleReadListDto toRuleReadListDto(Rule rule) {
         HazardReadDto hazard = step1Proxy.getHazardById(rule.getHazardId());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(rule.getControlActionId());
         List<StateReadDto> states = getStatesByRule(rule);
@@ -52,7 +59,7 @@ public class RuleMapper {
 
 
 
-    private static List<StateReadDto> getStatesByRule(Rule rule) {
+    private List<StateReadDto> getStatesByRule(Rule rule) {
         return rule.getStateAssociations().stream()
                 .map(RuleState::getStateId)
                 .map(step2Proxy::getStateById)

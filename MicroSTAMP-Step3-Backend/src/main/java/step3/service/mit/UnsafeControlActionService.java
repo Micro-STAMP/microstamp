@@ -32,6 +32,7 @@ public class UnsafeControlActionService {
     private final RuleRepository ruleRepository;
     private final Step1Proxy step1Proxy;
     private final Step2Proxy step2Proxy;
+    private final UnsafeControlActionMapper mapper;
 
     // Create -----------------------------------------
 
@@ -83,12 +84,13 @@ public class UnsafeControlActionService {
         Rule rule = ruleRepository.getReferenceById(ruleId);
         List<UnsafeControlActionReadDto> createdUCAs = new ArrayList<>();
         // ! Gambiarra? Mas foi a única coisa que funcionou
-        for (UCAType ignored : rule.getTypes()) {
+        for (UCAType type : rule.getTypes()) {
             UnsafeControlActionCreateDto dto = UnsafeControlActionCreateDto.builder()
                     .control_action_id(rule.getControlActionId())
                     .hazard_id(rule.getHazardId())
                     .analysis_id(rule.getAnalysisId())
                     .rule_code(rule.getCodeName())
+                    .type(type)
                     .states_ids(rule.getStateAssociations()
                             .stream()
                             .map(RuleState::getStateId)
@@ -105,13 +107,13 @@ public class UnsafeControlActionService {
     public UnsafeControlActionReadDto readUnsafeControlAction(UUID id) {
         UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
 
-        return UnsafeControlActionMapper.toUcaReadDto(uca);
+        return mapper.toUcaReadDto(uca);
     }
 
     public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
         return unsafeControlActionRepository.findAll()
                 .stream()
-                .map(UnsafeControlActionMapper::toUcaReadDto)
+                .map(mapper::toUcaReadDto)
                 .toList();
     }
 
@@ -119,7 +121,7 @@ public class UnsafeControlActionService {
         return unsafeControlActionRepository
                 .findByControlActionId(controlActionId)
                 .stream()
-                .map(UnsafeControlActionMapper::toUcaReadDto)
+                .map(mapper::toUcaReadDto)
                 .toList();
     }
 
@@ -127,7 +129,7 @@ public class UnsafeControlActionService {
         return unsafeControlActionRepository
                 .findByControllerId(controllerId)
                 .stream()
-                .map(UnsafeControlActionMapper::toUcaReadDto)
+                .map(mapper::toUcaReadDto)
                 .toList();
     }
 
