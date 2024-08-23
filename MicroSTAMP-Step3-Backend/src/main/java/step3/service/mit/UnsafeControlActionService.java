@@ -35,22 +35,10 @@ public class UnsafeControlActionService {
     private final Step2Proxy step2Proxy;
     private final UnsafeControlActionMapper mapper;
 
-    // Create -----------------------------------------
-
     public UnsafeControlActionReadDto createUnsafeControlAction(UnsafeControlActionCreateDto ucaCreateDto) {
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.control_action_id());
         List<StateReadDto> states = getUCAStates(ucaCreateDto.states_ids());
         HazardReadDto hazard = step1Proxy.getHazardById(ucaCreateDto.hazard_id());
-//        Project project = projectRepository.getReferenceById(ucaCreateDto.project_id());
-
-//        UnsafeControlAction uca = new UnsafeControlAction(
-//                controlAction,
-//                values,
-//                hazard,
-//                ucaCreateDto.type(),
-//                project,
-//                ucaCreateDto.rule_tag()
-//        );
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())
@@ -111,8 +99,6 @@ public class UnsafeControlActionService {
         return createdUCAs;
     }
 
-//    // Read -------------------------------------------
-
     public UnsafeControlActionReadDto readUnsafeControlAction(UUID id) {
         UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
 
@@ -142,8 +128,6 @@ public class UnsafeControlActionService {
                 .toList();
     }
 
-//    // Update -----------------------------------------
-
     //acho que não vai mais ter a opção de atualizar nome de uca
 //    public UnsafeControlActionReadDto updateUnsafeControlAction(UUID id, UnsafeControlActionUpdateDto ucaDto) {
 //        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
@@ -157,8 +141,6 @@ public class UnsafeControlActionService {
 //        return new UnsafeControlActionReadDto(unsafeControlActionRepository.save(updatedUca));
 //    }
 
-//    // Delete -----------------------------------------
-
     public void deleteUnsafeControlAction(UUID id) {
         UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
 
@@ -169,17 +151,6 @@ public class UnsafeControlActionService {
         unsafeControlActionRepository.deleteById(id);
     }
 
-    // Methods ----------------------------------------
-
-//    public List<Value> getUCAValues(List<Long> valuesIds) {
-//        List<Value> values = new ArrayList<>();
-//        for (Long value_id : valuesIds) {
-//            Value value = valueRepository.getReferenceById(value_id);
-//            values.add(value);
-//        }
-//        return values;
-//    }
-
     public List<StateReadDto> getUCAStates(List<UUID> statesIds) {
         List<StateReadDto> states = new ArrayList<>();
         for (UUID stateId : statesIds) {
@@ -188,6 +159,4 @@ public class UnsafeControlActionService {
         }
         return states;
     }
-
-    // ------------------------------------------------
 }

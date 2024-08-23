@@ -20,8 +20,6 @@ public class UnsafeControlActionState {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
-//    @JdbcTypeCode(Types.VARCHAR)
-//    private UUID unsafeControlActionId;
     @JdbcTypeCode(Types.VARCHAR)
     private UUID stateId;
     @ManyToOne

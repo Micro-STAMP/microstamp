@@ -36,17 +36,6 @@ public class UnsafeControlAction {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID controlActionId;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "uca_value",
-//            joinColumns = @JoinColumn(name = "uca_id"),
-//            inverseJoinColumns = @JoinColumn(name = "value_id")
-//    )
-//    @JoinTable(
-//            name = "unsafe_control_action_state",
-//            joinColumns = @JoinColumn(name = "unsafe_control_action_id"),
-//            inverseJoinColumns = @JoinColumn(name = "state_id")
-//    )
     @OneToMany(
             mappedBy = "unsafeControlAction",
             cascade = CascadeType.ALL,
@@ -70,28 +59,6 @@ public class UnsafeControlAction {
 
     private String ruleCode;
 
-//    public UnsafeControlAction(ControlAction controlAction, List<step3.entity.Value> values, Hazard hazard, UCAType type, Project project, String ruleCode) {
-//        this.controlAction = controlAction;
-//        this.values = values;
-//        this.hazard = hazard;
-//        this.type = type;
-//        this.project = project;
-//        this.name = generateName();
-//        this.constraint = generateConstraint();
-//        this.ruleCode = ruleCode == null ? "" : ruleCode;
-//    }
-//    public UnsafeControlAction(ControlAction controlAction, List<step3.entity.Value> values, Hazard hazard, String type, Project project, String ruleCode) {
-//        this.controlAction = controlAction;
-//        this.values = values;
-//        this.hazard = hazard;
-//        this.type = UCAType.valueOf(type);
-//        this.project = project;
-//        this.name = generateName();
-//        this.constraint = generateConstraint();
-//        this.ruleCode = ruleCode == null ? "" : ruleCode;;
-//    }
-
-    // acho que vai precisar migrar isso para as classes de serviço
     public String generateName(Step2Proxy step2Proxy) {
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(this.controlActionId);
 
@@ -101,16 +68,6 @@ public class UnsafeControlAction {
 
         return source + " " + typeAndCA + " when " + context;
     }
-
-//    public SafetyConstraint generateConstraint() {
-//        String source = getControlAction().getController().getName();
-//        String typeAndCA = getTypeAndControlActionString();
-//        String context = getContextString();
-//
-//        String scName = source + " must not " + typeAndCA + " when " + context;
-//
-//        return new SafetyConstraint(scName, this);
-//    }
 
     public String generateConstraintName(Step2Proxy step2Proxy) {
         var controlAction = step2Proxy.getControlActionById(this.getControlActionId());
@@ -134,14 +91,6 @@ public class UnsafeControlAction {
         };
     }
 
-//    public String getContextString() {
-//        StringJoiner context = new StringJoiner(" AND ");
-//        for (Value value : values) {
-//            context.add(value.toString());
-//        }
-//        return context.toString();
-//    }
-
     public String generateContextString(Step2Proxy step2) {
         List<VariableReadDto> variables = step2.getAllVariables();
         List<UUID> contextStatesIds = stateAssociations.stream()
@@ -162,6 +111,4 @@ public class UnsafeControlAction {
 
         return context.toString();
     }
-
-    // ------------------------------------------------
 }
