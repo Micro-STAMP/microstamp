@@ -42,11 +42,11 @@ public class SafetyConstraintController {
 
     // Update -----------------------------------------
 
-    @PutMapping("/{id}") @Transactional
-    public ResponseEntity<SafetyConstraintReadDto> updateSafetyConstraint(@PathVariable UUID id, @RequestBody SafetyConstraintUpdateDto safetyConstraint) {
-        SafetyConstraintReadDto updatedSC = safetyConstraintService.updateSafetyConstraint(id, safetyConstraint);
-        return ResponseEntity.ok(updatedSC);
-    }
+//    @PutMapping("/{id}") @Transactional
+//    public ResponseEntity<SafetyConstraintReadDto> updateSafetyConstraint(@PathVariable UUID id, @RequestBody SafetyConstraintUpdateDto safetyConstraint) {
+//        SafetyConstraintReadDto updatedSC = safetyConstraintService.updateSafetyConstraint(id, safetyConstraint);
+//        return ResponseEntity.ok(updatedSC);
+//    }
 
     // Delete -----------------------------------------
 
