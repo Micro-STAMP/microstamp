@@ -12,6 +12,8 @@ import java.util.UUID;
 public record UnsafeControlActionCreateDto(
         @NotNull
         UUID control_action_id,
+        @NotNull
+        UUID controller_id,
         @NotEmpty
         List<UUID> states_ids,
         @NotNull
