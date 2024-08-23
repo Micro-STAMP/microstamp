@@ -9,6 +9,7 @@ import step3.dto.mit.step2.StateReadDto;
 import step3.dto.mit.unsafe_control_action.UnsafeControlActionCreateDto;
 import step3.dto.mit.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.entity.mit.Rule;
+import step3.entity.mit.SafetyConstraint;
 import step3.entity.mit.UCAType;
 import step3.entity.mit.UnsafeControlAction;
 import step3.entity.mit.association.RuleState;
@@ -53,11 +54,18 @@ public class UnsafeControlActionService {
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())
+                .controllerId(ucaCreateDto.controller_id())
                 .hazardId(ucaCreateDto.hazard_id())
                 .type(ucaCreateDto.type())
                 .analysisId(ucaCreateDto.analysis_id())
                 .ruleCode(ucaCreateDto.rule_code())
                 .build();
+
+        SafetyConstraint constraint = SafetyConstraint.builder()
+                .unsafeControlAction(uca)
+                .build();
+
+        uca.setConstraint(constraint);
 
 //        unsafeControlActionRepository.findFirstByName(uca.getName()).ifPresent(u -> {
 //            unsafeControlActionRepository.deleteById(u.getId());
@@ -87,6 +95,7 @@ public class UnsafeControlActionService {
         for (UCAType type : rule.getTypes()) {
             UnsafeControlActionCreateDto dto = UnsafeControlActionCreateDto.builder()
                     .control_action_id(rule.getControlActionId())
+                    .controller_id(rule.getControllerId())
                     .hazard_id(rule.getHazardId())
                     .analysis_id(rule.getAnalysisId())
                     .rule_code(rule.getCodeName())
