@@ -2,9 +2,11 @@ package step3.dto.mit.safety_constraint;
 
 
 
+import lombok.Builder;
 import step3.entity.mit.SafetyConstraint;
 import java.util.UUID;
 
+@Builder
 public record SafetyConstraintReadDto(
         UUID id,
         String name,
