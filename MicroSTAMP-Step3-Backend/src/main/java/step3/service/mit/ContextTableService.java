@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import step3.dto.mit.context_table.ContextTableCreateDto;
 import step3.dto.mit.context_table.ContextTableReadDto;
 import step3.dto.mit.context_table.ContextTableReadWithPageDto;
+import step3.dto.mit.mapper.ContextTableMapper;
 import step3.dto.mit.step2.ComponentReadDto;
 import step3.dto.mit.step2.StateReadDto;
 import step3.dto.mit.step2.VariableReadDto;
@@ -29,6 +30,7 @@ public class ContextTableService {
     private final ContextTableRepository contextTableRepository;
     private final ContextRepository contextRepository;
     private final Step2Proxy step2Proxy;
+    private final ContextTableMapper mapper;
 
     // Create -----------------------------------------
 
@@ -72,7 +74,7 @@ public class ContextTableService {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
 
-        return new ContextTableReadWithPageDto(contextTable, contextsPage);
+        return mapper.toContextTableReadWithPageDto(contextTable, contextsPage);
     }
 
 //    public ContextTableReadDto readContextTableByController(Long controller_id) {
