@@ -95,7 +95,7 @@ public class UnsafeControlAction {
     public String generateName(Step2Proxy step2Proxy) {
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(this.controlActionId);
 
-        String source = controlAction.name(); //nome do controlador
+        String source = step2Proxy.getControllerById(controllerId).name();
         String typeAndCA = getTypeAndControlActionString(controlAction.name());
         String context = generateContextString(step2Proxy);
 
