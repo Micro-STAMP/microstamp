@@ -95,7 +95,7 @@ public class UnsafeControlAction {
     public String generateName(Step2Proxy step2Proxy) {
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(this.controlActionId);
 
-        String source = controlAction.name();
+        String source = controlAction.name(); //nome do controlador
         String typeAndCA = getTypeAndControlActionString(controlAction.name());
         String context = generateContextString(step2Proxy);
 
@@ -111,6 +111,16 @@ public class UnsafeControlAction {
 //
 //        return new SafetyConstraint(scName, this);
 //    }
+
+    public String generateConstraintName(Step2Proxy step2Proxy) {
+        var controlAction = step2Proxy.getControlActionById(this.getControlActionId());
+
+        String source = step2Proxy.getControllerById(controllerId).name();
+        String typeAndCA = getTypeAndControlActionString(controlAction.name());
+        String context = generateContextString(step2Proxy);
+
+        return source + " must not " + typeAndCA + " when " + context;
+    }
 
     public String getTypeAndControlActionString(String controlActionName) {
         return switch (getType()) {
