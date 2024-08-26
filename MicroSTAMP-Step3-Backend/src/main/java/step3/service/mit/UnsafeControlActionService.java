@@ -15,6 +15,7 @@ import step3.entity.mit.UnsafeControlAction;
 import step3.entity.mit.association.RuleState;
 import step3.entity.mit.association.UnsafeControlActionState;
 import step3.infra.exceptions.OperationNotAllowedException;
+import step3.proxy.AuthServerProxy;
 import step3.proxy.Step1Proxy;
 import step3.proxy.Step2Proxy;
 import step3.repository.mit.RuleRepository;
@@ -33,9 +34,11 @@ public class UnsafeControlActionService {
     private final RuleRepository ruleRepository;
     private final Step1Proxy step1Proxy;
     private final Step2Proxy step2Proxy;
+    private final AuthServerProxy authServerProxy;
     private final UnsafeControlActionMapper mapper;
 
     public UnsafeControlActionReadDto createUnsafeControlAction(UnsafeControlActionCreateDto ucaCreateDto) {
+        authServerProxy.getAnalysisById(ucaCreateDto.analysis_id());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.control_action_id());
         List<StateReadDto> states = getUCAStates(ucaCreateDto.states_ids());
         HazardReadDto hazard = step1Proxy.getHazardById(ucaCreateDto.hazard_id());

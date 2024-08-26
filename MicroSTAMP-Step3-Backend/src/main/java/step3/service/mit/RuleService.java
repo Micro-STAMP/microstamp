@@ -10,6 +10,7 @@ import step3.dto.mit.step2.ControlActionReadDto;
 import step3.dto.mit.step2.StateReadDto;
 import step3.entity.mit.Rule;
 import step3.entity.mit.association.RuleState;
+import step3.proxy.AuthServerProxy;
 import step3.proxy.Step1Proxy;
 import step3.proxy.Step2Proxy;
 import step3.repository.mit.RuleRepository;
@@ -28,6 +29,7 @@ public class RuleService {
     private final UnsafeControlActionRepository ucaRepository;
     private final Step1Proxy step1Proxy;
     private final Step2Proxy step2Proxy;
+    private final AuthServerProxy authServerProxy;
     private final RuleMapper mapper;
     private int nextCode;
 
@@ -36,17 +38,19 @@ public class RuleService {
             UnsafeControlActionRepository ucaRepository,
             Step1Proxy step1Proxy,
             Step2Proxy step2Proxy,
-            RuleMapper mapper) {
+            AuthServerProxy authServerProxy, RuleMapper mapper) {
         this.ruleRepository = ruleRepository;
         this.ucaRepository = ucaRepository;
         this.step1Proxy = step1Proxy;
         this.step2Proxy = step2Proxy;
+        this.authServerProxy = authServerProxy;
         this.mapper = mapper;
         int ruleListSize = ruleRepository.findAll().size();
         this.nextCode = ruleListSize == 0 ? 1 : ruleListSize + 1;
     }
 
     public RuleReadDto createRule(RuleCreateDto ruleCreateDto) {
+        authServerProxy.getAnalysisById(ruleCreateDto.analysis_id());
         List<StateReadDto> states = getRuleStates(ruleCreateDto.values_ids());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ruleCreateDto.control_action_id());
         HazardReadDto hazard = step1Proxy.getHazardById(ruleCreateDto.hazard_id());
