@@ -9,7 +9,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [Architecture Overview](#architecture-overview)
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
-
+ -   [MicroSTAMP Microservices](#microservices-details)
 
 ## Architecture Overview
 
@@ -129,7 +129,7 @@ There several ways to run a microservice with IntelliJ. One possible way is show
 </figure>
 <p></p>
 
-We can access the service registry administration page (Spring Eureka) by the URL `http://localhost:8761/`. At this moment, no microservice instances are reegistred with the service registry.
+We can access the service registry administration page (Spring Eureka) by the URL `http://localhost:8761/`. At this moment, no microservice instances are registered with the service registry.
 <p></p>
 
 <figure>
@@ -137,4 +137,16 @@ We can access the service registry administration page (Spring Eureka) by the UR
   <figcaption>Figure 3: The service registry administration page.</figcaption>
 </figure>
 <p></p>
+
+## MicroSTAMP microservices 
+
+### 1. MicroSTAMP Service Registry
+
+The MicroSTAMP Service Registry is implemented with Sprint Cloud Netflix Eureka Server. Service registry and discovery play an important role when running multiple instances of services and we need a mechanism to call other services without hard coding their host names or port numbers.
+
+With MicroSTAMP Service Registry we need to only configure an ID for each microservice that register itself as client with the MicroSTAMP Service Registry. In that sense, we don't have to bother about the hostname and port of the microservices instances that we want to communicate.
+
+In addition to that, in cloud environments, service instances may come up and go down any time. Hence, we need some automatic service registration and discovery mechanism as the provided in this microservice.
+
+Basically all MicroSTAMP microservices (microstamp-api-gateway, microstamp-stpa-step1, microstamp-stpa-step2, microstamp-stpa-step3, microstamp-stpa-step4) register themselves to  Service Registry, and Service Registry tracks all the MicroSTAMP microservices and its instances. We can use service Registry in order to see what are the microservices are up and what are the microservices down.
 
