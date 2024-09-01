@@ -7,6 +7,9 @@ This repository contains the source code for MicroSTAMP,  a web application base
 ## Table of Contents
  
  -   [Architecture Overview](#architecture-overview)
+ -   [End Users Guide](#end-users-guide)
+ -   [Developers Guide](#developers-guide)
+
 
 ## Architecture Overview
 
@@ -37,5 +40,101 @@ This repository contains the source code for MicroSTAMP,  a web application base
     <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=85EA2D&labelColor=070707" alt="Swagger">
     <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=070707" alt="React">
     <img src="https://img.shields.io/badge/Flyway-004B87?style=for-the-badge&logo=flyway&logoColor=white&labelColor=070707" alt="Flyway">
+    <img src="https://img.shields.io/badge/Tomcat-F8DC75?style=for-the-badge&logo=apache-tomcat&logoColor=black&labelColor=070707" alt="Apache Tomcat">
+    <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellij-idea&logoColor=white&labelColor=070707" alt="IntelliJ">
+
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&labelColor=070707" alt="Docker">
 </div>
+
+## End Users Guide
+
+### Prerequisites
+
+To build and run the application as an end-user, you’ll need:
+
+- **Docker**
+
+### Installation
+
+The easiest way to run **microstamp** is using Docker.
+
+#### Step 1: Install Docker and Docker Compose
+
+Ensure you have Docker and Docker Compose installed on your machine:
+
+- **Docker**: Download and install Docker from the [official Docker website](https://www.docker.com/).
+- **Docker Compose**: It usually comes installed with Docker Desktop. You can check the version by running:
+
+
+    docker-compose --version
+
+#### Step 2: Open a Terminal
+
+Navigate to the directory where the `docker-compose.yaml` file is located. You can do this using the `cd` command in your terminal:
+
+	cd /path/to/directory
+
+#### Step 3: Run Docker Compose
+
+Execute the following command to start the services defined in the `docker-compose.yaml` file:
+
+	docker-compose up
+
+This command will:
+
+-   Build the Docker images if they are not already built.
+-   Start all the containers defined in the `docker-compose.yaml`.
+
+#### Additional Options
+
+**Run in detached mode** (in the background):
+
+	docker-compose up -d
+
+**View logs**:
+
+	docker-compose logs -f
+
+**Stop the containers**:
+
+	docker-compose down
+
+## Developers Guide
+
+#### Prerequisites
+
+To build and run the application as a software developer, you'll need:
+- [JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
+- [MySQL 8.0](https://dev.mysql.com/downloads/mysql) or higher
+- IntelliJ IDEA Ultimate Edition (That's our IDE of choice, but you are free to use other IDEs as well).
+
+#### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
+
+We use IntelliJ IDEA 2023.3.5 Ultimate Edition in this example of how to use IntelliJ to run MicroSTAMP. I what follows we provide the steps needed to get MicroSTAMP up an running.
+
+**Step 1 - Run the MicrostampServiceRegistryApplication microservice**
+
+There several ways to run a microservice with IntelliJ. One possible way is shown in Figure 1.
+<figure>
+  <img src="assets/images/running-service-registry-within-intellij.png?raw=true" alt="Running the service registry">
+	<figcaption>Figure 1: Running the service registry microservice.</figcaption>
+</figure>
+<p></p>
+ As shown in the console output of Figure 2, the MicrostampServiceRegistryApplication runs on Tomcat, port 8761.
+<p></p>
+
+<figure>
+  <img src="assets/images/console-log-after-running-service-registry-within-intellij.png?raw=true" alt="Service registry running on port 8761">
+	<figcaption>Figure 2: The service registry runs on port 8761.</figcaption>
+</figure>
+<p></p>
+
+We can access the service registry administration page (Spring Eureka) by the URL `http://localhost:8761/`. At this moment, no microservice instances are reegistred with the service registry.
+<p></p>
+
+<figure>
+  <img src="assets/images/accessing-eureka-landing=page.png?raw=true" alt="Spring Eureka">
+  <figcaption>Figure 3: The service registry administration page.</figcaption>
+</figure>
+<p></p>
+
