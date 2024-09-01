@@ -9,11 +9,9 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [Architecture Overview](#architecture-overview)
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
- -   [MicroSTAMP Microservices](#microservices-details)
+ -   [MicroSTAMP Microservices](#microstamp-microservices)
 
 ## Architecture Overview
-
-### MicroSTAMP microservices
 
  <img src="assets/images/microstamp-architecture.png?raw=true" alt="MicroSTAMP Architecture">
 
