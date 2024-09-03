@@ -83,6 +83,7 @@ public class LossServiceImpl implements LossService {
                 .orElseThrow(() -> new Step1NotFoundException("Loss", id.toString()));
 
         loss.setName(lossUpdateDto.getName());
+        loss.setCode(lossUpdateDto.getCode());
 
         log.info("Updating the loss with id {} setting the name {}", id, loss.getName());
         lossRepository.save(loss);

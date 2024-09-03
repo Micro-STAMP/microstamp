@@ -84,6 +84,7 @@ public class SystemGoalServiceImpl implements SystemGoalService {
                 .orElseThrow(() -> new Step1NotFoundException("SystemGoal", id.toString()));
 
         systemGoal.setName(systemGoalUpdateDto.getName());
+        systemGoal.setCode(systemGoalUpdateDto.getCode());
 
         log.info("Updating the system goal with id {} setting the name {}", id, systemGoal.getName());
         systemGoalRepository.save(systemGoal);

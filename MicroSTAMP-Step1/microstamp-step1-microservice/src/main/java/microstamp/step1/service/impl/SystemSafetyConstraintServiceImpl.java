@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -94,13 +95,15 @@ public class SystemSafetyConstraintServiceImpl implements SystemSafetyConstraint
                 .orElseThrow(() -> new Step1NotFoundException("SystemSafetyConstraint", id.toString()));
 
         systemSafetyConstraint.setName(systemSafetyConstraintUpdateDto.getName());
+        systemSafetyConstraint.setCode(systemSafetyConstraintUpdateDto.getCode());
 
         log.info("Finding hazards {} associated with the system safety constraint {}", systemSafetyConstraintUpdateDto.getHazardsId(), systemSafetyConstraint.getId());
         List<Hazard> hazardEntities = Optional.ofNullable(systemSafetyConstraintUpdateDto.getHazardsId())
                 .orElseGet(Collections::emptyList)
                 .stream()
                 .map(hazardId -> hazardRepository.findById(hazardId)
-                        .orElseThrow(() -> new Step1NotFoundException("Hazard", hazardId.toString()))).toList();
+                        .orElseThrow(() -> new Step1NotFoundException("Hazard", hazardId.toString())))
+                .collect(Collectors.toList());;
         systemSafetyConstraint.setHazardEntities(hazardEntities);
 
         log.info("Updating the system safety constraint with id {} setting the name {}", id, systemSafetyConstraint.getName());

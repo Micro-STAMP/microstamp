@@ -77,6 +77,7 @@ public class AssumptionServiceImpl implements AssumptionService {
                 .orElseThrow(() -> new Step1NotFoundException("Assumption", id.toString()));
 
         assumption.setName(assumptionUpdateDto.getName());
+        assumption.setCode(assumptionUpdateDto.getCode());
 
         log.info("Updating the assumption with id {} setting the name {}", id, assumption.getName());
         assumptionRepository.save(assumption);

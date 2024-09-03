@@ -19,6 +19,7 @@ import microstamp.step1.service.HazardService;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -85,11 +86,12 @@ public class HazardServiceImpl implements HazardService {
                 .orElseThrow(() -> new Step1NotFoundException("Hazard", id.toString()));
 
         hazard.setName(hazardUpdateDto.getName());
+        hazard.setCode(hazardUpdateDto.getCode());
         List<Loss> lossEntities = Optional.ofNullable(hazardUpdateDto.getLossIds())
                 .orElseGet(Collections::emptyList)
                 .stream()
                 .map(lossId -> lossRepository.findById(lossId).orElseThrow(() -> new Step1NotFoundException("Loss", lossId.toString())))
-                .toList();
+                .collect(Collectors.toList());
         hazard.setLossEntities(lossEntities);
 
         hazard.setFather(setFatherForUpdate(id, hazardUpdateDto));
