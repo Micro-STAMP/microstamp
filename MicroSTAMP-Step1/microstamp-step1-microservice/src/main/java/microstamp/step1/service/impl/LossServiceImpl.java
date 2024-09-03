@@ -34,7 +34,7 @@ public class LossServiceImpl implements LossService {
         log.info("Find all losses");
         return lossRepository.findAll().stream()
                 .map(LossMapper::toDto)
-                .sorted(Comparator.comparing(LossReadDto::getName))
+                .sorted(Comparator.comparing(LossReadDto::getCode))
                 .toList();
     }
 
@@ -50,7 +50,7 @@ public class LossServiceImpl implements LossService {
         log.info("Finding loss by the analysis id: {}", id);
         return lossRepository.findByAnalysisId(id).stream()
                 .map(LossMapper::toDto)
-                .sorted(Comparator.comparing(LossReadDto::getName))
+                .sorted(Comparator.comparing(LossReadDto::getCode))
                 .toList();
     }
 

@@ -16,7 +16,7 @@ public class HazardMapper {
                 hazard.getLossEntities() != null
                     ? hazard.getLossEntities().stream()
                         .map(LossMapper::toDto)
-                        .sorted(Comparator.comparing(LossReadDto::getName))
+                        .sorted(Comparator.comparing(LossReadDto::getCode))
                         .toList()
                     : null,
                 hazard.getFather() != null

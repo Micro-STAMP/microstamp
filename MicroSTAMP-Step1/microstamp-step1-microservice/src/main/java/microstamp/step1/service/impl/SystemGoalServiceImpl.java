@@ -12,7 +12,6 @@ import microstamp.step1.exception.Step1NotFoundException;
 import microstamp.step1.mapper.SystemGoalMapper;
 import microstamp.step1.repository.SystemGoalRepository;
 import microstamp.step1.service.SystemGoalService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -35,7 +34,7 @@ public class SystemGoalServiceImpl implements SystemGoalService {
         log.info("Find all system goals");
         return systemGoalRepository.findAll().stream()
                 .map(SystemGoalMapper::toDto)
-                .sorted(Comparator.comparing(SystemGoalReadDto::getName))
+                .sorted(Comparator.comparing(SystemGoalReadDto::getCode))
                 .toList();
     }
 
@@ -51,7 +50,7 @@ public class SystemGoalServiceImpl implements SystemGoalService {
         log.info("Finding system goal by the analysis id: {}", id);
         return systemGoalRepository.findByAnalysisId(id).stream()
                 .map(SystemGoalMapper::toDto)
-                .sorted(Comparator.comparing(SystemGoalReadDto::getName))
+                .sorted(Comparator.comparing(SystemGoalReadDto::getCode))
                 .toList();
     }
 
@@ -74,7 +73,7 @@ public class SystemGoalServiceImpl implements SystemGoalService {
 
     public void update(UUID id, SystemGoalUpdateDto systemGoalUpdateDto) throws Step1NotFoundException {
 
-        log.debug("Verifying if the system goal insert is valid");
+        log.debug("Verifying if the system goal update is valid");
         if (Objects.isNull(systemGoalUpdateDto)) {
             throw new Step1IllegalArgumentException("Unable to update the system goal because the provided SystemGoalUpdateDto is null.");
         }

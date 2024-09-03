@@ -14,7 +14,6 @@ import microstamp.step1.mapper.SystemSafetyConstraintMapper;
 import microstamp.step1.repository.HazardRepository;
 import microstamp.step1.repository.SystemSafetyConstraintRepository;
 import microstamp.step1.service.SystemSafetyConstraintService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -36,7 +35,7 @@ public class SystemSafetyConstraintServiceImpl implements SystemSafetyConstraint
         log.info("Find all system safety constraints");
         return systemSafetyConstraintRepository.findAll().stream()
                 .map(SystemSafetyConstraintMapper::toDto)
-                .sorted(Comparator.comparing(SystemSafetyConstraintReadDto::getName))
+                .sorted(Comparator.comparing(SystemSafetyConstraintReadDto::getCode))
                 .toList();
     }
 
@@ -52,7 +51,7 @@ public class SystemSafetyConstraintServiceImpl implements SystemSafetyConstraint
         log.info("Find system safety constraint by the analysis id: {}", id);
         return systemSafetyConstraintRepository.findByAnalysisId(id).stream()
                 .map(SystemSafetyConstraintMapper::toDto)
-                .sorted(Comparator.comparing(SystemSafetyConstraintReadDto::getName))
+                .sorted(Comparator.comparing(SystemSafetyConstraintReadDto::getCode))
                 .toList();
     }
 

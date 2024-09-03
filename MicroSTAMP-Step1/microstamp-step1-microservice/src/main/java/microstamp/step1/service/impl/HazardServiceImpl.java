@@ -36,7 +36,7 @@ public class HazardServiceImpl implements HazardService {
         log.info("Finding all hazards");
         return hazardRepository.findAll().stream()
                 .map(HazardMapper::toDto)
-                .sorted(Comparator.comparing(HazardReadDto::getName))
+                .sorted(Comparator.comparing(HazardReadDto::getCode))
                 .toList();
     }
 
@@ -50,7 +50,7 @@ public class HazardServiceImpl implements HazardService {
         log.info("Finding hazard by the analysis id: {}", id);
         return hazardRepository.findByAnalysisId(id).stream()
                 .map(HazardMapper::toDto)
-                .sorted(Comparator.comparing(HazardReadDto::getName))
+                .sorted(Comparator.comparing(HazardReadDto::getCode))
                 .toList();
     }
 
@@ -138,7 +138,7 @@ public class HazardServiceImpl implements HazardService {
 
         return children.stream()
                 .map(HazardMapper::toDto)
-                .sorted(Comparator.comparing(HazardReadDto::getName))
+                .sorted(Comparator.comparing(HazardReadDto::getCode))
                 .toList();
     }
 
