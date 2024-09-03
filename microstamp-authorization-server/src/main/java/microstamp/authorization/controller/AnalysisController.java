@@ -1,5 +1,6 @@
 package microstamp.authorization.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import microstamp.authorization.dto.AnalysisInsertDto;
 import microstamp.authorization.dto.AnalysisReadDto;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Analysis")
 @RequestMapping("/analyses")
 public class AnalysisController {
 
