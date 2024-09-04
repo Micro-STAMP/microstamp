@@ -32,7 +32,7 @@ public class AssumptionServiceImpl implements AssumptionService {
         log.info("Finding all assumptions");
         return assumptionRepository.findAll().stream()
                 .map(AssumptionMapper::toDto)
-                .sorted(Comparator.comparing(AssumptionReadDto::getName))
+                .sorted(Comparator.comparing(AssumptionReadDto::getCode))
                 .toList();
     }
 
@@ -46,7 +46,7 @@ public class AssumptionServiceImpl implements AssumptionService {
         log.info("Finding assumption by the analysis id: {}", id);
         return assumptionRepository.findByAnalysisId(id).stream()
                 .map(AssumptionMapper::toDto)
-                .sorted(Comparator.comparing(AssumptionReadDto::getName))
+                .sorted(Comparator.comparing(AssumptionReadDto::getCode))
                 .toList();
     }
 
@@ -77,6 +77,7 @@ public class AssumptionServiceImpl implements AssumptionService {
                 .orElseThrow(() -> new Step1NotFoundException("Assumption", id.toString()));
 
         assumption.setName(assumptionUpdateDto.getName());
+        assumption.setCode(assumptionUpdateDto.getCode());
 
         log.info("Updating the assumption with id {} setting the name {}", id, assumption.getName());
         assumptionRepository.save(assumption);

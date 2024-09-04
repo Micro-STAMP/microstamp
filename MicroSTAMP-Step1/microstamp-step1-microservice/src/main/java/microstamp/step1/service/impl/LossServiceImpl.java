@@ -34,7 +34,7 @@ public class LossServiceImpl implements LossService {
         log.info("Find all losses");
         return lossRepository.findAll().stream()
                 .map(LossMapper::toDto)
-                .sorted(Comparator.comparing(LossReadDto::getName))
+                .sorted(Comparator.comparing(LossReadDto::getCode))
                 .toList();
     }
 
@@ -50,7 +50,7 @@ public class LossServiceImpl implements LossService {
         log.info("Finding loss by the analysis id: {}", id);
         return lossRepository.findByAnalysisId(id).stream()
                 .map(LossMapper::toDto)
-                .sorted(Comparator.comparing(LossReadDto::getName))
+                .sorted(Comparator.comparing(LossReadDto::getCode))
                 .toList();
     }
 
@@ -83,6 +83,7 @@ public class LossServiceImpl implements LossService {
                 .orElseThrow(() -> new Step1NotFoundException("Loss", id.toString()));
 
         loss.setName(lossUpdateDto.getName());
+        loss.setCode(lossUpdateDto.getCode());
 
         log.info("Updating the loss with id {} setting the name {}", id, loss.getName());
         lossRepository.save(loss);

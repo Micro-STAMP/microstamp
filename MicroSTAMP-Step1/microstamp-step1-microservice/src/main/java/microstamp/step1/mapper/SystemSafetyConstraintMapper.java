@@ -17,7 +17,7 @@ public class SystemSafetyConstraintMapper {
                 .hazards(systemSafetyConstraint.getHazardEntities() != null
                         ? systemSafetyConstraint.getHazardEntities().stream()
                         .map(HazardMapper::toDto)
-                        .sorted(Comparator.comparing(HazardReadDto::getName))
+                        .sorted(Comparator.comparing(HazardReadDto::getCode))
                         .toList()
                         : null)
                 .build();
