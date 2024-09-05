@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>microstamp</groupId>
-    <artifactId>MicroSTAMP-Step2</artifactId>
+    <artifactId>microstamp-step2</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>MicroSTAMP-Step2</name>
+    <name>microstamp-step2</name>
     <description>MicroSTAMP-Step2</description>
     <modules>
         <module>microstamp-step2-data</module>
