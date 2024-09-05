@@ -20,7 +20,8 @@ public class SecurityConfig {
             "http://127.0.0.1:9002",
             "http://127.0.0.1:9003",
             "http://127.0.0.1:9004",
-            "http://127.0.0.1:9191"
+            "http://127.0.0.1:9191",
+            "http://127.0.0.1:5173"
     };
 
     private static final String[] AUTH_WHITELIST = {

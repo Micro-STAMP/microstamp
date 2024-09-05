@@ -26,7 +26,8 @@ public class SecurityFilterConfig {
             "http://127.0.0.1:9002",
             "http://127.0.0.1:9003",
             "http://127.0.0.1:9004",
-            "http://127.0.0.1:9191"
+            "http://127.0.0.1:9191",
+            "http://127.0.0.1:5173"
     };
 
     private static final String[] AUTH_WHITELIST = {
@@ -47,6 +48,7 @@ public class SecurityFilterConfig {
                         .defaultAuthenticationEntryPointFor(
                                 new LoginUrlAuthenticationEntryPoint("/login"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)))
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfig()))
                 .oauth2ResourceServer((resourceServer) -> resourceServer
                         .jwt(Customizer.withDefaults()));
 
