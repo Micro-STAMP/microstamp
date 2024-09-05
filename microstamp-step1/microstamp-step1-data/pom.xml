@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>microstamp</groupId>
-        <artifactId>MicroSTAMP-Step2</artifactId>
+        <artifactId>microstamp-step1</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>microstamp-step2-data</artifactId>
+    <artifactId>microstamp-step1-data</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

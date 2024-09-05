@@ -16,8 +16,8 @@
         <module>microstamp-api-gateway</module>
         <module>microstamp-service-registry</module>
         <module>microstamp-authorization-server</module>
-        <module>MicroSTAMP-Step1</module>
-        <module>MicroSTAMP-Step2</module>
+        <module>microstamp-step1</module>
+        <module>microstamp-step2</module>
         <module>microstamp-step3</module>
     </modules>
 

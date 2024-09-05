@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>microstamp</groupId>
-	<artifactId>MicroSTAMP-Authorization-Server</artifactId>
+	<artifactId>microstamp-authorization-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>MicroSTAMP-Authorization-Server</name>
+	<name>microstamp-authorization-server</name>
 	<description>MicroSTAMP-Authorization-Server</description>
 	<url/>
 	<licenses>

@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>microstamp</groupId>
-        <artifactId>MicroSTAMP-Step1</artifactId>
+        <artifactId>microstamp-step2</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>microstamp-step1-data</artifactId>
+    <artifactId>microstamp-step2-dto</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -19,13 +19,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>microstamp</groupId>
+            <artifactId>microstamp-step2-data</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
