@@ -1,5 +1,6 @@
 package microstamp.authorization.service.impl;
 
+import lombok.AllArgsConstructor;
 import microstamp.authorization.dto.AnalysisInsertDto;
 import microstamp.authorization.dto.AnalysisReadDto;
 import microstamp.authorization.dto.AnalysisUpdateDto;
@@ -10,7 +11,6 @@ import microstamp.authorization.mapper.AnalysisMapper;
 import microstamp.authorization.repository.AnalysisRepository;
 import microstamp.authorization.repository.UserRepository;
 import microstamp.authorization.service.AnalysisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -18,13 +18,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
+@AllArgsConstructor
 public class AnalysisServiceImpl implements AnalysisService {
 
-    @Autowired
-    private AnalysisRepository analysisRepository;
+    private final AnalysisRepository analysisRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public List<AnalysisReadDto> findAll() {
         return analysisRepository.findAll().stream()

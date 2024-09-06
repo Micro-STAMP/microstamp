@@ -2,26 +2,34 @@ package microstamp.authorization.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import microstamp.authorization.dto.AnalysisInsertDto;
 import microstamp.authorization.dto.AnalysisReadDto;
 import microstamp.authorization.dto.AnalysisUpdateDto;
+import microstamp.authorization.dto.ImageReadDto;
 import microstamp.authorization.exception.NotFoundException;
 import microstamp.authorization.service.AnalysisService;
+import microstamp.authorization.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
+
 @RestController
-@Tag(name = "Analysis")
 @RequestMapping("/analyses")
+@AllArgsConstructor
+@Tag(name = "Analysis")
 public class AnalysisController {
 
-    @Autowired
-    private AnalysisService analysisService;
+    private final AnalysisService analysisService;
+
+    private final ImageService imageService;
 
     @GetMapping
     public ResponseEntity<List<AnalysisReadDto>> findAll() {
@@ -55,4 +63,14 @@ public class AnalysisController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ImageReadDto> insertImage(@PathVariable("id") UUID analysisId, @RequestParam("file") MultipartFile file) throws Exception {
+        return new ResponseEntity<>(imageService.insert(analysisId, file), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = {"/{id}/image"})
+    public ResponseEntity<Void> deleteImage(@PathVariable("id") UUID id) throws Exception {
+        imageService.deleteByAnalysisId(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

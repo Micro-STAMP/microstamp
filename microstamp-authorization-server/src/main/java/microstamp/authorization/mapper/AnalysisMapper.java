@@ -11,6 +11,9 @@ public class AnalysisMapper {
                 analysis.getName(),
                 analysis.getDescription(),
                 analysis.getCreatedAt(),
+                analysis.getImage() != null
+                    ? ImageMapper.toDto(analysis.getImage())
+                    : null,
                 analysis.getUser().getId());
     }
 
