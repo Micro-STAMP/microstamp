@@ -97,6 +97,12 @@ public class RuleService {
                 .toList();
     }
 
+    public List<RuleReadListDto> readRulesByAnalysisId(UUID analysisId) {
+        return ruleRepository.findByAnalysisId(analysisId).stream()
+                .map(mapper::toRuleReadListDto)
+                .toList();
+    }
+
     public void deleteRule(UUID id) {
         var rule = ruleRepository.getReferenceById(id);
         ucaRepository.deleteAll(ucaRepository.findByRuleCode(rule.getCodeName()));
