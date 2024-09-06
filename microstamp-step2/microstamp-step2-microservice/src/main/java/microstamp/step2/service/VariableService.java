@@ -15,6 +15,8 @@ public interface VariableService {
 
     List<VariableReadDto> findByAnalysisId(UUID id);
 
+    List<VariableReadDto> findByComponentId(UUID id);
+
     VariableReadDto insert(VariableInsertDto variableInsertDto);
 
     void update(UUID id, VariableUpdateDto variableUpdateDto);
