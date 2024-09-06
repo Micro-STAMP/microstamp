@@ -9,9 +9,14 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import step3.dto.mit.rule.RuleReadDto;
+import step3.dto.mit.rule.RuleReadListDto;
+import step3.dto.mit.step2.StateReadDto;
 import step3.dto.mit.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.service.mit.RuleService;
 import step3.service.mit.SafetyConstraintService;
@@ -41,7 +46,7 @@ public class PdfService {
         // vai ter informações de UCA, regras e restrições de segurança
 
 
-
+        generateRuleContent(document, analysisId);
         generateUcaAndConstraintContent(document, analysisId);
 
         document.close();
@@ -68,24 +73,63 @@ public class PdfService {
     private void generateUcaAndConstraintContent(Document document, UUID analysisId) throws IOException {
         List<UnsafeControlActionReadDto> ucaList = ucaService.readAllUCAByAnalysisId(analysisId);
 
-        Paragraph titleUCA = new Paragraph("Unsafe control action and safety constraint:")
-                .setFontSize(16)
-                .setBold()
-                .setTextAlignment(TextAlignment.LEFT);
-        document.add(titleUCA);
-        document.add(new Paragraph("\n"));
+        // Define table with 2 columns
+        Table table = new Table(UnitValue.createPercentArray(new float[]{50, 50}))
+                .useAllAvailableWidth();
 
+        // Adding header
+        table.addHeaderCell("Unsafe Control Action");
+        table.addHeaderCell("Safety Constraint");
+
+        // Populating table rows
         for (UnsafeControlActionReadDto uca : ucaList) {
-            Paragraph ucaName = new Paragraph("Unsafe Control Action: " + uca.name());
-            document.add(ucaName);
+            StringBuilder ucaName = new StringBuilder(uca.name());
+            ucaName.append(" [").append(uca.hazard_code()).append("]");
+            if (!uca.rule_code().isEmpty()) {
+                ucaName.append("[").append(uca.rule_code()).append("]");
+            }
 
-            Paragraph constraintName = new Paragraph("Safety Constraint: " + safetyConstraintService.readSafetyConstraintByUCAId(uca.id()).name());
-            document.add(constraintName);
-            document.add(new Paragraph("\n"));
+            table.addCell(ucaName.toString());
+            table.addCell(safetyConstraintService.readSafetyConstraintByUCAId(uca.id()).name());
         }
+
+        document.add(table);
+        document.add(new Paragraph("\n"));
     }
 
-    private void generateRuleContent(Document document) {
+    private void generateRuleContent(Document document, UUID analysisId) {
+        List<RuleReadListDto> ruleList = ruleService.readRulesByAnalysisId(analysisId);
 
+        // Define table with 6 columns
+        Table table = new Table(UnitValue.createPercentArray(new float[]{10, 15, 15, 15, 15, 15}))
+                .useAllAvailableWidth();
+
+        // Adding header
+        table.addHeaderCell("Rule");
+        table.addHeaderCell("Control Action Name");
+        table.addHeaderCell("States");
+        table.addHeaderCell("Types");
+        table.addHeaderCell("Hazard");
+        table.addHeaderCell("Code");
+
+        // Show Rule's states as a list of strings
+        List<String> statesNames = ruleList.get(0)
+                .states()
+                .stream()
+                .map(StateReadDto::name)
+                .toList();
+
+        // Populating table rows
+        for (RuleReadListDto rule : ruleList) {
+            table.addCell(rule.name());
+            table.addCell(rule.control_action_name());
+            table.addCell(String.join(", ", statesNames));
+            table.addCell(rule.types().toString());
+            table.addCell(rule.hazard().name());
+            table.addCell(rule.code());
+        }
+
+        document.add(table);
+        document.add(new Paragraph("\n"));
     }
 }
