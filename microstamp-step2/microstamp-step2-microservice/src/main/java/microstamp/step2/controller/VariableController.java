@@ -38,6 +38,11 @@ public class VariableController {
         return new ResponseEntity<>(variableService.findByAnalysisId(id), HttpStatus.OK);
     }
 
+    @GetMapping(path = {"/component/{id}"})
+    public ResponseEntity<List<VariableReadDto>> findByComponentId(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(variableService.findByComponentId(id), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<VariableReadDto> insert(@Valid @RequestBody VariableInsertDto variableInsertDto) throws Step2NotFoundException {
         return new ResponseEntity<>(variableService.insert(variableInsertDto), HttpStatus.CREATED);

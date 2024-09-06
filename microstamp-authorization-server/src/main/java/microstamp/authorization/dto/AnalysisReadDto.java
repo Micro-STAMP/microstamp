@@ -2,13 +2,15 @@ package microstamp.authorization.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class AnalysisReadDto {
 
@@ -21,6 +23,8 @@ public class AnalysisReadDto {
     private String description;
 
     private Instant creationDate;
+
+    private ImageReadDto image;
 
     @NotNull
     private UUID userId;

@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -12,14 +11,15 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserReadDto {
+public class ImageReadDto {
 
     @NotNull
     private UUID id;
 
     @NotBlank
-    private String username;
+    private String fileName;
 
-    private List<AnalysisReadDto> analyses;
+    @NotBlank
+    private String base64;
 
 }

@@ -38,11 +38,16 @@ public class VariableServiceImpl implements VariableService {
     }
 
     public List<VariableReadDto> findByAnalysisId(UUID id) {
-        List<microstamp.step2.entity.Component> components = componentRepository.findByAnalysisId(id);
-
-        return components.stream()
+        return componentRepository.findByAnalysisId(id).stream()
                 .filter(c -> !c.getVariables().isEmpty())
                 .flatMap(c -> variableRepository.findByComponentId(c.getId()).stream())
+                .map(VariableMapper::toDto)
+                .sorted(Comparator.comparing(VariableReadDto::getCode))
+                .toList();
+    }
+
+    public List<VariableReadDto> findByComponentId(UUID id) {
+        return variableRepository.findByComponentId(id).stream()
                 .map(VariableMapper::toDto)
                 .sorted(Comparator.comparing(VariableReadDto::getCode))
                 .toList();

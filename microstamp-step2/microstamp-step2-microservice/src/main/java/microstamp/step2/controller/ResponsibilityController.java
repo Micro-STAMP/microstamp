@@ -33,6 +33,16 @@ public class ResponsibilityController {
         return new ResponseEntity<>(responsibilityService.findById(id), HttpStatus.OK);
     }
 
+    @GetMapping(path = {"/analysis/{id}"})
+    public ResponseEntity<List<ResponsibilityReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(responsibilityService.findByAnalysisId(id), HttpStatus.OK);
+    }
+
+    @GetMapping(path = {"/component/{id}"})
+    public ResponseEntity<List<ResponsibilityReadDto>> findByComponentId(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(responsibilityService.findByComponentId(id), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ResponsibilityReadDto> insert(@Valid @RequestBody ResponsibilityInsertDto responsibilityInsertDto) throws Exception {
         return new ResponseEntity<>(responsibilityService.insert(responsibilityInsertDto), HttpStatus.CREATED);
