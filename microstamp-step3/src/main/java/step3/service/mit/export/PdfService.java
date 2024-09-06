@@ -39,13 +39,10 @@ public class PdfService {
 
         // montar o conteúdo do PDF
         // vai ter informações de UCA, regras e restrições de segurança
-        List<UnsafeControlActionReadDto> ucaList = ucaService.readAllUCAByAnalysisId(analysisId);
 
-        for (UnsafeControlActionReadDto uca : ucaList) {
-            document.add(new Paragraph("Unsafe Control Action: " + uca.name()));
-            document.add(new Paragraph("Safety Constraint: " + safetyConstraintService.readSafetyConstraintByUCAId(uca.id()).name()));
-            document.add(new Paragraph("\n"));
-        }
+
+
+        generateUcaAndConstraintContent(document, analysisId);
 
         document.close();
 
@@ -57,7 +54,7 @@ public class PdfService {
         PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ITALIC);
         titleStyle.setFont(font);
 
-        Paragraph title = new Paragraph("MICROSTAMP ANALYSIS")
+        Paragraph title = new Paragraph("MICROSTAMP ANALYSIS - STEP 3")
                 .setFontSize(20)
                 .setBold()
                 .setFontColor(WebColors.getRGBColor("#b4894d"))
@@ -66,5 +63,29 @@ public class PdfService {
 
         document.add(title);
         document.add(new Paragraph("\n"));
+    }
+
+    private void generateUcaAndConstraintContent(Document document, UUID analysisId) throws IOException {
+        List<UnsafeControlActionReadDto> ucaList = ucaService.readAllUCAByAnalysisId(analysisId);
+
+        Paragraph titleUCA = new Paragraph("Unsafe control action and safety constraint:")
+                .setFontSize(16)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT);
+        document.add(titleUCA);
+        document.add(new Paragraph("\n"));
+
+        for (UnsafeControlActionReadDto uca : ucaList) {
+            Paragraph ucaName = new Paragraph("Unsafe Control Action: " + uca.name());
+            document.add(ucaName);
+
+            Paragraph constraintName = new Paragraph("Safety Constraint: " + safetyConstraintService.readSafetyConstraintByUCAId(uca.id()).name());
+            document.add(constraintName);
+            document.add(new Paragraph("\n"));
+        }
+    }
+
+    private void generateRuleContent(Document document) {
+
     }
 }
