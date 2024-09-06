@@ -1,9 +1,13 @@
 package microstamp.authorization.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AnalysisUpdateDto {
 
     @NotBlank

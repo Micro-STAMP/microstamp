@@ -13,6 +13,10 @@ public interface ResponsibilityService {
 
     ResponsibilityReadDto findById(UUID id);
 
+    List<ResponsibilityReadDto> findByAnalysisId(UUID id);
+
+    List<ResponsibilityReadDto> findByComponentId(UUID id);
+
     ResponsibilityReadDto insert(ResponsibilityInsertDto responsibilityInsertDto);
 
     void update(UUID id, ResponsibilityUpdateDto responsibilityUpdateDto);

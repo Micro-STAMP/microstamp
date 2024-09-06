@@ -1,15 +1,15 @@
-package microstamp.step2.repository;
+package microstamp.authorization.repository;
 
-import microstamp.step2.entity.Image;
+import microstamp.authorization.entity.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ImageRepository extends JpaRepository<Image, UUID> {
 
-    List<Image> findByAnalysisId(UUID id);
+    Optional<Image> findByAnalysisId(UUID id);
 
 }
