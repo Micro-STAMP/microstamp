@@ -1,5 +1,6 @@
 package microstamp.authorization.configuration;
 
+import microstamp.authorization.exception.AnalysisAlreadyHasImageException;
 import microstamp.authorization.exception.MicroStampError;
 import microstamp.authorization.exception.MicroStampErrorResponse;
 import microstamp.authorization.exception.NotFoundException;
@@ -30,6 +31,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             MicroStampError microStampError = new MicroStampError(ex.getClass().getSimpleName(), fieldName, errorMessage);
             errorResponse.addError(microStampError);
         });
+
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = { AnalysisAlreadyHasImageException.class })
+    protected ResponseEntity<Object> handleAnalysisAlreadyHasImage(AnalysisAlreadyHasImageException ex, WebRequest request) {
+        MicroStampErrorResponse errorResponse = new MicroStampErrorResponse();
+        errorResponse.addError(new MicroStampError(ex.getClass().getSimpleName(),"AnalysisAlreadyHasImage",ex.getMessage()));
 
         return handleExceptionInternal(ex, errorResponse,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);

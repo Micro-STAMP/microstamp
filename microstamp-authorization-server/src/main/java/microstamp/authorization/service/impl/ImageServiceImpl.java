@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import microstamp.authorization.dto.ImageReadDto;
 import microstamp.authorization.entity.Analysis;
 import microstamp.authorization.entity.Image;
+import microstamp.authorization.exception.AnalysisAlreadyHasImageException;
 import microstamp.authorization.exception.NotFoundException;
 import microstamp.authorization.mapper.ImageMapper;
 import microstamp.authorization.repository.AnalysisRepository;
@@ -39,6 +40,9 @@ public class ImageServiceImpl implements ImageService {
 
         Analysis analysis = analysisRepository.findById(analysisId)
                 .orElseThrow(() -> new NotFoundException("Analysis", analysisId.toString()));
+
+        if(analysis.getImage() != null)
+            throw new AnalysisAlreadyHasImageException();
 
         Image image = new Image();
         image.setFileName(StringUtils.cleanPath(originalFilename));
