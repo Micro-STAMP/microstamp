@@ -210,9 +210,8 @@ public class ComponentServiceImpl implements ComponentService {
 
         componentRepository.save(component);
 
-        String componentTypeName = componentUpdateDto.getType().name().toLowerCase();
-        componentRepository.updateType(component.getId().toString(), componentTypeName.substring(0, 1).toUpperCase()
-                + componentTypeName.substring(1));
+        String componentTypeName = componentUpdateDto.getType().getFormattedName();
+        componentRepository.updateType(component.getId().toString(), componentTypeName);
     }
 
     private void deleteComponent(UUID id){
