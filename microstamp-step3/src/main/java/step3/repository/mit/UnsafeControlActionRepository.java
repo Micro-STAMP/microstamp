@@ -11,5 +11,6 @@ public interface UnsafeControlActionRepository extends JpaRepository<UnsafeContr
     List<UnsafeControlAction> findByControlActionId(UUID id);
     List<UnsafeControlAction> findByRuleCode(String code);
     List<UnsafeControlAction> findByControllerId(UUID id);
+    List<UnsafeControlAction> findByAnalysisId(UUID id);
     Optional<UnsafeControlAction> findFirstByName(String name);
 }
