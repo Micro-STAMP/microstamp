@@ -1,99 +1,78 @@
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",23,1,0,1,"Driver",NULL,6);
+SET @analysis_id = '';
 
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",24,0,0,1,"Brake Pedal",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",25,0,0,1,"Multi-function Switch",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",26,0,0,1,"Instrument Cluster",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",27,0,0,1,"Accelerator Pedal",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",28,1,0,1,"Adaptive Cruise Control(ACC) Module",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",29,1,0,1,"Brake Control Module",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Sensor",30,0,0,1,"Radar",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",31,1,0,1,"Powertrain Control Module",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",32,0,0,1,"Service Brakes",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Sensor",33,0,0,1,"Whell Speed Sensor",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",34,0,0,1,"Electronic Throttle Body",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",35,1,0,1,"Vehicle",NULL,6);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",36,1,0,1,"Lead Vehicle",NULL,6);
-
-INSERT INTO `connections` VALUES (25,0,1,23,24,6);
-INSERT INTO `connections` VALUES (26,0,1,24,29,6);
-INSERT INTO `connections` VALUES (27,0,1,29,32,6);
-INSERT INTO `connections` VALUES (28,0,1,32,35,6);
-INSERT INTO `connections` VALUES (29,0,1,23,26,6);
-INSERT INTO `connections` VALUES (30,0,1,26,28,6);
-INSERT INTO `connections` VALUES (31,1,1,29,28,6);
-INSERT INTO `connections` VALUES (32,1,1,33,29,6);
-INSERT INTO `connections` VALUES (33,1,1,35,33,6);
-INSERT INTO `connections` VALUES (34,1,1,26,23,6);
-INSERT INTO `connections` VALUES (35,1,1,28,26,6);
-INSERT INTO `connections` VALUES (36,1,1,30,28,6);
-INSERT INTO `connections` VALUES (37,1,1,28,31,6);
-INSERT INTO `connections` VALUES (38,1,1,23,27,6);
-INSERT INTO `connections` VALUES (39,1,1,27,31,6);
-INSERT INTO `connections` VALUES (40,1,1,31,34,6);
-INSERT INTO `connections` VALUES (41,0,1,34,31,6);
-INSERT INTO `connections` VALUES (42,1,1,34,35,6);
-INSERT INTO `connections` VALUES (43,2,0,36,30,6);
+INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
+("Controller",23,1,1,"Driver",NULL,"C.01",@analysis_id),
+("ControlledProcess",24,0,1,"Brake Pedal",NULL,"CP.01",@analysis_id),
+("ControlledProcess",25,0,1,"Multi-function Switch",NULL,"CP.02",@analysis_id),
+("ControlledProcess",26,0,1,"Instrument Cluster",NULL,"CP.03",@analysis_id),
+("ControlledProcess",27,0,1,"Accelerator Pedal",NULL,"CP.04",@analysis_id),
+("Controller",28,1,1,"Adaptive Cruise Control(ACC) Module",NULL,"C.02",@analysis_id),
+("Controller",29,1,1,"Brake Control Module",NULL,"C.03",@analysis_id),
+("Sensor",30,0,1,"Radar",NULL,"S.01",@analysis_id),
+("Controller",31,1,1,"Powertrain Control Module",NULL,"C.04",@analysis_id),
+("ControlledProcess",32,0,1,"Service Brakes",NULL,"CP.05",@analysis_id),
+("Sensor",33,0,1,"Whell Speed Sensor",NULL,"S.02",@analysis_id),
+("ControlledProcess",34,0,1,"Electronic Throttle Body",NULL,"CP.06",@analysis_id),
+("ControlledProcess",35,1,1,"Vehicle",NULL,"CP.07",@analysis_id),
+("ControlledProcess",36,1,1,"Lead Vehicle",NULL,"CP.08",@analysis_id);
 
 
-INSERT INTO `labels` VALUES (66,"Brake Cmd",25);
-INSERT INTO `labels` VALUES (67,"Braking Signal",26);
-INSERT INTO `labels` VALUES (68,"Brake Cmd",27);
-INSERT INTO `labels` VALUES (69,"Friction",28);
-INSERT INTO `labels` VALUES (70,"On",29);
-INSERT INTO `labels` VALUES (71,"Off",29);
-INSERT INTO `labels` VALUES (72,"Set",29);
-INSERT INTO `labels` VALUES (73,"Cancel",29);
-INSERT INTO `labels` VALUES (74,"Inc",29);
-INSERT INTO `labels` VALUES (75,"Dec",29);
-INSERT INTO `labels` VALUES (76,"On",30);
-INSERT INTO `labels` VALUES (77,"Off",30);
-INSERT INTO `labels` VALUES (78,"Set",30);
-INSERT INTO `labels` VALUES (79,"Cancel",30);
-INSERT INTO `labels` VALUES (80,"Inc",30);
-INSERT INTO `labels` VALUES (81,"Dec",30);
-INSERT INTO `labels` VALUES (82,"Braking status",31);
-INSERT INTO `labels` VALUES (83,"Vehicle speed",31);
-INSERT INTO `labels` VALUES (84,"Wheel Speed",32);
-INSERT INTO `labels` VALUES (85,"Wheel Speed",33);
-INSERT INTO `labels` VALUES (86,"ACC On",34);
-INSERT INTO `labels` VALUES (87,"ACC Off",34);
-INSERT INTO `labels` VALUES (88,"ACC Canceled",34);
-INSERT INTO `labels` VALUES (89,"ACC Active",34);
-INSERT INTO `labels` VALUES (90,"ACC On",35);
-INSERT INTO `labels` VALUES (91,"ACC Off",35);
-INSERT INTO `labels` VALUES (92,"ACC Canceled",35);
-INSERT INTO `labels` VALUES (93,"ACC Active",35);
-INSERT INTO `labels` VALUES (94,"Distance to lead vehicle",36);
-INSERT INTO `labels` VALUES (95,"Acceleration Signal",37);
-INSERT INTO `labels` VALUES (96,"Accelerate Cmd",38);
-INSERT INTO `labels` VALUES (97,"Acceleration Signal",39);
-INSERT INTO `labels` VALUES (98,"Throttle opening",40);
-INSERT INTO `labels` VALUES (99,"Throttle position",41);
-INSERT INTO `labels` VALUES (100,"Friction",42);
-INSERT INTO `labels` VALUES (101,"Distance to lead vehicle",43);
+INSERT INTO connections (id, style, sourceId, targetId, code, analysis_id) VALUES
+(25,1,23,24,"Cn.01",@analysis_id),
+(26,1,24,29,"Cn.02",@analysis_id),
+(27,1,29,32,"Cn.03",@analysis_id),
+(28,1,32,35,"Cn.04",@analysis_id),
+(29,1,23,26,"Cn.05",@analysis_id),
+(30,1,26,28,"Cn.06",@analysis_id),
+(31,1,29,28,"Cn.07",@analysis_id),
+(32,1,33,29,"Cn.08",@analysis_id),
+(33,1,35,33,"Cn.09",@analysis_id),
+(34,1,26,23,"Cn.10",@analysis_id),
+(35,1,28,26,"Cn.11",@analysis_id),
+(36,1,30,28,"Cn.12",@analysis_id),
+(37,1,28,31,"Cn.13",@analysis_id),
+(38,1,23,27,"Cn.14",@analysis_id),
+(39,1,27,31,"Cn.15",@analysis_id),
+(40,1,31,34,"Cn.16",@analysis_id),
+(41,1,34,31,"Cn.17",@analysis_id),
+(42,1,34,35,"Cn.18",@analysis_id),
+(43,0,36,30,"Cn.19",@analysis_id);
+
+
+INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+(66,0,"Brake Cmd","CA.1",25),
+(67,0,"Braking Signal","CA.2",26),
+(68,0,"Brake Cmd","CA.3",27),
+(69,0,"Friction","CA.4",28),
+(70,0,"On","CA.5",29),
+(71,0,"Off","CA.6",29),
+(72,0,"Set","CA.7",29),
+(73,0,"Cancel","CA.8",29),
+(74,0,"Inc","CA.9",29),
+(75,0,"Dec","CA.10",29),
+(76,0,"On","CA.11",30),
+(77,0,"Off","CA.12",30),
+(78,0,"Set","CA.13",30),
+(79,0,"Cancel","CA.14",30),
+(80,0,"Inc","CA.15",30),
+(81,0,"Dec","CA.16",30),
+(82,1,"Braking status","FB.1",31),
+(83,1,"Vehicle speed","FB.2",31),
+(84,1,"Wheel Speed","FB.3",32),
+(85,1,"Wheel Speed","FB.4",33),
+(86,1,"ACC On","FB.5",34),
+(87,1,"ACC Off","FB.6",34),
+(88,1,"ACC Canceled","FB.7",34),
+(89,1,"ACC Active","FB.8",34),
+(90,1,"ACC On","FB.9",35),
+(91,1,"ACC Off","FB.10",35),
+(92,1,"ACC Canceled","FB.11",35),
+(93,1,"ACC Active","FB.12",35),
+(94,1,"Distance to lead vehicle","FB.13",36),
+(95,1,"Acceleration Signal","FB.14",37),
+(96,1,"Accelerate Cmd","FB.15",38),
+(97,1,"Acceleration Signal","FB.16",39),
+(98,1,"Throttle opening","FB.17",40),
+(99,0,"Throttle position","CA.17",41),
+(100,1,"Friction","FB.18",42),
+(101,2,"Distance to lead vehicle","CC.1",43);

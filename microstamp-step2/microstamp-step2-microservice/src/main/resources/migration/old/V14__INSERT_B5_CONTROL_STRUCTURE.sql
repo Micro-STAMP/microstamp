@@ -1,175 +1,130 @@
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",72,1,0,1,"Congress",NULL,5);
+SET @analysis_id = '';
 
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",73,1,0,1,"Depto. of Health and Human Services",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",74,1,0,1,"FDA",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",75,1,0,1,"FDA Commissioner",74,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",76,1,0,1,"CDER Director",74,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",77,1,0,1,"FDA/CDER Office of New Drugs",74,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",78,1,0,1,"Division of Drug Marketing, Advertising and Communications",74,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",79,1,0,1,"FDA/CDER Office of Survellience and Epidermology",74,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",80,1,0,1,"Federal agencies in charge of funding",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",81,1,0,1,"Editor/reviewers of scientific jornals",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",82,1,0,1,"Academically-affiliated researchers",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",83,1,0,1,"Non-industry-funded researchers",82,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",84,1,0,1,"FDA advisory commitees",82,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",85,1,0,1,"Industry-funded researchers",82,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",86,1,0,1,"Pharmaceutical companies",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",87,1,0,1,"Pharmaceutical business leaders",86,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",88,1,0,1,"Pharmaceutical companies investors/shareholders",86,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",89,1,0,1,"Pharmaceutical sales/marketing representatives",86,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",90,1,0,1,"Pharmaceutical researchers/scientist",86,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",91,1,0,1,"Pharmaceutical trade associations",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",92,1,0,1,"Patient advocacy groups",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",93,1,0,1,"Healthcare providers/prescribers",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("Controller",94,1,0,1,"Payers",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",95,1,0,1,"Patients",NULL,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",96,1,0,1,"Patient",95,5);
-
-INSERT INTO components (dtype, id, border, is_control_structure, is_visible, name, father_id, control_structure_id)
-VALUES("ControlledProcess",97,1,0,1,"Patient's medical insurance",95,5);
-
-INSERT INTO `connections` VALUES (112,0,1,72,74,5);
-INSERT INTO `connections` VALUES (113,0,1,72,74,5);
-INSERT INTO `connections` VALUES (114,2,0,74,72,5);
-INSERT INTO `connections` VALUES (115,0,1,72,73,5);
-INSERT INTO `connections` VALUES (116,2,0,73,72,5);
-INSERT INTO `connections` VALUES (117,0,1,73,74,5);
-INSERT INTO `connections` VALUES (118,2,0,75,73,5);
-INSERT INTO `connections` VALUES (119,0,1,73,80,5);
-INSERT INTO `connections` VALUES (120,1,1,80,73,5);
-INSERT INTO `connections` VALUES (121,0,1,75,76,5);
-INSERT INTO `connections` VALUES (122,1,1,76,75,5);
-INSERT INTO `connections` VALUES (123,0,1,76,77,5);
-INSERT INTO `connections` VALUES (124,1,1,77,76,5);
-INSERT INTO `connections` VALUES (125,0,1,76,78,5);
-INSERT INTO `connections` VALUES (126,2,0,78,76,5);
-INSERT INTO `connections` VALUES (127,0,1,76,79,5);
-INSERT INTO `connections` VALUES (128,2,2,79,77,5);
-INSERT INTO `connections` VALUES (129,0,1,77,86,5);
-INSERT INTO `connections` VALUES (130,2,0,86,77,5);
-INSERT INTO `connections` VALUES (131,0,1,78,86,5);
-INSERT INTO `connections` VALUES (132,2,0,86,74,5);
-INSERT INTO `connections` VALUES (133,0,1,86,74,5);
-INSERT INTO `connections` VALUES (134,1,1,86,91,5);
-INSERT INTO `connections` VALUES (135,0,1,74,84,5);
-INSERT INTO `connections` VALUES (136,2,0,84,74,5);
-INSERT INTO `connections` VALUES (137,0,1,88,87,5);
-INSERT INTO `connections` VALUES (138,2,0,87,88,5);
-INSERT INTO `connections` VALUES (139,0,1,87,89,5);
-INSERT INTO `connections` VALUES (140,2,0,89,87,5);
-INSERT INTO `connections` VALUES (141,0,1,87,90,5);
-INSERT INTO `connections` VALUES (142,2,0,90,87,5);
-INSERT INTO `connections` VALUES (143,0,1,89,93,5);
-INSERT INTO `connections` VALUES (144,2,0,93,86,5);
-INSERT INTO `connections` VALUES (145,0,1,86,92,5);
-INSERT INTO `connections` VALUES (146,2,0,92,86,5);
-INSERT INTO `connections` VALUES (147,2,0,91,72,5);
-INSERT INTO `connections` VALUES (148,2,0,92,72,5);
-INSERT INTO `connections` VALUES (149,2,0,92,96,5);
-INSERT INTO `connections` VALUES (150,2,0,92,95,5);
-INSERT INTO `connections` VALUES (151,0,1,93,96,5);
-INSERT INTO `connections` VALUES (152,2,0,96,93,5);
-INSERT INTO `connections` VALUES (153,0,1,97,96,5);
-INSERT INTO `connections` VALUES (154,2,0,96,97,5);
-INSERT INTO `connections` VALUES (155,0,1,94,97,5);
-INSERT INTO `connections` VALUES (156,2,0,94,93,5);
-INSERT INTO `connections` VALUES (157,2,0,93,94,5);
-INSERT INTO `connections` VALUES (158,0,1,94,93,5);
-INSERT INTO `connections` VALUES (159,2,0,94,81,5);
-INSERT INTO `connections` VALUES (160,2,0,81,94,5);
-INSERT INTO `connections` VALUES (161,0,1,73,94,5);
-INSERT INTO `connections` VALUES (162,0,1,86,94,5);
-INSERT INTO `connections` VALUES (163,1,1,94,86,5);
-INSERT INTO `connections` VALUES (164,2,0,86,81,5);
-INSERT INTO `connections` VALUES (165,0,1,86,85,5);
-INSERT INTO `connections` VALUES (166,2,0,85,86,5);
-INSERT INTO `connections` VALUES (167,0,1,80,83,5);
-INSERT INTO `connections` VALUES (168,2,0,83,80,5);
-INSERT INTO `connections` VALUES (169,1,1,81,82,5);
-INSERT INTO `connections` VALUES (170,2,0,82,81,5);
+INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
+("Controller",72,1,1,"Congress",NULL,"C.01",@analysis_id),
+("Controller",73,1,1,"Depto. of Health and Human Services",NULL,"C.02",@analysis_id),
+("Controller",74,1,1,"FDA",NULL,"C.03",@analysis_id),
+("Controller",75,1,1,"FDA Commissioner",74,"C.04",@analysis_id),
+("Controller",76,1,1,"CDER Director",74,"C.05",@analysis_id),
+("Controller",77,1,1,"FDA/CDER Office of New Drugs",74,"C.06",@analysis_id),
+("Controller",78,1,1,"Division of Drug Marketing, Advertising and Communications",74,"C.07",@analysis_id),
+("Controller",79,1,1,"FDA/CDER Office of Survellience and Epidermology",74,"C.08",@analysis_id),
+("ControlledProcess",80,1,1,"Federal agencies in charge of funding",NULL,"CP.01",@analysis_id),
+("Controller",81,1,1,"Editor/reviewers of scientific jornals",NULL,"C.09",@analysis_id),
+("ControlledProcess",82,1,1,"Academically-affiliated researchers",NULL,"CP.02",@analysis_id),
+("ControlledProcess",83,1,1,"Non-industry-funded researchers",82,"CP.03",@analysis_id),
+("ControlledProcess",84,1,1,"FDA advisory commitees",82,"CP.04",@analysis_id),
+("ControlledProcess",85,1,1,"Industry-funded researchers",82,"CP.05",@analysis_id),
+("Controller",86,1,1,"Pharmaceutical companies",NULL,"C.10",@analysis_id),
+("Controller",87,1,1,"Pharmaceutical business leaders",86,"C.11",@analysis_id),
+("Controller",88,1,1,"Pharmaceutical companies investors/shareholders",86,"C.12",@analysis_id),
+("Controller",89,1,1,"Pharmaceutical sales/marketing representatives",86,"C.13",@analysis_id),
+("Controller",90,1,1,"Pharmaceutical researchers/scientist",86,"C.14",@analysis_id),
+("ControlledProcess",91,1,1,"Pharmaceutical trade associations",NULL,"CP.06",@analysis_id),
+("ControlledProcess",92,1,1,"Patient advocacy groups",NULL,"CP.07",@analysis_id),
+("Controller",93,1,1,"Healthcare providers/prescribers",NULL,"C.15",@analysis_id),
+("Controller",94,1,1,"Payers",NULL,"C.16",@analysis_id),
+("ControlledProcess",95,1,1,"Patients",NULL,"CP.08",@analysis_id),
+("ControlledProcess",96,1,1,"Patient",95,"CP.09",@analysis_id),
+("ControlledProcess",97,1,1,"Patient's medical insurance",95,"CP.10",@analysis_id);
 
 
-INSERT INTO `labels` VALUES (240,"Political pressures mandate(e.g.,FDAAA)",112);
-INSERT INTO `labels` VALUES (241,"Reports",114);
-INSERT INTO `labels` VALUES (242,"Budget allocation",117);
-INSERT INTO `labels` VALUES (243,"Budget needs",118);
-INSERT INTO `labels` VALUES (244,"Budget allocation",119);
-INSERT INTO `labels` VALUES (245,"Reports, priorities",120);
-INSERT INTO `labels` VALUES (246,"New drug approval",129);
-INSERT INTO `labels` VALUES (247,"New drug applications",130);
-INSERT INTO `labels` VALUES (248,"Warning letters",131);
-INSERT INTO `labels` VALUES (249,"Adverse events",132);
-INSERT INTO `labels` VALUES (250,"User fees",133);
-INSERT INTO `labels` VALUES (251,"Membership decisions",135);
-INSERT INTO `labels` VALUES (252,"Recommendations",136);
-INSERT INTO `labels` VALUES (253,"Detailing, advertising and access to drugs",143);
-INSERT INTO `labels` VALUES (254,"Adverse events",144);
-INSERT INTO `labels` VALUES (255,"Funds",145);
-INSERT INTO `labels` VALUES (256,"Industry group pressures",147);
-INSERT INTO `labels` VALUES (257,"Public group pressures",148);
-INSERT INTO `labels` VALUES (258,"Direct consumer advertising",150);
-INSERT INTO `labels` VALUES (259,"Prescription",151);
-INSERT INTO `labels` VALUES (260,"Symptoms, perceived benefits and side effects",152);
-INSERT INTO `labels` VALUES (261,"Reimbursements",153);
-INSERT INTO `labels` VALUES (262,"Claim",154);
-INSERT INTO `labels` VALUES (263,"Insurance policy",155);
-INSERT INTO `labels` VALUES (264,"New information about existing drugs",156);
-INSERT INTO `labels` VALUES (265,"Payment, reimbursement, policy, formularies",157);
-INSERT INTO `labels` VALUES (266,"Case reports",160);
-INSERT INTO `labels` VALUES (267,"Budget allocation",161);
-INSERT INTO `labels` VALUES (268,"Price",162);
-INSERT INTO `labels` VALUES (269,"Inclusion on formulary",163);
-INSERT INTO `labels` VALUES (270,"Content",164);
-INSERT INTO `labels` VALUES (271,"Res/consult funds/agenda",165);
-INSERT INTO `labels` VALUES (272,"Outputs of research/advising",166);
-INSERT INTO `labels` VALUES (273,"Reviewers",168);
-INSERT INTO `labels` VALUES (274,"Editorial constituency",169);
-INSERT INTO `labels` VALUES (275,"Content",170);
+INSERT INTO connections (id, style, sourceId, targetId, code, analysis_id) VALUES
+(112,1,72,74,"Cn.01",@analysis_id),
+(113,1,72,74,"Cn.02",@analysis_id),
+(114,0,74,72,"Cn.03",@analysis_id),
+(115,1,72,73,"Cn.04",@analysis_id),
+(116,0,73,72,"Cn.05",@analysis_id),
+(117,1,73,74,"Cn.06",@analysis_id),
+(118,0,75,73,"Cn.07",@analysis_id),
+(119,1,73,80,"Cn.08",@analysis_id),
+(120,1,80,73,"Cn.09",@analysis_id),
+(121,1,75,76,"Cn.10",@analysis_id),
+(122,1,76,75,"Cn.11",@analysis_id),
+(123,1,76,77,"Cn.12",@analysis_id),
+(124,1,77,76,"Cn.13",@analysis_id),
+(125,1,76,78,"Cn.14",@analysis_id),
+(126,0,78,76,"Cn.15",@analysis_id),
+(127,1,76,79,"Cn.16",@analysis_id),
+(128,2,79,77,"Cn.17",@analysis_id),
+(129,1,77,86,"Cn.18",@analysis_id),
+(130,0,86,77,"Cn.19",@analysis_id),
+(131,1,78,86,"Cn.20",@analysis_id),
+(132,0,86,74,"Cn.21",@analysis_id),
+(133,1,86,74,"Cn.22",@analysis_id),
+(134,1,86,91,"Cn.23",@analysis_id),
+(135,1,74,84,"Cn.24",@analysis_id),
+(136,0,84,74,"Cn.25",@analysis_id),
+(137,1,88,87,"Cn.26",@analysis_id),
+(138,0,87,88,"Cn.27",@analysis_id),
+(139,1,87,89,"Cn.28",@analysis_id),
+(140,0,89,87,"Cn.29",@analysis_id),
+(141,1,87,90,"Cn.30",@analysis_id),
+(142,0,90,87,"Cn.31",@analysis_id),
+(143,1,89,93,"Cn.32",@analysis_id),
+(144,0,93,86,"Cn.33",@analysis_id),
+(145,1,86,92,"Cn.34",@analysis_id),
+(146,0,92,86,"Cn.35",@analysis_id),
+(147,0,91,72,"Cn.36",@analysis_id),
+(148,0,92,72,"Cn.37",@analysis_id),
+(149,0,92,96,"Cn.38",@analysis_id),
+(150,0,92,95,"Cn.39",@analysis_id),
+(151,1,93,96,"Cn.40",@analysis_id),
+(152,0,96,93,"Cn.41",@analysis_id),
+(153,1,97,96,"Cn.42",@analysis_id),
+(154,0,96,97,"Cn.43",@analysis_id),
+(155,1,94,97,"Cn.44",@analysis_id),
+(156,0,94,93,"Cn.45",@analysis_id),
+(157,0,93,94,"Cn.46",@analysis_id),
+(158,1,94,93,"Cn.47",@analysis_id),
+(159,0,94,81,"Cn.48",@analysis_id),
+(160,0,81,94,"Cn.49",@analysis_id),
+(161,1,73,94,"Cn.50",@analysis_id),
+(162,1,86,94,"Cn.51",@analysis_id),
+(163,1,94,86,"Cn.52",@analysis_id),
+(164,0,86,81,"Cn.53",@analysis_id),
+(165,1,86,85,"Cn.54",@analysis_id),
+(166,0,85,86,"Cn.55",@analysis_id),
+(167,1,80,83,"Cn.56",@analysis_id),
+(168,0,83,80,"Cn.57",@analysis_id),
+(169,1,81,82,"Cn.58",@analysis_id),
+(170,0,82,81,"Cn.59",@analysis_id);
+
+
+INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+(240,0,"Political pressures mandate(e.g.,FDAAA)","CA.1",112),
+(241,2,"Reports","CC.1",114),
+(242,0,"Budget allocation","CA.2",117),
+(243,2,"Budget needs","CC.2",118),
+(244,0,"Budget allocation","CA.3",119),
+(245,1,"Reports, priorities","FB.1",120),
+(246,0,"New drug approval","CA.4",129),
+(247,2,"New drug applications","CC.3",130),
+(248,0,"Warning letters","CA.5",131),
+(249,2,"Adverse events","CC.4",132),
+(250,0,"User fees","CA.6",133),
+(251,0,"Membership decisions","CA.7",135),
+(252,2,"Recommendations","CC.5",136),
+(253,0,"Detailing, advertising and access to drugs","CA.8",143),
+(254,2,"Adverse events","CC.6",144),
+(255,0,"Funds","CA.9",145),
+(256,2,"Industry group pressures","CC.7",147),
+(257,2,"Public group pressures","CC.8",148),
+(258,2,"Direct consumer advertising","CC.9",150),
+(259,0,"Prescription","CA.10",151),
+(260,2,"Symptoms, perceived benefits and side effects","CC.10",152),
+(261,0,"Reimbursements","CA.11",153),
+(262,2,"Claim","CC.11",154),
+(263,0,"Insurance policy","CA.12",155),
+(264,2,"New information about existing drugs","CC.12",156),
+(265,2,"Payment, reimbursement, policy, formularies","CC.13",157),
+(266,2,"Case reports","CC.14",160),
+(267,0,"Budget allocation","CA.13",161),
+(268,0,"Price","CA.14",162),
+(269,1,"Inclusion on formulary","FB.2",163),
+(270,2,"Content","CC.15",164),
+(271,0,"Res/consult funds/agenda","CA.15",165),
+(272,2,"Outputs of research/advising","CC.16",166),
+(273,2,"Reviewers","CC.17",168),
+(274,1,"Editorial constituency","FB.3",169),
+(275,2,"Content","CC.18",170);

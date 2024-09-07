@@ -1,23 +1,25 @@
+SET @analysis_id = '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45';
+
 INSERT INTO components (dtype, id, analysis_id, border, code, is_visible, name, father_id) VALUES
-('Controller', '64304076-18e7-42ca-8eb2-3bd36b5cf4ca', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 1, 'C.1', 1, 'Patient', NULL),
-('Controller', 'ed974694-49c9-4701-9a69-f78e1ed1821c', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 1, 'C.2', 1, 'Mobile Device + App', NULL),
-('Controller', 'ce5f2a49-4d22-4405-b0e5-befe022d9b27', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 1, 'C.3', 1, 'Apple Store / Google Play', NULL),
-('Controller', '67857dc1-ae1c-45c1-a36e-f01376d53769', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 1, 'C.4', 1, 'Insulin Pump', NULL),
-('ControlledProcess', '8d666300-6ab4-4022-8d05-2e10ec23680f', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 1, 'CP.1', 1, 'Patient’s Body', NULL);
+('Controller', '64304076-18e7-42ca-8eb2-3bd36b5cf4ca', @analysis_id, 1, 'C.1', 1, 'Patient', NULL),
+('Controller', 'ed974694-49c9-4701-9a69-f78e1ed1821c', @analysis_id, 1, 'C.2', 1, 'Mobile Device + App', NULL),
+('Controller', 'ce5f2a49-4d22-4405-b0e5-befe022d9b27', @analysis_id, 1, 'C.3', 1, 'Apple Store / Google Play', NULL),
+('Controller', '67857dc1-ae1c-45c1-a36e-f01376d53769', @analysis_id, 1, 'C.4', 1, 'Insulin Pump', NULL),
+('ControlledProcess', '8d666300-6ab4-4022-8d05-2e10ec23680f', @analysis_id, 1, 'CP.1', 1, 'Patient’s Body', NULL);
 
 
 
 INSERT INTO connections (id, analysis_id, code, style, source_id, target_id) VALUES
-('4aff33be-0c60-4b16-a6db-9739f8317069', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.1', 1, '64304076-18e7-42ca-8eb2-3bd36b5cf4ca', 'ed974694-49c9-4701-9a69-f78e1ed1821c'),
-('a36e257f-379b-473e-9920-9ebe431ef858', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.2', 1, '64304076-18e7-42ca-8eb2-3bd36b5cf4ca', '67857dc1-ae1c-45c1-a36e-f01376d53769'),
-('ba8d3d97-258e-4e7d-8c35-34dd105c0aa0', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.3', 1, 'ed974694-49c9-4701-9a69-f78e1ed1821c', 'ce5f2a49-4d22-4405-b0e5-befe022d9b27'),
-('85e4a291-5bfd-4a3c-afc0-e08c87c0b8ea', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.4', 1, 'ed974694-49c9-4701-9a69-f78e1ed1821c', '67857dc1-ae1c-45c1-a36e-f01376d53769'),
-('7d1c075f-94a2-4902-863f-2522989ee348', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.5', 1, 'ce5f2a49-4d22-4405-b0e5-befe022d9b27', 'ed974694-49c9-4701-9a69-f78e1ed1821c'),
-('a0c9e6c9-7116-4901-9c6c-19d1667da5d5', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.6', 1, '67857dc1-ae1c-45c1-a36e-f01376d53769', '8d666300-6ab4-4022-8d05-2e10ec23680f'),
-('562c1244-660d-4845-b099-065bd67bc8dc', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.7', 1, '8d666300-6ab4-4022-8d05-2e10ec23680f', '67857dc1-ae1c-45c1-a36e-f01376d53769'),
-('e3093231-2ac3-41c5-8640-4ca20bc62f25', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.8', 1, '67857dc1-ae1c-45c1-a36e-f01376d53769', 'ed974694-49c9-4701-9a69-f78e1ed1821c'),
-('1d0d40cb-0881-4937-98e6-9d3b022a2f74', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.9', 1, '67857dc1-ae1c-45c1-a36e-f01376d53769', '64304076-18e7-42ca-8eb2-3bd36b5cf4ca'),
-('8f106ead-43f7-4119-854b-72d5fb012001', '6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45', 'Cn.10', 1, 'ed974694-49c9-4701-9a69-f78e1ed1821c', '64304076-18e7-42ca-8eb2-3bd36b5cf4ca');
+('4aff33be-0c60-4b16-a6db-9739f8317069', @analysis_id, 'Cn.1', 1, '64304076-18e7-42ca-8eb2-3bd36b5cf4ca', 'ed974694-49c9-4701-9a69-f78e1ed1821c'),
+('a36e257f-379b-473e-9920-9ebe431ef858', @analysis_id, 'Cn.2', 1, '64304076-18e7-42ca-8eb2-3bd36b5cf4ca', '67857dc1-ae1c-45c1-a36e-f01376d53769'),
+('ba8d3d97-258e-4e7d-8c35-34dd105c0aa0', @analysis_id, 'Cn.3', 1, 'ed974694-49c9-4701-9a69-f78e1ed1821c', 'ce5f2a49-4d22-4405-b0e5-befe022d9b27'),
+('85e4a291-5bfd-4a3c-afc0-e08c87c0b8ea', @analysis_id, 'Cn.4', 1, 'ed974694-49c9-4701-9a69-f78e1ed1821c', '67857dc1-ae1c-45c1-a36e-f01376d53769'),
+('7d1c075f-94a2-4902-863f-2522989ee348', @analysis_id, 'Cn.5', 1, 'ce5f2a49-4d22-4405-b0e5-befe022d9b27', 'ed974694-49c9-4701-9a69-f78e1ed1821c'),
+('a0c9e6c9-7116-4901-9c6c-19d1667da5d5', @analysis_id, 'Cn.6', 1, '67857dc1-ae1c-45c1-a36e-f01376d53769', '8d666300-6ab4-4022-8d05-2e10ec23680f'),
+('562c1244-660d-4845-b099-065bd67bc8dc', @analysis_id, 'Cn.7', 1, '8d666300-6ab4-4022-8d05-2e10ec23680f', '67857dc1-ae1c-45c1-a36e-f01376d53769'),
+('e3093231-2ac3-41c5-8640-4ca20bc62f25', @analysis_id, 'Cn.8', 1, '67857dc1-ae1c-45c1-a36e-f01376d53769', 'ed974694-49c9-4701-9a69-f78e1ed1821c'),
+('1d0d40cb-0881-4937-98e6-9d3b022a2f74', @analysis_id, 'Cn.9', 1, '67857dc1-ae1c-45c1-a36e-f01376d53769', '64304076-18e7-42ca-8eb2-3bd36b5cf4ca'),
+('8f106ead-43f7-4119-854b-72d5fb012001', @analysis_id, 'Cn.10', 1, 'ed974694-49c9-4701-9a69-f78e1ed1821c', '64304076-18e7-42ca-8eb2-3bd36b5cf4ca');
 
 
 
