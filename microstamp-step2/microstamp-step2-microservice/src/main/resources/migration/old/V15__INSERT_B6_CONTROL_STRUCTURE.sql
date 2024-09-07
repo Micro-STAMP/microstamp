@@ -1,4 +1,4 @@
-SET @analysis_id = '';
+SET @analysis_id = '2feefd14-f678-45b9-8cde-8971f467ee4a';
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
 ("Controller",23,1,1,"Driver",NULL,"C.01",@analysis_id),

@@ -1,4 +1,4 @@
-SET @analysis_id = '';
+SET @analysis_id = '5d275773-f6cb-4b65-ad5d-bbcf26ea16a2';
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
 ("Environment",7,1,0,"Environment",NULL,"Env",@analysis_id),

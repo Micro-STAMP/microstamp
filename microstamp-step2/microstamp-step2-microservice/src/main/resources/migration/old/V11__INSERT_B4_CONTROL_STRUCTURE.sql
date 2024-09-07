@@ -1,4 +1,4 @@
-SET @analysis_id = '';
+SET @analysis_id = '42d10008-6d14-4275-92f5-90736bba719d';
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
 ("Controller",37,1,1,"Treatment Definition - D0",NULL,"C.01",@analysis_id),

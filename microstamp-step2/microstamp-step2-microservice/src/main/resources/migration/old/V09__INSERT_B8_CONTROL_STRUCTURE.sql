@@ -1,4 +1,4 @@
-SET @analysis_id = '';
+SET @analysis_id = '64d43d5c-9c8b-4c97-974a-f51df00078b6';
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
 ("Controller",19,1,1,"JAXA Ground Station",NULL,"C.01",@analysis_id),
