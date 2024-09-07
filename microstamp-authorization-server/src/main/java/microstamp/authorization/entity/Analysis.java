@@ -25,6 +25,7 @@ public class Analysis {
 
     private String name;
 
+    @Column(length = 1000)
     private String description;
 
     @CreatedDate
