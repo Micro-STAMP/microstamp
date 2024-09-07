@@ -131,6 +131,14 @@ public class UnsafeControlActionService {
                 .toList();
     }
 
+    public List<UnsafeControlActionReadDto> readAllUCAByAnalysisId(UUID analysisId) {
+        return unsafeControlActionRepository
+                .findByAnalysisId(analysisId)
+                .stream()
+                .map(mapper::toUcaReadDto)
+                .toList();
+    }
+
     //acho que não vai mais ter a opção de atualizar nome de uca
 //    public UnsafeControlActionReadDto updateUnsafeControlAction(UUID id, UnsafeControlActionUpdateDto ucaDto) {
 //        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
