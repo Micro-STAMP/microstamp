@@ -1,30 +1,30 @@
 SET @analysis_id = "b4a1df5f-6404-4b72-a35b-21e35e0265e0";
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
-("Controller",10,1,1,"Treatment Definition",NULL,"C.01",@analysis_id),
-("Controller",11,1,1,"Treatment Delivery",NULL,"C.02",@analysis_id),
-("ControlledProcess",12,1,1,"Patient",NULL,"CP.01",@analysis_id);
+("Controller","5248db64-90d3-4b97-b93c-18d2076bfb1a",1,1,"Treatment Definition",NULL,"C.01",@analysis_id),
+("Controller","ec9e7ec3-5e8d-4c1f-bec4-ed946dd4b89f",1,1,"Treatment Delivery",NULL,"C.02",@analysis_id),
+("ControlledProcess","7ce172ea-85ef-41c1-829e-ff1546de51ea",1,1,"Patient",NULL,"CP.01",@analysis_id);
 
 
-INSERT INTO connections (id, style, sourceId, targetId, code, analysis_id) VALUES
-(1,1,10,11,"Cn.01",@analysis_id),
-(2,1,11,12,"Cn.02",@analysis_id),
-(3,1,11,10,"Cn.03",@analysis_id),
-(4,1,12,11,"Cn.04",@analysis_id),
-(5,1,12,10,"Cn.05",@analysis_id);
+INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VALUES
+("13ce5d58-986f-4352-bdd8-9c7953cd7214",1,"5248db64-90d3-4b97-b93c-18d2076bfb1a","ec9e7ec3-5e8d-4c1f-bec4-ed946dd4b89f","Cn.01",@analysis_id),
+("1cabd649-d624-49e4-ae01-1b678debb376",1,"ec9e7ec3-5e8d-4c1f-bec4-ed946dd4b89f","7ce172ea-85ef-41c1-829e-ff1546de51ea","Cn.02",@analysis_id),
+("db0724e3-794e-4712-9513-1ffb51d43c27",1,"ec9e7ec3-5e8d-4c1f-bec4-ed946dd4b89f","5248db64-90d3-4b97-b93c-18d2076bfb1a","Cn.03",@analysis_id),
+("759072b9-5a79-448b-a453-52a952d6b211",1,"7ce172ea-85ef-41c1-829e-ff1546de51ea","ec9e7ec3-5e8d-4c1f-bec4-ed946dd4b89f","Cn.04",@analysis_id),
+("b681bb2a-a41d-4a44-b479-4a7ea2aeeac4",1,"7ce172ea-85ef-41c1-829e-ff1546de51ea","5248db64-90d3-4b97-b93c-18d2076bfb1a","Cn.05",@analysis_id);
 
 
 INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
-(6,0,"Therapeutic Requirements","CA.1",1),
-(7,0,"1. Treatment Specifications (fraction definition, target positioning information, steering file)","CA.2",1),
-(8,0,"2. Capability Upgrade Requests","CA.3",1),
-(9,0,"Patient Preparation","CA.4",2),
-(10,0,"Beam Creation and Delivery","CA.5",2),
-(11,1,"QA results","FB.1",3),
-(12,1,"Patient physionomy change","FB.2",3),
-(13,1,"Patient well-being","FB.3",4),
-(14,1,"Patient physiognomy changes","FB.4",4),
-(15,1,"(delayed) Patient health outcome","FB.5",5);
+("3ac46352-2384-4eca-bab3-c17a67a17334",0,"Therapeutic Requirements","CA.01","13ce5d58-986f-4352-bdd8-9c7953cd7214"),
+("8be4fcce-8ab3-40a4-8cd0-56b853a499fd",0,"1. Treatment Specifications (fraction definition, target positioning information, steering file)","CA.02","13ce5d58-986f-4352-bdd8-9c7953cd7214"),
+("f72fc728-72f8-46fa-9dce-b315c99acf99",0,"2. Capability Upgrade Requests","CA.03","13ce5d58-986f-4352-bdd8-9c7953cd7214"),
+("0a5e7dc7-d246-47aa-b330-f0cc01088045",0,"Patient Preparation","CA.04","1cabd649-d624-49e4-ae01-1b678debb376"),
+("73df6b59-0a3a-4dd3-8e69-7b05e69ac352",0,"Beam Creation and Delivery","CA.05","1cabd649-d624-49e4-ae01-1b678debb376"),
+("9cd60862-02e4-4c3a-b8c5-185947619f03",1,"QA results","FB.01","db0724e3-794e-4712-9513-1ffb51d43c27"),
+("d4209151-5812-4fa4-8b5d-25df7cf21128",1,"Patient physionomy change","FB.02","db0724e3-794e-4712-9513-1ffb51d43c27"),
+("e5c4b200-9ba5-4f59-93bd-be66eebcab6d",1,"Patient well-being","FB.03","759072b9-5a79-448b-a453-52a952d6b211"),
+("7adc4f23-0a6d-40de-8892-5e81f2b8019f",1,"Patient physiognomy changes","FB.04","759072b9-5a79-448b-a453-52a952d6b211"),
+("7998608f-d5e8-42fe-9b37-982676a48ea6",1,"(delayed) Patient health outcome","FB.05","b681bb2a-a41d-4a44-b479-4a7ea2aeeac4");
 
 
 INSERT INTO images (id, name, analysis_id, data) VALUES

@@ -1,42 +1,42 @@
 SET @analysis_id = 'c5797971-01e1-453d-bbf4-7bc71eda11fd';
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
-("Environment",9,1,0,"Environment",NULL,"Env",@analysis_id),
-("Controller",98,1,1,"Control Algorithm",NULL,"C.01",@analysis_id),
-("Controller",99,1,1,"Process Model",98,"C.02",@analysis_id),
-("Controller",100,1,1,"",NULL,"C.03",@analysis_id),
-("Actuator",101,1,1,"Inadequate operation",NULL,"A.01",@analysis_id),
-("Sensor",102,1,1,"Inadequate operation",NULL,"S.01",@analysis_id),
-("Controller",103,1,1,"",NULL,"C.04",@analysis_id),
-("ControlledProcess",104,1,1,"components failures/Changes over time",NULL,"CP.01",@analysis_id);
+("Environment","33828be2-a812-42f7-a5c7-6bae2ca64b02",1,0,"Environment",NULL,"Env",@analysis_id),
+("Controller","d44b9503-1da4-4cf1-bdd7-90d523e09f0e",1,1,"Control Algorithm",NULL,"C.01",@analysis_id),
+("Controller","66a3887e-a150-4780-accf-2629f940b981",1,1,"Process Model","d44b9503-1da4-4cf1-bdd7-90d523e09f0e","C.02",@analysis_id),
+("Controller","fdf6e598-63f4-4692-a8e2-94d9541a1f33",1,1,"",NULL,"C.03",@analysis_id),
+("Actuator","31a73c8b-c23d-4a1e-bce7-59a3489299aa",1,1,"Inadequate operation",NULL,"A.01",@analysis_id),
+("Sensor","2160543d-0afa-45ba-80c8-fb6972724210",1,1,"Inadequate operation",NULL,"S.01",@analysis_id),
+("Controller","2c010e21-c644-4c9c-8b5c-2202735fe5bb",1,1,"",NULL,"C.04",@analysis_id),
+("ControlledProcess","3defb22b-e492-44d8-b5fb-be16cae76d78",1,1,"components failures/Changes over time",NULL,"CP.01",@analysis_id);
 
 
-INSERT INTO connections (id, style, sourceId, targetId, code, analysis_id) VALUES
-(171,1,9,98,"Cn.01",@analysis_id),
-(172,1,98,100,"Cn.02",@analysis_id),
-(173,1,100,98,"Cn.03",@analysis_id),
-(174,1,98,101,"Cn.04",@analysis_id),
-(175,1,102,98,"Cn.05",@analysis_id),
-(176,1,101,104,"Cn.06",@analysis_id),
-(177,1,104,102,"Cn.07",@analysis_id),
-(178,1,103,104,"Cn.08",@analysis_id),
-(179,1,9,104,"Cn.09",@analysis_id),
-(180,1,9,104,"Cn.10",@analysis_id),
-(181,1,104,9,"Cn.11",@analysis_id);
+INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VALUES
+("92200fd0-765d-4f34-94d5-06e02ce1b7bb",1,"33828be2-a812-42f7-a5c7-6bae2ca64b02","d44b9503-1da4-4cf1-bdd7-90d523e09f0e","Cn.01",@analysis_id),
+("9bd5b7f2-24f4-4986-9a5d-d3d52f09755d",1,"d44b9503-1da4-4cf1-bdd7-90d523e09f0e","fdf6e598-63f4-4692-a8e2-94d9541a1f33","Cn.02",@analysis_id),
+("0ee2ca5c-6160-4318-9a26-07cb0557fac1",1,"fdf6e598-63f4-4692-a8e2-94d9541a1f33","d44b9503-1da4-4cf1-bdd7-90d523e09f0e","Cn.03",@analysis_id),
+("716b2fe2-07d0-40f4-8595-67576188828f",1,"d44b9503-1da4-4cf1-bdd7-90d523e09f0e","31a73c8b-c23d-4a1e-bce7-59a3489299aa","Cn.04",@analysis_id),
+("b6283135-9f18-41a6-b40d-deed3f73da3f",1,"2160543d-0afa-45ba-80c8-fb6972724210","d44b9503-1da4-4cf1-bdd7-90d523e09f0e","Cn.05",@analysis_id),
+("967a802a-9ff9-40ac-a897-10c1cb73f692",1,"31a73c8b-c23d-4a1e-bce7-59a3489299aa","3defb22b-e492-44d8-b5fb-be16cae76d78","Cn.06",@analysis_id),
+("ddece2be-b32b-44e8-87c3-52c555d842e2",1,"3defb22b-e492-44d8-b5fb-be16cae76d78","2160543d-0afa-45ba-80c8-fb6972724210","Cn.07",@analysis_id),
+("627c2a87-3ac3-4a59-aa44-1fe3b637a704",1,"2c010e21-c644-4c9c-8b5c-2202735fe5bb","3defb22b-e492-44d8-b5fb-be16cae76d78","Cn.08",@analysis_id),
+("1c262682-14eb-42b4-9da6-c3ea2b33c963",1,"33828be2-a812-42f7-a5c7-6bae2ca64b02","3defb22b-e492-44d8-b5fb-be16cae76d78","Cn.09",@analysis_id),
+("7f6e42ee-5fe2-4970-8443-c43c691c78ad",1,"33828be2-a812-42f7-a5c7-6bae2ca64b02","3defb22b-e492-44d8-b5fb-be16cae76d78","Cn.10",@analysis_id),
+("d1e0504c-2b14-45b9-bdb3-afd9b8abcf59",1,"3defb22b-e492-44d8-b5fb-be16cae76d78","33828be2-a812-42f7-a5c7-6bae2ca64b02","Cn.11",@analysis_id);
 
 
 INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
-(276,3,"Control input or external information wrong or missing","PI.1",171),
-(277,0,"Missing or wrong communication with another components","CA.1",172),
-(278,1,"Missing or wrong communication with another components","FB.1",173),
-(279,0,"Provided Control Action(inappropriate, ineffective or missing)","CA.2",174),
-(280,1,"Received Feedback(inappropriate, missing or delayed)","FB.2",175),
-(281,0,"Received Control Action(Delayed, etc.)","CA.3",176),
-(282,1,"Provided Feedback(Incorrect, no information provided, measurement inaccuracies, delays)","FB.3",177),
-(283,0,"Conflicting control actions","CA.4",178),
-(284,3,"Process input missing or wrong","PI.2",179),
-(285,4,"Process output contributes to system hazard","PO.1",181),
-(286,5,"Unidentified or out-of-range disturbance","DI.1",180);
+("ad60c587-bb5b-418f-88cc-3e212e26732a",3,"Control input or external information wrong or missing","PI.01","92200fd0-765d-4f34-94d5-06e02ce1b7bb"),
+("8669e605-088e-4052-b559-27cb6b25bcbd",0,"Missing or wrong communication with another components","CA.01","9bd5b7f2-24f4-4986-9a5d-d3d52f09755d"),
+("8ba7e133-6b97-40ef-8759-7da59f77874c",1,"Missing or wrong communication with another components","FB.01","0ee2ca5c-6160-4318-9a26-07cb0557fac1"),
+("2507e03c-8674-4e92-9991-104645841f88",0,"Provided Control Action(inappropriate, ineffective or missing)","CA.02","716b2fe2-07d0-40f4-8595-67576188828f"),
+("7b54bfea-c986-41f4-9243-b23771663579",1,"Received Feedback(inappropriate, missing or delayed)","FB.02","b6283135-9f18-41a6-b40d-deed3f73da3f"),
+("d0d1fc49-86e0-4e19-8c23-39951ec73ce2",0,"Received Control Action(Delayed, etc.)","CA.03","967a802a-9ff9-40ac-a897-10c1cb73f692"),
+("098dfc85-174a-4b63-a538-6f6d7977cf9e",1,"Provided Feedback(Incorrect, no information provided, measurement inaccuracies, delays)","FB.03","ddece2be-b32b-44e8-87c3-52c555d842e2"),
+("e02c2f3d-b928-4b86-bc56-2b57e6d8fab1",0,"Conflicting control actions","CA.04","627c2a87-3ac3-4a59-aa44-1fe3b637a704"),
+("3d04e0a7-83ee-4810-8fc1-eecb7616b2b8",3,"Process input missing or wrong","PI.02","1c262682-14eb-42b4-9da6-c3ea2b33c963"),
+("349a1004-d28c-48e2-8d22-a83f47e3fb83",4,"Process output contributes to system hazard","PO.01","d1e0504c-2b14-45b9-bdb3-afd9b8abcf59"),
+("8e09b88a-b5c7-42d2-b168-100fd25ca0e7",5,"Unidentified or out-of-range disturbance","DI.01","7f6e42ee-5fe2-4970-8443-c43c691c78ad");
 
 
 INSERT INTO images (id, name, analysis_id, data) VALUES

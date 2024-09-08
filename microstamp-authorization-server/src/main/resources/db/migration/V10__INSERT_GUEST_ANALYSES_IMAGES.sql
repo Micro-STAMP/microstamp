@@ -70,14 +70,14 @@ INSERT INTO images (id, file_name, data) VALUES
 
 
 
-UPDATE analyses SET image_id = @insulin_pump_image_id WHERE id = @insulin_pump_id
-UPDATE analyses SET image_id = @b1_image_id WHERE id = @b1_id
-UPDATE analyses SET image_id = @b2_image_id WHERE id = @b2_id
-UPDATE analyses SET image_id = @b3_image_id WHERE id = @b3_id
-UPDATE analyses SET image_id = @b4_image_id WHERE id = @b4_id
-UPDATE analyses SET image_id = @b5_image_id WHERE id = @b5_id
-UPDATE analyses SET image_id = @b6_image_id WHERE id = @b6_id
-UPDATE analyses SET image_id = @b7_image_id WHERE id = @b7_id
-UPDATE analyses SET image_id = @b8_image_id WHERE id = @b8_id
-UPDATE analyses SET image_id = @g1_image_id WHERE id = @g1_id
-UPDATE analyses SET image_id = @g2_image_id WHERE id = @g2_id
+UPDATE analyses SET image_id = @insulin_pump_image_id WHERE id = @insulin_pump_id;
+UPDATE analyses SET image_id = @b1_image_id WHERE id = @b1_id;
+UPDATE analyses SET image_id = @b2_image_id WHERE id = @b2_id;
+UPDATE analyses SET image_id = @b3_image_id WHERE id = @b3_id;
+UPDATE analyses SET image_id = @b4_image_id WHERE id = @b4_id;
+UPDATE analyses SET image_id = @b5_image_id WHERE id = @b5_id;
+UPDATE analyses SET image_id = @b6_image_id WHERE id = @b6_id;
+UPDATE analyses SET image_id = @b7_image_id WHERE id = @b7_id;
+UPDATE analyses SET image_id = @b8_image_id WHERE id = @b8_id;
+UPDATE analyses SET image_id = @g1_image_id WHERE id = @g1_id;
+UPDATE analyses SET image_id = @g2_image_id WHERE id = @g2_id;

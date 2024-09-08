@@ -1,53 +1,53 @@
 SET @analysis_id = '5d275773-f6cb-4b65-ad5d-bbcf26ea16a2';
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
-("Environment",7,1,0,"Environment",NULL,"Env",@analysis_id),
-("Controller",13,1,1,"Driver",NULL,"C.01",@analysis_id),
-("Controller",14,1,1,"Auto-Hold Module",NULL,"C.02",@analysis_id),
-("ControlledProcess",15,0,1,"Physical Vehicle",NULL,"CP.01",@analysis_id),
-("ControlledProcess",16,1,1,"Braking System",15,"CP.02",@analysis_id),
-("ControlledProcess",17,1,1,"Propulsion System",15,"CP.03",@analysis_id);
+("Environment","d12f869f-f53c-47b9-9843-49136bce48be",1,0,"Environment",NULL,"Env",@analysis_id),
+("Controller","f1b06583-4160-48a2-ba74-df8001c5c318",1,1,"Driver",NULL,"C.01",@analysis_id),
+("Controller","3b30979d-4243-4168-9350-c5c79b042a1f",1,1,"Auto-Hold Module",NULL,"C.02",@analysis_id),
+("ControlledProcess","d5030f41-7d87-47d1-8471-4af6bf56559d",0,1,"Physical Vehicle",NULL,"CP.01",@analysis_id),
+("ControlledProcess","cc847bc3-2288-4a99-9b62-9d65aa31dba9",1,1,"Braking System","d5030f41-7d87-47d1-8471-4af6bf56559d","CP.02",@analysis_id),
+("ControlledProcess","3d9e7cbf-f4ed-4a64-8fee-9652fe2919e4",1,1,"Propulsion System","d5030f41-7d87-47d1-8471-4af6bf56559d","CP.03",@analysis_id);
 
 
-INSERT INTO connections (id, style, sourceId, targetId, code, analysis_id) VALUES
-(6,1,7,15,"Cn.01",@analysis_id),
-(7,1,15,7,"Cn.02",@analysis_id),
-(8,1,7,13,"Cn.03",@analysis_id),
-(9,1,14,13,"Cn.04",@analysis_id),
-(10,1,13,17,"Cn.05",@analysis_id),
-(11,1,15,13,"Cn.06",@analysis_id),
-(12,1,14,16,"Cn.07",@analysis_id),
-(13,1,16,14,"Cn.08",@analysis_id),
-(14,1,17,14,"Cn.09",@analysis_id),
-(15,1,15,14,"Cn.10",@analysis_id),
-(16,1,13,15,"Cn.11",@analysis_id),
-(17,1,15,13,"Cn.12",@analysis_id),
-(18,1,13,14,"Cn.13",@analysis_id);
+INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VALUES
+("170be466-75f8-4301-8d1c-88641a69f82b",1,"d12f869f-f53c-47b9-9843-49136bce48be","d5030f41-7d87-47d1-8471-4af6bf56559d","Cn.01",@analysis_id),
+("ce82fab5-66b6-4019-a5e1-7866678ea65c",1,"d5030f41-7d87-47d1-8471-4af6bf56559d","d12f869f-f53c-47b9-9843-49136bce48be","Cn.02",@analysis_id),
+("6585c057-b304-420a-a924-a014f40c735c",1,"d12f869f-f53c-47b9-9843-49136bce48be","f1b06583-4160-48a2-ba74-df8001c5c318","Cn.03",@analysis_id),
+("c5654ab7-0ad0-47bd-bb6e-af9c435d0ed1",1,"3b30979d-4243-4168-9350-c5c79b042a1f","f1b06583-4160-48a2-ba74-df8001c5c318","Cn.04",@analysis_id),
+("b5f6a917-ce65-49da-a1b5-9c5e2d7f3794",1,"f1b06583-4160-48a2-ba74-df8001c5c318","3d9e7cbf-f4ed-4a64-8fee-9652fe2919e4","Cn.05",@analysis_id),
+("0ac8f99a-614f-480c-aa0d-3ce6dfe290ab",1,"d5030f41-7d87-47d1-8471-4af6bf56559d","f1b06583-4160-48a2-ba74-df8001c5c318","Cn.06",@analysis_id),
+("37fa3a9d-d87e-4c50-9f01-f553416be7da",1,"3b30979d-4243-4168-9350-c5c79b042a1f","cc847bc3-2288-4a99-9b62-9d65aa31dba9","Cn.07",@analysis_id),
+("2b00a793-e622-461a-8d9d-4548dc19a45a",1,"cc847bc3-2288-4a99-9b62-9d65aa31dba9","3b30979d-4243-4168-9350-c5c79b042a1f","Cn.08",@analysis_id),
+("5b031094-1b32-4476-a026-e012a80609b4",1,"3d9e7cbf-f4ed-4a64-8fee-9652fe2919e4","3b30979d-4243-4168-9350-c5c79b042a1f","Cn.09",@analysis_id),
+("2bde2a25-188f-4282-bbce-0c8802a6db19",1,"d5030f41-7d87-47d1-8471-4af6bf56559d","3b30979d-4243-4168-9350-c5c79b042a1f","Cn.10",@analysis_id),
+("3b365a5b-bb3e-4e59-a091-482fcb0b3355",1,"f1b06583-4160-48a2-ba74-df8001c5c318","d5030f41-7d87-47d1-8471-4af6bf56559d","Cn.11",@analysis_id),
+("905a706e-9ac0-4330-a308-020277133294",1,"d5030f41-7d87-47d1-8471-4af6bf56559d","f1b06583-4160-48a2-ba74-df8001c5c318","Cn.12",@analysis_id),
+("2aeb83f1-47ea-4797-8aef-96353a7b65ae",1,"f1b06583-4160-48a2-ba74-df8001c5c318","3b30979d-4243-4168-9350-c5c79b042a1f","Cn.13",@analysis_id);
 
 
 INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
-(16,3,"Visual cues","PI.1",8),
-(17,3,"Physical feedback","PI.2",8),
-(18,1,"AH Enable","FB.1",9),
-(19,1,"AH Disabled","FB.2",9),
-(20,0,"Accelerate","CA.1",10),
-(21,0,"Shift","CA.2",10),
-(22,1,"Vehicle speed","FB.3",11),
-(23,1,"Visual feedback","FB.4",11),
-(24,0,"Hold","CA.3",12),
-(25,0,"Release","CA.4",12),
-(26,0,"Additional Pressure","CA.5",12),
-(27,1,"Wheel speed","FB.5",13),
-(28,1,"Accel pos.","FB.6",14),
-(29,1,"PRNDL","FB.7",14),
-(30,1,"Driver presence","FB.8",15),
-(31,1,"Inclination","FB.9",15),
-(32,0,"Brake","CA.6",16),
-(33,1,"Pedal response","FB.10",17),
-(34,0,"Enable AH","CA.7",18),
-(35,0,"Disable AH","CA.8",18),
-(36,0,"Brake pedal on","CA.9",18),
-(37,0,"Brake pedal off","CA.10",18);
+("131f1382-5283-4ceb-88f4-ae6756617c1b",3,"Visual cues","PI.01","6585c057-b304-420a-a924-a014f40c735c"),
+("0d9f54ac-3370-4dc7-ac6d-e07bb53e7073",3,"Physical feedback","PI.02","6585c057-b304-420a-a924-a014f40c735c"),
+("772a8329-7afe-4d1c-a1ae-f0a6631a2096",1,"AH Enable","FB.01","c5654ab7-0ad0-47bd-bb6e-af9c435d0ed1"),
+("a3277514-e984-4e90-b62f-a6150495e0fd",1,"AH Disabled","FB.02","c5654ab7-0ad0-47bd-bb6e-af9c435d0ed1"),
+("19018a42-2627-4741-98c9-96c9c2dcd102",0,"Accelerate","CA.01","b5f6a917-ce65-49da-a1b5-9c5e2d7f3794"),
+("f9414c9d-9587-4b91-bbdc-97af65d660ea",0,"Shift","CA.02","b5f6a917-ce65-49da-a1b5-9c5e2d7f3794"),
+("49f4337c-e4fa-4e5c-8083-c25e94c0d12c",1,"Vehicle speed","FB.03","0ac8f99a-614f-480c-aa0d-3ce6dfe290ab"),
+("948b5663-e11e-4d9e-b0aa-ff2e60975927",1,"Visual feedback","FB.04","0ac8f99a-614f-480c-aa0d-3ce6dfe290ab"),
+("622dcba5-dc80-44f1-b892-4fc210067a6c",0,"Hold","CA.03","37fa3a9d-d87e-4c50-9f01-f553416be7da"),
+("3823dcd1-d865-40b6-b9c9-e83994435066",0,"Release","CA.04","37fa3a9d-d87e-4c50-9f01-f553416be7da"),
+("0374ade9-fff8-4ed7-a881-d389353eda22",0,"Additional Pressure","CA.05","37fa3a9d-d87e-4c50-9f01-f553416be7da"),
+("f6926b38-6194-4f28-9bf9-52e553d5d36f",1,"Wheel speed","FB.05","2b00a793-e622-461a-8d9d-4548dc19a45a"),
+("8da3a415-a0c3-4156-9017-864e027651ba",1,"Accel pos.","FB.06","5b031094-1b32-4476-a026-e012a80609b4"),
+("7bf6190d-bfd0-4b2f-b953-fa84e3da9171",1,"PRNDL","FB.07","5b031094-1b32-4476-a026-e012a80609b4"),
+("e101c7ef-08d1-46e0-9f26-40a167b24524",1,"Driver presence","FB.08","2bde2a25-188f-4282-bbce-0c8802a6db19"),
+("4fa1a221-c36e-4368-95ff-47abc70ed49f",1,"Inclination","FB.09","2bde2a25-188f-4282-bbce-0c8802a6db19"),
+("d45c5663-2821-4a55-8709-9044fa8701c7",0,"Brake","CA.06","3b365a5b-bb3e-4e59-a091-482fcb0b3355"),
+("fd140813-89ef-47d8-a2d2-d6a3a213f37a",1,"Pedal response","FB.10","905a706e-9ac0-4330-a308-020277133294"),
+("88090482-8718-49f2-b2a0-ad7945030623",0,"Enable AH","CA.07","2aeb83f1-47ea-4797-8aef-96353a7b65ae"),
+("54fd943d-accf-4c03-b179-5cdc4dbc4b5b",0,"Disable AH","CA.08","2aeb83f1-47ea-4797-8aef-96353a7b65ae"),
+("53369103-cf0c-421d-8bfb-7710b65ad639",0,"Brake pedal on","CA.09","2aeb83f1-47ea-4797-8aef-96353a7b65ae"),
+("c87d8ff4-2b04-4011-9edf-848ee617789b",0,"Brake pedal off","CA.10","2aeb83f1-47ea-4797-8aef-96353a7b65ae");
 
 
 INSERT INTO images (id, name, analysis_id, data) VALUES

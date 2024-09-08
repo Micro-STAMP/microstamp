@@ -1,50 +1,50 @@
 SET @analysis_id = '64d43d5c-9c8b-4c97-974a-f51df00078b6';
 
 INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, analysis_id) VALUES
-("Controller",19,1,1,"JAXA Ground Station",NULL,"C.01",@analysis_id),
-("Controller",20,1,1,"NASA Ground Station",NULL,"C.02",@analysis_id),
-("Controller",21,1,1,"International Space Station (ISS)",NULL,"C.03",@analysis_id),
-("ControlledProcess",22,1,1,"Autonomous H-II Transfer Vehicle (HTV)",NULL,"CP.01",@analysis_id);
+("Controller","6e728ed3-ea6c-488e-8d60-31953e8e1065",1,1,"JAXA Ground Station",NULL,"C.01",@analysis_id),
+("Controller","2ce7e0d8-7004-441c-9c07-b6be9c6859f9",1,1,"NASA Ground Station",NULL,"C.02",@analysis_id),
+("Controller","bed4a94f-fd62-472c-a933-1f3dbfdd6f7a",1,1,"International Space Station (ISS)",NULL,"C.03",@analysis_id),
+("ControlledProcess","6de82071-9ede-4f45-9d91-8243999dcb21",1,1,"Autonomous H-II Transfer Vehicle (HTV)",NULL,"CP.01",@analysis_id);
 
 
-INSERT INTO connections (id, style, sourceId, targetId, code, analysis_id) VALUES
-(19,1,19,20,"Cn.01",@analysis_id),
-(20,1,20,19,"Cn.02",@analysis_id),
-(21,1,20,21,"Cn.03",@analysis_id),
-(22,1,21,20,"Cn.04",@analysis_id),
-(23,1,21,22,"Cn.05",@analysis_id),
-(24,1,22,21,"Cn.06",@analysis_id);
+INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VALUES
+("17dc29b9-5ec5-4f74-9f79-b730198f1069",1,"6e728ed3-ea6c-488e-8d60-31953e8e1065","2ce7e0d8-7004-441c-9c07-b6be9c6859f9","Cn.01",@analysis_id),
+("f239e9f8-bfac-4973-b649-fbb4ca1e67ec",1,"2ce7e0d8-7004-441c-9c07-b6be9c6859f9","6e728ed3-ea6c-488e-8d60-31953e8e1065","Cn.02",@analysis_id),
+("f56f1fb5-cae5-4172-a3c1-8c1e3f673b05",1,"2ce7e0d8-7004-441c-9c07-b6be9c6859f9","bed4a94f-fd62-472c-a933-1f3dbfdd6f7a","Cn.03",@analysis_id),
+("7a81b57a-9c3c-44bb-ae45-f064aebdc701",1,"bed4a94f-fd62-472c-a933-1f3dbfdd6f7a","2ce7e0d8-7004-441c-9c07-b6be9c6859f9","Cn.04",@analysis_id),
+("0b6362b0-850c-4051-b323-7b7fdf3f0795",1,"bed4a94f-fd62-472c-a933-1f3dbfdd6f7a","6de82071-9ede-4f45-9d91-8243999dcb21","Cn.05",@analysis_id),
+("906e5d72-4692-44ac-b6be-82dc42a43ef0",1,"6de82071-9ede-4f45-9d91-8243999dcb21","bed4a94f-fd62-472c-a933-1f3dbfdd6f7a","Cn.06",@analysis_id);
 
 
 INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
-(38,0,"Abort","CA.1",19),
-(39,0,"Retreat","CA.2",19),
-(40,0,"Hold","CA.3",19),
-(41,0,"FRGF Separation","CA.4",19),
-(42,1,"Acknowledgements","FB.1",20),
-(43,1,"HTV Status","FB.2",20),
-(44,0,"Abort","CA.5",21),
-(45,0,"Retreat","CA.6",21),
-(46,0,"Hold","CA.7",21),
-(47,0,"FRGF Separation Enable","CA.8",21),
-(48,0,"FRGF Separation Hold","CA.9",21),
-(49,0,"FRGF Separation","CA.10",21),
-(50,1,"HTV Mode","FB.3",22),
-(51,1,"HTV Fault Status","FB.4",22),
-(52,1,"Crew status","FB.5",22),
-(53,1,"Telemetry","FB.6",22),
-(54,0,"Free Drift","CA.11",23),
-(55,0,"Capture","CA.12",23),
-(56,0,"Abort","CA.13",23),
-(57,0,"Retreat","CA.14",23),
-(58,0,"Hold","CA.15",23),
-(59,0,"FRGF Separation Enable","CA.16",23),
-(60,0,"FRGF Separation Inhibit","CA.17",23),
-(61,0,"FRGF Separation","CA.18",23),
-(62,1,"HTV Mode","FB.7",24),
-(63,1,"HTV Fault Status","FB.8",24),
-(64,1,"Position (visual)","FB.9",24),
-(65,1,"Speed (visual)","FB.10",24);
+("005abfc5-20f9-4245-bb0f-7f19126526df",0,"Abort","CA.01","17dc29b9-5ec5-4f74-9f79-b730198f1069"),
+("3dfc6269-6eaf-4e14-be07-6bbcba6bc82e",0,"Retreat","CA.02","17dc29b9-5ec5-4f74-9f79-b730198f1069"),
+("488ad11f-f299-479d-a18c-51cb862a0dff",0,"Hold","CA.03","17dc29b9-5ec5-4f74-9f79-b730198f1069"),
+("5aa5e59a-e898-4358-a97e-f1595b1d3ef4",0,"FRGF Separation","CA.04","17dc29b9-5ec5-4f74-9f79-b730198f1069"),
+("fd56dba6-2bd1-4d39-9a02-6ef39c31b204",1,"Acknowledgements","FB.01","f239e9f8-bfac-4973-b649-fbb4ca1e67ec"),
+("f95c895e-ed53-4670-bdb6-b9383a623b2a",1,"HTV Status","FB.02","f239e9f8-bfac-4973-b649-fbb4ca1e67ec"),
+("6617b9f4-faa0-4f00-8d39-ce478791366e",0,"Abort","CA.05","f56f1fb5-cae5-4172-a3c1-8c1e3f673b05"),
+("7fd031d3-17c1-4019-ac5e-18c6ead15750",0,"Retreat","CA.06","f56f1fb5-cae5-4172-a3c1-8c1e3f673b05"),
+("a6edde18-0edb-46c6-90d1-fbb3d47809d5",0,"Hold","CA.07","f56f1fb5-cae5-4172-a3c1-8c1e3f673b05"),
+("c2706bd2-3714-49ef-8689-618564d16bfd",0,"FRGF Separation Enable","CA.08","f56f1fb5-cae5-4172-a3c1-8c1e3f673b05"),
+("30565f1d-4b2c-49d7-a6a2-48b3deaf995e",0,"FRGF Separation Hold","CA.09","f56f1fb5-cae5-4172-a3c1-8c1e3f673b05"),
+("be365b36-13b4-4c88-90a0-4b155959defa",0,"FRGF Separation","CA.10","f56f1fb5-cae5-4172-a3c1-8c1e3f673b05"),
+("27ad4b3c-f272-4fd2-b74b-b5ae60019337",1,"HTV Mode","FB.03","7a81b57a-9c3c-44bb-ae45-f064aebdc701"),
+("7a83eca0-1b45-444a-a44b-6ed739fb9dae",1,"HTV Fault Status","FB.04","7a81b57a-9c3c-44bb-ae45-f064aebdc701"),
+("53de222e-41be-413f-be19-fcf64d5bf7dd",1,"Crew status","FB.05","7a81b57a-9c3c-44bb-ae45-f064aebdc701"),
+("c71e202c-9614-453e-830c-f919faa974cd",1,"Telemetry","FB.06","7a81b57a-9c3c-44bb-ae45-f064aebdc701"),
+("e112275d-070a-40be-bf6f-d437179cf756",0,"Free Drift","CA.11","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("17b3bfe8-40e0-4931-8ba7-0a3c6385a68d",0,"Capture","CA.12","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("2d175404-ac32-4062-b5f2-9b1ce507a23f",0,"Abort","CA.13","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("bd9bcb59-eae3-43c0-b446-434047f5c359",0,"Retreat","CA.14","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("d53536b6-ad59-4ac2-8bad-a5ec2d7007b0",0,"Hold","CA.15","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("7603ecfc-397a-4806-b462-a4b6628e9b28",0,"FRGF Separation Enable","CA.16","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("49aef116-6b15-4bf0-bf01-3a27bcf2592a",0,"FRGF Separation Inhibit","CA.17","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("04feeb27-0ee2-45c8-af01-71090dd3cdb1",0,"FRGF Separation","CA.18","0b6362b0-850c-4051-b323-7b7fdf3f0795"),
+("fbd85dd9-e3f4-409c-8225-13223dabc46f",1,"HTV Mode","FB.07","906e5d72-4692-44ac-b6be-82dc42a43ef0"),
+("a6f91fd0-e81f-46b2-85a7-508bc78afb23",1,"HTV Fault Status","FB.08","906e5d72-4692-44ac-b6be-82dc42a43ef0"),
+("94aaab9f-81b6-4467-8d3b-af83b31fce14",1,"Position (visual)","FB.09","906e5d72-4692-44ac-b6be-82dc42a43ef0"),
+("40279fba-fd05-4b06-90ff-6c6ef792f50b",1,"Speed (visual)","FB.10","906e5d72-4692-44ac-b6be-82dc42a43ef0");
 
 
 INSERT INTO images (id, name, analysis_id, data) VALUES
