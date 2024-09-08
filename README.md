@@ -10,6 +10,9 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
  -   [MicroSTAMP Microservices](#microstamp-microservices)
+ -   [Publications](#publications)
+ -   [Talk](#talk)
+ -   [Contact Information](#contact-information)
 
 ## Architecture Overview
 
@@ -148,3 +151,25 @@ In addition to that, in cloud environments, service instances may come up and go
 
 Basically all MicroSTAMP microservices (microstamp-api-gateway, microstamp-stpa-step1, microstamp-stpa-step2, microstamp-stpa-step3, microstamp-stpa-step4) register themselves to  Service Registry, and Service Registry tracks all the MicroSTAMP microservices and its instances. We can use service Registry in order to see what are the microservices are up and what are the microservices down.
 
+## Publications
+
+Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
+
+## Talk
+
+Rodrigo Martins Pagliares, João Hugo Marinho Maimone, Thiago Franco de Carvalho Dias, Gabriel Piva Pereira, Gabriel Francelino Nascimento, and Fellipe Guilherme Rey de Souza  (Universidade Federal de Alfenas, UNIFAL-MG - Brazil) , Gabriel Kusumota Nadalin  (Universidade Federal de São Carlos, UFSCAR - Brazil) "***MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture***", 2024.
+
+https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/
+
+
+## Contact Information
+
+<address>
+Rodrigo Martins Pagliares<br>
+rodrigo.pagliares@unifal-mg.edu.br<br>
+Universidade Federal de Alfenas - UNIFAL<br>
+Computer Science Department<br>
+Av. Jovino Fernandes Sales, 2600 – Santa Clara – Alfenas/MG  - Brazil<br>
+CEP: 37133-840<br>
+Prédio C – 3º andar (Building C, third floor)<br> 
+</address>
