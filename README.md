@@ -10,6 +10,9 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
  -   [MicroSTAMP Microservices](#microstamp-microservices)
+ -   [Publications](#publications)
+ -   [Talk](#talk)
+ -   [Contact Information](#contact-information)
 
 ## Architecture Overview
 
@@ -158,13 +161,15 @@ Rodrigo Martins Pagliares, João Hugo Marinho Maimone, Thiago Franco de Carvalho
 
 https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/
 
+
 ## Contact Information
 
-Rodrigo Martins Pagliares
-rodrigo.pagliares@unifal-mg.edu.br
-Universidade Federal de Alfenas - UNIFAL
-Computer Science Department
-Av. Jovino Fernandes Sales, 2600 – Santa Clara – Alfenas/MG  - Brazil
-CEP: 37133-840  
-Prédio C – 3º andar (Building C, third floor)  
-
+<address>
+Rodrigo Martins Pagliares<br>
+rodrigo.pagliares@unifal-mg.edu.br<br>
+Universidade Federal de Alfenas - UNIFAL<br>
+Computer Science Department<br>
+Av. Jovino Fernandes Sales, 2600 – Santa Clara – Alfenas/MG  - Brazil<br>
+CEP: 37133-840<br>
+Prédio C – 3º andar (Building C, third floor)<br> 
+</address>
