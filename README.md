@@ -10,6 +10,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
  -   [MicroSTAMP Microservices](#microstamp-microservices)
+ -   [Contributing Guidelines](#contributing-guidelines)
  -   [Lead developers](#lead-developers)
  -   [Publications](#publications)
  -   [Talk](#talk)
@@ -152,7 +153,10 @@ In addition to that, in cloud environments, service instances may come up and go
 
 Basically all MicroSTAMP microservices (microstamp-api-gateway, microstamp-stpa-step1, microstamp-stpa-step2, microstamp-stpa-step3, microstamp-stpa-step4) register themselves to  Service Registry, and Service Registry tracks all the MicroSTAMP microservices and its instances. We can use service Registry in order to see what are the microservices are up and what are the microservices down.
 
-## Lead developers
+## Contributing Guidelines
+
+You're welcome to contribute to the MicroSTAMP project! If you find any bugs or have suggestions for new features, please feel free to submit them via pull requests.
+
 ## Lead developers
 <div style="display: flex; gap: 8px;">
     <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
