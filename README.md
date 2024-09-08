@@ -10,6 +10,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
  -   [MicroSTAMP Microservices](#microstamp-microservices)
+ -   [Lead developers](#lead-developers)
  -   [Publications](#publications)
  -   [Talk](#talk)
  -   [Contact Information](#contact-information)
@@ -150,6 +151,16 @@ With MicroSTAMP Service Registry we need to only configure an ID for each micros
 In addition to that, in cloud environments, service instances may come up and go down any time. Hence, we need some automatic service registration and discovery mechanism as the provided in this microservice.
 
 Basically all MicroSTAMP microservices (microstamp-api-gateway, microstamp-stpa-step1, microstamp-stpa-step2, microstamp-stpa-step3, microstamp-stpa-step4) register themselves to  Service Registry, and Service Registry tracks all the MicroSTAMP microservices and its instances. We can use service Registry in order to see what are the microservices are up and what are the microservices down.
+
+## Lead developers
+<div style="display: flex; gap: 8px;">
+<a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=João Hugo Marinho Maimone&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+    <a href="https://github.com/gabriel-francelino" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Francelino&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+    <a href="https://github.com/gabriel-piva" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Piva&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+     <a href="https://github.com/ThiagoFranco0202" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Thiago Franco&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+    <a href="https://github.com/felliperey" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=fellipe rey&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+    <a href="https://github.com/pagliares" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Rodrigo Martins Pagliares&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+</div>
 
 ## Publications
 
