@@ -1,5 +1,6 @@
 package microstamp.step2.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import microstamp.step2.dto.state.StateReadDto;
 import microstamp.step2.dto.state.StateUpdateDto;
 import microstamp.step2.entity.State;
@@ -18,13 +19,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class StateServiceImpl implements StateService {
 
-    @Autowired
-    private StateRepository stateRepository;
+    private final StateRepository stateRepository;
 
-    @Autowired
-    private VariableRepository variableRepository;
+    private final VariableRepository variableRepository;
 
     public List<StateReadDto> findAll() {
         return stateRepository.findAll().stream()
