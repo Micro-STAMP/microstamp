@@ -13,7 +13,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.step1.dto.assumption.AssumptionReadDto;
-import microstamp.step1.dto.export.ExportDto;
+import microstamp.step1.dto.export.ExportReadDto;
 import microstamp.step1.dto.hazard.HazardReadDto;
 import microstamp.step1.dto.loss.LossReadDto;
 import microstamp.step1.dto.systemgoal.SystemGoalReadDto;
@@ -41,7 +41,7 @@ public class ExportServiceImpl implements ExportService {
 
     private final SystemSafetyConstraintService systemSafetyConstraintService;
 
-    public ExportDto exportToJson(UUID analysisId) {
+    public ExportReadDto exportToJson(UUID analysisId) {
         log.info("Exporting (JSON) Step 1 content of an analysis by its UUID: {}", analysisId);
         return getExportDto(analysisId);
     }
@@ -54,22 +54,23 @@ public class ExportServiceImpl implements ExportService {
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
 
-        ExportDto exportDto = getExportDto(analysisId);
+        ExportReadDto exportReadDto = getExportDto(analysisId);
 
         setTitle(document);
-        setSystemGoalSection(document, exportDto.getSystemGoals());
-        setAssumptionSection(document, exportDto.getAssumptions());
-        setLossesSection(document, exportDto.getLosses());
-        setHazardsSection(document, exportDto.getHazards());
-        setSystemSafetyConstraintSection(document, exportDto.getSystemSafetyConstraints());
+        setAnalysisSection(document, exportReadDto.getAnalysisId());
+        setSystemGoalSection(document, exportReadDto.getSystemGoals());
+        setAssumptionSection(document, exportReadDto.getAssumptions());
+        setLossesSection(document, exportReadDto.getLosses());
+        setHazardsSection(document, exportReadDto.getHazards());
+        setSystemSafetyConstraintSection(document, exportReadDto.getSystemSafetyConstraints());
 
         document.close();
 
         return byteArrayOutputStream.toByteArray();
     }
 
-    private ExportDto getExportDto(UUID analysisId) {
-        return ExportDto.builder()
+    private ExportReadDto getExportDto(UUID analysisId) {
+        return ExportReadDto.builder()
                 .analysisId(analysisId)
                 .systemGoals(systemGoalService.findByAnalysisId(analysisId))
                 .assumptions(assumptionService.findByAnalysisId(analysisId))
@@ -91,13 +92,17 @@ public class ExportServiceImpl implements ExportService {
                 .addStyle(style));
     }
 
+    private void setAnalysisSection(Document document, UUID analysisId) {
+        document.add(new Paragraph("\n"));
+        document.add(new Paragraph("Analysis id: " + analysisId.toString()));
+    }
+
     private void setSystemGoalSection(Document document, List<SystemGoalReadDto> systemGoals) throws JsonProcessingException {
         com.itextpdf.layout.element.List systemGoalsList = new com.itextpdf.layout.element.List();
 
         for(SystemGoalReadDto systemGoal : systemGoals)
             systemGoalsList.add("[" + systemGoal.getCode() + "] " + systemGoal.getName());
 
-        document.add(new Paragraph("\n"));
         document.add(new Paragraph("System Goals")
                 .setBold()
                 .setUnderline());

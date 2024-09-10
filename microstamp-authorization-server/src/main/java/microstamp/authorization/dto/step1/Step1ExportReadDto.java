@@ -1,11 +1,6 @@
-package microstamp.step1.dto.export;
+package microstamp.authorization.dto.step1;
 
 import lombok.*;
-import microstamp.step1.dto.assumption.AssumptionReadDto;
-import microstamp.step1.dto.hazard.HazardReadDto;
-import microstamp.step1.dto.loss.LossReadDto;
-import microstamp.step1.dto.systemgoal.SystemGoalReadDto;
-import microstamp.step1.dto.systemsafetyconstraint.SystemSafetyConstraintReadDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,9 +10,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExportDto {
-
-    private UUID analysisId;
+public class Step1ExportReadDto {
 
     private List<SystemGoalReadDto> systemGoals;
 

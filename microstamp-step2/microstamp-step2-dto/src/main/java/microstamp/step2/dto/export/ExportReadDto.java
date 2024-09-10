@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExportDto {
+public class ExportReadDto {
 
     private UUID analysisId;
 

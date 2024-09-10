@@ -1,10 +1,10 @@
-package microstamp.step2.controller;
+package microstamp.authorization.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import microstamp.step2.dto.export.ExportReadDto;
-import microstamp.step2.service.ExportService;
+import microstamp.authorization.dto.ExportReadDto;
+import microstamp.authorization.service.ExportService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,7 +40,7 @@ public class ExportController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "step2-analysis-" + analysisId + ".pdf");
+        headers.setContentDispositionFormData("attachment", "microstamp-analysis-" + analysisId + ".pdf");
 
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }

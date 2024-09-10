@@ -16,7 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import microstamp.step2.dto.component.ComponentReadDto;
 import microstamp.step2.dto.connection.ConnectionReadDto;
 import microstamp.step2.dto.connectionaction.ConnectionActionReadDto;
-import microstamp.step2.dto.export.ExportDto;
+import microstamp.step2.dto.export.ExportReadDto;
 import microstamp.step2.dto.image.ImageReadDto;
 import microstamp.step2.dto.responsibility.ResponsibilityReadDto;
 import microstamp.step2.dto.state.StateReadDto;
@@ -44,7 +44,7 @@ public class ExportServiceImpl implements ExportService {
 
     private final ImageService imageService;
 
-    public ExportDto exportToJson(UUID analysisId) {
+    public ExportReadDto exportToJson(UUID analysisId) {
         log.info("Exporting (JSON) Step 2 content of an analysis by its UUID: {}", analysisId);
         return getExportDto(analysisId);
     }
@@ -57,21 +57,21 @@ public class ExportServiceImpl implements ExportService {
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
 
-        ExportDto exportDto = getExportDto(analysisId);
+        ExportReadDto exportReadDto = getExportDto(analysisId);
 
         setTitle(document);
-        setAnalysisSection(document, exportDto.getAnalysisId());
-        setComponentsSection(document, exportDto.getComponents());
-        setConnectionsSection(document, exportDto.getConnections());
-        setImagesSection(document, exportDto.getImages());
+        setAnalysisSection(document, exportReadDto.getAnalysisId());
+        setComponentsSection(document, exportReadDto.getComponents());
+        setConnectionsSection(document, exportReadDto.getConnections());
+        setImagesSection(document, exportReadDto.getImages());
 
         document.close();
 
         return byteArrayOutputStream.toByteArray();
     }
 
-    private ExportDto getExportDto(UUID analysisId) {
-        return ExportDto.builder()
+    private ExportReadDto getExportDto(UUID analysisId) {
+        return ExportReadDto.builder()
                 .analysisId(analysisId)
                 .components(componentService.findByAnalysisId(analysisId))
                 .connections(connectionService.findByAnalysisId(analysisId))
@@ -177,7 +177,7 @@ public class ExportServiceImpl implements ExportService {
         for(ImageReadDto image : images) {
             byte[] imageBytes = Base64.getDecoder()
                     .decode(image.getBase64());
-           document.add(new Image(ImageDataFactory.create(imageBytes)));
+            document.add(new Image(ImageDataFactory.create(imageBytes)));
         }
     }
 }

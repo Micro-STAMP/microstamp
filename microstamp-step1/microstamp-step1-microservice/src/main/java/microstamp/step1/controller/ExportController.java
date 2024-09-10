@@ -3,7 +3,7 @@ package microstamp.step1.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import microstamp.step1.dto.export.ExportDto;
+import microstamp.step1.dto.export.ExportReadDto;
 import microstamp.step1.service.ExportService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class ExportController {
     private final ExportService service;
 
     @GetMapping("/analysis/{id}/json")
-    public ResponseEntity<ExportDto> exportToJson(@PathVariable(name = "id") UUID analysisId) {
+    public ResponseEntity<ExportReadDto> exportToJson(@PathVariable(name = "id") UUID analysisId) {
         log.info("Request received to export an analysis to JSON by its id {}", analysisId);
         return new ResponseEntity<>(service.exportToJson(analysisId), HttpStatus.OK);
     }
