@@ -10,6 +10,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
  -   [MicroSTAMP Microservices](#microstamp-microservices)
+ -   [License](#license)
  -   [Contributing Guidelines](#contributing-guidelines)
  -   [Lead developers](#lead-developers)
  -   [Publications](#publications)
@@ -152,6 +153,16 @@ With MicroSTAMP Service Registry we need to only configure an ID for each micros
 In addition to that, in cloud environments, service instances may come up and go down any time. Hence, we need some automatic service registration and discovery mechanism as the provided in this microservice.
 
 Basically all MicroSTAMP microservices (microstamp-api-gateway, microstamp-stpa-step1, microstamp-stpa-step2, microstamp-stpa-step3, microstamp-stpa-step4) register themselves to  Service Registry, and Service Registry tracks all the MicroSTAMP microservices and its instances. We can use service Registry in order to see what are the microservices are up and what are the microservices down.
+
+## License
+
+MicroSTAMP is licensed under **MIT License**. The **MIT License** is a permissive open-source license that allows almost unrestricted use of the software. Here’s a summary of its main points:
+
+1.  **Permission to Use, Copy, and Modify**: The license grants anyone the right to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software.
+
+2.  **Attribution Requirement**: The software can be used freely, but the original copyright notice and license text must be included in any copies or substantial portions of the software.
+
+3.  **No Warranty**: The software is provided "as is," without any warranties or guarantees. The authors are not liable for any damages that may result from using the software.
 
 ## Contributing Guidelines
 
