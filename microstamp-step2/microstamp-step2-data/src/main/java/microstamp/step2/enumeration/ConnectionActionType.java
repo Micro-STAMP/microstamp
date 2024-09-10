@@ -1,16 +1,25 @@
 package microstamp.step2.enumeration;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public enum ConnectionActionType {
 
-    CONTROL_ACTION,
-    FEEDBACK,
-    COMMUNICATION_CHANNEL,
-    PROCESS_INPUT,
-    PROCESS_OUTPUT,
-    DISTURBANCE;
+    CONTROL_ACTION("ControlAction"),
+    FEEDBACK("Feedback"),
+    COMMUNICATION_CHANNEL("CommunicationChannel"),
+    PROCESS_INPUT("ProcessInput"),
+    PROCESS_OUTPUT("ProcessOutput"),
+    DISTURBANCE("Disturbance");
+
+    private final String formattedName;
+
+    ConnectionActionType(String formattedName) {
+        this.formattedName = formattedName;
+    }
 
     public static List<ConnectionActionType> getDefaultTypes() {
         return Arrays.asList(
