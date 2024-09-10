@@ -1,12 +1,9 @@
-package microstamp.step2.dto.connection;
+package microstamp.authorization.dto.step2;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import microstamp.step2.dto.component.ComponentReadDto;
-import microstamp.step2.dto.connectionaction.ConnectionActionReadDto;
-import microstamp.step2.enumeration.ConnectionActionType;
-import microstamp.step2.enumeration.Style;
+import microstamp.authorization.dto.step2.enumeration.Style;
 
 import java.util.List;
 import java.util.UUID;

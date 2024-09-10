@@ -1,4 +1,4 @@
-package microstamp.step2.enumeration;
+package microstamp.authorization.dto.step2.enumeration;
 
 import lombok.Getter;
 

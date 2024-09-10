@@ -1,5 +1,6 @@
 package microstamp.authorization.configuration;
 
+import feign.FeignException;
 import microstamp.authorization.exception.AnalysisAlreadyHasImageException;
 import microstamp.authorization.exception.MicroStampError;
 import microstamp.authorization.exception.MicroStampErrorResponse;
@@ -54,4 +55,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
+    @ExceptionHandler(value = { FeignException.class })
+    protected ResponseEntity<Object> handleFeignException(FeignException ex, WebRequest request) {
+        MicroStampErrorResponse errorResponse = new MicroStampErrorResponse();
+        HttpStatus httpStatus = HttpStatus.valueOf(ex.status());
+        errorResponse.addError(new MicroStampError(ex.getClass().getSimpleName(),httpStatus.name(),ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), httpStatus, request);
+    }
 }
