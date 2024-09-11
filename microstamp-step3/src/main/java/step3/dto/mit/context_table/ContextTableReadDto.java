@@ -20,7 +20,7 @@ public record ContextTableReadDto(
         this(
             contextTable.getId(),
             contextTable.getContexts().stream().map(ContextDto::new).toList(),
-            contextTable.getConnectionId()
+            contextTable.getControlActionId()
         );
     }
 

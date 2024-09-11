@@ -47,11 +47,11 @@ public class ContextTableController {
         return ResponseEntity.ok(contextTableService.readAllContextTables());
     }
 
-    @GetMapping("/controller/{controllerId}")
-    public ResponseEntity<ContextTableReadWithPageDto> readContextTableByControllerId(@PathVariable UUID controllerId,
-                                                                                      @RequestParam(defaultValue = "0") int page,
-                                                                                      @RequestParam(defaultValue = "15") int size) {
-        return ResponseEntity.ok(contextTableService.readContextTableByConnectionId(controllerId, page, size));
+    @GetMapping("/controller/{controlActionId}")
+    public ResponseEntity<ContextTableReadWithPageDto> readContextTableByControlActionId(@PathVariable UUID controlActionId,
+                                                                                         @RequestParam(defaultValue = "0") int page,
+                                                                                         @RequestParam(defaultValue = "15") int size) {
+        return ResponseEntity.ok(contextTableService.readContextTableByControlActionId(controlActionId, page, size));
     }
 
     // Update -----------------------------------------

@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import step3.dto.mit.context_table.ContextReadDto;
 import step3.dto.mit.context_table.ContextTableReadWithPageDto;
-import step3.dto.mit.step2.ComponentReadDto;
 import step3.dto.mit.step2.ConnectionReadDto;
 import step3.dto.mit.step2.StateReadDto;
 import step3.entity.mit.Context;
@@ -23,7 +22,7 @@ public class ContextTableMapper {
     private final Step2Proxy step2Proxy;
 
     public ContextTableReadWithPageDto toContextTableReadWithPageDto(ContextTable contextTable, Page<Context> contexts) {
-        ConnectionReadDto connection = step2Proxy.getConnectionById(contextTable.getConnectionId());
+        ConnectionReadDto connection = step2Proxy.getConnectionById(contextTable.getControlActionId());
         List<Context> contextsList = contexts.getContent();
 
         return ContextTableReadWithPageDto.builder()

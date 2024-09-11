@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ContextTableRepository extends JpaRepository<ContextTable, UUID> {
-    Optional<ContextTable> findByConnectionId(UUID connectionId);
+    Optional<ContextTable> findByControlActionId(UUID controlActionId);
 }

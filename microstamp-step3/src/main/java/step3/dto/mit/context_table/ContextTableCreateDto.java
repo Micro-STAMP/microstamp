@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public record ContextTableCreateDto(
         @NotNull
-        UUID connection_id
+        UUID control_action_id
 ) {}
