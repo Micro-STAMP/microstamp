@@ -3,6 +3,7 @@ package microstamp.step2.dto.controlaction;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import microstamp.step2.dto.connection.ConnectionReadDto;
 
 import java.util.UUID;
 
@@ -21,5 +22,8 @@ public class ControlActionReadDto {
 
     @NotBlank
     private String code;
+
+    @NotNull
+    private ConnectionReadDto connection;
 
 }
