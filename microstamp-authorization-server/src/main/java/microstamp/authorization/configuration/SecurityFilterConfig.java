@@ -33,7 +33,8 @@ public class SecurityFilterConfig {
     private static final String[] AUTH_WHITELIST = {
             "/swagger/**",
             "/swagger-ui/**",
-            "/v3/**"
+            "/v3/**",
+            "/guests/**"
     };
 
     @Bean

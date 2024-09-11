@@ -44,6 +44,13 @@ public class AnalysisServiceImpl implements AnalysisService {
                 .toList();
     }
 
+    public List<AnalysisReadDto> findGuestAnalyses() {
+        return analysisRepository.findGuestAnalyses().stream()
+                .map(AnalysisMapper::toDto)
+                .sorted(Comparator.comparing(AnalysisReadDto::getCreationDate))
+                .toList();
+    }
+
     public AnalysisReadDto insert(AnalysisInsertDto analysisInsertDto) throws NotFoundException {
         User user = userRepository.findById(analysisInsertDto.getUserId())
                 .orElseThrow(() -> new NotFoundException("User", analysisInsertDto.getUserId().toString()));
