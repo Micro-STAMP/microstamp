@@ -29,14 +29,14 @@ public class ExportController {
     @GetMapping("/analysis/{id}/json")
     public ResponseEntity<ExportReadDto> exportToJson(@PathVariable(name = "id") UUID analysisId) {
         log.info("Request received to export an analysis to JSON by its id {}", analysisId);
-        return new ResponseEntity<>(service.exportToJson(analysisId), HttpStatus.OK);
+        return new ResponseEntity<>(service.exportToJson(analysisId, ""), HttpStatus.OK);
     }
 
     @GetMapping("/analysis/{id}/pdf")
     public ResponseEntity<byte[]> exportToPdf(@PathVariable(name = "id") UUID analysisId) throws IOException {
         log.info("Request received to export an analysis to PDF by its id {}", analysisId);
 
-        byte[] pdf = service.exportToPdf(analysisId);
+        byte[] pdf = service.exportToPdf(analysisId, "");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

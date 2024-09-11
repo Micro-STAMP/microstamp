@@ -46,24 +46,27 @@ public class ExportServiceImpl implements ExportService {
 
     private final MicroStampStep3Client step3Client;
 
-    public ExportReadDto exportToJson(UUID analysisId) {
+    public ExportReadDto exportToJson(UUID analysisId, String guestJwt) {
         log.info("Exporting (JSON) content of an analysis by its UUID: {}", analysisId);
-        return getExportDto(analysisId);
+
+        return guestJwt.isEmpty()
+                ? getExportDto(analysisId)
+                : getExportDto(analysisId, guestJwt);
     }
 
-    public byte[] exportToPdf(UUID analysisId) throws IOException {
+    public byte[] exportToPdf(UUID analysisId, String guestJwt) throws IOException {
+        log.info("Exporting (PDF) content of an analysis by its UUID: {}", analysisId);
+
+        ExportReadDto exportReadDto = guestJwt.isEmpty()
+                ? getExportDto(analysisId)
+                : getExportDto(analysisId, guestJwt);
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
 
-        ExportReadDto exportReadDto = getExportDto(analysisId);
-
-        setTitle(document, exportReadDto.getAnalysis());
-        setAnalysisSection(document, exportReadDto.getAnalysis());
-        setStep1Section(document, exportReadDto.getStep1());
-        setStep2Section(document, exportReadDto.getStep2());
-        setStep3Section(document, exportReadDto.getStep3());
+        buildPDF(document, exportReadDto);
 
         document.close();
 
@@ -77,6 +80,23 @@ public class ExportServiceImpl implements ExportService {
                 .step2(step2Client.exportStep2ByAnalysisId(analysisId))
                 //.step3(step3Client.exportStep3ByAnalysisId(analysisId))
                 .build();
+    }
+
+    private ExportReadDto getExportDto(UUID analysisId, String guestJwt) {
+        return ExportReadDto.builder()
+                .analysis(analysisService.findById(analysisId))
+                .step1(step1Client.exportStep1ByAnalysisId(guestJwt, analysisId))
+                .step2(step2Client.exportStep2ByAnalysisId(guestJwt, analysisId))
+                //.step3(step3Client.exportStep3ByAnalysisId(guestJwt, analysisId))
+                .build();
+    }
+
+    private void buildPDF(Document document, ExportReadDto exportReadDto) throws IOException {
+        setTitle(document, exportReadDto.getAnalysis());
+        setAnalysisSection(document, exportReadDto.getAnalysis());
+        setStep1Section(document, exportReadDto.getStep1());
+        setStep2Section(document, exportReadDto.getStep2());
+        setStep3Section(document, exportReadDto.getStep3());
     }
 
     private void setTitle(Document document, AnalysisReadDto analysis) throws IOException {
