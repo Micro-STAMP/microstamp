@@ -1,11 +1,6 @@
 package step3.dto.mit.context_table;
 
 import lombok.Builder;
-import org.springframework.data.domain.Page;
-import step3.dto.mit.step2.StateReadDto;
-import step3.entity.mit.Context;
-import step3.entity.mit.ContextTable;
-import step3.entity.mit.association.ContextState;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,8 +8,8 @@ import java.util.UUID;
 @Builder
 public record ContextTableReadWithPageDto(
         UUID id,
-        UUID controller_id,
-        String controller_name,
+        UUID source_id,
+        UUID target_id,
         List<ContextReadDto> contexts
         ) {
 
