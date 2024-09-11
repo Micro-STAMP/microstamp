@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "State")
-@Table(name = "states")
+@Table(name = "states", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "variable_id" }) })
 public class State {
 
     @Id
