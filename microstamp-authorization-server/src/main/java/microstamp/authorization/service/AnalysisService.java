@@ -15,6 +15,8 @@ public interface AnalysisService {
 
     List<AnalysisReadDto> findByUserId(UUID id);
 
+    List<AnalysisReadDto> findGuestAnalyses();
+
     AnalysisReadDto insert(AnalysisInsertDto analysisInsertDto);
 
     void update(UUID id, AnalysisUpdateDto analysisUpdateDto);
