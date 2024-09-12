@@ -36,7 +36,7 @@
 //    // Create -----------------------------------------
 //
 //    public RuleReadDto createRule(RuleCreateDto ruleCreateDto) {
-//        List<Value> values = getRuleValues(ruleCreateDto.values_ids());
+//        List<Value> values = getRuleValues(ruleCreateDto.states_ids());
 //        ControlAction controlAction = controlActionRepository.getReferenceById(ruleCreateDto.control_action_id());
 //        Hazard hazard = hazardRepository.getReferenceById(ruleCreateDto.hazard_id());
 //

@@ -17,7 +17,7 @@ public record RuleCreateDto(
         @NotNull
         UUID control_action_id,
         @NotEmpty
-        List<UUID> values_ids,
+        List<UUID> states_ids,
         @NotEmpty
         Set<UCAType> types,
         @NotNull

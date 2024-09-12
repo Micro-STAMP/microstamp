@@ -26,7 +26,7 @@
 //
 //    public UnsafeControlActionReadDto createUnsafeControlAction(UnsafeControlActionCreateDto ucaCreateDto) {
 //        ControlAction controlAction = controlActionRepository.getReferenceById(ucaCreateDto.control_action_id());
-//        List<Value> values = getUCAValues(ucaCreateDto.values_ids());
+//        List<Value> values = getUCAValues(ucaCreateDto.states_ids());
 //        Hazard hazard = hazardRepository.getReferenceById(ucaCreateDto.hazard_id());
 //        Project project = projectRepository.getReferenceById(ucaCreateDto.project_id());
 //
