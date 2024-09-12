@@ -12,6 +12,7 @@ public class StateMapper {
                 .id(state.getId())
                 .name(state.getName())
                 .code(state.getCode())
+                .variable(VariableMapper.toDto(state.getVariable()))
                 .build();
     }
 

@@ -1,6 +1,6 @@
 package microstamp.step2.service.impl;
 
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.dto.variable.VariableUpdateDto;
 import microstamp.step2.entity.Variable;
 import microstamp.step2.dto.variable.VariableInsertDto;
@@ -25,42 +25,42 @@ public class VariableServiceImpl implements VariableService {
     @Autowired
     private ComponentRepository componentRepository;
 
-    public List<VariableReadDto> findAll() {
+    public List<VariableFullReadDto> findAll() {
         return variableRepository.findAll().stream()
-                .map(VariableMapper::toDto)
-                .sorted(Comparator.comparing(VariableReadDto::getCode))
+                .map(VariableMapper::toFullDto)
+                .sorted(Comparator.comparing(VariableFullReadDto::getCode))
                 .toList();
     }
 
-    public VariableReadDto findById(UUID id) throws Step2NotFoundException {
-        return VariableMapper.toDto(variableRepository.findById(id)
+    public VariableFullReadDto findById(UUID id) throws Step2NotFoundException {
+        return VariableMapper.toFullDto(variableRepository.findById(id)
                 .orElseThrow(() -> new Step2NotFoundException("Variable", id.toString())));
     }
 
-    public List<VariableReadDto> findByAnalysisId(UUID id) {
+    public List<VariableFullReadDto> findByAnalysisId(UUID id) {
         return componentRepository.findByAnalysisId(id).stream()
                 .filter(c -> !c.getVariables().isEmpty())
                 .flatMap(c -> variableRepository.findByComponentId(c.getId()).stream())
-                .map(VariableMapper::toDto)
-                .sorted(Comparator.comparing(VariableReadDto::getCode))
+                .map(VariableMapper::toFullDto)
+                .sorted(Comparator.comparing(VariableFullReadDto::getCode))
                 .toList();
     }
 
-    public List<VariableReadDto> findByComponentId(UUID id) {
+    public List<VariableFullReadDto> findByComponentId(UUID id) {
         return variableRepository.findByComponentId(id).stream()
-                .map(VariableMapper::toDto)
-                .sorted(Comparator.comparing(VariableReadDto::getCode))
+                .map(VariableMapper::toFullDto)
+                .sorted(Comparator.comparing(VariableFullReadDto::getCode))
                 .toList();
     }
 
-    public VariableReadDto insert(VariableInsertDto variableInsertDto) throws Step2NotFoundException {
+    public VariableFullReadDto insert(VariableInsertDto variableInsertDto) throws Step2NotFoundException {
         microstamp.step2.entity.Component component = componentRepository.findById(variableInsertDto.getComponentId())
                 .orElseThrow(() -> new Step2NotFoundException("Component", variableInsertDto.getComponentId().toString()));
 
         Variable variable = VariableMapper.toEntity(variableInsertDto, component);
         variableRepository.save(variable);
 
-        return VariableMapper.toDto(variable);
+        return VariableMapper.toFullDto(variable);
     }
 
     public void update(UUID id, VariableUpdateDto variableUpdateDto) throws Step2NotFoundException {

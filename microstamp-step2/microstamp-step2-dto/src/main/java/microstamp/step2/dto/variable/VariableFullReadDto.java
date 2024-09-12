@@ -1,10 +1,11 @@
-package microstamp.step2.dto.state;
+package microstamp.step2.dto.variable;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.state.StateReadDto;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StateReadDto {
+public class VariableFullReadDto {
 
     @NotNull
     private UUID id;
@@ -23,6 +24,6 @@ public class StateReadDto {
     @NotBlank
     private String code;
 
-    private VariableReadDto variable;
+    private List<StateReadDto> states;
 
 }

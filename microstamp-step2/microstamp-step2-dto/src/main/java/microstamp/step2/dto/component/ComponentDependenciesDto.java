@@ -2,7 +2,7 @@ package microstamp.step2.dto.component;
 
 import lombok.*;
 import microstamp.step2.dto.connection.ConnectionReadDto;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,5 +18,5 @@ public class ComponentDependenciesDto {
 
     private List<ConnectionReadDto> connections = new ArrayList<>();
 
-    private List<VariableReadDto> variables = new ArrayList<>();
+    private List<VariableFullReadDto> variables = new ArrayList<>();
 }

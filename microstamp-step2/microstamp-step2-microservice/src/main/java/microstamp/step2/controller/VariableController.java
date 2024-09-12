@@ -2,7 +2,7 @@ package microstamp.step2.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.dto.variable.VariableUpdateDto;
 import microstamp.step2.dto.variable.VariableInsertDto;
 import microstamp.step2.exception.Step2NotFoundException;
@@ -24,27 +24,27 @@ public class VariableController {
     private VariableService variableService;
 
     @GetMapping
-    public ResponseEntity<List<VariableReadDto>> findAll() {
+    public ResponseEntity<List<VariableFullReadDto>> findAll() {
         return new ResponseEntity<>(variableService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<VariableReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
+    public ResponseEntity<VariableFullReadDto> findById(@PathVariable("id") UUID id) throws Step2NotFoundException {
         return new ResponseEntity<>(variableService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/analysis/{id}"})
-    public ResponseEntity<List<VariableReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
+    public ResponseEntity<List<VariableFullReadDto>> findByAnalysisId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(variableService.findByAnalysisId(id), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/component/{id}"})
-    public ResponseEntity<List<VariableReadDto>> findByComponentId(@PathVariable("id") UUID id) {
+    public ResponseEntity<List<VariableFullReadDto>> findByComponentId(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(variableService.findByComponentId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<VariableReadDto> insert(@Valid @RequestBody VariableInsertDto variableInsertDto) throws Step2NotFoundException {
+    public ResponseEntity<VariableFullReadDto> insert(@Valid @RequestBody VariableInsertDto variableInsertDto) throws Step2NotFoundException {
         return new ResponseEntity<>(variableService.insert(variableInsertDto), HttpStatus.CREATED);
     }
 
