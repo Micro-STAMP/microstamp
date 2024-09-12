@@ -57,13 +57,8 @@ public class UnsafeControlActionService {
 
         uca.setConstraint(constraint);
 
-//        unsafeControlActionRepository.findFirstByName(uca.getName()).ifPresent(u -> {
-//            unsafeControlActionRepository.deleteById(u.getId());
-//        });
-
         UnsafeControlAction createdUCA = unsafeControlActionRepository.save(uca);
 
-        //verificar funcionamento disso mais tarde
         List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
         for (UUID stateId : ucaCreateDto.states_ids()) {
             UnsafeControlActionState stateAssociation = UnsafeControlActionState.builder()
@@ -75,13 +70,13 @@ public class UnsafeControlActionService {
         createdUCA.setStateAssociations(stateAssociations);
         createdUCA = unsafeControlActionRepository.save(uca);
 
-        return new UnsafeControlActionReadDto(createdUCA.getId(), createdUCA.getName(), hazard.code(), ucaCreateDto.rule_code());
+        return mapper.toUcaReadDto(createdUCA);
     }
 
     public List<UnsafeControlActionReadDto> createUCAsByRule(UUID ruleId) {
         Rule rule = ruleRepository.getReferenceById(ruleId);
         List<UnsafeControlActionReadDto> createdUCAs = new ArrayList<>();
-        // ! Gambiarra? Mas foi a única coisa que funcionou
+
         for (UCAType type : rule.getTypes()) {
             UnsafeControlActionCreateDto dto = UnsafeControlActionCreateDto.builder()
                     .control_action_id(rule.getControlActionId())
@@ -107,48 +102,21 @@ public class UnsafeControlActionService {
     }
 
     public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
-        return unsafeControlActionRepository.findAll()
-                .stream()
-                .map(mapper::toUcaReadDto)
-                .toList();
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository.findAll();
+        return mapper.toUcaReadDtoList(unsafeControlActions);
     }
 
     public List<UnsafeControlActionReadDto> readAllUCAByControlActionId(UUID controlActionId) {
-        return unsafeControlActionRepository
-                .findByControlActionId(controlActionId)
-                .stream()
-                .map(mapper::toUcaReadDto)
-                .toList();
+        step2Proxy.getControlActionById(controlActionId);
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository.findByControlActionId(controlActionId);
+        return mapper.toUcaReadDtoList(unsafeControlActions);
     }
-
-//    public List<UnsafeControlActionReadDto> readAllUCAByControllerId(UUID controllerId) {
-//        return unsafeControlActionRepository
-//                .findByControllerId(controllerId)
-//                .stream()
-//                .map(mapper::toUcaReadDto)
-//                .toList();
-//    }
 
     public List<UnsafeControlActionReadDto> readAllUCAByAnalysisId(UUID analysisId) {
-        return unsafeControlActionRepository
-                .findByAnalysisId(analysisId)
-                .stream()
-                .map(mapper::toUcaReadDto)
-                .toList();
+        authServerProxy.getAnalysisById(analysisId);
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository.findByAnalysisId(analysisId);
+        return mapper.toUcaReadDtoList(unsafeControlActions);
     }
-
-    //acho que não vai mais ter a opção de atualizar nome de uca
-//    public UnsafeControlActionReadDto updateUnsafeControlAction(UUID id, UnsafeControlActionUpdateDto ucaDto) {
-//        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
-//
-//        if (!uca.getRuleCode().isEmpty())
-//            throw new OperationNotAllowedException("Updating unsafe control actions created by rules is not allowed");
-//
-//        uca.setName(ucaDto.name());
-//        UnsafeControlAction updatedUca = unsafeControlActionRepository.save(uca);
-//
-//        return new UnsafeControlActionReadDto(unsafeControlActionRepository.save(updatedUca));
-//    }
 
     public void deleteUnsafeControlAction(UUID id) {
         UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);

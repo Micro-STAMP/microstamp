@@ -30,6 +30,7 @@ public class Rule {
             mappedBy = "rule",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @Builder.Default
     private List<RuleState> stateAssociations = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)
@@ -38,6 +39,7 @@ public class Rule {
     @ElementCollection(targetClass = UCAType.class)
     @CollectionTable(name = "rule_type", joinColumns = @JoinColumn(name = "rule_id"))
     @Enumerated(EnumType.STRING) @Column(name = "type")
+    @Builder.Default
     private Set<UCAType> types = new HashSet<>();
 
     public void addType(UCAType type) {
