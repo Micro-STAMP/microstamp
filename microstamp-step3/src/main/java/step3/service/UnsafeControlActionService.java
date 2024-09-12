@@ -75,7 +75,12 @@ public class UnsafeControlActionService {
         createdUCA.setStateAssociations(stateAssociations);
         createdUCA = unsafeControlActionRepository.save(uca);
 
-        return new UnsafeControlActionReadDto(createdUCA.getId(), createdUCA.getName(), hazard.code(), ucaCreateDto.rule_code());
+        return UnsafeControlActionReadDto.builder()
+                .id(createdUCA.getId())
+                .type(createdUCA.getType().toString())
+                .hazard_code(hazard.code())
+                .rule_code(createdUCA.getRuleCode())
+                .build();
     }
 
     public List<UnsafeControlActionReadDto> createUCAsByRule(UUID ruleId) {
