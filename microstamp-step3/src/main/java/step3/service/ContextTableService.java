@@ -71,8 +71,10 @@ public class ContextTableService {
     }
 
     public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
-        ContextTable contextTable = contextTableRepository.findByControlActionId(controlActionId)
+        ContextTable contextTable = contextTableRepository
+                .findByControlActionId(controlActionId)
                 .orElseThrow(() -> new EntityNotFoundException("Context table not found with control action id: " + controlActionId));
+
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
 

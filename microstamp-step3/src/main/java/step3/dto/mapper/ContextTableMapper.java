@@ -30,6 +30,8 @@ public class ContextTableMapper {
                 .source_id(controlAction.connection().source().id())
                 .target_id(controlAction.connection().target().id())
                 .contexts(this.generateContextList(contextsList))
+                .totalPages(contexts.getTotalPages())
+                .currentPage(contexts.getNumber())
                 .build();
     }
 

@@ -11,7 +11,7 @@ import java.util.UUID;
 public record ContextTableReadDto(
         UUID id,
         List<ContextDto> contexts,
-        UUID controller_id
+        UUID control_action_id
 ) {
 
     // Constructors -----------------------------------

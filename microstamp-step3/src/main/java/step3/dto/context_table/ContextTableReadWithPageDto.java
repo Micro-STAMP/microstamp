@@ -10,5 +10,7 @@ public record ContextTableReadWithPageDto(
         UUID id,
         UUID source_id,
         UUID target_id,
-        List<ContextReadDto> contexts
+        List<ContextReadDto> contexts,
+        int totalPages,
+        int currentPage
         ) { }
