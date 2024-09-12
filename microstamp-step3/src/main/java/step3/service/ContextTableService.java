@@ -58,19 +58,29 @@ public class ContextTableService {
         ContextTable contextTable = generateContextTable(variables);
         contextTable.setControlActionId(controlAction.id());
         ContextTable createContextTable = contextTableRepository.save(contextTable);
-        return new ContextTableReadDto(createContextTable);
+        return mapper.toContextTableReadDto(createContextTable);
     }
 
-    public ContextTableReadDto readContextTableById(UUID id) {
+    public ContextTableReadWithPageDto readContextTableById(UUID id, int page, int size) {
         ContextTable contextTable = contextTableRepository.getReferenceById(id);
-        return new ContextTableReadDto(contextTable);
+
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
+
+        return mapper.toContextTableReadWithPageDto(contextTable, contextsPage);
     }
+
     public List<ContextTableReadDto> readAllContextTables() {
         List<ContextTable> contextTables = contextTableRepository.findAll();
-        return contextTables.stream().map(ContextTableReadDto::new).toList();
+
+        return contextTables.stream()
+                .map(mapper::toContextTableReadDto)
+                .toList();
     }
 
     public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
+        step2Proxy.getControlActionById(controlActionId);
+
         ContextTable contextTable = contextTableRepository
                 .findByControlActionId(controlActionId)
                 .orElseThrow(() -> new EntityNotFoundException("Context table not found with control action id: " + controlActionId));
