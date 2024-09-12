@@ -1,128 +1,118 @@
-//package step3.service;
-//
-//import jakarta.persistence.EntityNotFoundException;
-//import lombok.AllArgsConstructor;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//import org.springframework.web.server.ResponseStatusException;
-//import step3.dto.context_table.*;
-//import step3.entity.*;
-//import step3.infra.exceptions.OperationNotAllowedException;
-//import step3.repository.*;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//@Service
-//@AllArgsConstructor
-//public class ContextTableService {
-//    private final ContextTableRepository contextTableRepository;
-//    private final ContextRepository contextRepository;
-//    private final ControllerRepository controllerRepository;
-//
-//    // Create -----------------------------------------
-//
-//    public ContextTableReadDto createContextTable(ContextTableCreateDto contextTableCreateDto) {
-//        Controller controller = controllerRepository.getReferenceById(contextTableCreateDto.controller_id());
-//
-//        if (controller.getVariables().isEmpty()) {
-//            throw new OperationNotAllowedException("Controller must have at least one variable");
-//        }
-//
-//        List<Variable> variables = controller.getVariables();
-//
-//        if (variables.stream().anyMatch(variable -> variable.getValues().isEmpty())) {
-//            throw new OperationNotAllowedException("Variables must have at least one value");
-//        }
-//
-//        if (contextTableRepository.findByControllerId(controller.getId()).isPresent()) {
-//            throw new OperationNotAllowedException("Controller already has a context table");
-//        }
-//
-//        ContextTable contextTable = generateContextTable(variables);
-//        contextTable.setController(controller);
-//        ContextTable createContextTable = contextTableRepository.save(contextTable);
-//        return new ContextTableReadDto(createContextTable);
-//    }
-//
-//    // Read -------------------------------------------
-//
-//    public ContextTableReadDto readContextTableById(Long id) {
-//        ContextTable contextTable = contextTableRepository.getReferenceById(id);
-//        return new ContextTableReadDto(contextTable);
-//    }
-//    public List<ContextTableReadDto> readAllContextTables() {
-//        List<ContextTable> contextTables = contextTableRepository.findAll();
-//        return contextTables.stream().map(ContextTableReadDto::new).toList();
-//    }
-//
-//    public ContextTableReadWithPageDto readContextTableByControllerId(Long controllerId, int page, int size) {
-//        ContextTable contextTable = contextTableRepository.findByControllerId(controllerId)
-//                .orElseThrow(() -> new EntityNotFoundException("Context table not found with controller id: " + controllerId));
-//        Pageable pageable = Pageable.ofSize(size).withPage(page);
-//        Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
-//
-//        return new ContextTableReadWithPageDto(contextTable, contextsPage);
-//    }
-//
-////    public ContextTableReadDto readContextTableByController(Long controller_id) {
-////        List<ContextTable> contextTables = contextTableRepository.findAll();
-////        ContextTable contextTable = null;
-////        for (ContextTable ct : contextTables) {
-////            if (ct.getController().getId().equals(controller_id)) {
-////                contextTable = ct;
-////            }
-////        }
-////
-////        // controllerRepository.getReferenceById(controller_id);
-////        if (contextTable != null) {
-////            return new ContextTableReadDto(contextTable);
-////        } else {
-////            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Controller not found with id: " + controller_id);
-////        }
-////    }
-//
-//    // Update -----------------------------------------
-//
-//
-//    // Delete -----------------------------------------
-//    @Transactional
-//    public void deleteContextTable(Long id) {
-//        var contextTable = contextTableRepository
-//                .findById(id)
-//                .orElseThrow(() -> new RuntimeException("Not found ct"));
-//        contextTable.getContexts().clear();
-//        contextTableRepository.save(contextTable);
-//
-//        var controller = controllerRepository.getReferenceById(contextTable.getController().getId());
-//        controller.setContextTable(null);
-//        controllerRepository.save(controller);
-//
-////        contextTableRepository.deleteById(id);
-//    }
-//
-//    // Methods ----------------------------------------
-//
-//    public ContextTable generateContextTable(List<Variable> variables) {
-//        ContextTable contextTable = new ContextTable();
-//        generateAllContexts(variables, 0, new ArrayList<>(), contextTable);
-//        return contextTable;
-//    }
-//    private void generateAllContexts(List<Variable> variables, int index, List<Value> currentValues, ContextTable contextTable) {
-//        if (index == variables.size()) {
-//            contextTable.addContext(new Context(currentValues));
-//            return;
-//        }
-//        Variable currentVariable = variables.get(index);
-//        for (Value value : currentVariable.getValues()) {
-//            List<Value> updatedValues = new ArrayList<>(currentValues);
-//            updatedValues.add(value);
-//            generateAllContexts(variables, index + 1, updatedValues, contextTable);
-//        }
-//    }
-//
-//    // ------------------------------------------------
-//}
+package step3.service;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import step3.dto.context_table.ContextTableCreateDto;
+import step3.dto.context_table.ContextTableReadDto;
+import step3.dto.context_table.ContextTableReadWithPageDto;
+import step3.dto.mapper.ContextTableMapper;
+import step3.dto.step2.ComponentReadDto;
+import step3.dto.step2.ControlActionReadDto;
+import step3.dto.step2.StateReadDto;
+import step3.dto.step2.VariableReadDto;
+import step3.entity.Context;
+import step3.entity.ContextTable;
+import step3.infra.exceptions.OperationNotAllowedException;
+import step3.proxy.Step2Proxy;
+import step3.repository.ContextRepository;
+import step3.repository.ContextTableRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@AllArgsConstructor
+public class ContextTableService {
+    private final ContextTableRepository contextTableRepository;
+    private final ContextRepository contextRepository;
+    private final Step2Proxy step2Proxy;
+    private final ContextTableMapper mapper;
+
+    public ContextTableReadDto createContextTable(ContextTableCreateDto contextTableCreateDto) {
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(contextTableCreateDto.control_action_id());
+
+        ComponentReadDto source = controlAction.connection().source();
+        ComponentReadDto target = controlAction.connection().target();
+
+        List<VariableReadDto> variables = new ArrayList<>();
+        variables.addAll(source.variables());
+        variables.addAll(target.variables());
+
+        if (variables.isEmpty()) {
+            throw new OperationNotAllowedException("Components must have at least one variable");
+        }
+
+        if (variables.stream().anyMatch(variable -> variable.states().isEmpty())) {
+            throw new OperationNotAllowedException("Variables must have at least one value");
+        }
+
+        if (contextTableRepository.findByControlActionId(controlAction.id()).isPresent()) {
+            throw new OperationNotAllowedException("Connection already has a context table");
+        }
+
+        ContextTable contextTable = generateContextTable(variables);
+        contextTable.setControlActionId(controlAction.id());
+        ContextTable createContextTable = contextTableRepository.save(contextTable);
+        return new ContextTableReadDto(createContextTable);
+    }
+
+    public ContextTableReadDto readContextTableById(UUID id) {
+        ContextTable contextTable = contextTableRepository.getReferenceById(id);
+        return new ContextTableReadDto(contextTable);
+    }
+    public List<ContextTableReadDto> readAllContextTables() {
+        List<ContextTable> contextTables = contextTableRepository.findAll();
+        return contextTables.stream().map(ContextTableReadDto::new).toList();
+    }
+
+    public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
+        ContextTable contextTable = contextTableRepository.findByControlActionId(controlActionId)
+                .orElseThrow(() -> new EntityNotFoundException("Context table not found with control action id: " + controlActionId));
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
+
+        return mapper.toContextTableReadWithPageDto(contextTable, contextsPage);
+    }
+
+    @Transactional
+    public void deleteContextTable(UUID id) {
+        var contextTable = contextTableRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Not found context table with id: " + id));
+        contextTable.getContexts().clear();
+        contextTableRepository.save(contextTable);
+
+        contextTableRepository.deleteById(id);
+    }
+
+    public ContextTable generateContextTable(List<VariableReadDto> variables) {
+        ContextTable contextTable = new ContextTable();
+        generateAllContexts(variables, 0, new ArrayList<>(), contextTable);
+        return contextTable;
+    }
+
+    private void generateAllContexts(
+            List<VariableReadDto> variables,
+            int index,
+            List<StateReadDto> currentStates,
+            ContextTable contextTable) {
+
+        if (index == variables.size()) {
+            List<UUID> statesId = currentStates.stream().map(StateReadDto::id).toList();
+            contextTable.addContext(new Context(statesId));
+            return;
+        }
+
+        VariableReadDto currentVariable = variables.get(index);
+        for (StateReadDto state : currentVariable.states()) {
+            List<StateReadDto> updatedStates = new ArrayList<>(currentStates);
+            updatedStates.add(state);
+            generateAllContexts(variables, index + 1, updatedStates, contextTable);
+        }
+    }
+}

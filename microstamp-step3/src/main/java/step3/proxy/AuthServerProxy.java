@@ -3,7 +3,7 @@ package step3.proxy;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import step3.dto.mit.auth.AnalysisReadDto;
+import step3.dto.auth.AnalysisReadDto;
 import step3.infra.feign.FeignClientConfig;
 
 import java.util.UUID;
