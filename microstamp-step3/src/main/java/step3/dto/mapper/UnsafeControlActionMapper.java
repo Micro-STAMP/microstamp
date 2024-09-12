@@ -26,12 +26,19 @@ public class UnsafeControlActionMapper {
 
         return UnsafeControlActionReadDto.builder()
                 .id(uca.getId())
+                .analysis_id(uca.getAnalysisId())
                 .name(uca.generateName(step2Proxy))
                 .hazard_code(hazardCode)
                 .rule_code(uca.getRuleCode())
                 .type(uca.getType().toString())
                 .states(states)
                 .build();
+    }
+
+    public List<UnsafeControlActionReadDto> toUcaReadDtoList(List<UnsafeControlAction> ucas) {
+        return ucas.stream()
+                .map(this::toUcaReadDto)
+                .toList();
     }
 
     private List<StateReadDto> getStatesByUca(UnsafeControlAction uca) {
