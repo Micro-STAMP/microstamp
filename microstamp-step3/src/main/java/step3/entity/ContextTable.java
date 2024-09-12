@@ -25,7 +25,6 @@ public class ContextTable {
             mappedBy = "contextTable",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @Builder.Default
     private List<Context> contexts = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)

@@ -30,7 +30,6 @@ public class Rule {
             mappedBy = "rule",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @Builder.Default
     private List<RuleState> stateAssociations = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)
