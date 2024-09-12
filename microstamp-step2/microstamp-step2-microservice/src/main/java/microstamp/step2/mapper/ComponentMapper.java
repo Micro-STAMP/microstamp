@@ -3,7 +3,7 @@ package microstamp.step2.mapper;
 import microstamp.step2.dto.component.ComponentInsertDto;
 import microstamp.step2.dto.component.ComponentReadDto;
 import microstamp.step2.dto.responsibility.ResponsibilityReadDto;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.entity.*;
 
 import java.util.Comparator;
@@ -29,8 +29,8 @@ public class ComponentMapper {
                     : null)
                 .variables(component.getVariables() != null
                     ? component.getVariables().stream()
-                        .map(VariableMapper::toDto)
-                        .sorted(Comparator.comparing(VariableReadDto::getCode))
+                        .map(VariableMapper::toFullDto)
+                        .sorted(Comparator.comparing(VariableFullReadDto::getCode))
                         .toList()
                     : null)
                 .build();

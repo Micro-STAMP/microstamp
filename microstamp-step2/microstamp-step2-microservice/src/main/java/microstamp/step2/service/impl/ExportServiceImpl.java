@@ -20,7 +20,7 @@ import microstamp.step2.dto.export.ExportReadDto;
 import microstamp.step2.dto.image.ImageReadDto;
 import microstamp.step2.dto.responsibility.ResponsibilityReadDto;
 import microstamp.step2.dto.state.StateReadDto;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.service.ComponentService;
 import microstamp.step2.service.ConnectionService;
 import microstamp.step2.service.ExportService;
@@ -120,7 +120,7 @@ public class ExportServiceImpl implements ExportService {
             if(!component.getVariables().isEmpty()) {
                 componentRow.append("\n[Variables]:");
 
-                for(VariableReadDto variable : component.getVariables()) {
+                for(VariableFullReadDto variable : component.getVariables()) {
                     componentRow.append("\n").append("\u200B    ")
                             .append("-[").append(variable.getCode()).append("] ").append(variable.getName());
 

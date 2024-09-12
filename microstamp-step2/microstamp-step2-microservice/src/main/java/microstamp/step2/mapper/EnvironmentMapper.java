@@ -1,7 +1,7 @@
 package microstamp.step2.mapper;
 
 import microstamp.step2.dto.environment.EnvironmentReadDto;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.entity.Environment;
 
 import java.util.Comparator;
@@ -18,8 +18,8 @@ public class EnvironmentMapper {
                 .border(environment.getBorder())
                 .variables(environment.getVariables() != null
                     ? environment.getVariables().stream()
-                        .map(VariableMapper::toDto)
-                        .sorted(Comparator.comparing(VariableReadDto::getCode))
+                        .map(VariableMapper::toFullDto)
+                        .sorted(Comparator.comparing(VariableFullReadDto::getCode))
                         .toList()
                     : null)
                 .build();
