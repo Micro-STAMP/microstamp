@@ -30,8 +30,8 @@ public class UnsafeControlAction {
 
     private String name;  // NAME : <Source> <Type> <Control Action> <Context>
 
-    @JdbcTypeCode(Types.VARCHAR)
-    private UUID controllerId; //v ver depois onde é o melhor lugar para isso
+//    @JdbcTypeCode(Types.VARCHAR)
+//    private UUID controllerId; //v ver depois onde é o melhor lugar para isso
 
     @JdbcTypeCode(Types.VARCHAR)
     private UUID controlActionId;
@@ -62,7 +62,8 @@ public class UnsafeControlAction {
     public String generateName(Step2Proxy step2Proxy) {
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(this.controlActionId);
 
-        String source = step2Proxy.getControllerById(controllerId).name();
+
+        String source = controlAction.connection().source().name();
         String typeAndCA = getTypeAndControlActionString(controlAction.name());
         String context = generateContextString(step2Proxy);
 
@@ -72,7 +73,7 @@ public class UnsafeControlAction {
     public String generateConstraintName(Step2Proxy step2Proxy) {
         var controlAction = step2Proxy.getControlActionById(this.getControlActionId());
 
-        String source = step2Proxy.getControllerById(controllerId).name();
+        String source = controlAction.connection().source().name();
         String typeAndCA = getTypeAndControlActionString(controlAction.name());
         String context = generateContextString(step2Proxy);
 

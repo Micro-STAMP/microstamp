@@ -16,8 +16,6 @@ public record RuleCreateDto(
         UUID analysis_id,
         @NotNull
         UUID control_action_id,
-        @NotNull
-        UUID controller_id,
         @NotEmpty
         List<UUID> values_ids,
         @NotEmpty

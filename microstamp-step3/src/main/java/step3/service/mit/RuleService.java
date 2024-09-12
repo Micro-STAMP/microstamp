@@ -58,7 +58,6 @@ public class RuleService {
         Rule rule = Rule.builder()
                 .name(ruleCreateDto.name())
                 .controlActionId(ruleCreateDto.control_action_id())
-                .controllerId(ruleCreateDto.controller_id())
                 .analysisId(ruleCreateDto.analysis_id())
                 .hazardId(ruleCreateDto.hazard_id())
                 .types(ruleCreateDto.types())

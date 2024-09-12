@@ -5,6 +5,7 @@ import java.util.UUID;
 public record ControlActionReadDto(
         UUID id,
         String name,
-        String code
+        String code,
+        ConnectionReadDto connection
 ) {
 }

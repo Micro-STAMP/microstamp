@@ -28,7 +28,7 @@ public class ContextTable {
     private List<Context> contexts = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)
-    private UUID controllerId;
+    private UUID controlActionId;
 
     public void addContext(Context context) {
         this.contexts.add(context);

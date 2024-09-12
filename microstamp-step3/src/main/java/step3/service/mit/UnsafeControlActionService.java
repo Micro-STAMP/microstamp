@@ -45,7 +45,6 @@ public class UnsafeControlActionService {
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())
-                .controllerId(ucaCreateDto.controller_id())
                 .hazardId(ucaCreateDto.hazard_id())
                 .type(ucaCreateDto.type())
                 .analysisId(ucaCreateDto.analysis_id())
@@ -86,7 +85,6 @@ public class UnsafeControlActionService {
         for (UCAType type : rule.getTypes()) {
             UnsafeControlActionCreateDto dto = UnsafeControlActionCreateDto.builder()
                     .control_action_id(rule.getControlActionId())
-                    .controller_id(rule.getControllerId())
                     .hazard_id(rule.getHazardId())
                     .analysis_id(rule.getAnalysisId())
                     .rule_code(rule.getCodeName())
@@ -123,13 +121,13 @@ public class UnsafeControlActionService {
                 .toList();
     }
 
-    public List<UnsafeControlActionReadDto> readAllUCAByControllerId(UUID controllerId) {
-        return unsafeControlActionRepository
-                .findByControllerId(controllerId)
-                .stream()
-                .map(mapper::toUcaReadDto)
-                .toList();
-    }
+//    public List<UnsafeControlActionReadDto> readAllUCAByControllerId(UUID controllerId) {
+//        return unsafeControlActionRepository
+//                .findByControllerId(controllerId)
+//                .stream()
+//                .map(mapper::toUcaReadDto)
+//                .toList();
+//    }
 
     public List<UnsafeControlActionReadDto> readAllUCAByAnalysisId(UUID analysisId) {
         return unsafeControlActionRepository

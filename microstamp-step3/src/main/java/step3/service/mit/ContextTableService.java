@@ -10,9 +10,7 @@ import step3.dto.mit.context_table.ContextTableCreateDto;
 import step3.dto.mit.context_table.ContextTableReadDto;
 import step3.dto.mit.context_table.ContextTableReadWithPageDto;
 import step3.dto.mit.mapper.ContextTableMapper;
-import step3.dto.mit.step2.ComponentReadDto;
-import step3.dto.mit.step2.StateReadDto;
-import step3.dto.mit.step2.VariableReadDto;
+import step3.dto.mit.step2.*;
 import step3.entity.mit.Context;
 import step3.entity.mit.ContextTable;
 import step3.infra.exceptions.OperationNotAllowedException;
@@ -33,24 +31,29 @@ public class ContextTableService {
     private final ContextTableMapper mapper;
 
     public ContextTableReadDto createContextTable(ContextTableCreateDto contextTableCreateDto) {
-        ComponentReadDto controller = step2Proxy.getControllerById(contextTableCreateDto.controller_id());
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(contextTableCreateDto.control_action_id());
 
-        if (controller.variables().isEmpty()) {
-            throw new OperationNotAllowedException("Controller must have at least one variable");
+        ComponentReadDto source = controlAction.connection().source();
+        ComponentReadDto target = controlAction.connection().target();
+
+        List<VariableReadDto> variables = new ArrayList<>();
+        variables.addAll(source.variables());
+        variables.addAll(target.variables());
+
+        if (variables.isEmpty()) {
+            throw new OperationNotAllowedException("Components must have at least one variable");
         }
-
-        List<VariableReadDto> variables = controller.variables();
 
         if (variables.stream().anyMatch(variable -> variable.states().isEmpty())) {
             throw new OperationNotAllowedException("Variables must have at least one value");
         }
 
-        if (contextTableRepository.findByControllerId(controller.id()).isPresent()) {
-            throw new OperationNotAllowedException("Controller already has a context table");
+        if (contextTableRepository.findByControlActionId(controlAction.id()).isPresent()) {
+            throw new OperationNotAllowedException("Connection already has a context table");
         }
 
         ContextTable contextTable = generateContextTable(variables);
-        contextTable.setControllerId(controller.id());
+        contextTable.setControlActionId(controlAction.id());
         ContextTable createContextTable = contextTableRepository.save(contextTable);
         return new ContextTableReadDto(createContextTable);
     }
@@ -64,9 +67,9 @@ public class ContextTableService {
         return contextTables.stream().map(ContextTableReadDto::new).toList();
     }
 
-    public ContextTableReadWithPageDto readContextTableByControllerId(UUID controllerId, int page, int size) {
-        ContextTable contextTable = contextTableRepository.findByControllerId(controllerId)
-                .orElseThrow(() -> new EntityNotFoundException("Context table not found with controller id: " + controllerId));
+    public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
+        ContextTable contextTable = contextTableRepository.findByControlActionId(controlActionId)
+                .orElseThrow(() -> new EntityNotFoundException("Context table not found with control action id: " + controlActionId));
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
 

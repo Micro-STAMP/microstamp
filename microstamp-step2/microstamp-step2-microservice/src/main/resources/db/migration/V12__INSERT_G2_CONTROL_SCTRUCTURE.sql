@@ -20,7 +20,7 @@ INSERT INTO components (dtype, id, border, is_visible, name, father_id, code, an
 ("ControlledProcess","53e41c95-f544-48a8-9a44-947ee9c1dd59",1,1,"Control Algorithm","8160f03e-a749-42df-9f86-55801ba5bb94","CP.03",@analysis_id),
 ("ControlledProcess","0f810a62-729b-4ba4-907c-3dd589f7bfad",1,1,"Model of Controlled Process","8160f03e-a749-42df-9f86-55801ba5bb94","CP.04",@analysis_id),
 ("Controller","67a960b7-b7de-4e4a-ae85-5019326c215f",1,1,"Other Controllers/Systems",NULL,"C.12",@analysis_id),
-("Actuator","f1fcd23a-cb25-40da-9016-3ce0e66d6111",1,1,"Actuators",NULL,"C.01",@analysis_id),
+("Actuator","f1fcd23a-cb25-40da-9016-3ce0e66d6111",1,1,"Actuators",NULL,"A.01",@analysis_id),
 ("Sensor","c3203daa-a22e-4067-9ac3-315a0e677fea",1,1,"Sensors",NULL,"S.03",@analysis_id),
 ("Controller","ce324f3b-29bd-43f3-ac15-09d0c1e90dd3",1,1,"Other Controllers/Systems",NULL,"C.13",@analysis_id),
 ("ControlledProcess","c26e9e2b-8089-492f-b925-04747ab3bad5",1,1,"Controlled Process",NULL,"CP.05",@analysis_id);

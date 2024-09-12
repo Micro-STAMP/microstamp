@@ -21,8 +21,6 @@ public class Rule {
     private UUID id;
     @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;
-    @JdbcTypeCode(Types.VARCHAR)
-    private UUID controllerId;
     private String name;
     private int code;
     @JdbcTypeCode(Types.VARCHAR)

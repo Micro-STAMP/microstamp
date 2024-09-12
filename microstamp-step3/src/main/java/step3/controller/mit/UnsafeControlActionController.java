@@ -59,10 +59,10 @@ public class UnsafeControlActionController {
         return ResponseEntity.ok(unsafeControlActionService.readAllUCAByControlActionId(controlActionId));
     }
 
-    @GetMapping("/controller/{controllerId}")
-    public ResponseEntity<List<UnsafeControlActionReadDto>> readAllUCAByControllerId(@PathVariable UUID controllerId) {
-        return ResponseEntity.ok(unsafeControlActionService.readAllUCAByControllerId(controllerId));
-    }
+//    @GetMapping("/controller/{controllerId}")
+//    public ResponseEntity<List<UnsafeControlActionReadDto>> readAllUCAByControllerId(@PathVariable UUID controllerId) {
+//        return ResponseEntity.ok(unsafeControlActionService.readAllUCAByControllerId(controllerId));
+//    }
 
     // Update -----------------------------------------
 
