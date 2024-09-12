@@ -1,4 +1,4 @@
-package step3.infra.feign;
+package step3.infra.config.feign;
 
 import feign.RequestInterceptor;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package step3.infra.security;
+package step3.infra.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package step3.infra.doc;
+package step3.infra.config.doc;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
