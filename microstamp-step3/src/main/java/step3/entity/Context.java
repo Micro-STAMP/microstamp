@@ -30,6 +30,7 @@ public class Context {
             mappedBy = "context",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @Builder.Default
     private List<ContextState> stateAssociations = new ArrayList<>();
 
     @ManyToOne @JoinColumn(name = "context_table_id")

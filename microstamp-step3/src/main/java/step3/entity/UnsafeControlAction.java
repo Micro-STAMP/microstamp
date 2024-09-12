@@ -40,6 +40,7 @@ public class UnsafeControlAction {
             mappedBy = "unsafeControlAction",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @Builder.Default
     private List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
 
     @JdbcTypeCode(Types.VARCHAR)
