@@ -16,16 +16,4 @@ public record UnsafeControlActionReadDto(
         List<StateReadDto> states,
         String type
 ) {
-
-    // Constructors -----------------------------------
-
-//    public UnsafeControlActionReadDto(UnsafeControlAction uca) {
-//        this(
-//                uca.getId(),
-//                uca.getName(),
-//                uca.getProject().getName(),
-//                uca.getHazard().getTagName(),
-//                uca.getRuleTag()
-//        );
-//    }
 }

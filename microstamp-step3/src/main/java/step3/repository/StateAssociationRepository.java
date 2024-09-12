@@ -8,6 +8,5 @@ import java.util.UUID;
 
 public interface StateAssociationRepository extends JpaRepository<UnsafeControlActionState, UUID> {
     void deleteAllByUnsafeControlActionId(UUID unsafeControlActionId);
-    List<UnsafeControlActionState> findAllByUnsafeControlActionId(UUID unsafeControlActionId);
 
 }

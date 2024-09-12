@@ -15,7 +15,6 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 400
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Step3ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         List<MissingField> missingFields = exception.getFieldErrors()
@@ -44,7 +43,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errorMessage);
     }
 
-    // 404
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Step3ExceptionResponse> handleEntityNotFoundException(EntityNotFoundException exception) {
         Step3ExceptionResponse errorMessage = Step3ExceptionResponse.builder()
@@ -56,7 +54,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
 
-    // 405
     @ExceptionHandler(OperationNotAllowedException.class)
     public ResponseEntity<Step3ExceptionResponse> handleOperationNotAllowedException(OperationNotAllowedException exception) {
         Step3ExceptionResponse errorMessage = Step3ExceptionResponse.builder()
@@ -77,6 +74,5 @@ public class GlobalExceptionHandler {
 //                .build();
 //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
 //    }
-
 
 }

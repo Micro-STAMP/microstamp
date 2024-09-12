@@ -51,9 +51,8 @@ public class RuleService {
 
     public RuleReadDto createRule(RuleCreateDto ruleCreateDto) {
         authServerProxy.getAnalysisById(ruleCreateDto.analysis_id());
-        List<StateReadDto> states = getRuleStates(ruleCreateDto.states_ids());
-        ControlActionReadDto controlAction = step2Proxy.getControlActionById(ruleCreateDto.control_action_id());
-        HazardReadDto hazard = step1Proxy.getHazardById(ruleCreateDto.hazard_id());
+        step2Proxy.getControlActionById(ruleCreateDto.control_action_id());
+        step1Proxy.getHazardById(ruleCreateDto.hazard_id());
 
         Rule rule = Rule.builder()
                 .name(ruleCreateDto.name())

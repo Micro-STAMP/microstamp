@@ -39,9 +39,8 @@ public class UnsafeControlActionService {
 
     public UnsafeControlActionReadDto createUnsafeControlAction(UnsafeControlActionCreateDto ucaCreateDto) {
         authServerProxy.getAnalysisById(ucaCreateDto.analysis_id());
+        step1Proxy.getHazardById(ucaCreateDto.hazard_id());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.control_action_id());
-        List<StateReadDto> states = getUCAStates(ucaCreateDto.states_ids());
-        HazardReadDto hazard = step1Proxy.getHazardById(ucaCreateDto.hazard_id());
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())

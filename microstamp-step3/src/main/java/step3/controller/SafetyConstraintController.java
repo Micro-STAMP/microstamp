@@ -14,16 +14,10 @@ import java.util.UUID;
 public class SafetyConstraintController {
     private final SafetyConstraintService safetyConstraintService;
 
-    // Constructors -----------------------------------
-
     @Autowired
     public SafetyConstraintController(SafetyConstraintService safetyConstraintService) {
         this.safetyConstraintService = safetyConstraintService;
     }
-
-    // Create -----------------------------------------
-
-    // Read -------------------------------------------
 
     @GetMapping("/{id}")
     public ResponseEntity<SafetyConstraintReadDto> readSafetyConstraint(@PathVariable UUID id) {
@@ -37,17 +31,4 @@ public class SafetyConstraintController {
     public ResponseEntity<List<SafetyConstraintReadDto>> readAllSafetyConstraints() {
         return ResponseEntity.ok(safetyConstraintService.readAllSafetyConstraints());
     }
-
-    // Update -----------------------------------------
-
-//    @PutMapping("/{id}") @Transactional
-//    public ResponseEntity<SafetyConstraintReadDto> updateSafetyConstraint(@PathVariable UUID id, @RequestBody SafetyConstraintUpdateDto safetyConstraint) {
-//        SafetyConstraintReadDto updatedSC = safetyConstraintService.updateSafetyConstraint(id, safetyConstraint);
-//        return ResponseEntity.ok(updatedSC);
-//    }
-
-    // Delete -----------------------------------------
-
-
-    // ------------------------------------------------
 }

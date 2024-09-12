@@ -25,7 +25,6 @@ public class SafetyConstraint {
     @OneToOne @JoinColumn(name = "uca_id")
     UnsafeControlAction unsafeControlAction;
 
-    //acho que pode remover esses construtores
     public SafetyConstraint(String name) {
         this.name = name;
     }

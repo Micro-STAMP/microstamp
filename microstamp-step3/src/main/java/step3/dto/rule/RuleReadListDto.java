@@ -18,42 +18,4 @@ public record RuleReadListDto(
         Set<UCAType> types,
         HazardReadDto hazard,
         String code
-) {
-
-    // Constructors -----------------------------------
-
-//    public RuleReadListDto(Rule rule) {
-//        this(
-//                rule.getId(),
-//                rule.getName(),
-//                rule.getControlAction().getName(),
-//                rule.getValues().stream().map(ValueDto::new).toList(),
-//                rule.getTypes(),
-//                new HazardDto(rule.getHazard()),
-//                rule.getTagName()
-//        );
-//    }
-//
-//    // DTOs -------------------------------------------
-//
-//    private record ValueDto(Long value_id, String value_name, Long variable_id,String variable_name) {
-//        public ValueDto(Value value) {
-//            this(
-//                    value.getId(),
-//                    value.getName(),
-//                    value.getVariable().getId(),
-//                    value.getVariable().getName()
-//            );
-//        }
-//    }
-//    public record HazardDto(Long id, String name) {
-//        public HazardDto(Hazard hazard) {
-//            this(
-//                    hazard.getId(),
-//                    hazard.getName()
-//            );
-//        }
-//    }
-
-    // ------------------------------------------------
-}
+) {}

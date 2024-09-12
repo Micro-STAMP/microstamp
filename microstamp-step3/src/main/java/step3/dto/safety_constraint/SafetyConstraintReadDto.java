@@ -11,17 +11,4 @@ public record SafetyConstraintReadDto(
         UUID id,
         String name,
         UUID uca_id
-) {
-
-    // Constructors -----------------------------------
-
-    public SafetyConstraintReadDto(SafetyConstraint safetyConstraint) {
-        this(
-            safetyConstraint.getId(),
-            safetyConstraint.getName(),
-            safetyConstraint.getUnsafeControlAction().getId()
-        );
-    }
-
-    // ------------------------------------------------
-}
+) {}

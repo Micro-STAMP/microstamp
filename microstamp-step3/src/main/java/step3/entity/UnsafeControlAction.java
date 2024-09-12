@@ -30,9 +30,6 @@ public class UnsafeControlAction {
 
     private String name;  // NAME : <Source> <Type> <Control Action> <Context>
 
-//    @JdbcTypeCode(Types.VARCHAR)
-//    private UUID controllerId; //v ver depois onde é o melhor lugar para isso
-
     @JdbcTypeCode(Types.VARCHAR)
     private UUID controlActionId;
 

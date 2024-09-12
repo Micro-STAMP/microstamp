@@ -20,14 +20,10 @@ import java.util.UUID;
 public class RuleController {
     private final RuleService ruleService;
 
-    // Constructors -----------------------------------
-
     @Autowired
     public RuleController(RuleService ruleService) {
         this.ruleService = ruleService;
     }
-
-    // Create -----------------------------------------
 
     @PostMapping @Transactional
     public ResponseEntity<RuleReadDto> createRule(@RequestBody @Valid RuleCreateDto ruleCreateDto, UriComponentsBuilder uriBuilder) {
@@ -35,8 +31,6 @@ public class RuleController {
         URI uri = uriBuilder.path("/rule/{id}").buildAndExpand(rule.id()).toUri();
         return ResponseEntity.created(uri).body(rule);
     }
-
-    // Read -------------------------------------------
 
     @GetMapping("/{id}")
     public ResponseEntity<RuleReadDto> readRule(@PathVariable UUID id) {
@@ -52,15 +46,9 @@ public class RuleController {
         return ResponseEntity.ok(ruleService.readRulesByControlActionId(controlActionId));
     }
 
-    // Update -----------------------------------------
-
-    // Delete -----------------------------------------
-
     @DeleteMapping("/{id}") @Transactional
     public ResponseEntity<Void> deleteRule(@PathVariable UUID id) {
         ruleService.deleteRule(id);
         return ResponseEntity.noContent().build();
     }
-
-    // ------------------------------------------------
 }

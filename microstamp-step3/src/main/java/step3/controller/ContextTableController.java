@@ -20,14 +20,10 @@ import java.util.UUID;
 public class ContextTableController {
     private final ContextTableService contextTableService;
 
-    // Constructors -----------------------------------
-
     @Autowired
     public ContextTableController(ContextTableService contextTableService) {
         this.contextTableService = contextTableService;
     }
-
-    // Create -----------------------------------------
 
     @PostMapping @Transactional
     public ResponseEntity<ContextTableReadDto> createContextTable(@RequestBody @Valid ContextTableCreateDto contextTableCreateDto, UriComponentsBuilder uriBuilder) {
@@ -35,8 +31,6 @@ public class ContextTableController {
         URI uri = uriBuilder.path("/context-table/{id}").buildAndExpand(contextTable.id()).toUri();
         return ResponseEntity.created(uri).body(contextTable);
     }
-
-    // Read -------------------------------------------
 
     @GetMapping("/{id}")
     public ResponseEntity<ContextTableReadDto> readContextTableById(@PathVariable UUID id) {
@@ -54,16 +48,9 @@ public class ContextTableController {
         return ResponseEntity.ok(contextTableService.readContextTableByControlActionId(controlActionId, page, size));
     }
 
-    // Update -----------------------------------------
-
-
-    // Delete -----------------------------------------
-
     @DeleteMapping("/{id}") @Transactional
     public ResponseEntity<Void> deleteContextTable(@PathVariable UUID id) {
         contextTableService.deleteContextTable(id);
         return ResponseEntity.noContent().build();
     }
-
-    // ------------------------------------------------
 }

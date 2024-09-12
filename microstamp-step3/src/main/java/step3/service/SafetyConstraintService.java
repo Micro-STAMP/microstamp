@@ -30,10 +30,4 @@ public class SafetyConstraintService {
                 .map(mapper::toSafetyConstraintReadDto)
                 .toList();
     }
-
-//    public SafetyConstraintReadDto updateSafetyConstraint(UUID id, SafetyConstraintUpdateDto safetyConstraint) {
-//        SafetyConstraint updatedSafetyConstraint = safetyConstraintRepository.getReferenceById(id);
-//        updatedSafetyConstraint.setName(safetyConstraint.name());
-//        return new SafetyConstraintReadDto(safetyConstraintRepository.save(updatedSafetyConstraint));
-//    }
 }
