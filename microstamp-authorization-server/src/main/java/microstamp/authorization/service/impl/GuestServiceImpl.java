@@ -1,6 +1,7 @@
 package microstamp.authorization.service.impl;
 
 import lombok.AllArgsConstructor;
+import microstamp.authorization.dto.AnalysisReadDto;
 import microstamp.authorization.dto.ExportReadDto;
 import microstamp.authorization.exception.NotFoundException;
 import microstamp.authorization.service.AnalysisService;
@@ -9,6 +10,7 @@ import microstamp.authorization.service.GuestService;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -23,15 +25,29 @@ public class GuestServiceImpl implements GuestService {
 
     private JwtEncoder jwtEncoder;
 
-    public List<ExportReadDto> findAll() {
+    public List<AnalysisReadDto> findAll() {
+        return analysisService.findGuestAnalyses();
+    }
+
+    public AnalysisReadDto findById(UUID analysisId) {
+        validateGuestAnalysis(analysisId);
+        return analysisService.findById(analysisId);
+    }
+
+    public List<ExportReadDto> exportAll() {
         return analysisService.findGuestAnalyses().stream()
                 .map(a -> exportService.exportToJson(a.getId(), getGuestToken()))
                 .toList();
     }
 
-    public ExportReadDto findById(UUID analysisId) {
+    public ExportReadDto exportToJson(UUID analysisId) {
         validateGuestAnalysis(analysisId);
         return exportService.exportToJson(analysisId, getGuestToken());
+    }
+
+    public byte[] exportToPdf(UUID analysisId) throws IOException {
+        validateGuestAnalysis(analysisId);
+        return exportService.exportToPdf(analysisId, getGuestToken());
     }
 
     private void validateGuestAnalysis(UUID analysisId) {
