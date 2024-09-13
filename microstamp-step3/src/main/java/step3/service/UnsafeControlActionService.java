@@ -47,7 +47,7 @@ public class UnsafeControlActionService {
                 .hazardId(ucaCreateDto.hazard_id())
                 .type(ucaCreateDto.type())
                 .analysisId(ucaCreateDto.analysis_id())
-                .ruleCode(ucaCreateDto.rule_code())
+                .ruleCode(ucaCreateDto.rule_code() == null ? "" : ucaCreateDto.rule_code())
                 .build();
 
         SafetyConstraint constraint = SafetyConstraint.builder()

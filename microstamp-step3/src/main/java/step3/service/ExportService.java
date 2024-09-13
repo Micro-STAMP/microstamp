@@ -70,6 +70,11 @@ public class ExportService {
     private void setUcaAndConstraintSection(Document document, UUID analysisId) throws IOException {
         List<UnsafeControlActionReadDto> ucaList = ucaService.readAllUCAByAnalysisId(analysisId);
 
+        if (ucaList.isEmpty()) {
+            document.add(new Paragraph("No unsafe control actions found"));
+            return;
+        }
+
         // Define table with 2 columns
         Table table = new Table(UnitValue.createPercentArray(new float[]{50, 50}))
                 .useAllAvailableWidth();
@@ -96,6 +101,11 @@ public class ExportService {
 
     private void setRuleSection(Document document, UUID analysisId) {
         List<RuleReadListDto> ruleList = ruleService.readRulesByAnalysisId(analysisId);
+
+        if (ruleList.isEmpty()) {
+            document.add(new Paragraph("No rules found"));
+            return;
+        }
 
         // Define table with 6 columns
         Table table = new Table(UnitValue.createPercentArray(new float[]{10, 15, 15, 15, 15, 15}))
