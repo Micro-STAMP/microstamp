@@ -14,6 +14,7 @@ public record UnsafeControlActionReadDto(
         String hazard_code,
         String rule_code,
         List<StateReadDto> states,
-        String type
+        String type,
+        String constraintName
 ) {
 }
