@@ -126,9 +126,11 @@ public class ExportServiceImpl implements ExportService {
         document.add(analysisDetails);
         document.add(new Paragraph("\n"));
 
-        byte[] imageBytes = Base64.getDecoder()
-                .decode(analysis.getImage().getBase64());
-        document.add(new Image(ImageDataFactory.create(imageBytes)).setAutoScale(true));
+        if (analysis.getImage() != null) {
+            byte[] imageBytes = Base64.getDecoder()
+                    .decode(analysis.getImage().getBase64());
+            document.add(new Image(ImageDataFactory.create(imageBytes)).setAutoScale(true));
+        }
     }
 
     private void setStep1Section(Document document, Step1ExportReadDto step1Dto) throws IOException {
