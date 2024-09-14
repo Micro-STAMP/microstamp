@@ -11,7 +11,6 @@ import java.util.UUID;
 //@NoArgsConstructor
 @AllArgsConstructor
 public class Step3ExportReadDto {
-    //TODO: Step 3 JSON/PDF export
     private UUID analysisId;
     private List<UnsafeControlActionReadDto> unsafeControlActions;
     private List<RuleReadListDto> rules;

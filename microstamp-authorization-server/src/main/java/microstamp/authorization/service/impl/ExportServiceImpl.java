@@ -36,7 +36,6 @@ import java.util.UUID;
 @Log4j2
 @Component
 @AllArgsConstructor
-//TODO: Refactor - isolate shared logic between microservices into a separate module, including DTOs, configurations, clients, and common methods.
 public class ExportServiceImpl implements ExportService {
 
     private final AnalysisService analysisService;
@@ -152,7 +151,6 @@ public class ExportServiceImpl implements ExportService {
     }
 
     private void setStep3Section(Document document, Step3ExportReadDto step3Dto) throws IOException {
-        //TODO: Step 3 PDF export
         setSectionTitle(document, "3 - Identify Unsafe Control Actions");
 
         Step3PdfHelper.setUcaAndConstraintSection(document, step3Dto.getUnsafeControlActions());

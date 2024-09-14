@@ -4,8 +4,8 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.UnitValue;
+import microstamp.authorization.dto.step2.StateReadDto;
 import microstamp.authorization.dto.step3.RuleReadListDto;
-import microstamp.authorization.dto.step3.StateReadDto;
 import microstamp.authorization.dto.step3.UnsafeControlActionReadDto;
 
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Step3PdfHelper {
-    //TODO: Step 3 PDF export
     public static void setUcaAndConstraintSection(Document document, List<UnsafeControlActionReadDto> ucaList) throws IOException {
         if (ucaList.isEmpty()) {
             document.add(new Paragraph("No unsafe control actions found"));
@@ -62,7 +61,7 @@ public class Step3PdfHelper {
         List<String> statesNames = ruleList.get(0)
                 .states()
                 .stream()
-                .map(StateReadDto::name)
+                .map(StateReadDto::getName)
                 .toList();
 
         for (RuleReadListDto rule : ruleList) {
@@ -70,7 +69,7 @@ public class Step3PdfHelper {
             table.addCell(rule.control_action_name());
             table.addCell(String.join(", ", statesNames));
             table.addCell(rule.types().toString());
-            table.addCell(rule.hazard().name());
+            table.addCell(rule.hazard().getName());
             table.addCell(rule.code());
         }
 
