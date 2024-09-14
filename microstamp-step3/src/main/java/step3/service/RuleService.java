@@ -66,12 +66,15 @@ public class RuleService {
 
         List<RuleState> statesAssociations = new ArrayList<>();
         for (UUID stateId : ruleCreateDto.states_ids()) {
+            step2Proxy.getStateById(stateId);
+
             RuleState ruleState = RuleState.builder()
                     .rule(createdRule)
                     .stateId(stateId)
                     .build();
             statesAssociations.add(ruleState);
         }
+
         createdRule.setStateAssociations(statesAssociations);
         createdRule = ruleRepository.save(createdRule);
 

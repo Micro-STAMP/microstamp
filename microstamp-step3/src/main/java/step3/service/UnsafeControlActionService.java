@@ -1,5 +1,6 @@
 package step3.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import step3.dto.mapper.UnsafeControlActionMapper;
@@ -60,6 +61,8 @@ public class UnsafeControlActionService {
 
         List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
         for (UUID stateId : ucaCreateDto.states_ids()) {
+            step2Proxy.getStateById(stateId);
+
             UnsafeControlActionState stateAssociation = UnsafeControlActionState.builder()
                     .unsafeControlAction(createdUCA)
                     .stateId(stateId)
@@ -73,7 +76,8 @@ public class UnsafeControlActionService {
     }
 
     public List<UnsafeControlActionReadDto> createUCAsByRule(UUID ruleId) {
-        Rule rule = ruleRepository.getReferenceById(ruleId);
+        Rule rule = ruleRepository.findById(ruleId)
+                .orElseThrow(() -> new EntityNotFoundException("Rule not found with id " + ruleId));
         List<UnsafeControlActionReadDto> createdUCAs = new ArrayList<>();
 
         for (UCAType type : rule.getTypes()) {
