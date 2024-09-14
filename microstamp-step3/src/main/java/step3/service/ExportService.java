@@ -1,8 +1,7 @@
-package step3.service.export;
+package step3.service;
 
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.WebColors;
-import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -14,12 +13,10 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import step3.dto.export.ExportReadDto;
 import step3.dto.rule.RuleReadListDto;
 import step3.dto.step2.StateReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
-import step3.service.RuleService;
-import step3.service.SafetyConstraintService;
-import step3.service.UnsafeControlActionService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,49 +25,55 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class PdfService {
+public class ExportService {
     private final UnsafeControlActionService ucaService;
     private final RuleService ruleService;
-    private final SafetyConstraintService safetyConstraintService;
 
-    public byte[] generatePdfFromAnalysisId(UUID analysisId) throws IOException {
+    public ExportReadDto exportToJson(UUID analysisId) {
+        List<UnsafeControlActionReadDto> ucaList = ucaService.readAllUCAByAnalysisId(analysisId);
+        List<RuleReadListDto> rules = ruleService.readRulesByAnalysisId(analysisId);
+
+        return ExportReadDto.builder()
+                .analysisId(analysisId)
+                .unsafeControlActions(ucaList)
+                .rules(rules)
+                .build();
+    }
+
+    public byte[] exportToPdf(UUID analysisId) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
 
-        generateTitleOfDocument(document);
-
-        // montar o conteúdo do PDF
-        // vai ter informações de UCA, regras e restrições de segurança
-
-
-        generateRuleContent(document, analysisId);
-        generateUcaAndConstraintContent(document, analysisId);
+        setTitle(document);
+        setUcaAndConstraintSection(document, analysisId);
+        setRuleSection(document, analysisId);
 
         document.close();
 
         return byteArrayOutputStream.toByteArray();
     }
 
-    private void generateTitleOfDocument(Document document) throws IOException {
-        Style titleStyle = new Style();
-        PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ITALIC);
-        titleStyle.setFont(font);
+    private void setTitle(Document document) throws IOException {
+        Style style = new Style();
+        style.setFont(PdfFontFactory.createFont(StandardFonts.TIMES_ITALIC));
 
-        Paragraph title = new Paragraph("MICROSTAMP ANALYSIS - STEP 3")
+        document.add(new Paragraph("MICROSTAMP ANALYSIS - STEP 3")
                 .setFontSize(20)
                 .setBold()
                 .setFontColor(WebColors.getRGBColor("#b4894d"))
                 .setTextAlignment(TextAlignment.CENTER)
-                .addStyle(titleStyle);
-
-        document.add(title);
-        document.add(new Paragraph("\n"));
+                .addStyle(style));
     }
 
-    private void generateUcaAndConstraintContent(Document document, UUID analysisId) throws IOException {
+    private void setUcaAndConstraintSection(Document document, UUID analysisId) throws IOException {
         List<UnsafeControlActionReadDto> ucaList = ucaService.readAllUCAByAnalysisId(analysisId);
+
+        if (ucaList.isEmpty()) {
+            document.add(new Paragraph("No unsafe control actions found"));
+            return;
+        }
 
         // Define table with 2 columns
         Table table = new Table(UnitValue.createPercentArray(new float[]{50, 50}))
@@ -89,15 +92,20 @@ public class PdfService {
             }
 
             table.addCell(ucaName.toString());
-            table.addCell(safetyConstraintService.readSafetyConstraintByUCAId(uca.id()).name());
+            table.addCell(uca.constraintName());
         }
 
         document.add(table);
         document.add(new Paragraph("\n"));
     }
 
-    private void generateRuleContent(Document document, UUID analysisId) {
+    private void setRuleSection(Document document, UUID analysisId) {
         List<RuleReadListDto> ruleList = ruleService.readRulesByAnalysisId(analysisId);
+
+        if (ruleList.isEmpty()) {
+            document.add(new Paragraph("No rules found"));
+            return;
+        }
 
         // Define table with 6 columns
         Table table = new Table(UnitValue.createPercentArray(new float[]{10, 15, 15, 15, 15, 15}))

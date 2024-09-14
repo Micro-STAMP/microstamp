@@ -32,6 +32,7 @@ public class UnsafeControlActionMapper {
                 .rule_code(uca.getRuleCode())
                 .type(uca.getType().toString())
                 .states(states)
+                .constraintName(uca.generateConstraintName(step2Proxy))
                 .build();
     }
 

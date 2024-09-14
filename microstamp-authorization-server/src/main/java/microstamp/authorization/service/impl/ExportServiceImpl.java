@@ -25,6 +25,7 @@ import microstamp.authorization.service.AnalysisService;
 import microstamp.authorization.service.ExportService;
 import microstamp.authorization.util.pdf.Step1PdfHelper;
 import microstamp.authorization.util.pdf.Step2PdfHelper;
+import microstamp.authorization.util.pdf.Step3PdfHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -35,7 +36,6 @@ import java.util.UUID;
 @Log4j2
 @Component
 @AllArgsConstructor
-//TODO: Refactor - isolate shared logic between microservices into a separate module, including DTOs, configurations, clients, and common methods.
 public class ExportServiceImpl implements ExportService {
 
     private final AnalysisService analysisService;
@@ -78,7 +78,7 @@ public class ExportServiceImpl implements ExportService {
                 .analysis(analysisService.findById(analysisId))
                 .step1(step1Client.exportStep1ByAnalysisId(analysisId))
                 .step2(step2Client.exportStep2ByAnalysisId(analysisId))
-                //.step3(step3Client.exportStep3ByAnalysisId(analysisId))
+                .step3(step3Client.exportStep3ByAnalysisId(analysisId))
                 .build();
     }
 
@@ -87,7 +87,7 @@ public class ExportServiceImpl implements ExportService {
                 .analysis(analysisService.findById(analysisId))
                 .step1(step1Client.exportStep1ByAnalysisId(guestJwt, analysisId))
                 .step2(step2Client.exportStep2ByAnalysisId(guestJwt, analysisId))
-                //.step3(step3Client.exportStep3ByAnalysisId(guestJwt, analysisId))
+                .step3(step3Client.exportStep3ByAnalysisId(guestJwt, analysisId))
                 .build();
     }
 
@@ -125,9 +125,11 @@ public class ExportServiceImpl implements ExportService {
         document.add(analysisDetails);
         document.add(new Paragraph("\n"));
 
-        byte[] imageBytes = Base64.getDecoder()
-                .decode(analysis.getImage().getBase64());
-        document.add(new Image(ImageDataFactory.create(imageBytes)).setAutoScale(true));
+        if (analysis.getImage() != null) {
+            byte[] imageBytes = Base64.getDecoder()
+                    .decode(analysis.getImage().getBase64());
+            document.add(new Image(ImageDataFactory.create(imageBytes)).setAutoScale(true));
+        }
     }
 
     private void setStep1Section(Document document, Step1ExportReadDto step1Dto) throws IOException {
@@ -148,9 +150,11 @@ public class ExportServiceImpl implements ExportService {
         Step2PdfHelper.setImagesSection(document, step2Dto.getImages());
     }
 
-    private void setStep3Section(Document document, Step3ExportReadDto step2Dto) throws IOException {
-        //TODO: Step 3 PDF export
+    private void setStep3Section(Document document, Step3ExportReadDto step3Dto) throws IOException {
         setSectionTitle(document, "3 - Identify Unsafe Control Actions");
+
+        Step3PdfHelper.setUcaAndConstraintSection(document, step3Dto.getUnsafeControlActions());
+        Step3PdfHelper.setRuleSection(document, step3Dto.getRules());
     }
 
     private void setSectionTitle(Document document, String title) throws IOException {

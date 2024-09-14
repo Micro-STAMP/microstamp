@@ -89,6 +89,11 @@ public class Step2PdfHelper {
                 .setBold()
                 .setUnderline());
 
+        if (images.isEmpty()) {
+            document.add(new Paragraph("No images found"));
+            return;
+        }
+
         for(ImageReadDto image : images) {
             byte[] imageBytes = Base64.getDecoder()
                     .decode(image.getBase64());
