@@ -1,5 +1,6 @@
 package step3.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import step3.dto.mapper.SafetyConstraintMapper;
@@ -17,11 +18,17 @@ public class SafetyConstraintService {
     private final SafetyConstraintMapper mapper;
 
     public SafetyConstraintReadDto readSafetyConstraint(UUID id) {
-        SafetyConstraint constraint = safetyConstraintRepository.getReferenceById(id);
+        SafetyConstraint constraint = safetyConstraintRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Safety Constraint not found with id: " + id));
+
         return mapper.toSafetyConstraintReadDto(constraint);
     }
     public SafetyConstraintReadDto readSafetyConstraintByUCAId(UUID uca_id) {
-        SafetyConstraint constraint = safetyConstraintRepository.findByUnsafeControlActionId(uca_id);
+        SafetyConstraint constraint = safetyConstraintRepository
+                .findByUnsafeControlActionId(uca_id)
+                .orElseThrow(() -> new EntityNotFoundException("Safety constraint not found with unsafe control action id: " + uca_id));
+
         return mapper.toSafetyConstraintReadDto(constraint);
     }
     public List<SafetyConstraintReadDto> readAllSafetyConstraints() {

@@ -1,5 +1,6 @@
 package step3.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import step3.dto.mapper.RuleMapper;
 import step3.dto.rule.RuleCreateDto;
@@ -9,6 +10,7 @@ import step3.dto.step1.HazardReadDto;
 import step3.dto.step2.ControlActionReadDto;
 import step3.dto.step2.StateReadDto;
 import step3.entity.Rule;
+import step3.entity.UnsafeControlAction;
 import step3.entity.association.RuleState;
 import step3.proxy.AuthServerProxy;
 import step3.proxy.Step1Proxy;
@@ -82,7 +84,10 @@ public class RuleService {
     }
 
     public RuleReadDto readRule(UUID id) {
-        Rule rule = ruleRepository.getReferenceById(id);
+        Rule rule = ruleRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Rule not found with id " + id));
+
         return mapper.toRuleReadDto(rule);
     }
 
@@ -105,8 +110,12 @@ public class RuleService {
     }
 
     public void deleteRule(UUID id) {
-        var rule = ruleRepository.getReferenceById(id);
-        ucaRepository.deleteAll(ucaRepository.findByRuleCode(rule.getCodeName()));
+        Rule rule = ruleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Rule not found with id " + id));
+
+        List<UnsafeControlAction> ucaList = ucaRepository.findByRuleCode(rule.getCodeName());
+        ucaRepository.deleteAll(ucaList);
+
         updateCodesOfUcas(rule.getCode());
         ruleRepository.deleteById(id);
         this.nextCode--;

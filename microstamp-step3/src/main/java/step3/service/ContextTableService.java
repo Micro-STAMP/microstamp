@@ -64,7 +64,9 @@ public class ContextTableService {
     }
 
     public ContextTableReadWithPageDto readContextTableById(UUID id, int page, int size) {
-        ContextTable contextTable = contextTableRepository.getReferenceById(id);
+        ContextTable contextTable = contextTableRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Not found context table with id: " + id));
 
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);

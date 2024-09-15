@@ -99,7 +99,9 @@ public class UnsafeControlActionService {
     }
 
     public UnsafeControlActionReadDto readUnsafeControlAction(UUID id) {
-        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
+        UnsafeControlAction uca = unsafeControlActionRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Unsafe control action not found with id " + id));
 
         return mapper.toUcaReadDto(uca);
     }
@@ -122,7 +124,9 @@ public class UnsafeControlActionService {
     }
 
     public void deleteUnsafeControlAction(UUID id) {
-        UnsafeControlAction uca = unsafeControlActionRepository.getReferenceById(id);
+        UnsafeControlAction uca = unsafeControlActionRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Unsafe control action not found with id " + id));
 
         if (!uca.getRuleCode().isEmpty())
             throw new OperationNotAllowedException("Removing unsafe control actions created by rules is not allowed");
