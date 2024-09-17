@@ -21,5 +21,6 @@ public record RuleCreateDto(
         @NotEmpty
         Set<UCAType> types,
         @NotNull
-        UUID hazard_id
+        UUID hazard_id,
+        String code
 ) {}

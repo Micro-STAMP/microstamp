@@ -14,6 +14,16 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Step3ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
+        Step3ExceptionResponse errorMessage = Step3ExceptionResponse.builder()
+                .code("400")
+                .type(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.badRequest().body(errorMessage);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Step3ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {

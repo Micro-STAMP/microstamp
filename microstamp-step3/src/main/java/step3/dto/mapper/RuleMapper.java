@@ -35,7 +35,7 @@ public class RuleMapper {
                 .types(rule.getTypes())
                 .hazard(hazard)
                 .control_action(controlAction)
-                .code(rule.getCodeName())
+                .code(rule.getCode())
                 .states(states)
                 .build();
     }
@@ -52,7 +52,7 @@ public class RuleMapper {
                 .types(rule.getTypes())
                 .hazard(hazard)
                 .control_action_name(controlAction.name())
-                .code(rule.getCodeName())
+                .code(rule.getCode())
                 .states(states)
                 .build();
     }

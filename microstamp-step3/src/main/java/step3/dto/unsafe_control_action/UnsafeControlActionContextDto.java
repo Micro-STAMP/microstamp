@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public record UnsafeControlActionContextDto(
         UUID ucaId,
-        String ucaName,
+//        String ucaName,
 //        List<StateReadDto> values,
         String type,
         String rule
@@ -14,7 +14,7 @@ public record UnsafeControlActionContextDto(
     public UnsafeControlActionContextDto(UnsafeControlAction uca) {
         this(
                 uca.getId(),
-                uca.getName(),
+//                uca.getName(),
 //                uca.getValues().stream().map(ValueReadDto::new).toList(),
                 uca.getType().toString(),
                 uca.getRuleCode()

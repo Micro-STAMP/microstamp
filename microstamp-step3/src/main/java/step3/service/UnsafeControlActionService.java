@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import step3.dto.mapper.UnsafeControlActionMapper;
-import step3.dto.step1.HazardReadDto;
 import step3.dto.step2.ControlActionReadDto;
 import step3.dto.step2.StateReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionCreateDto;
@@ -78,6 +77,13 @@ public class UnsafeControlActionService {
     public List<UnsafeControlActionReadDto> createUCAsByRule(UUID ruleId) {
         Rule rule = ruleRepository.findById(ruleId)
                 .orElseThrow(() -> new EntityNotFoundException("Rule not found with id " + ruleId));
+
+        if (rule.isAlreadyApplied()) {
+            throw new OperationNotAllowedException("Rule with id " + ruleId + " has already been applied");
+        }
+        rule.setAlreadyApplied(true);
+        ruleRepository.save(rule);
+
         List<UnsafeControlActionReadDto> createdUCAs = new ArrayList<>();
 
         for (UCAType type : rule.getTypes()) {
@@ -85,7 +91,7 @@ public class UnsafeControlActionService {
                     .control_action_id(rule.getControlActionId())
                     .hazard_id(rule.getHazardId())
                     .analysis_id(rule.getAnalysisId())
-                    .rule_code(rule.getCodeName())
+                    .rule_code(rule.getCode())
                     .type(type)
                     .states_ids(rule.getStateAssociations()
                             .stream()
