@@ -1,0 +1,43 @@
+.rule_item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1.2rem;
+	font-size: 1.4rem;
+	font-weight: 300;
+
+	padding-bottom: 1.8rem;
+	border-bottom: 2px solid var(--color-gray);
+	&:last-child {
+		border-bottom: none;
+		padding-bottom: 0px;
+	}
+
+	.cell {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.8rem;
+		padding: 0.8rem 1.2rem;
+		border-radius: var(--radius1);
+		background-color: var(--color-dark-gray);
+
+		.name {
+			color: var(--color-yellow);
+			font-weight: 500;
+		}
+	}
+
+	.rule_apply_button {
+		display: flex;
+		align-items: center;
+		font-weight: 600;
+		box-shadow: var(--shadow25);
+		border-radius: var(--radius3);
+		border: 2px solid transparent;
+		padding: 0.5rem 1.6rem;
+		background-color: var(--color-yellow);
+		color: var(--color-white);
+		font-size: 1.4rem;
+	}
+}

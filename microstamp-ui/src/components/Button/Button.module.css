@@ -1,0 +1,44 @@
+.button {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 600;
+	box-shadow: var(--shadow25);
+	border-radius: var(--radius3);
+	border: 2px solid transparent;
+	padding: 0.66rem 1.6rem;
+
+	&:disabled {
+		cursor: default;
+		opacity: 0.8;
+	}
+	&.isLoading {
+		cursor: progress;
+	}
+}
+
+/* Color Variants */
+.button.main {
+	background-color: var(--color-yellow);
+	color: var(--color-white);
+}
+.button.dark {
+	background-color: var(--color-dark-gray);
+	color: var(--color-yellow);
+}
+
+/* Size Variants */
+.button.normal {
+	font-size: 1.6rem;
+	.icon {
+		min-width: 1.8rem;
+		font-size: 1.8rem;
+	}
+}
+.button.small {
+	font-size: 1.4rem;
+	.icon {
+		min-width: 1.6rem;
+		font-size: 1.6rem;
+	}
+}

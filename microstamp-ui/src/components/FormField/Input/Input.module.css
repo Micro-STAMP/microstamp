@@ -1,0 +1,32 @@
+.label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	width: 100%;
+
+	.name {
+		color: var(--color-white);
+		font-size: 1.4rem;
+		font-weight: 500;
+		order: -1;
+	}
+
+	.input {
+		background-color: var(--color-dark);
+		padding: 1.2rem;
+		color: var(--color-white);
+		border-radius: var(--radius1);
+		caret-color: var(--color-yellow);
+		box-shadow: var(--shadow25);
+		font-weight: 500;
+
+		&:focus + .name {
+			color: var(--color-yellow);
+		}
+
+		&:disabled {
+			opacity: 0.7;
+			cursor: default;
+		}
+	}
+}

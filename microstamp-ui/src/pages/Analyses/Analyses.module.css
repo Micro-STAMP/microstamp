@@ -1,0 +1,13 @@
+.analyses_container {
+	display: flex;
+	padding: 2.4rem 0;
+	gap: 2.4rem;
+
+	flex-wrap: wrap;
+}
+
+@media (max-width: 743px) {
+	.projects_container {
+		justify-content: center;
+	}
+}

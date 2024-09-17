@@ -1,0 +1,58 @@
+.pagination_container {
+	--radius: 0.4rem;
+
+	display: flex;
+	justify-content: center;
+	gap: 0.6rem;
+	user-select: none;
+
+	.pages_display {
+		display: flex;
+		align-items: center;
+		border-radius: var(--radius);
+		background-color: var(--color-dark-gray);
+		padding: 0.4rem 0.4rem;
+		gap: 0.4rem;
+		box-shadow: var(--shadow25);
+
+		.page {
+			background: none;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: var(--radius);
+			font-size: 1.6rem;
+			color: var(--color-yellow);
+			font-weight: 700;
+
+			min-width: 2.4rem;
+			padding: 0 0.2rem;
+
+			&.selected {
+				background-color: var(--color-yellow);
+				color: var(--color-white);
+			}
+		}
+
+		.ellipsis {
+			display: flex;
+			align-items: center;
+			color: var(--color-white);
+			font-size: 2rem;
+			margin: 0 0.2rem;
+			max-height: 2.4rem;
+		}
+	}
+
+	.button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: var(--shadow25);
+		color: var(--color-yellow);
+		border-radius: var(--radius);
+		background-color: var(--color-dark-gray);
+		font-size: 1.6rem;
+		padding: 0.6rem 0.6rem;
+	}
+}
