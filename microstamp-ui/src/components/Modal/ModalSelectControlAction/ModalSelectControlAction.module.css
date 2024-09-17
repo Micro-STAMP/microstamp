@@ -1,0 +1,14 @@
+.control_actions_select {
+	.no_components_message {
+		text-align: center;
+		font-size: 1.6rem;
+		font-weight: 600;
+		padding: 3.6rem 1.8rem;
+		color: var(--color-yellow);
+	}
+	.warning_message {
+		font-size: 1.3rem;
+		padding: 0.8rem 0;
+		color: var(--color-yellow);
+	}
+}

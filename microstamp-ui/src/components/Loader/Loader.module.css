@@ -1,0 +1,33 @@
+.loader_wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2rem;
+	margin: 4rem 0;
+	.spinner {
+		--_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+		width: 50px;
+		padding: 8px;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background: var(--color-yellow);
+		-webkit-mask: var(--_m);
+		mask: var(--_m);
+		-webkit-mask-composite: source-out;
+		mask-composite: subtract;
+		animation: spinn 1s infinite linear;
+	}
+
+	.message {
+		font-weight: 600;
+		font-size: 2rem;
+		color: var(--color-yellow);
+	}
+}
+
+@keyframes spinn {
+	to {
+		transform: rotate(1turn);
+	}
+}

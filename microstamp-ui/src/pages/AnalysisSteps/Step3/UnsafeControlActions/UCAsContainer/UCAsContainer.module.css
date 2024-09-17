@@ -1,0 +1,36 @@
+.ucas_container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	border: var(--border3);
+	border-radius: var(--radius1);
+	min-height: 11rem;
+
+	.container_header {
+		display: flex;
+		background-color: var(--color-yellow);
+		text-align: center;
+
+		.column_tag {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 50%;
+			font-size: 1.8rem;
+			font-weight: 600;
+			text-shadow: var(--shadow25);
+			border-right: 2px solid var(--color-dark-yellow);
+			padding: 0.8rem 1.2rem;
+
+			&:last-child {
+				border-right: 0px;
+			}
+		}
+	}
+
+	.ucas_list {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+}

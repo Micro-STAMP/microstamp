@@ -1,0 +1,5 @@
+.toast {
+	padding: 2rem;
+	box-shadow: var(--shadow25);
+	text-align: center;
+}
