@@ -22,7 +22,7 @@ public class Rule {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;
     private String name;
-    private int code;
+    private String code;
     @JdbcTypeCode(Types.VARCHAR)
     private UUID controlActionId;
 
@@ -43,10 +43,6 @@ public class Rule {
 
     public void addType(UCAType type) {
         types.add(type);
-    }
-
-    public String getCodeName() {
-        return "R" + this.code;
     }
 
 }

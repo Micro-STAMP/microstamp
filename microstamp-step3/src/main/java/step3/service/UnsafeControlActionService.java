@@ -85,7 +85,7 @@ public class UnsafeControlActionService {
                     .control_action_id(rule.getControlActionId())
                     .hazard_id(rule.getHazardId())
                     .analysis_id(rule.getAnalysisId())
-                    .rule_code(rule.getCodeName())
+                    .rule_code(rule.getCode())
                     .type(type)
                     .states_ids(rule.getStateAssociations()
                             .stream()
