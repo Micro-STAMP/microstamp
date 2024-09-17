@@ -20,6 +20,7 @@ import step3.infra.exceptions.OperationNotAllowedException;
 import step3.proxy.Step2Proxy;
 import step3.repository.ContextRepository;
 import step3.repository.ContextTableRepository;
+import step3.repository.UnsafeControlActionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.UUID;
 public class ContextTableService {
     private final ContextTableRepository contextTableRepository;
     private final ContextRepository contextRepository;
+    private final UnsafeControlActionRepository ucaRepository;
     private final Step2Proxy step2Proxy;
     private final ContextTableMapper mapper;
 
@@ -62,7 +64,9 @@ public class ContextTableService {
     }
 
     public ContextTableReadWithPageDto readContextTableById(UUID id, int page, int size) {
-        ContextTable contextTable = contextTableRepository.getReferenceById(id);
+        ContextTable contextTable = contextTableRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Not found context table with id: " + id));
 
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
@@ -93,12 +97,11 @@ public class ContextTableService {
 
     @Transactional
     public void deleteContextTable(UUID id) {
-        var contextTable = contextTableRepository
+        ContextTable contextTable = contextTableRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Not found context table with id: " + id));
-        contextTable.getContexts().clear();
-        contextTableRepository.save(contextTable);
+                .orElseThrow(() -> new EntityNotFoundException("Not found context table with id: " + id));
 
+        ucaRepository.deleteByControlActionId(contextTable.getControlActionId());
         contextTableRepository.deleteById(id);
     }
 
