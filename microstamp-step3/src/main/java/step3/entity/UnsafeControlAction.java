@@ -28,8 +28,6 @@ public class UnsafeControlAction {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
-    private String name;  // NAME : <Source> <Type> <Control Action> <Context>
-
     @JdbcTypeCode(Types.VARCHAR)
     private UUID controlActionId;
 

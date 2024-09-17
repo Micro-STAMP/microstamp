@@ -20,17 +20,6 @@ public class SafetyConstraint {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
-    private String name;
-
     @OneToOne @JoinColumn(name = "uca_id")
     UnsafeControlAction unsafeControlAction;
-
-    public SafetyConstraint(String name) {
-        this.name = name;
-    }
-
-    public SafetyConstraint(String name, UnsafeControlAction uca) {
-        this.name = name;
-        this.unsafeControlAction = uca;
-    }
 }
