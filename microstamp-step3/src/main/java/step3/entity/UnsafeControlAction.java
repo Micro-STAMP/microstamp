@@ -54,29 +54,27 @@ public class UnsafeControlAction {
 
     private String ruleCode;
 
-    public String generateName(Step2Proxy step2Proxy) {
+    public String generateNameTo(Step2Proxy step2Proxy, String to) {
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(this.controlActionId);
 
-
         String source = controlAction.connection().source().name();
-        String typeAndCA = getTypeAndControlActionString(controlAction.name());
+        String typeAndCA = generateTypeAndControlActionTo(controlAction.name(), to);
         String context = generateContextString(step2Proxy);
 
-        return source + " " + typeAndCA + " when " + context;
+        if (to.equals("constraint")) {
+            String newTerm = this.type == UCAType.NOT_PROVIDED ? " must " : " must not ";
+            return source + newTerm + typeAndCA + " when " + context;
+        } else {
+            return source + " " + typeAndCA + " when " + context;
+        }
     }
 
-    public String generateConstraintName(Step2Proxy step2Proxy) {
-        var controlAction = step2Proxy.getControlActionById(this.getControlActionId());
+    public String generateTypeAndControlActionTo(String controlActionName, String to) {
+        if (to.equals("constraint") && this.type == UCAType.NOT_PROVIDED) {
+            return "provide " + controlActionName;
+        }
 
-        String source = controlAction.connection().source().name();
-        String typeAndCA = getTypeAndControlActionString(controlAction.name());
-        String context = generateContextString(step2Proxy);
-
-        return source + " must not " + typeAndCA + " when " + context;
-    }
-
-    public String getTypeAndControlActionString(String controlActionName) {
-        return switch (getType()) {
+        return switch (this.type) {
             case PROVIDED -> "provide " + controlActionName;
             case NOT_PROVIDED -> "not provide " + controlActionName;
             case TOO_EARLY -> "provide " + controlActionName + " too early";
