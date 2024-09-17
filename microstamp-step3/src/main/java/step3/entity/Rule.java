@@ -25,6 +25,8 @@ public class Rule {
     private String code;
     @JdbcTypeCode(Types.VARCHAR)
     private UUID controlActionId;
+    @Builder.Default
+    boolean alreadyApplied = false;
 
     @OneToMany(
             mappedBy = "rule",
