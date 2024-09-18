@@ -16,7 +16,7 @@ const createConnectionAction = async (connectionAction: IConnectionActionInsertD
 		return res.data;
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error creating connection action.");
+		throw new Error("Error creating interaction.");
 	}
 };
 const updateConnectionAction = async (id: string, connectionAction: IConnectionActionUpdateDto) => {
@@ -28,7 +28,7 @@ const updateConnectionAction = async (id: string, connectionAction: IConnectionA
 		return res.data;
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error updating connection action.");
+		throw new Error("Error updating interaction.");
 	}
 };
 const deleteConnectionAction = async (id: string) => {
@@ -36,7 +36,7 @@ const deleteConnectionAction = async (id: string) => {
 		await http.delete(`${CONNECTION_ACTIONS_ENDPOINT}/${id}`);
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error deleting connection action.");
+		throw new Error("Error deleting interaction.");
 	}
 };
 

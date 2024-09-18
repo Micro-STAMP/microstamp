@@ -100,7 +100,7 @@ function ModalConnectionAction({
 					required
 				/>
 				<Select
-					label="Connection Action"
+					label="Type"
 					options={connectionActionTypesSelectOptions}
 					onChange={(connectionAction: SelectOption | null) =>
 						setConnectionActionData({
