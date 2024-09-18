@@ -24,7 +24,7 @@ function UCAsContainer({ controlAction }: UCAsContainerProps) {
 		<div className={styles.ucas_container}>
 			<header className={styles.container_header}>
 				<span className={styles.column_tag}>Unsafe Control Actions</span>
-				<span className={styles.column_tag}>Associated Controller's Constraints</span>
+				<span className={styles.column_tag}>Associated Safety Constraints</span>
 			</header>
 			<div className={styles.ucas_list}>
 				{ucas.map(uca => (
