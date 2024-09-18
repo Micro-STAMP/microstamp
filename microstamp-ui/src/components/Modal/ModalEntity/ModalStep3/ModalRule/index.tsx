@@ -85,6 +85,7 @@ function ModalRule({
 
 	const [ruleData, setRuleData] = useState<IRuleFormData>({
 		name: "",
+		code: "",
 		states: [],
 		types: [],
 		hazard: hazardsOptions[0]
@@ -96,6 +97,7 @@ function ModalRule({
 	const handleSubmitRule = async () => {
 		if (
 			!ruleData.name ||
+			!ruleData.code ||
 			ruleData.states.length === 0 ||
 			ruleData.types.length === 0 ||
 			!ruleData.hazard
@@ -107,6 +109,7 @@ function ModalRule({
 		await onSubmit(ruleData);
 		setRuleData({
 			name: "",
+			code: "",
 			states: [],
 			types: [],
 			hazard: hazardsOptions[0]
@@ -123,11 +126,17 @@ function ModalRule({
 		<ModalContainer open={open} size="big">
 			<ModalHeader onClose={onClose} title="New Rule" />
 			<div className={styles.modal_rule_inputs}>
-				<ModalInputs>
+				<ModalInputs column="double">
 					<Input
 						label="Name"
 						value={ruleData.name}
 						onChange={(value: string) => setRuleData({ ...ruleData, name: value })}
+						required
+					/>
+					<Input
+						label="Code"
+						value={ruleData.code}
+						onChange={(value: string) => setRuleData({ ...ruleData, code: value })}
 						required
 					/>
 				</ModalInputs>
