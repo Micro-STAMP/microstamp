@@ -167,7 +167,23 @@ Ensure that **Maven** is installed on your machine. You can download and install
 3. Clone the project repository using the following command:
 
    ```bash
-   git clone https://github.com/Micro-STAMP/microstamp.git 
+   git clone https://github.com/Micro-STAMP/microstamp.git
+
+### Step 3: Run the microstamp-service-registry microservice
+
+This microservices must be run BEFORE all other MicroSTAMP microservices. The reason is that the other microservices register themselves with the  microstamp-service-registry microservice (that must be already running).
+
+To run this first microservice, go to a terminal or command-prompt, navigate to the directory  and execute the command as illustrated 
+
+mvn spring-boot:run
+
+You should see you you console an outuput similar to the next Figure.
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-service-registry.png?raw=true" alt="Running the service registry">
+	<figcaption>Figure 1: Running the service registry microservice.</figcaption>
+</figure>
+
 
 #### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
 
