@@ -3,6 +3,7 @@ import { Input, TypesMultiSelect } from "@components/FormField";
 import { hazardsToSelectOptions } from "@components/FormField/MultiSelect/HazardsMultiSelect/util";
 import HazardSelect from "@components/FormField/Select/HazardSelect";
 import StateSelect from "@components/FormField/Select/StateSelect";
+import ContextStates from "@components/FormField/Select/StateSelect/ContextStates";
 import { statesToSelectOptions } from "@components/FormField/Select/StateSelect/util";
 import { SelectOption } from "@components/FormField/Templates";
 import Loader from "@components/Loader";
@@ -140,7 +141,7 @@ function ModalRule({
 						required
 					/>
 				</ModalInputs>
-				<ModalInputs column="double">
+				<ContextStates>
 					{variables.map(variable => (
 						<StateSelect
 							key={variable.id}
@@ -151,7 +152,7 @@ function ModalRule({
 							optionsPosition="bottom"
 						/>
 					))}
-				</ModalInputs>
+				</ContextStates>
 				<ModalInputs>
 					<TypesMultiSelect
 						onChange={(types: SelectOption[]) =>
