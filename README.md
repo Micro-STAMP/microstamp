@@ -9,7 +9,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [Architecture Overview](#architecture-overview)
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
-   - [Command-line setup](#Command-line setup)
+   - [Command-line setup](#Command-line-setup)
  -   [MicroSTAMP Microservices](#microstamp-microservices)
  -   [License](#license)
  -   [Contributing Guidelines](#contributing-guidelines)
@@ -115,7 +115,7 @@ To build and run the application as a software developer, you'll need:
 
 ### Command-line setup
 
-###$ Step 1: Set up MySQL Databases
+### Step 1: Set up MySQL Databases
 
 #### Prerequisite
 Ensure that **MySQL** is installed and running on your machine. The default port for MySQL is `3306`. If MySQL is not installed, you can download it from the official MySQL website:
@@ -135,14 +135,19 @@ You will be prompted to enter your MySQL root password.
 
 3. Create the required databases by running the following SQL commands:
 
-CREATE DATABASE microstamp;
-CREATE DATABASE step1;
-CREATE DATABASE step2;
-CREATE DATABASE step3;
+  
+  CREATE DATABASE microstamp;
+
+  CREATE DATABASE step1;
+
+  CREATE DATABASE step2;
+
+  CREATE DATABASE step3;
 
 4. Verify that the databases were created successfully:
 
 SHOW DATABASES;
+
 You should see `microstamp`, `step1`, `step2`, and `step3` listed in the output.
 
 That's it! Your MySQL databases are now set up and ready to use.
