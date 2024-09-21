@@ -111,6 +111,7 @@ This command will:
 To build and run the application as a software developer, you'll need:
 - [JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
 - [MySQL 8.0](https://dev.mysql.com/downloads/mysql) or higher
+- Apache Maven
 - IntelliJ IDEA Ultimate Edition (That's our IDE of choice, but you are free to use other IDEs as well).
 
 ### Command-line setup
@@ -152,6 +153,21 @@ You should see `microstamp`, `step1`, `step2`, and `step3` listed in the output.
 
 That's it! Your MySQL databases are now set up and ready to use.
 
+### Step 2: Clone the Project and Run the Microservices
+
+#### Prerequisite
+Ensure that **Maven** is installed on your machine. You can download and install Maven from the official website:
+
+- [Download Maven](https://maven.apache.org/download.cgi)
+
+#### Cloning the Project
+
+1. Open a terminal or command prompt.
+2. Navigate to the directory where you want to clone the project.
+3. Clone the project repository using the following command:
+
+   ```bash
+   git clone https://github.com/Micro-STAMP/microstamp.git 
 
 #### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
 
