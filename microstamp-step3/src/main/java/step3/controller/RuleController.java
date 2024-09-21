@@ -1,5 +1,6 @@
 package step3.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/rule")
+@Tag(name = "Rule")
 public class RuleController {
     private final RuleService ruleService;
 

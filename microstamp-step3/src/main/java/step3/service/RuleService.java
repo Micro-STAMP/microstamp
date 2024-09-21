@@ -18,6 +18,7 @@ import step3.repository.RuleRepository;
 import step3.repository.UnsafeControlActionRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,6 +86,7 @@ public class RuleService {
     public List<RuleReadListDto> readRulesByControlActionId(UUID controlActionId) {
         return ruleRepository.findByControlActionId(controlActionId).stream()
                 .map(mapper::toRuleReadListDto)
+                .sorted(Comparator.comparing(RuleReadListDto::code))
                 .toList();
     }
 

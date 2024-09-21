@@ -4,7 +4,6 @@ import lombok.Builder;
 import step3.dto.step1.HazardReadDto;
 import step3.dto.step2.ControlActionReadDto;
 import step3.dto.step2.StateReadDto;
-import step3.entity.Rule;
 import step3.entity.UCAType;
 
 import java.util.List;
