@@ -1,5 +1,6 @@
 package step3.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/export")
+@Tag(name = "Export")
 public class ExportController {
     private final ExportService exportService;
 

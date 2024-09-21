@@ -1,5 +1,6 @@
 package step3.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/context-table")
+@Tag(name = "ContextTable")
 public class ContextTableController {
     private final ContextTableService contextTableService;
 
