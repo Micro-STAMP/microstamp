@@ -19,6 +19,7 @@
         <module>microstamp-step1</module>
         <module>microstamp-step2</module>
         <module>microstamp-step3</module>
+        <module>microstamp-ui</module>
     </modules>
 
     <properties>
