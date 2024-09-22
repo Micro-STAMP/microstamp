@@ -348,11 +348,29 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
 
 Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
-## Talk
+<figure>
+   <img src="assets/images/conference-paper.png" alt="Running the service registry">
+   <figcaption>https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59</figcaption>
+</figure>
 
-Rodrigo Martins Pagliares, João Hugo Marinho Maimone, Thiago Franco de Carvalho Dias, Gabriel Piva Pereira, Gabriel Francelino Nascimento, and Fellipe Guilherme Rey de Souza  (Universidade Federal de Alfenas, UNIFAL-MG - Brazil) , Gabriel Kusumota Nadalin  (Universidade Federal de São Carlos, UFSCAR - Brazil) "***MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture***", 2024.
+## Talks
 
-https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/
+Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations,Las Vegas, NV, USA. April, 2024.
+
+<figure>
+   <img src="assets/images/vegas-talk.jpg" alt="Running the service registry">
+   <figcaption>Photo: Rodrigo Martins Pagliares in one of his presentations at ITNG 2024.</figcaption>
+</figure>
+
+
+"***MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture***", 2024.
+
+<figure>
+   <img src="assets/images/mit_presentation_schedule.png" alt="Running the service registry">
+   <figcaption>https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/</figcaption>
+</figure>
+
+
 
 
 ## Contact Information
