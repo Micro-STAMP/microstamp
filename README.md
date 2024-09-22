@@ -54,6 +54,10 @@ This repository contains the source code for MicroSTAMP,  a web application base
 
 ## End Users Guide [(TOP)](#table-of-contents)
 
+This section describes two possible methods to run MicroSTAMP as an end user. If you are a software developer, see Section Developers Guide for guidance on how to run MicroSTAMP using IntelliJ IDEA ultimate edition.
+
+## Method #1: Running MicroSTAMP with Docker
+
 ### Prerequisites
 
 To build and run the application as an end-user, you’ll need:
@@ -105,7 +109,7 @@ This command will:
 
 	docker-compose down
 
-## Developers Guide [(TOP)](#table-of-contents)
+## Method #2: Running MicroSTAMP by creating the required databases and using Apache Maven at the command-line
 
 #### Prerequisites
 
@@ -195,6 +199,18 @@ To run this first microservice, go to a terminal or command-prompt, navigate to 
 
 Open a new terminal window to execute the microstamp-authorization-server microservice. 
 
+To run this second microservice, Open a new terminal window, navigate to the directory microstamp-authorization-server microservice and execute the command as illustrated 
+   
+   mvn spring-boot:run
+
+<figure>
+  <img src="assets/images/running-authorization-server-mvn-command-line.png" alt="Running the authorization server with Apache Maven at command-line">
+	<figcaption><strong>Figure: Running the authorization server microservice with Apache Maven in the command-line.</strong></figcaption>
+</figure>
+
+<br/><br/>
+<p>You should see you you console an outuput similar to the next Figure.</p>
+
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-authorization-server.png" alt="Running the service registry">
 	<figcaption>Figure: Running the microservice-authorization-server microservice.</figcaption>
@@ -277,6 +293,8 @@ As already mentioned, the user guest has some pre-stored STPA analyes and contro
   <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
 	<figcaption>Authenticating with the user guest.</figcaption>
 </figure>
+
+## Developers Guide [(TOP)](#table-of-contents)
 
 
 #### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
