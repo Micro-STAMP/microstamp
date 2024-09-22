@@ -15,7 +15,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [Contributing Guidelines](#contributing-guidelines)
  -   [Lead developers](#lead-developers)
  -   [Publications](#publications)
- -   [Talk](#talk)
+ -   [Talks](#talks)
  -   [Contact Information](#contact-information)
 
 ## Architecture Overview [(TOP)](#table-of-contents)
