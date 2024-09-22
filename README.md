@@ -167,7 +167,94 @@ Ensure that **Maven** is installed on your machine. You can download and install
 3. Clone the project repository using the following command:
 
    ```bash
-   git clone https://github.com/Micro-STAMP/microstamp.git 
+   git clone https://github.com/Micro-STAMP/microstamp.git
+
+### Step 3: Run the microstamp-service-registry microservice
+
+This microservices must be run BEFORE all other MicroSTAMP microservices. The reason is that the other microservices register themselves with the  microstamp-service-registry microservice (that must be already running).
+
+To run this first microservice, go to a terminal or command-prompt, navigate to the directory  and execute the command as illustrated 
+
+mvn spring-boot:run
+
+You should see you you console an outuput similar to the next Figure.
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-service-registry.png?raw=true" alt="Running the service registry">
+	<figcaption>Figure: Running the service registry microservice.</figcaption>
+</figure>
+
+### Step 4: Run the microstamp-authorization-server microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-authorization-server.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microservice-authorization-server microservice.</figcaption>
+</figure>
+
+### Step 5: Run the microstamp-api-gateway microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-api-gateway.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-api-gateway microservice.</figcaption>
+</figure>
+
+### Step 6: Run the microstamp-step1 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step1.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step1 microservice.</figcaption>
+</figure>
+
+### Step 7: Run the microstamp-step2 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step2.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step2 microservice.</figcaption>
+</figure>
+
+### Step 8: Run the microstamp-step3 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step3.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step3 microservice.</figcaption>
+</figure>
+
+### Step 9: Run the microstamp-ui microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-ui.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-ui microservice (MicroSTAMP frontend).</figcaption>
+</figure>
+
+### Step 10: Access the landing page of MicroSTAMP
+
+<figure>
+  <img src="assets/images/microstamp-landing-page.png" alt="Running the service registry">
+	<figcaption>Figure: Access the landing page of MicroSTAMP.</figcaption>
+</figure>
+
+### Step 11: Authenticate with the user guest and password guest123
+
+<figure>
+  <img src="assets/images/login-form-guest-user.png" alt="Running the service registry">
+	<figcaption>Authenticating with the user guest.</figcaption>
+</figure>
+
+### Step 12: Submit OAuth consent 
+
+<figure>
+  <img src="assets/images/oauth-consent.png" alt="Running the service registry">
+	<figcaption>OAuth Consent.</figcaption>
+</figure>
+
+### Step 13: Examples of STPA Analyses for the user guest  
+
+<figure>
+  <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
+	<figcaption>Authenticating with the user guest.</figcaption>
+</figure>
+
+
 
 #### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
 
