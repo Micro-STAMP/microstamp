@@ -15,12 +15,15 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [Contributing Guidelines](#contributing-guidelines)
  -   [Lead developers](#lead-developers)
  -   [Publications](#publications)
- -   [Talk](#talk)
+ -   [Talks](#talks)
  -   [Contact Information](#contact-information)
 
-## Architecture Overview
+## Architecture Overview [(TOP)](#table-of-contents)
 
- <img src="assets/images/microstamp-architecture.png?raw=true" alt="MicroSTAMP Architecture">
+<figure>
+    <img src="assets/images/microstamp-architecture.png?raw=true" alt="MicroSTAMP Architecture">
+    <figcaption><strong>Figure: MicroSTAMP architecture.</strong></figcaption>
+</figure>
 
 ### Ports 
 
@@ -32,6 +35,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
 | microstamp-service-registry | 8761|
 | microstamp-authorization-server | 9000 |
 | microstamp-api-gateway | 9191 |
+| microstamp-api-ui | 5173 |
 
 ### Technologies 
 
@@ -51,7 +55,13 @@ This repository contains the source code for MicroSTAMP,  a web application base
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&labelColor=070707" alt="Docker">
 </div>
 
-## End Users Guide
+## End Users Guide 
+
+[(back to top)](#table-of-contents) <br>
+
+This section describes two possible methods to run MicroSTAMP as an end user. If you are a software developer, see Section Developers Guide for guidance on how to run MicroSTAMP using IntelliJ IDEA ultimate edition.
+
+## Method #1: Running MicroSTAMP with Docker
 
 ### Prerequisites
 
@@ -104,7 +114,7 @@ This command will:
 
 	docker-compose down
 
-## Developers Guide
+## Method #2: Running MicroSTAMP by creating the required databases and using Apache Maven at the command-line
 
 #### Prerequisites
 
@@ -174,10 +184,16 @@ Ensure that **Maven** is installed on your machine. You can download and install
 This microservices must be run BEFORE all other MicroSTAMP microservices. The reason is that the other microservices register themselves with the  microstamp-service-registry microservice (that must be already running).
 
 To run this first microservice, go to a terminal or command-prompt, navigate to the directory  and execute the command as illustrated 
+   
+   mvn spring-boot:run
 
-mvn spring-boot:run
+<figure>
+  <img src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
+	<figcaption><strong>Figure: Running the service registry microservice with Apache Maven in the command-line.</strong></figcaption>
+</figure>
 
-You should see you you console an outuput similar to the next Figure.
+<br/><br/>
+<p>You should see you you console an outuput similar to the next Figure.</p>
 
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-service-registry.png?raw=true" alt="Running the service registry">
@@ -186,6 +202,17 @@ You should see you you console an outuput similar to the next Figure.
 
 ### Step 4: Run the microstamp-authorization-server microservice
 
+Open a new terminal window to execute the microstamp-authorization-server microservice. Navigate to the directory microstamp-authorization-server and execute the command  mvn spring-boot:run as illustrated 
+
+<figure>
+  <img src="assets/images/running-authorization-server-mvn-command-line.png" alt="Running the authorization-server microservice with Apache Maven at command-line">
+	<figcaption><strong>Figure: Running the authorization-server microservice with Apache Maven at command-line.</strong></figcaption>
+</figure>
+
+<br/><br/>
+<p>You should see you you console an outuput similar to the next Figure.</p>
+
+
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-authorization-server.png" alt="Running the service registry">
 	<figcaption>Figure: Running the microservice-authorization-server microservice.</figcaption>
@@ -193,12 +220,31 @@ You should see you you console an outuput similar to the next Figure.
 
 ### Step 5: Run the microstamp-api-gateway microservice
 
+Open a new terminal window to execute the microstamp-api-gateway microservice. Navigate to the directory microstamp-authorization-server and execute the command  mvn spring-boot:run as illustrated 
+
+<figure>
+  <img src="assets/images/running-api-gateway-mvn-command-line.png" alt="Running the API gateway microservice with Apache Maven at command-line">
+	<figcaption><strong>Figure: Running the API gateway microservice with Apache Maven at command-line.</strong></figcaption>
+</figure>
+
+<br/><br/>
+<p>You should see you you console an outuput similar to the next Figure.</p>
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-api-gateway.png" alt="Running the service registry">
 	<figcaption>Figure: Running the microstamp-api-gateway microservice.</figcaption>
 </figure>
 
 ### Step 6: Run the microstamp-step1 microservice
+
+Open a new terminal window to execute the microstamp-step1 microservice microservice. Navigate to the directory microstamp-step1-microservice and execute the command  mvn spring-boot:run as illustrated 
+
+<figure>
+  <img src="assets/images/running-microstamp-step1-mvn-command-line.png" alt="Running the microservice for Step 1 ofSTPA with Apache Maven at command-line">
+	<figcaption><strong>Figure: Running the microservice for Step 1 ofSTPA with Apache Maven at command-line.</strong></figcaption>
+</figure>
+
+<br/><br/>
+<p>You should see you you console an outuput similar to the next Figure.</p>
 
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-step1.png" alt="Running the service registry">
@@ -207,6 +253,16 @@ You should see you you console an outuput similar to the next Figure.
 
 ### Step 7: Run the microstamp-step2 microservice
 
+Open a new terminal window to execute the microstamp-step2 microservice microservice. Navigate to the directory microstamp-step2-microservice and execute the command  mvn spring-boot:run as illustrated 
+
+<figure>
+  <img src="assets/images/running-microstamp-step2-mvn-command-line.png" alt="Running the microservice for Step 2 ofSTPA with Apache Maven at command-line">
+	<figcaption><strong>Figure: Running the microservice for Step 2 ofSTPA with Apache Maven at command-line.</strong></figcaption>
+</figure>
+
+<br/><br/>
+<p>You should see you you console an outuput similar to the next Figure.</p>
+
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-step2.png" alt="Running the service registry">
 	<figcaption>Figure: Running the microstamp-step2 microservice.</figcaption>
@@ -214,12 +270,23 @@ You should see you you console an outuput similar to the next Figure.
 
 ### Step 8: Run the microstamp-step3 microservice
 
+Open a new terminal window to execute the microstamp-step3 microservice microservice. Navigate to the directory microstamp-step3-microservice and execute the command  mvn spring-boot:run as illustrated 
+
+<figure>
+  <img src="assets/images/running-microstamp-step3-mvn-command-line.png" alt="Running the microservice for Step 3 ofSTPA with Apache Maven at command-line">
+	<figcaption><strong>Figure: Running the microservice for Step 3 ofSTPA with Apache Maven at command-line.</strong></figcaption>
+</figure>
+
+<br/><br/>
+<p>You should see you you console an outuput similar to the next Figure.</p>
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-step3.png" alt="Running the service registry">
 	<figcaption>Figure: Running the microstamp-step3 microservice.</figcaption>
 </figure>
 
 ### Step 9: Run the microstamp-ui microservice
+
+Open a new terminal window to execute the microstamp-ui microservice. 
 
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-ui.png" alt="Running the service registry">
@@ -228,12 +295,16 @@ You should see you you console an outuput similar to the next Figure.
 
 ### Step 10: Access the landing page of MicroSTAMP
 
+You can now access the MicroSTAMP frontend. 
+
 <figure>
   <img src="assets/images/microstamp-landing-page.png" alt="Running the service registry">
 	<figcaption>Figure: Access the landing page of MicroSTAMP.</figcaption>
 </figure>
 
 ### Step 11: Authenticate with the user guest and password guest123
+
+We created a user with some example analysis to provide a global picture of how MicroSTAMP supports STPA.
 
 <figure>
   <img src="assets/images/login-form-guest-user.png" alt="Running the service registry">
@@ -249,12 +320,15 @@ You should see you you console an outuput similar to the next Figure.
 
 ### Step 13: Examples of STPA Analyses for the user guest  
 
+As already mentioned, the user guest has some pre-stored STPA analyes and control structure from Step 2 of STPA.
 <figure>
   <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
 	<figcaption>Authenticating with the user guest.</figcaption>
 </figure>
 
+## Developers Guide
 
+[(back to top)](#table-of-contents) <br>
 
 #### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
 
@@ -286,7 +360,9 @@ We can access the service registry administration page (Spring Eureka) by the UR
 </figure>
 <p></p>
 
-## MicroSTAMP microservices 
+## MicroSTAMP microservices
+
+[(back to top)](#table-of-contents) <br>
 
 ### 1. MicroSTAMP Service Registry
 
@@ -322,6 +398,8 @@ Summing up, using an API gateway simplifies the client-side complexity by hiding
 
 ## License
 
+[(back to top)](#table-of-contents) <br>
+
 MicroSTAMP is licensed under **MIT License**. The **MIT License** is a permissive open-source license that allows almost unrestricted use of the software. Here’s a summary of its main points:
 
 1.  **Permission to Use, Copy, and Modify**: The license grants anyone the right to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software.
@@ -330,11 +408,14 @@ MicroSTAMP is licensed under **MIT License**. The **MIT License** is a permissiv
 
 3.  **No Warranty**: The software is provided "as is," without any warranties or guarantees. The authors are not liable for any damages that may result from using the software.
 
-## Contributing Guidelines
+## Contributing Guidelines [(TOP)](#table-of-contents)
 
 You're welcome to contribute to the MicroSTAMP project! If you find any bugs or have suggestions for new features, please feel free to submit them via pull requests.
 
 ## Lead developers
+
+[(back to top)](#table-of-contents) <br>
+
 <div style="display: flex; gap: 8px;">
     <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/gabriel-francelino" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Francelino&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
@@ -344,18 +425,40 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
     <a href="https://github.com/pagliares" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Rodrigo Martins Pagliares&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
 </div>
 
-## Publications
+## Publications 
+
+[(back to top)](#table-of-contents) <br>
 
 Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
-## Talk
+ <a href="https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59" target="_blank">
+   <img src="assets/images/conference-paper.png" alt="Running the service registry">
+ </a> 
 
-Rodrigo Martins Pagliares, João Hugo Marinho Maimone, Thiago Franco de Carvalho Dias, Gabriel Piva Pereira, Gabriel Francelino Nascimento, and Fellipe Guilherme Rey de Souza  (Universidade Federal de Alfenas, UNIFAL-MG - Brazil) , Gabriel Kusumota Nadalin  (Universidade Federal de São Carlos, UFSCAR - Brazil) "***MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture***", 2024.
+## Talks
 
-https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/
+[(back to top)](#table-of-contents) <br>
+
+1. Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations,Las Vegas, NV, USA. April, 2024.
+
+<figure style="float: right;">
+  <img src="assets/images/vegas-talk.png" width=249 height=278 alt="Rodrigo Martins Pagliares at ITNG 2024" />
+  <figcaption style="font-size: small;">Rodrigo Martins Pagliares at ITNG 2024</figcaption>
+</figure>
+
+<br>
+<p></p>
+
+2. "***MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture***", 2024.
+
+<a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
+   <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
+</a>
 
 
 ## Contact Information
+
+[(back to top)](#table-of-contents) <br>
 
 <address>
 Rodrigo Martins Pagliares<br>
