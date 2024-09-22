@@ -159,6 +159,7 @@ public class StateServiceUnitTest {
             .id(UUID.randomUUID())
             .code("Code")
             .name("Name")
+            .variable(Variable.builder().build())
             .build();
 
     private final Supplier<StateInsertDto> assembleStateInsert = () -> StateInsertDto.builder()
