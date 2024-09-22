@@ -358,7 +358,7 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
 Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations,Las Vegas, NV, USA. April, 2024.
 
 <figure>
-   <img src="assets/images/vegas-talk.jpg" alt="Running the service registry">
+   <img src="assets/images/vegas-talk.png" alt="Running the service registry">
    <figcaption>Photo: Rodrigo Martins Pagliares in one of his presentations at ITNG 2024.</figcaption>
 </figure>
 
