@@ -181,8 +181,60 @@ You should see you you console an outuput similar to the next Figure.
 
 <figure>
   <img src="assets/images/console-output-after-running-microstamp-service-registry.png?raw=true" alt="Running the service registry">
-	<figcaption>Figure 1: Running the service registry microservice.</figcaption>
+	<figcaption>Figure: Running the service registry microservice.</figcaption>
 </figure>
+
+### Step 4: Run the microstamp-authorization-server microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-authorization-server.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microservice-authorization-server microservice.</figcaption>
+</figure>
+
+### Step 5: Run the microstamp-api-gateway microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-api-gateway.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-api-gateway microservice.</figcaption>
+</figure>
+
+### Step 6: Run the microstamp-step1 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step1.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step1 microservice.</figcaption>
+</figure>
+
+### Step 7: Run the microstamp-step2 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step2.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step2 microservice.</figcaption>
+</figure>
+
+### Step 8: Run the microstamp-step3 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step3.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step3 microservice.</figcaption>
+</figure>
+
+### Step 9: Run the microstamp-ui microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-ui.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-ui microservice (MicroSTAMP frontend).</figcaption>
+</figure>
+
+### Step 10: Access the landing page of MicroSTAMP
+
+<figure>
+  <img src="assets/images/microstamp-landing-page.png" alt="Running the service registry">
+	<figcaption>Figure: Access the landing page of MicroSTAMP.</figcaption>
+</figure>
+
+
+
 
 
 #### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
