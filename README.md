@@ -18,7 +18,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [Talk](#talk)
  -   [Contact Information](#contact-information)
 
-## Architecture Overview
+## Architecture Overview [(TOP)](#table-of-contents)
 
  <img src="assets/images/microstamp-architecture.png?raw=true" alt="MicroSTAMP Architecture">
 
@@ -52,7 +52,7 @@ This repository contains the source code for MicroSTAMP,  a web application base
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&labelColor=070707" alt="Docker">
 </div>
 
-## End Users Guide
+## End Users Guide [(TOP)](#table-of-contents)
 
 ### Prerequisites
 
@@ -105,7 +105,7 @@ This command will:
 
 	docker-compose down
 
-## Developers Guide
+## Developers Guide [(TOP)](#table-of-contents)
 
 #### Prerequisites
 
@@ -309,7 +309,7 @@ We can access the service registry administration page (Spring Eureka) by the UR
 </figure>
 <p></p>
 
-## MicroSTAMP microservices 
+## MicroSTAMP microservices [(TOP)](#table-of-contents)
 
 ### 1. MicroSTAMP Service Registry
 
@@ -343,7 +343,7 @@ In the MicroSTAMP, the API gateway is implemented using the **Spring Cloud Gatew
 
 Summing up, using an API gateway simplifies the client-side complexity by hiding the details of the underlying microservices, providing a single point of entry, and handling cross-cutting concerns like security, monitoring, and rate limiting. It enables a scalable, efficient, and secure way to manage traffic between clients and services, making it a fundamental component in modern microservices architectures.
 
-## License
+## License [(TOP)](#table-of-contents)
 
 MicroSTAMP is licensed under **MIT License**. The **MIT License** is a permissive open-source license that allows almost unrestricted use of the software. Here’s a summary of its main points:
 
@@ -353,11 +353,11 @@ MicroSTAMP is licensed under **MIT License**. The **MIT License** is a permissiv
 
 3.  **No Warranty**: The software is provided "as is," without any warranties or guarantees. The authors are not liable for any damages that may result from using the software.
 
-## Contributing Guidelines
+## Contributing Guidelines [(TOP)](#table-of-contents)
 
 You're welcome to contribute to the MicroSTAMP project! If you find any bugs or have suggestions for new features, please feel free to submit them via pull requests.
 
-## Lead developers
+## Lead developers [(TOP)](#table-of-contents)
 <div style="display: flex; gap: 8px;">
     <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/gabriel-francelino" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Francelino&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
@@ -367,7 +367,7 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
     <a href="https://github.com/pagliares" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Rodrigo Martins Pagliares&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
 </div>
 
-## Publications
+## Publications [(TOP)](#table-of-contents)
 
 Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
@@ -375,7 +375,7 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
    <img src="assets/images/conference-paper.png" alt="Running the service registry">
  </a> 
 
-## Talks
+## Talks [(TOP)](#table-of-contents)
 
 1. Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations,Las Vegas, NV, USA. April, 2024.
 
@@ -394,7 +394,7 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
 </a>
 
 
-## Contact Information
+## Contact Information [(TOP)](#table-of-contents)
 
 <address>
 Rodrigo Martins Pagliares<br>
