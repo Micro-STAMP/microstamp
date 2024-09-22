@@ -8,29 +8,29 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import step3.dto.mit.auth.AnalysisReadDto;
-import step3.dto.mit.mapper.UnsafeControlActionMapper;
-import step3.dto.mit.step1.HazardReadDto;
-import step3.dto.mit.step2.ControlActionReadDto;
-import step3.dto.mit.step2.StateReadDto;
-import step3.dto.mit.unsafe_control_action.UnsafeControlActionCreateDto;
-import step3.dto.mit.unsafe_control_action.UnsafeControlActionReadDto;
-import step3.entity.mit.Rule;
-import step3.entity.mit.UCAType;
-import step3.entity.mit.UnsafeControlAction;
-import step3.entity.mit.association.RuleState;
+import step3.dto.auth.AnalysisReadDto;
+import step3.dto.mapper.UnsafeControlActionMapper;
+import step3.dto.step1.HazardReadDto;
+import step3.dto.step2.ControlActionReadDto;
+import step3.dto.step2.StateReadDto;
+import step3.dto.unsafe_control_action.UnsafeControlActionCreateDto;
+import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
+import step3.entity.Rule;
+import step3.entity.UCAType;
+import step3.entity.UnsafeControlAction;
+import step3.entity.association.RuleState;
 import step3.infra.exceptions.OperationNotAllowedException;
 import step3.proxy.AuthServerProxy;
 import step3.proxy.Step1Proxy;
 import step3.proxy.Step2Proxy;
-import step3.repository.mit.RuleRepository;
-import step3.repository.mit.StateAssociationRepository;
-import step3.repository.mit.UnsafeControlActionRepository;
-import step3.service.mit.UnsafeControlActionService;
+import step3.repository.RuleRepository;
+import step3.repository.StateAssociationRepository;
+import step3.repository.UnsafeControlActionRepository;
+import step3.service.UnsafeControlActionService;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -107,15 +107,11 @@ public class UnsafeControlActionServiceUnitTest {
                 .build();
 
         when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(AnalysisReadDto.builder().build());
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(ControlActionReadDto.builder().id(mock.control_action_id()).build());
-        when(step2Proxy.getStateById(mock.states_ids().getFirst())).thenReturn(assembleStateReadDTO.apply(mock.states_ids().getFirst()));
-        when(step2Proxy.getStateById(mock.states_ids().getLast())).thenReturn(assembleStateReadDTO.apply(mock.states_ids().getLast()));
         when(step1Proxy.getHazardById(mock.hazard_id())).thenThrow(FeignException.class);
 
         assertAll(
                 () -> assertThrows(FeignException.class, () -> service.createUnsafeControlAction(mock)),
                 () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(1)).getControlActionById(mock.control_action_id()),
                 () -> verify(step1Proxy, times(1)).getHazardById(mock.hazard_id())
         );
     }
@@ -133,10 +129,16 @@ public class UnsafeControlActionServiceUnitTest {
 
         when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(AnalysisReadDto.builder().build());
         when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(ControlActionReadDto.builder().id(mock.control_action_id()).build());
-        when(step2Proxy.getStateById(mock.states_ids().getFirst())).thenReturn(assembleStateReadDTO.apply(mock.states_ids().getFirst()));
-        when(step2Proxy.getStateById(mock.states_ids().getLast())).thenReturn(assembleStateReadDTO.apply(mock.states_ids().getLast()));
         when(step1Proxy.getHazardById(mock.hazard_id())).thenReturn(HazardReadDto.builder().code("H-1").id(mock.hazard_id()).build());
         when(unsafeControlActionRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(mapper.toUcaReadDto(any())).thenAnswer(invocation -> {
+            UnsafeControlAction uca = invocation.getArgument(0);
+            return UnsafeControlActionReadDto.builder()
+                    .id(uca.getId())
+                    .hazard_code("H-1")
+                    .analysis_id(uca.getAnalysisId())
+                    .build();
+        });
 
         UnsafeControlActionReadDto response = service.createUnsafeControlAction(mock);
 
@@ -154,7 +156,7 @@ public class UnsafeControlActionServiceUnitTest {
     void createUcAsByRuleWhenNoRuleIsFoundThrowAnException() {
         UUID mockRuleUUID = UUID.randomUUID();
 
-        when(ruleRepository.getReferenceById(mockRuleUUID)).thenThrow(EntityNotFoundException.class);
+        when(ruleRepository.findById(mockRuleUUID)).thenThrow(EntityNotFoundException.class);
 
         assertThrows(EntityNotFoundException.class, () -> service.createUCAsByRule(mockRuleUUID));
     }
@@ -170,17 +172,22 @@ public class UnsafeControlActionServiceUnitTest {
                         RuleState.builder().stateId(UUID.randomUUID()).build(),
                         RuleState.builder().stateId(UUID.randomUUID()).build()))
                 .hazardId(UUID.randomUUID())
-                .code(1)
                 .types(new HashSet<>() {{ add(UCAType.PROVIDED); }})
                 .build();
 
-        when(ruleRepository.getReferenceById(mockRuleUUID)).thenReturn(mock);
+        when(ruleRepository.findById(mockRuleUUID)).thenReturn(Optional.of(mock));
         when(authServerProxy.getAnalysisById(mock.getAnalysisId())).thenReturn(AnalysisReadDto.builder().build());
         when(step2Proxy.getControlActionById(mock.getControlActionId())).thenReturn(ControlActionReadDto.builder().id(mock.getControlActionId()).build());
-        when(step2Proxy.getStateById(mock.getStateAssociations().getFirst().getStateId())).thenReturn(assembleStateReadDTO.apply(mock.getStateAssociations().getFirst().getStateId()));
-        when(step2Proxy.getStateById(mock.getStateAssociations().getLast().getStateId())).thenReturn(assembleStateReadDTO.apply(mock.getStateAssociations().getLast().getStateId()));
         when(step1Proxy.getHazardById(mock.getHazardId())).thenReturn(HazardReadDto.builder().code("H-1").id(mock.getHazardId()).build());
         when(unsafeControlActionRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(mapper.toUcaReadDto(any())).thenAnswer(invocation -> {
+            UnsafeControlAction uca = invocation.getArgument(0);
+            return UnsafeControlActionReadDto.builder()
+                    .id(uca.getId())
+                    .hazard_code("H-1")
+                    .analysis_id(uca.getAnalysisId())
+                    .build();
+        });
 
         List<UnsafeControlActionReadDto> response = service.createUCAsByRule(mockRuleUUID);
 
@@ -199,7 +206,7 @@ public class UnsafeControlActionServiceUnitTest {
     void readUnsafeControlActionWhenNoUnsafeControlActionIsFoundThrowAnException() {
         UUID mockUnsafeControlActionId = UUID.randomUUID();
 
-        when(unsafeControlActionRepository.getReferenceById(mockUnsafeControlActionId)).thenThrow(EntityNotFoundException.class);
+        when(unsafeControlActionRepository.findById(mockUnsafeControlActionId)).thenThrow(EntityNotFoundException.class);
 
         assertThrows(EntityNotFoundException.class, () -> service.readUnsafeControlAction(mockUnsafeControlActionId));
     }
@@ -210,7 +217,7 @@ public class UnsafeControlActionServiceUnitTest {
         UnsafeControlAction mockUnsafeControlAction = assembleUnsafeControlAction.get();
         UnsafeControlActionReadDto mockUnsafeControlActionRead = assembleUnsafeControlActionRead.apply(mockUnsafeControlAction.getId());
 
-        when(unsafeControlActionRepository.getReferenceById(mockUnsafeControlAction.getId())).thenReturn(mockUnsafeControlAction);
+        when(unsafeControlActionRepository.findById(mockUnsafeControlAction.getId())).thenReturn(Optional.of(mockUnsafeControlAction));
         when(mapper.toUcaReadDto(mockUnsafeControlAction)).thenReturn(mockUnsafeControlActionRead);
 
         UnsafeControlActionReadDto response = service.readUnsafeControlAction(mockUnsafeControlActionRead.id());
@@ -237,8 +244,7 @@ public class UnsafeControlActionServiceUnitTest {
         UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
 
         when(unsafeControlActionRepository.findAll()).thenReturn(List.of(mockFirst, mockSecond));
-        when(mapper.toUcaReadDto(mockFirst)).thenReturn(mockFirstRead);
-        when(mapper.toUcaReadDto(mockSecond)).thenReturn(mockSecondRead);
+        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
 
         List<UnsafeControlActionReadDto> result = service.readAllUnsafeControlActions();
 
@@ -269,42 +275,9 @@ public class UnsafeControlActionServiceUnitTest {
         UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
 
         when(unsafeControlActionRepository.findByControlActionId(mockControlActionId)).thenReturn(List.of(mockFirst, mockSecond));
-        when(mapper.toUcaReadDto(mockFirst)).thenReturn(mockFirstRead);
-        when(mapper.toUcaReadDto(mockSecond)).thenReturn(mockSecondRead);
+        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
 
         List<UnsafeControlActionReadDto> result = service.readAllUCAByControlActionId(mockControlActionId);
-
-        assertAll(
-                () -> assertEquals(2, result.size()),
-                () -> assertEquals(mockFirstRead, result.getFirst()),
-                () -> assertEquals(mockSecondRead, result.getLast())
-        );
-    }
-
-    @Test
-    @DisplayName("#readAllUCAByControllerId > When no unsafe control action is found > Return an empty list")
-    void readAllUCAByControllerIdWhenNoUnsafeControlActionIsFoundReturnAnEmptyList() {
-        UUID mockControllerId = UUID.randomUUID();
-
-        when(unsafeControlActionRepository.findByControllerId(mockControllerId)).thenReturn(List.of());
-
-        assertTrue(service.readAllUCAByControllerId(mockControllerId).isEmpty());
-    }
-
-    @Test
-    @DisplayName("#readAllUCAByControllerId > When the unsafe control action are found > Return the list of unsafe control actions")
-    void readAllUCAByControllerIdWhenTheUnsafeControlActionAreFoundReturnTheListOfUnsafeControlActions() {
-        UUID mockControllerId = UUID.randomUUID();
-        UnsafeControlAction mockFirst = assembleUnsafeControlAction.get();
-        UnsafeControlAction mockSecond = assembleUnsafeControlAction.get();
-        UnsafeControlActionReadDto mockFirstRead = assembleUnsafeControlActionRead.apply(mockFirst.getId());
-        UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
-
-        when(unsafeControlActionRepository.findByControllerId(mockControllerId)).thenReturn(List.of(mockFirst, mockSecond));
-        when(mapper.toUcaReadDto(mockFirst)).thenReturn(mockFirstRead);
-        when(mapper.toUcaReadDto(mockSecond)).thenReturn(mockSecondRead);
-
-        List<UnsafeControlActionReadDto> result = service.readAllUCAByControllerId(mockControllerId);
 
         assertAll(
                 () -> assertEquals(2, result.size()),
@@ -333,8 +306,7 @@ public class UnsafeControlActionServiceUnitTest {
         UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
 
         when(unsafeControlActionRepository.findByAnalysisId(mockAnalysisId)).thenReturn(List.of(mockFirst, mockSecond));
-        when(mapper.toUcaReadDto(mockFirst)).thenReturn(mockFirstRead);
-        when(mapper.toUcaReadDto(mockSecond)).thenReturn(mockSecondRead);
+        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
 
         List<UnsafeControlActionReadDto> result = service.readAllUCAByAnalysisId(mockAnalysisId);
 
@@ -350,7 +322,7 @@ public class UnsafeControlActionServiceUnitTest {
     void deleteUnsafeControlActionWhenNoUnsafeControlActionIsFoundThrowAnException() {
         UUID mockUnsafeControlActionId = UUID.randomUUID();
 
-        when(unsafeControlActionRepository.getReferenceById(mockUnsafeControlActionId)).thenThrow(EntityNotFoundException.class);
+        when(unsafeControlActionRepository.findById(mockUnsafeControlActionId)).thenThrow(EntityNotFoundException.class);
 
         assertThrows(EntityNotFoundException.class, () -> service.deleteUnsafeControlAction(mockUnsafeControlActionId));
     }
@@ -361,7 +333,7 @@ public class UnsafeControlActionServiceUnitTest {
         UnsafeControlAction mockUnsafeControlAction = assembleUnsafeControlAction.get();
         mockUnsafeControlAction.setRuleCode("Rule Code");
 
-        when(unsafeControlActionRepository.getReferenceById(mockUnsafeControlAction.getId())).thenReturn(mockUnsafeControlAction);
+        when(unsafeControlActionRepository.findById(mockUnsafeControlAction.getId())).thenReturn(Optional.of(mockUnsafeControlAction));
 
         assertThrows(OperationNotAllowedException.class, () -> service.deleteUnsafeControlAction(mockUnsafeControlAction.getId()));
     }
@@ -371,7 +343,7 @@ public class UnsafeControlActionServiceUnitTest {
     void deleteUnsafeControlActionWhenTheUnsafeControlActionIsFoundDeleteTheStatesAssociatedAndTheUnsafeControlAction() {
         UnsafeControlAction mockUnsafeControlAction = assembleUnsafeControlAction.get();
 
-        when(unsafeControlActionRepository.getReferenceById(mockUnsafeControlAction.getId())).thenReturn(mockUnsafeControlAction);
+        when(unsafeControlActionRepository.findById(mockUnsafeControlAction.getId())).thenReturn(Optional.of(mockUnsafeControlAction));
 
         service.deleteUnsafeControlAction(mockUnsafeControlAction.getId());
 
@@ -412,8 +384,6 @@ public class UnsafeControlActionServiceUnitTest {
     private final Supplier<UnsafeControlAction> assembleUnsafeControlAction = () -> UnsafeControlAction.builder()
             .id(UUID.randomUUID())
             .hazardId(UUID.randomUUID())
-            .controllerId(UUID.randomUUID())
-            .name("UCA")
             .type(UCAType.PROVIDED)
             .build();
 
@@ -426,27 +396,6 @@ public class UnsafeControlActionServiceUnitTest {
             .id(UUID.randomUUID())
             .code("S1")
             .name("State Name")
-            .build();
-
-    private final Supplier<Rule> assembleRule = () -> Rule.builder()
-            .id(UUID.randomUUID())
-            .controlActionId(UUID.randomUUID())
-            .controllerId(UUID.randomUUID())
-            .analysisId(UUID.randomUUID())
-            .code(1)
-            .types(new HashSet<>() {{
-                add(UCAType.PROVIDED);
-                add(UCAType.NOT_PROVIDED);
-                add(UCAType.OUT_OF_ORDER);
-            }})
-            .stateAssociations(new ArrayList<>() {{
-                add(RuleState.builder()
-                        .stateId(UUID.randomUUID())
-                        .build());
-                add(RuleState.builder()
-                        .stateId(UUID.randomUUID())
-                        .build());
-            }})
             .build();
 
 }

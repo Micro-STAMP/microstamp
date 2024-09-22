@@ -7,15 +7,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import step3.dto.mit.mapper.SafetyConstraintMapper;
-import step3.dto.mit.safety_constraint.SafetyConstraintReadDto;
-import step3.entity.mit.SafetyConstraint;
-import step3.entity.mit.UCAType;
-import step3.entity.mit.UnsafeControlAction;
-import step3.repository.mit.SafetyConstraintRepository;
-import step3.service.mit.SafetyConstraintService;
+import step3.dto.mapper.SafetyConstraintMapper;
+import step3.dto.safety_constraint.SafetyConstraintReadDto;
+import step3.entity.SafetyConstraint;
+import step3.entity.UCAType;
+import step3.entity.UnsafeControlAction;
+import step3.repository.SafetyConstraintRepository;
+import step3.service.SafetyConstraintService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -40,7 +41,7 @@ public class SafetyConstraintServiceUnitTest {
     void readSafetyConstraintWhenNoSafetConstraintIsFoundThrowAnException() {
         UUID safetyConstraintId = UUID.randomUUID();
 
-        when(safetyConstraintRepository.getReferenceById(safetyConstraintId)).thenThrow(EntityNotFoundException.class);
+        when(safetyConstraintRepository.findById(safetyConstraintId)).thenThrow(EntityNotFoundException.class);
 
         assertThrows(EntityNotFoundException.class, () -> service.readSafetyConstraint(safetyConstraintId));
     }
@@ -51,7 +52,7 @@ public class SafetyConstraintServiceUnitTest {
         SafetyConstraint mockSafetyConstraint = assembleSafetyConstraint.get();
         SafetyConstraintReadDto mockSafetyConstraintRead = assembleSafetyConstraintRead.apply(mockSafetyConstraint.getId(), mockSafetyConstraint.getUnsafeControlAction().getId());
 
-        when(safetyConstraintRepository.getReferenceById(mockSafetyConstraint.getId())).thenReturn(mockSafetyConstraint);
+        when(safetyConstraintRepository.findById(mockSafetyConstraint.getId())).thenReturn(Optional.of(mockSafetyConstraint));
         when(mapper.toSafetyConstraintReadDto(mockSafetyConstraint)).thenReturn(mockSafetyConstraintRead);
 
         assertEquals(mockSafetyConstraintRead, service.readSafetyConstraint(mockSafetyConstraint.getId()));
@@ -73,7 +74,7 @@ public class SafetyConstraintServiceUnitTest {
         SafetyConstraint mockSafetyConstraint = assembleSafetyConstraint.get();
         SafetyConstraintReadDto mockSafetyConstraintRead = assembleSafetyConstraintRead.apply(mockSafetyConstraint.getId(), mockSafetyConstraint.getUnsafeControlAction().getId());
 
-        when(safetyConstraintRepository.findByUnsafeControlActionId(mockSafetyConstraint.getUnsafeControlAction().getId())).thenReturn(mockSafetyConstraint);
+        when(safetyConstraintRepository.findByUnsafeControlActionId(mockSafetyConstraint.getUnsafeControlAction().getId())).thenReturn(Optional.of(mockSafetyConstraint));
         when(mapper.toSafetyConstraintReadDto(mockSafetyConstraint)).thenReturn(mockSafetyConstraintRead);
 
         assertEquals(mockSafetyConstraintRead, service.readSafetyConstraintByUCAId(mockSafetyConstraint.getUnsafeControlAction().getId()));
@@ -111,11 +112,8 @@ public class SafetyConstraintServiceUnitTest {
 
     private final Supplier<SafetyConstraint> assembleSafetyConstraint = () -> SafetyConstraint.builder()
             .id(UUID.randomUUID())
-            .name("Name")
             .unsafeControlAction(UnsafeControlAction.builder()
                     .id(UUID.randomUUID())
-                    .name("UCA")
-                    .controllerId(UUID.randomUUID())
                     .controlActionId(UUID.randomUUID())
                     .hazardId(UUID.randomUUID())
                     .type(UCAType.PROVIDED)

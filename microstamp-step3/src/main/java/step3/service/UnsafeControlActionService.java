@@ -2,6 +2,7 @@ package step3.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import step3.dto.mapper.UnsafeControlActionMapper;
 import step3.dto.step2.ControlActionReadDto;
@@ -134,7 +135,7 @@ public class UnsafeControlActionService {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Unsafe control action not found with id " + id));
 
-        if (!uca.getRuleCode().isEmpty())
+        if (StringUtils.isNotBlank(uca.getRuleCode()))
             throw new OperationNotAllowedException("Removing unsafe control actions created by rules is not allowed");
 
         stateAssociationRepository.deleteAllByUnsafeControlActionId(id);
