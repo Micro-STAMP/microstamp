@@ -233,7 +233,26 @@ You should see you you console an outuput similar to the next Figure.
 	<figcaption>Figure: Access the landing page of MicroSTAMP.</figcaption>
 </figure>
 
+### Step 11: Authenticate with the user guest and password guest123
 
+<figure>
+  <img src="assets/images/login-form-guest-user.png" alt="Running the service registry">
+	<figcaption>Authenticating with the user guest.</figcaption>
+</figure>
+
+### Step 12: Submit OAuth consent 
+
+<figure>
+  <img src="assets/images/oauth-consent.png" alt="Running the service registry">
+	<figcaption>OAuth Consent.</figcaption>
+</figure>
+
+### Step 13: Examples of STPA Analyses for the user guest  
+
+<figure>
+  <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
+	<figcaption>Authenticating with the user guest.</figcaption>
+</figure>
 
 
 
