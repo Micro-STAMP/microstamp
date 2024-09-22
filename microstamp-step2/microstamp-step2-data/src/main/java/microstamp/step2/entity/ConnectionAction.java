@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "ConnectionAction")
-@Table(name = "connectionActions")
+@Table(name = "connectionActions", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "connection_id" }) })
 public class ConnectionAction {
 
     @Id

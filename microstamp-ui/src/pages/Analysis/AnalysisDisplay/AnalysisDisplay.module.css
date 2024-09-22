@@ -1,0 +1,29 @@
+.analysis_display {
+	display: flex;
+	flex-direction: column;
+	gap: 1.8rem;
+
+	.display {
+		display: flex;
+		flex-direction: column;
+		gap: 1.6rem;
+		font-size: 1.6rem;
+		font-weight: 300;
+
+		.text {
+			display: flex;
+			flex-direction: column;
+
+			strong {
+				font-weight: 500;
+			}
+		}
+	}
+
+	.analysis_actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.2rem;
+		width: 100%;
+	}
+}

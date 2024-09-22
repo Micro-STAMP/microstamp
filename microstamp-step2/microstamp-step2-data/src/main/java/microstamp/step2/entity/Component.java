@@ -6,7 +6,6 @@ import microstamp.step2.enumeration.Style;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Component")
-@Table(name = "components")
+@Table(name = "components", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "analysis_id" }) })
 public abstract class Component {
 
     @Id

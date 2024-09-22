@@ -1,0 +1,81 @@
+.context_table_container {
+	--border-gray: 2px solid var(--color-gray);
+	--scroll-radius: 0 0 var(--radius1) var(--radius1);
+
+	width: 100%;
+	border-radius: var(--radius1);
+	border: var(--border3);
+
+	overflow-x: auto;
+	&::-webkit-scrollbar {
+		height: 1.4rem;
+	}
+	&::-webkit-scrollbar-track {
+		border-radius: var(--scroll-radius);
+		background-color: var(--color-dark);
+	}
+	&::-webkit-scrollbar-thumb {
+		background: var(--color-yellow);
+	}
+
+	.table_header,
+	.table_row {
+		display: flex;
+
+		.table_cell {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-grow: 1;
+			flex-basis: 0;
+			text-align: center;
+			padding: 0.4rem 0.8rem;
+			font-size: 1.4rem;
+			min-width: 10.8rem;
+		}
+	}
+
+	.table_header {
+		border-radius: var(--radius1) var(--radius1) 0 0;
+		.table_cell {
+			background-color: var(--color-yellow);
+			font-weight: 500;
+			border-right: 2px solid var(--color-dark-yellow);
+			&:last-child {
+				border-right: 0px;
+			}
+		}
+	}
+
+	.table_row {
+		.table_cell {
+			border-right: var(--border-gray);
+			border-bottom: var(--border-gray);
+			&:last-child {
+				border-right: 0px;
+			}
+		}
+
+		&:hover {
+			background-color: var(--color-gray);
+		}
+	}
+
+	.not_unsafe_button,
+	.unsafe_button {
+		border-radius: var(--radius3);
+		font-weight: 600;
+		padding: 0.4rem 1.2rem;
+		font-size: 1.2rem;
+		width: 7.2rem;
+	}
+	.not_unsafe_button {
+		background-color: var(--color-dark-gray);
+		color: var(--color-yellow);
+	}
+	.unsafe_button {
+		cursor: default;
+		background-color: var(--color-yellow);
+		color: var(--color-dark);
+	}
+}

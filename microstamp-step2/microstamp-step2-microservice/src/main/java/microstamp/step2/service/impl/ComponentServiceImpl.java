@@ -2,7 +2,7 @@ package microstamp.step2.service.impl;
 
 import microstamp.step2.client.MicroStampAuthClient;
 import microstamp.step2.dto.component.*;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.entity.*;
 import microstamp.step2.enumeration.ComponentType;
 import microstamp.step2.exception.Step2EnvironmentParentException;
@@ -254,8 +254,8 @@ public class ComponentServiceImpl implements ComponentService {
         }
 
         dependenciesDto.getVariables().addAll(variableRepository.findByComponentId(component.getId()).stream()
-                .map(VariableMapper::toDto)
-                .sorted(Comparator.comparing(VariableReadDto::getCode))
+                .map(VariableMapper::toFullDto)
+                .sorted(Comparator.comparing(VariableFullReadDto::getCode))
                 .toList());
 
         List<microstamp.step2.entity.Component> children = componentRepository.findChildrenByComponentId(component.getId().toString());

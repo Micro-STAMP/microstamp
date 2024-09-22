@@ -1,0 +1,11 @@
+.connection_name {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+
+	.arrow {
+		font-size: 1.4rem;
+		color: var(--color-light-gray);
+	}
+}

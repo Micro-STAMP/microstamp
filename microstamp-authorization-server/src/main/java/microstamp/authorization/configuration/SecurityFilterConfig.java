@@ -33,7 +33,8 @@ public class SecurityFilterConfig {
     private static final String[] AUTH_WHITELIST = {
             "/swagger/**",
             "/swagger-ui/**",
-            "/v3/**"
+            "/v3/**",
+            "/guests/**"
     };
 
     @Bean
@@ -64,7 +65,9 @@ public class SecurityFilterConfig {
                         .anyRequest().authenticated())
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfig()))
                 .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()))
-                .formLogin(Customizer.withDefaults());
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll());
 
         return http.build();
     }

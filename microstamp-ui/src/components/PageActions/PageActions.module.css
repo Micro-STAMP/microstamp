@@ -1,0 +1,6 @@
+.page_actions {
+	width: 100%;
+	display: flex;
+	justify-content: end;
+	gap: 0.8rem;
+}

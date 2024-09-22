@@ -1,0 +1,63 @@
+.checkbox {
+	display: flex;
+	align-items: center;
+	.label {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		user-select: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+
+		.input {
+			display: none;
+
+			&:checked + .check {
+				background-color: var(--color-yellow);
+				border-color: var(--color-yellow);
+
+				svg {
+					stroke-dashoffset: 0;
+				}
+			}
+		}
+
+		.check {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 1.8rem;
+			height: 1.8rem;
+			border-radius: 0.4rem;
+			background-color: var(--color-dark);
+			border: 2px solid var(--color-dark);
+			transition: all 0.2s ease;
+
+			svg {
+				width: 1rem;
+				height: 1rem;
+				fill: none;
+				stroke: var(--color-white);
+				stroke-width: 2;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+				stroke-dasharray: 1.6rem;
+				stroke-dashoffset: 1.6rem;
+				transition: all 0.3s ease-in-out;
+				transition-delay: 0.1s;
+			}
+		}
+
+		.name {
+			font-size: 1.6rem;
+			color: var(--color-white);
+			font-weight: 400;
+		}
+	}
+	.svg {
+		width: 0;
+		height: 0;
+		pointer-events: none;
+		user-select: none;
+	}
+}

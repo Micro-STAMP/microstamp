@@ -1,0 +1,51 @@
+.steps_menu {
+	display: flex;
+	justify-content: space-between;
+	border: 3px solid var(--color-yellow);
+	border-radius: var(--radius2);
+	width: 100%;
+
+	.name {
+		display: flex;
+		align-items: center;
+		text-align: center;
+		gap: 0.6rem;
+		color: var(--color-yellow);
+		font-size: 1.6rem;
+		border-right: 3px solid var(--color-yellow);
+		padding: 1.2rem 2rem;
+		text-shadow: var(--shadow25);
+		text-wrap: nowrap;
+
+		.icon {
+			min-width: 2rem;
+			font-size: 2rem;
+		}
+	}
+
+	.steps_buttons {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 1.2rem;
+		padding: 1.2rem 2rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.steps_menu {
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		.name {
+			padding: 2rem 1.2rem 1.2rem 1.2rem;
+			border-right-width: 0px;
+		}
+
+		.steps_buttons {
+			justify-content: center;
+			margin-bottom: 1.2rem;
+		}
+	}
+}

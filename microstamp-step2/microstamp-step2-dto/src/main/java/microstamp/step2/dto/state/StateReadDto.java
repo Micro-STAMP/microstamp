@@ -3,6 +3,7 @@ package microstamp.step2.dto.state;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import microstamp.step2.dto.variable.VariableReadDto;
 
 import java.util.UUID;
 
@@ -21,5 +22,7 @@ public class StateReadDto {
 
     @NotBlank
     private String code;
+
+    private VariableReadDto variable;
 
 }

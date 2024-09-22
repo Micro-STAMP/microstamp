@@ -10,6 +10,7 @@ public class ControlActionMapper {
                 .id(connectionAction.getId())
                 .name(connectionAction.getName())
                 .code(connectionAction.getCode())
+                .connection(ConnectionMapper.toDto(connectionAction.getConnection()))
                 .build();
     }
 }

@@ -21,9 +21,6 @@ public class ConnectionReadDto {
     @NotNull
     private UUID id;
 
-    @NotNull
-    private ConnectionActionType connectionActionType;
-
     @NotBlank
     private String code;
 

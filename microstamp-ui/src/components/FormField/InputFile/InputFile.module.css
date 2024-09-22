@@ -1,0 +1,51 @@
+.input_file_container {
+	display: flex;
+	justify-content: center;
+
+	.label_file {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		padding: 0.6rem 1.2rem;
+
+		border-radius: var(--radius1);
+		box-shadow: var(--shadow25);
+		cursor: pointer;
+
+		font-size: 1.4rem;
+		font-weight: 500;
+		background-color: var(--color-dark-gray);
+		color: var(--color-light-gray);
+
+		.label_text {
+			max-width: 18rem;
+			overflow-x: hidden;
+			text-wrap: nowrap;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.input_file {
+			display: none;
+		}
+
+		.icon {
+			font-size: 1.8rem;
+			min-width: 1.8rem;
+		}
+	}
+	.label_file.with_file {
+		border-radius: var(--radius1) 0 0 var(--radius1);
+		padding-right: 0.8rem;
+	}
+	.close_button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: var(--color-dark);
+		color: var(--color-yellow);
+		width: 3.4rem;
+		font-size: 1.8rem;
+		border-radius: 0 var(--radius1) var(--radius1) 0;
+	}
+}

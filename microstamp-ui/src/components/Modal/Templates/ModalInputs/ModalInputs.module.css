@@ -1,0 +1,30 @@
+.modal_inputs_wrapper {
+	display: flex;
+	width: 100%;
+
+	&.single {
+		flex-direction: column;
+		gap: 1.2rem;
+	}
+
+	&.double {
+		justify-content: center;
+		flex-wrap: wrap;
+		flex-basis: 0;
+		gap: 1rem;
+
+		label {
+			flex-grow: 1;
+			flex-basis: 0;
+			min-width: 48%;
+		}
+	}
+}
+
+@media (max-width: 720px) {
+	.modal_inputs_wrapper {
+		&.double {
+			flex-direction: column;
+		}
+	}
+}

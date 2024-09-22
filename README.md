@@ -9,7 +9,9 @@ This repository contains the source code for MicroSTAMP,  a web application base
  -   [Architecture Overview](#architecture-overview)
  -   [End Users Guide](#end-users-guide)
  -   [Developers Guide](#developers-guide)
+   - [Command-line setup](#Command-line-setup)
  -   [MicroSTAMP Microservices](#microstamp-microservices)
+ -   [License](#license)
  -   [Contributing Guidelines](#contributing-guidelines)
  -   [Lead developers](#lead-developers)
  -   [Publications](#publications)
@@ -109,7 +111,150 @@ This command will:
 To build and run the application as a software developer, you'll need:
 - [JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
 - [MySQL 8.0](https://dev.mysql.com/downloads/mysql) or higher
+- Apache Maven
 - IntelliJ IDEA Ultimate Edition (That's our IDE of choice, but you are free to use other IDEs as well).
+
+### Command-line setup
+
+### Step 1: Set up MySQL Databases
+
+#### Prerequisite
+Ensure that **MySQL** is installed and running on your machine. The default port for MySQL is `3306`. If MySQL is not installed, you can download it from the official MySQL website:
+
+- [Download MySQL](https://dev.mysql.com/downloads/mysql/)
+
+#### Creating the Databases
+
+Once MySQL is installed and running, follow the steps below to create the necessary databases for the project.
+
+1. Open a terminal or command prompt.
+2. Log in to MySQL using the following command:
+
+   ```bash
+   mysql -u root -p
+You will be prompted to enter your MySQL root password.
+
+3. Create the required databases by running the following SQL commands:
+
+  
+  CREATE DATABASE microstamp;
+
+  CREATE DATABASE step1;
+
+  CREATE DATABASE step2;
+
+  CREATE DATABASE step3;
+
+4. Verify that the databases were created successfully:
+
+SHOW DATABASES;
+
+You should see `microstamp`, `step1`, `step2`, and `step3` listed in the output.
+
+That's it! Your MySQL databases are now set up and ready to use.
+
+### Step 2: Clone the Project and Run the Microservices
+
+#### Prerequisite
+Ensure that **Maven** is installed on your machine. You can download and install Maven from the official website:
+
+- [Download Maven](https://maven.apache.org/download.cgi)
+
+#### Cloning the Project
+
+1. Open a terminal or command prompt.
+2. Navigate to the directory where you want to clone the project.
+3. Clone the project repository using the following command:
+
+   ```bash
+   git clone https://github.com/Micro-STAMP/microstamp.git
+
+### Step 3: Run the microstamp-service-registry microservice
+
+This microservices must be run BEFORE all other MicroSTAMP microservices. The reason is that the other microservices register themselves with the  microstamp-service-registry microservice (that must be already running).
+
+To run this first microservice, go to a terminal or command-prompt, navigate to the directory  and execute the command as illustrated 
+
+mvn spring-boot:run
+
+You should see you you console an outuput similar to the next Figure.
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-service-registry.png?raw=true" alt="Running the service registry">
+	<figcaption>Figure: Running the service registry microservice.</figcaption>
+</figure>
+
+### Step 4: Run the microstamp-authorization-server microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-authorization-server.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microservice-authorization-server microservice.</figcaption>
+</figure>
+
+### Step 5: Run the microstamp-api-gateway microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-api-gateway.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-api-gateway microservice.</figcaption>
+</figure>
+
+### Step 6: Run the microstamp-step1 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step1.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step1 microservice.</figcaption>
+</figure>
+
+### Step 7: Run the microstamp-step2 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step2.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step2 microservice.</figcaption>
+</figure>
+
+### Step 8: Run the microstamp-step3 microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-step3.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-step3 microservice.</figcaption>
+</figure>
+
+### Step 9: Run the microstamp-ui microservice
+
+<figure>
+  <img src="assets/images/console-output-after-running-microstamp-ui.png" alt="Running the service registry">
+	<figcaption>Figure: Running the microstamp-ui microservice (MicroSTAMP frontend).</figcaption>
+</figure>
+
+### Step 10: Access the landing page of MicroSTAMP
+
+<figure>
+  <img src="assets/images/microstamp-landing-page.png" alt="Running the service registry">
+	<figcaption>Figure: Access the landing page of MicroSTAMP.</figcaption>
+</figure>
+
+### Step 11: Authenticate with the user guest and password guest123
+
+<figure>
+  <img src="assets/images/login-form-guest-user.png" alt="Running the service registry">
+	<figcaption>Authenticating with the user guest.</figcaption>
+</figure>
+
+### Step 12: Submit OAuth consent 
+
+<figure>
+  <img src="assets/images/oauth-consent.png" alt="Running the service registry">
+	<figcaption>OAuth Consent.</figcaption>
+</figure>
+
+### Step 13: Examples of STPA Analyses for the user guest  
+
+<figure>
+  <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
+	<figcaption>Authenticating with the user guest.</figcaption>
+</figure>
+
+
 
 #### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
 
@@ -145,13 +290,45 @@ We can access the service registry administration page (Spring Eureka) by the UR
 
 ### 1. MicroSTAMP Service Registry
 
-The MicroSTAMP Service Registry is implemented with Sprint Cloud Netflix Eureka Server. Service registry and discovery play an important role when running multiple instances of services and we need a mechanism to call other services without hard coding their host names or port numbers.
+The MicroSTAMP Service Registry microservice(microstamp-service-registry) is implemented with Sprint Cloud Netflix Eureka Server. Service registry and discovery play an important role when running multiple instances of services and we need a mechanism to call other services without hard coding their host names or port numbers.
 
 With MicroSTAMP Service Registry we need to only configure an ID for each microservice that register itself as client with the MicroSTAMP Service Registry. In that sense, we don't have to bother about the hostname and port of the microservices instances that we want to communicate.
 
 In addition to that, in cloud environments, service instances may come up and go down any time. Hence, we need some automatic service registration and discovery mechanism as the provided in this microservice.
 
 Basically all MicroSTAMP microservices (microstamp-api-gateway, microstamp-stpa-step1, microstamp-stpa-step2, microstamp-stpa-step3, microstamp-stpa-step4) register themselves to  Service Registry, and Service Registry tracks all the MicroSTAMP microservices and its instances. We can use service Registry in order to see what are the microservices are up and what are the microservices down.
+
+### 2. MicroSTAMP API Gateway
+
+The microstamp-api-gateway is a microservice of MicroSTAMP that implements an **API gateway**. An API gateway is a critical pattern in a microservices architecture that acts as a single entry point for all client interactions with the microservices. It provides a unified interface for external clients to interact with various microservices, managing the complexity of communication between them and offering several essential functions, such as:
+
+1.  **Routing**: Directs incoming requests from clients to the appropriate microservice based on the request path or other criteria.
+2.  **Authentication and Authorization**: Ensures that only authenticated and authorized requests can access the microservices (by delegating the flow of control to the microstamp-authorization-server microservice.
+3.  **Load Balancing**: Distributes incoming traffic evenly across multiple instances of a microservice to prevent overload and improve performance.
+4.  **Rate Limiting and Throttling**: Controls the number of requests allowed from clients to prevent abuse or overuse of services.
+5.  **Caching**: Stores frequently accessed data temporarily to reduce load on backend services and improve response times.
+6.  **Monitoring and Logging**: Tracks requests and responses for performance monitoring, logging, and debugging.
+7.  **Request Transformation**: Modifies request or response headers, payloads, or other attributes to meet specific needs.
+
+In the MicroSTAMP, the API gateway is implemented using the **Spring Cloud Gateway**. Spring Cloud Gateway is part of the **Spring Cloud** ecosystem, specifically designed for building a robust and flexible API gateway on top of the **Spring Framework**. The key features of Spring Cloud Gateway are:
+
+1.  **Built on Spring Ecosystem**: It leverages the power of the Spring ecosystem, providing seamless integration with other Spring Cloud components like service discovery (Eureka), security (Spring Security), and configuration management.
+2.  **Declarative Routing**: Allows the configuration of routes in a declarative way using Java configuration or YAML/Properties files.
+3.  **Filter Mechanisms**: Provides powerful pre-built filters (such as pre-filters and post-filters) for manipulating requests and responses and allows custom filters to be defined.
+4.  **Reactive Programming Model**: Built on **Spring WebFlux**, a reactive programming model that is non-blocking and asynchronous, making it suitable for handling a large number of concurrent requests efficiently.
+5.  **Integration with OAuth2 and JWT**: Supports modern authentication protocols like OAuth2 and JWT for securing APIs.
+
+Summing up, using an API gateway simplifies the client-side complexity by hiding the details of the underlying microservices, providing a single point of entry, and handling cross-cutting concerns like security, monitoring, and rate limiting. It enables a scalable, efficient, and secure way to manage traffic between clients and services, making it a fundamental component in modern microservices architectures.
+
+## License
+
+MicroSTAMP is licensed under **MIT License**. The **MIT License** is a permissive open-source license that allows almost unrestricted use of the software. Here’s a summary of its main points:
+
+1.  **Permission to Use, Copy, and Modify**: The license grants anyone the right to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software.
+
+2.  **Attribution Requirement**: The software can be used freely, but the original copyright notice and license text must be included in any copies or substantial portions of the software.
+
+3.  **No Warranty**: The software is provided "as is," without any warranties or guarantees. The authors are not liable for any damages that may result from using the software.
 
 ## Contributing Guidelines
 

@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Variable")
-@Table(name = "variables")
+@Table(name = "variables", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "component_id" }) })
 public class Variable {
 
     @Id

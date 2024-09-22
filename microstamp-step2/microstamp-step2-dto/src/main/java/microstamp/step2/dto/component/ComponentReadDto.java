@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import microstamp.step2.dto.responsibility.ResponsibilityReadDto;
-import microstamp.step2.dto.variable.VariableReadDto;
+import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.enumeration.Style;
 
 import java.util.List;
@@ -36,6 +36,6 @@ public class ComponentReadDto {
 
     private List<ResponsibilityReadDto> responsibilities;
 
-    private List<VariableReadDto> variables;
+    private List<VariableFullReadDto> variables;
 
 }

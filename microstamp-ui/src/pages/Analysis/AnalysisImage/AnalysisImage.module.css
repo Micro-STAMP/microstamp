@@ -1,0 +1,41 @@
+.image_container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 1.8rem;
+
+	.image {
+		width: 90%;
+		margin: 1.6rem 0;
+		border-radius: var(--radius1);
+		box-shadow: var(--shadow25);
+	}
+
+	.message {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0.6rem;
+		color: var(--color-yellow);
+		margin: 1.6rem;
+
+		.icon {
+			font-size: 3.6rem;
+		}
+		.text {
+			text-align: center;
+			font-size: 1.8rem;
+			font-weight: 500;
+			text-shadow: var(--shadow25);
+		}
+	}
+
+	.image_actions {
+		display: flex;
+		gap: 0.8rem;
+		justify-content: flex-end;
+		width: 100%;
+	}
+}
