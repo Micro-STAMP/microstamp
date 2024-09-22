@@ -348,29 +348,27 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
 
 Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
-<figure>
+ <a href="https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59" target="_blank">
    <img src="assets/images/conference-paper.png" alt="Running the service registry">
-   <figcaption>https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59</figcaption>
-</figure>
+ </a> 
 
 ## Talks
 
-Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations,Las Vegas, NV, USA. April, 2024.
+1. Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "***MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.*" In _International Conference on Information Technology-New Generations,Las Vegas, NV, USA. April, 2024.
 
-<figure>
-   <img src="assets/images/vegas-talk.png" alt="Running the service registry">
-   <figcaption>Photo: Rodrigo Martins Pagliares in one of his presentations at ITNG 2024.</figcaption>
+<figure style="float: right;">
+  <img src="assets/images/vegas-talk.png" width=249 height=278 alt="Rodrigo Martins Pagliares at ITNG 2024" />
+  <figcaption style="font-size: small;">Rodrigo Martins Pagliares at ITNG 2024</figcaption>
 </figure>
 
+<br>
+<p></p>
 
-"***MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture***", 2024.
+2. "***MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture***", 2024.
 
-<figure>
-   <img src="assets/images/mit_presentation_schedule.png" alt="Running the service registry">
-   <figcaption>https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/</figcaption>
-</figure>
-
-
+<a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
+   <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
+</a>
 
 
 ## Contact Information
