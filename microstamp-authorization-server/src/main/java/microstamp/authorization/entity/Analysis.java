@@ -1,8 +1,7 @@
 package microstamp.authorization.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,10 +10,14 @@ import java.sql.Types;
 import java.time.Instant;
 import java.util.UUID;
 
-@Entity(name = "Analysis")
-@Table(name = "analyses")
-@Data
+@Getter
+@Setter
+@Builder
+@ToString
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "analyses")
+@Entity(name = "Analysis")
 @EntityListeners(AuditingEntityListener.class)
 public class Analysis {
 
