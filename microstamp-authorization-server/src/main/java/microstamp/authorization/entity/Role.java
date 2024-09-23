@@ -1,7 +1,7 @@
 package microstamp.authorization.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
@@ -9,7 +9,10 @@ import java.util.UUID;
 
 @Entity(name = "Role")
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
 
     @Id
@@ -19,5 +22,9 @@ public class Role {
     private UUID id;
 
     private String name;
+
+    public Role(String name) {
+        this.name = name;
+    }
 
 }

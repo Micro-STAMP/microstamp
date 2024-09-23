@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<body>
+<h1 class="title">Register to MicroSTAMP</h1>
+<form th:action="@{/registration}" method="post">
+    <div>
+        <label>Username</label>
+        <input type="text" name="username" required/>
+        <!--<p th:each="error: ${#fields.errors('username')}"
+           th:text="${error}">Validation error</p>-->
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="password" name="password" required/>
+        <!-- <p th:each="error : ${#fields.errors('password')}"
+           th:text="${error}">Validation error</p>-->
+    </div>
+    <div>
+        <label>Confirm Password</label>
+        <input type="password" name="matchingPassword" required/>
+    </div>
+    <input type="submit" value="Register" />
+</form>
+
+<a th:href="@{/login.html}">Login</a>
+</body>
+</html>
