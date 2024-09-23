@@ -1,7 +1,10 @@
 package step3.dto.step2;
 
+import lombok.Builder;
+
 import java.util.UUID;
 
+@Builder
 public record StateReadDto(
         UUID id,
         String name,
@@ -10,6 +13,7 @@ public record StateReadDto(
 ) {
 }
 
+@Builder
 record VariableStateReadDto(
         UUID id,
         String name,
