@@ -73,8 +73,8 @@ public class ControlActionServiceUnitTest {
     }
 
     @Test
-    @DisplayName("#findById > When the state is found > Return it")
-    void findByIdWhenTheStateIsFoundReturnIt() {
+    @DisplayName("#findById > When the connection action is found > Return it")
+    void findByIdWhenTheConnectionActionIsFoundReturnIt() {
         ConnectionAction mockConnectionAction = assembleConnectionAction.get();
 
         when(connectionActionRepository.findById(mockConnectionAction.getId())).thenReturn(Optional.of(mockConnectionAction));
