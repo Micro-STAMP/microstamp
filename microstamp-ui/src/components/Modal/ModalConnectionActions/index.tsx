@@ -45,7 +45,7 @@ function ModalConnectionActions({ open, onClose, connection }: ModalConnectionAc
 			createConnectionAction(connectionAction),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-connections"] });
-			toast.success("Connection action created.");
+			toast.success("Interaction created.");
 		},
 		onError: err => {
 			toast.error(err.message);
@@ -81,7 +81,7 @@ function ModalConnectionActions({ open, onClose, connection }: ModalConnectionAc
 		}) => updateConnectionAction(id, connectionAction),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-connections"] });
-			toast.success("Connection action updated.");
+			toast.success("Interaction updated.");
 		},
 		onError: err => {
 			toast.error(err.message);
@@ -116,7 +116,7 @@ function ModalConnectionActions({ open, onClose, connection }: ModalConnectionAc
 		mutationFn: (id: string) => deleteConnectionAction(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-connections"] });
-			toast.success("Connection action deleted.");
+			toast.success("Interaction deleted.");
 		},
 		onError: err => {
 			toast.error(err.message);
@@ -138,7 +138,7 @@ function ModalConnectionActions({ open, onClose, connection }: ModalConnectionAc
 					onClose={onClose}
 				/>
 
-				<Container title="Connection Actions" onClick={toggleModalCreateConnectionAction}>
+				<Container title="Interactions" onClick={toggleModalCreateConnectionAction}>
 					<ListWrapper>
 						{connection.connectionActions.map(connectionAction => (
 							<ConnectionAction.Root key={connectionAction.id}>
@@ -177,7 +177,7 @@ function ModalConnectionActions({ open, onClose, connection }: ModalConnectionAc
 				onClose={toggleModalCreateConnectionAction}
 				onSubmit={handleCreateConnectionAction}
 				isLoading={isCreating}
-				title="Create Connection Action"
+				title="Create Interaction"
 				btnText="Create"
 			/>
 			<ModalConnectionAction
@@ -185,7 +185,7 @@ function ModalConnectionActions({ open, onClose, connection }: ModalConnectionAc
 				onClose={toggleModalUpdateConnectionAction}
 				onSubmit={handleUpdateConnectionAction}
 				isLoading={isUpdating}
-				title="Update Connection Action"
+				title="Update Interaction"
 				btnText="Update"
 				connectionAction={selectedConnectionAction || undefined}
 			/>
@@ -194,8 +194,8 @@ function ModalConnectionActions({ open, onClose, connection }: ModalConnectionAc
 				onClose={toggleModalDeleteConnectionAction}
 				onConfirm={handleDeleteConnectionAction}
 				isLoading={isDeleting}
-				message="Do you want to delete this connection action?"
-				title="Delete Connection Action"
+				message="Do you want to delete this interaction?"
+				title="Delete Interaction"
 				btnText="Delete"
 			/>
 		</>

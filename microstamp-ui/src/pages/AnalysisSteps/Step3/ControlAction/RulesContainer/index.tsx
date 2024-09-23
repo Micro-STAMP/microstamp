@@ -36,8 +36,12 @@ function RulesContainer({ analysisId, controlAction }: RulesContainerProps) {
 	});
 	const handleCreateUCAsByRule = async (ruleId: string) => {
 		const toastLoading = toast.loading("Applying rule on context table.");
-		await requestCreateUCAsByRule(ruleId);
-		toast.dismiss(toastLoading);
+		try {
+			await requestCreateUCAsByRule(ruleId);
+		} catch (err) {
+		} finally {
+			toast.dismiss(toastLoading);
+		}
 	};
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
@@ -59,6 +63,7 @@ function RulesContainer({ analysisId, controlAction }: RulesContainerProps) {
 	const handleCreateRule = async (ruleData: IRuleFormData) => {
 		const rule: IRuleInsertDto = {
 			name: ruleData.name,
+			code: ruleData.code,
 			types: ruleData.types.map(type => type.value) as IUCAType[],
 			states_ids: ruleData.states.map(state => state.value),
 			hazard_id: ruleData.hazard!.value,
@@ -78,6 +83,8 @@ function RulesContainer({ analysisId, controlAction }: RulesContainerProps) {
 		mutationFn: (id: string) => deleteRule(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-rules"] });
+			queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
+			queryClient.invalidateQueries({ queryKey: ["context-table-unsafe-control-actions"] });
 			toast.success("Rule deleted.");
 		},
 		onError: err => {

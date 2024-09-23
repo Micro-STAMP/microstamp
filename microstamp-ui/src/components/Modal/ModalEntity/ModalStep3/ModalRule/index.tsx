@@ -3,6 +3,7 @@ import { Input, TypesMultiSelect } from "@components/FormField";
 import { hazardsToSelectOptions } from "@components/FormField/MultiSelect/HazardsMultiSelect/util";
 import HazardSelect from "@components/FormField/Select/HazardSelect";
 import StateSelect from "@components/FormField/Select/StateSelect";
+import ContextStates from "@components/FormField/Select/StateSelect/ContextStates";
 import { statesToSelectOptions } from "@components/FormField/Select/StateSelect/util";
 import { SelectOption } from "@components/FormField/Templates";
 import Loader from "@components/Loader";
@@ -85,6 +86,7 @@ function ModalRule({
 
 	const [ruleData, setRuleData] = useState<IRuleFormData>({
 		name: "",
+		code: "",
 		states: [],
 		types: [],
 		hazard: hazardsOptions[0]
@@ -96,6 +98,7 @@ function ModalRule({
 	const handleSubmitRule = async () => {
 		if (
 			!ruleData.name ||
+			!ruleData.code ||
 			ruleData.states.length === 0 ||
 			ruleData.types.length === 0 ||
 			!ruleData.hazard
@@ -107,6 +110,7 @@ function ModalRule({
 		await onSubmit(ruleData);
 		setRuleData({
 			name: "",
+			code: "",
 			states: [],
 			types: [],
 			hazard: hazardsOptions[0]
@@ -123,15 +127,21 @@ function ModalRule({
 		<ModalContainer open={open} size="big">
 			<ModalHeader onClose={onClose} title="New Rule" />
 			<div className={styles.modal_rule_inputs}>
-				<ModalInputs>
+				<ModalInputs column="double">
 					<Input
 						label="Name"
 						value={ruleData.name}
 						onChange={(value: string) => setRuleData({ ...ruleData, name: value })}
 						required
 					/>
+					<Input
+						label="Code"
+						value={ruleData.code}
+						onChange={(value: string) => setRuleData({ ...ruleData, code: value })}
+						required
+					/>
 				</ModalInputs>
-				<ModalInputs column="double">
+				<ContextStates>
 					{variables.map(variable => (
 						<StateSelect
 							key={variable.id}
@@ -142,7 +152,7 @@ function ModalRule({
 							optionsPosition="bottom"
 						/>
 					))}
-				</ModalInputs>
+				</ContextStates>
 				<ModalInputs>
 					<TypesMultiSelect
 						onChange={(types: SelectOption[]) =>

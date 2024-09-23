@@ -59,7 +59,6 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 	});
 
 	useEffect(() => {
-		// TODO Only 404
 		const handleContextTableNotFound = async () => {
 			if (isError && error) {
 				await requestCreateContextTable({
