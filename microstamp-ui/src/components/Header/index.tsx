@@ -8,6 +8,7 @@ import {
 	BiX as CloseIcon,
 	BiLogInCircle as LoginIcon,
 	BiMenu as MenuIcon,
+	BiUserPlus as RegisterIcon,
 	BiUserCircle as UserIcon
 } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
@@ -44,6 +45,10 @@ function Header() {
 		toggleModalLogout();
 		navigate("/");
 	};
+	const handleRegister = () => {
+		closeMenu();
+		window.location.href = "http://127.0.0.1:9000/registration";
+	};
 
 	const navbar = () => {
 		const navClass = `${styles.nav} ${styles.mobile} ${menuOpen ? styles.active : ""}`;
@@ -63,6 +68,10 @@ function Header() {
 		} else {
 			return (
 				<nav className={navClass}>
+					<div className={styles.link} onClick={handleRegister}>
+						<RegisterIcon className={styles.register_icon} />
+						Register
+					</div>
 					<div className={styles.link} onClick={handleLogin}>
 						<LoginIcon className={styles.icon} />
 						Login
