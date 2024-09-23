@@ -1,27 +1,145 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-<body>
-<h1 class="title">Register to MicroSTAMP</h1>
-<form th:action="@{/registration}" method="post">
-    <div>
-        <label>Username</label>
-        <input type="text" name="username" required/>
-        <!--<p th:each="error: ${#fields.errors('username')}"
-           th:text="${error}">Validation error</p>-->
-    </div>
-    <div>
-        <label>Password</label>
-        <input type="password" name="password" required/>
-        <!-- <p th:each="error : ${#fields.errors('password')}"
-           th:text="${error}">Validation error</p>-->
-    </div>
-    <div>
-        <label>Confirm Password</label>
-        <input type="password" name="matchingPassword" required/>
-    </div>
-    <input type="submit" value="Register" />
-</form>
+	<head>
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-<a th:href="@{/login.html}">Login</a>
-</body>
+			* {
+				margin: 0;
+				padding: 0;
+				margin-block: 0;
+				margin-inline: 0;
+				box-sizing: border-box;
+			}
+			html {
+				font-size: 62.5%;
+				font-family: "Poppins", sans-serif;
+				overflow-x: hidden;
+			}
+			body {
+				background-color: #222832;
+				color: #f5f5f5;
+			}
+			input {
+				border: none;
+				outline: none;
+				padding-block: 0;
+				padding-inline: 0;
+				font-family: "Poppins", sans-serif;
+			}
+			.registration_container {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				gap: 2.4rem;
+				margin: 8.4rem auto;
+				width: 100%;
+			}
+			.title {
+				color: #d4a056;
+			}
+			/* Login Form */
+			form {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 1.2rem;
+				padding: 2.4rem;
+				border-radius: 10px;
+				background-color: #333c4b;
+				box-shadow: 0 4px 4px #16161640;
+				width: 90%;
+				min-width: 252px;
+				max-width: 432px;
+
+				header {
+					display: flex;
+					justify-content: start;
+					width: 100%;
+					color: #d4a056;
+					font-size: 1.8rem;
+					font-weight: 600;
+					margin-bottom: 1.2rem;
+					text-shadow: 0 4px 4px #16161640;
+				}
+
+				label {
+					display: flex;
+					flex-direction: column;
+					gap: 0.4rem;
+					width: 100%;
+
+					.label_name {
+						color: #f5f5f5;
+						font-size: 1.4rem;
+						font-weight: 500;
+						order: -1;
+					}
+
+					input {
+						border: none;
+						outline: none;
+						padding-block: 0;
+						padding-inline: 0;
+
+						background-color: #1f252e;
+						padding: 1.2rem;
+						color: #f5f5f5;
+						border-radius: 10px;
+						caret-color: #d4a056;
+						box-shadow: 0 4px 4px #16161640;
+						font-weight: 500;
+
+						&:focus + .label_name {
+							color: #d4a056;
+						}
+					}
+				}
+
+				input[type="submit"] {
+					margin-top: 1.2rem;
+					font-weight: 600;
+					width: 100%;
+					padding: 1rem;
+					background-color: #d4a056;
+					color: #f5f5f5;
+					border: none;
+					border-radius: 10px;
+					cursor: pointer;
+				}
+			}
+			footer {
+				font-size: 1.6rem;
+				a {
+					color: #d4a056;
+					cursor: pointer;
+					text-decoration: underline;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<main class="registration_container">
+			<h1 class="title">Register to MicroSTAMP</h1>
+			<form th:action="@{/registration}" method="post">
+				<header>Create new User</header>
+				<label>
+					<input type="text" name="username" required autocomplete="off" />
+					<span class="label_name">Username:</span>
+				</label>
+				<label>
+					<input type="password" name="password" required />
+					<span class="label_name">Password:</span>
+				</label>
+				<label>
+					<input type="password" name="matchingPassword" required />
+					<span class="label_name">Confirm Password:</span>
+				</label>
+				<input type="submit" value="Register" />
+			</form>
+
+			<footer>Already have an user? <a th:href="@{/login.html}">Login</a></footer>
+		</main>
+	</body>
 </html>
