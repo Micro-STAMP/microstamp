@@ -52,6 +52,9 @@
 			.icon {
 				font-size: 1.8rem;
 			}
+			.register_icon {
+				font-size: 2.1rem;
+			}
 
 			&:hover {
 				color: var(--color-yellow);

@@ -26,7 +26,9 @@ import step3.repository.UnsafeControlActionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -143,11 +145,10 @@ public class ContextTableService {
 
     @Transactional
     public void verifyChangesInStates(ContextTable contextTable) {
-        List<UUID> statesIdsOfContextTable = contextTable.getContexts().stream()
+        Set<UUID> statesIdsOfContextTable = contextTable.getContexts().stream()
                 .flatMap(context -> context.getStateAssociations().stream())
                 .map(ContextState::getStateId)
-                .distinct()
-                .toList();
+                .collect(Collectors.toSet());
 
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(contextTable.getControlActionId());
 
@@ -158,11 +159,10 @@ public class ContextTableService {
         step2Variables.addAll(source.variables());
         step2Variables.addAll(target.variables());
 
-        List<UUID> step2StatesIds = step2Variables.stream()
+        Set<UUID> step2StatesIds = step2Variables.stream()
                 .flatMap(variable -> variable.states().stream())
                 .map(StateReadDto::id)
-                .distinct()
-                .toList();
+                .collect(Collectors.toSet());
 
         // se os ids dos estados da tabela de contexto forem diferentes dos estados do step2, atualiza a tabela de contexto
         boolean thereWasChangeInStep2 = !statesIdsOfContextTable.equals(step2StatesIds);

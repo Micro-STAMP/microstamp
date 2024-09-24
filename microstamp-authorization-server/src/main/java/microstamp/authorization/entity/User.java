@@ -1,7 +1,7 @@
 package microstamp.authorization.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
@@ -12,7 +12,10 @@ import java.util.UUID;
 
 @Entity(name = "users")
 @Table(name = "users")
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -39,4 +42,13 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Analysis> analyses;
 
+    public User(String username, String password) {
+        Set<Role> roles = Set.of(
+                new Role("USER"));
+
+        this.username = username;
+        this.password = password;
+        this.enabled = true;
+        this.roles = roles;
+    }
 }
