@@ -1,6 +1,6 @@
 import { ModalConfirm } from "@components/Modal";
 import { useAuth } from "@hooks/useAuth";
-import { authServerRequest } from "@http/Login";
+import { authRegisterRequest, authServerRequest } from "@http/Login";
 import { useEffect, useState } from "react";
 import { AiOutlineSecurityScan as LogoIcon } from "react-icons/ai";
 import {
@@ -47,7 +47,7 @@ function Header() {
 	};
 	const handleRegister = () => {
 		closeMenu();
-		window.location.href = "http://127.0.0.1:9000/registration";
+		authRegisterRequest();
 	};
 
 	const navbar = () => {

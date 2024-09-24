@@ -27,6 +27,21 @@ const authServerRequest = () => {
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
 
+// Send to Auht Register User
+
+const authRegisterRequest = () => {
+	const register_auth_server = "http://127.0.0.1:9000/registration";
+	const auth_callback = `${HOST}/login/oauth2/code/client-server-microstamp`;
+	const response_type = "code";
+	const scope = "openid profile";
+
+	const targetUrl = `${register_auth_server}?client_id=${CLIENT_ID}&redirect_uri=${auth_callback}&response_type=${response_type}&scope=${scope}`;
+
+	window.location.href = targetUrl;
+};
+
+/* - - - - - - - - - - - - - - - - - - - - - - */
+
 // Change Code for Token
 
 const tokenRequest = async (code: string) => {
@@ -94,6 +109,6 @@ const logoutRequest = () => {
 	deleteUserStorage();
 };
 
-export { authServerRequest, logoutRequest, refreshTokenRequest, tokenRequest };
+export { authRegisterRequest, authServerRequest, logoutRequest, refreshTokenRequest, tokenRequest };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
