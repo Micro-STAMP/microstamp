@@ -39,6 +39,12 @@
 			.title {
 				color: #d4a056;
 			}
+			.warning {
+				background-color: #d4565660;
+				padding: 0.8rem 1.2rem;
+				font-size: 1.4rem;
+				border-radius: 10px;
+			}
 			/* Login Form */
 			form {
 				display: flex;
@@ -109,6 +115,7 @@
 					cursor: pointer;
 				}
 			}
+
 			footer {
 				font-size: 1.6rem;
 				a {
@@ -122,7 +129,8 @@
 	<body>
 		<main class="registration_container">
 			<h1 class="title">Register to MicroSTAMP</h1>
-			<form th:action="@{/registration}" method="post">
+			<div th:if="${errorMessage}" class="warning" th:text="${errorMessage}"></div>
+			<form th:action="@{/registration(client_id=${client_id},redirect_uri=${redirect_uri},response_type=${response_type},scope=${scope})}" method="post">
 				<header>Create new User</header>
 				<label>
 					<input type="text" name="username" required autocomplete="off" />
@@ -139,7 +147,7 @@
 				<input type="submit" value="Register" />
 			</form>
 
-			<footer>Already have an user? <a th:href="@{/login.html}">Login</a></footer>
+			<footer>Already have a user? <a th:href="@{/oauth2/authorize(client_id=${client_id},redirect_uri=${redirect_uri},response_type=${response_type},scope=${scope})}">Login</a></footer>
 		</main>
 	</body>
 </html>

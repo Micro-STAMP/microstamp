@@ -27,7 +27,7 @@ const authServerRequest = () => {
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
 
-// Send to Auht Register User
+// Send to Auth Register User
 
 const authRegisterRequest = () => {
 	const register_auth_server = "http://127.0.0.1:9000/registration";

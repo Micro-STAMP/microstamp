@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import microstamp.authorization.dto.UserInsertDto;
 import microstamp.authorization.dto.UserReadDto;
 import microstamp.authorization.entity.User;
+import microstamp.authorization.exception.DistinctPasswordException;
 import microstamp.authorization.exception.UserAlreadyExistException;
 import microstamp.authorization.mapper.UserMapper;
 import microstamp.authorization.repository.UserRepository;
@@ -38,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
         if (existingUser != null)
             throw new UserAlreadyExistException();
+
+        if (!userInsertDto.getPassword().equals(userInsertDto.getMatchingPassword()))
+            throw new DistinctPasswordException();
 
         String encryptedPassword = passwordEncoder.encode(userInsertDto.getPassword());
         User user = UserMapper.toEntity(userInsertDto.getUsername(), encryptedPassword);
