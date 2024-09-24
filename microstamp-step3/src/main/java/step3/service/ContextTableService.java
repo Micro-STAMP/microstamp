@@ -168,7 +168,7 @@ public class ContextTableService {
         boolean thereWasChangeInStep2 = !statesIdsOfContextTable.equals(step2StatesIds);
 
         if (thereWasChangeInStep2) {
-            contextTable.getContexts().clear();
+            contextTable.setContexts(new ArrayList<>());
             ruleRepository.deleteAllByControlActionId(contextTable.getControlActionId());
             ucaRepository.deleteByControlActionId(contextTable.getControlActionId());
 
