@@ -108,6 +108,7 @@ public class StateServiceUnitTest {
         );
     }
 
+
     @Test
     @DisplayName("#update > When the state is not found > Throw an exception")
     void updateWhenTheStateIsNotFoundThrowAnException() {
