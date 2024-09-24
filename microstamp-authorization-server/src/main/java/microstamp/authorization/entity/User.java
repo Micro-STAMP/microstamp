@@ -44,4 +44,13 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Analysis> analyses;
 
+    public User(String username, String password) {
+        Set<Role> roles = Set.of(
+                new Role("USER"));
+
+        this.username = username;
+        this.password = password;
+        this.enabled = true;
+        this.roles = roles;
+    }
 }
