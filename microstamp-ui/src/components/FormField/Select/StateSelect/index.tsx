@@ -1,5 +1,5 @@
-import { Select } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
+import ContextSelect from "./ContextSelect";
 
 interface StateSelectProps {
 	label?: string;
@@ -21,7 +21,7 @@ function StateSelect({
 }: StateSelectProps) {
 	return (
 		<>
-			<Select
+			<ContextSelect
 				label={label}
 				value={value}
 				onChange={onChange}

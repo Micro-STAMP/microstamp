@@ -1,0 +1,17 @@
+.context_states_container {
+	--container-border: 2px solid var(--color-gray);
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+
+	padding: 0.8rem 0 1.2rem 0;
+	border-top: var(--container-border);
+	border-bottom: var(--container-border);
+
+	.context_title {
+		color: var(--color-white);
+		font-size: 1.4rem;
+		font-weight: 500;
+	}
+}

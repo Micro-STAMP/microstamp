@@ -49,7 +49,7 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 						variant="dark"
 						onClick={toggleModalSelectControlAction}
 					>
-						Indentify Unsafe Control Actions
+						Identify Unsafe Control Actions
 					</Button>
 					<Button
 						size="small"
@@ -62,7 +62,7 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 							);
 						}}
 					>
-						Indentify Loss Scenarios
+						Identify Loss Scenarios
 					</Button>
 				</div>
 			</div>

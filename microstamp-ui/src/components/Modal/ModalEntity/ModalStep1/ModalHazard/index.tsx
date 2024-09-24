@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { Input } from "@components/FormField";
+import { Checkbox, Input } from "@components/FormField";
 import { hazardsToSelectOptions } from "@components/FormField/MultiSelect/HazardsMultiSelect/util";
 import LossesMultiSelect from "@components/FormField/MultiSelect/LossesMultiSelect";
 import { lossesToSelectOptions } from "@components/FormField/MultiSelect/LossesMultiSelect/util";
@@ -67,6 +67,13 @@ function ModalHazard({
 	}, [hazards, hazard]);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Is Subhazard State
+
+	const [isSubhazard, setIsSubhazard] = useState<boolean>(
+		hazard !== undefined && hazard.father !== null
+	);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Hazard Data
 
 	const [hazardData, setHazardData] = useState<IHazardFormData>({
@@ -84,6 +91,7 @@ function ModalHazard({
 				losses: lossesToSelectOptions(hazard.losses),
 				father: hazard.father ? hazardToSelectOption(hazard.father) : null
 			});
+			setIsSubhazard(hazard.father !== null);
 		} else {
 			setHazardData({
 				name: "",
@@ -91,6 +99,7 @@ function ModalHazard({
 				losses: [],
 				father: null
 			});
+			setIsSubhazard(false);
 		}
 	}, [hazard]);
 
@@ -102,6 +111,10 @@ function ModalHazard({
 			toast.warning("A required field is empty.");
 			return;
 		}
+		if (isSubhazard && !hazardData.father) {
+			toast.warning("Sub-hazards need a Hazard.");
+			return;
+		}
 		await onSubmit(hazardData);
 		setHazardData({
 			name: hazard ? hazardData.name : "",
@@ -109,6 +122,7 @@ function ModalHazard({
 			losses: hazard ? lossesToSelectOptions(hazard.losses) : [],
 			father: hazard && hazard.father ? hazardToSelectOption(hazard.father) : null
 		});
+		setIsSubhazard(hazard !== undefined && hazard.father !== null);
 		onClose();
 	};
 
@@ -139,26 +153,28 @@ function ModalHazard({
 						setHazardData({ ...hazardData, losses: losses })
 					}
 				/>
-				{/* <div style={{ width: "100%", marginTop: "1rem" }}>
+				<div style={{ width: "100%", marginTop: "1rem" }}>
 					<Checkbox
-						checked={isSubHazard}
-						label="Sub Hazard?"
+						checked={isSubhazard}
+						label="Is Sub-hazard?"
 						onChange={checked => {
-							setIsSubHazard(checked);
+							setIsSubhazard(checked);
 							if (!checked) {
 								setHazardData({ ...hazardData, father: null });
 							}
 						}}
 					/>
-				</div> */}
-				<HazardSelect
-					value={hazardData.father}
-					onChange={(value: SelectOption | null) =>
-						setHazardData({ ...hazardData, father: value })
-					}
-					hazards={hazardsOptions}
-					disabled={hazardsOptions.length === 0}
-				/>
+				</div>
+				{isSubhazard && (
+					<HazardSelect
+						value={hazardData.father}
+						onChange={(value: SelectOption | null) =>
+							setHazardData({ ...hazardData, father: value })
+						}
+						hazards={hazardsOptions}
+						disabled={hazardsOptions.length === 0}
+					/>
+				)}
 			</ModalInputs>
 			<ModalButtons>
 				<Button variant="dark" onClick={onClose} size="small" icon={ReturnIcon}>

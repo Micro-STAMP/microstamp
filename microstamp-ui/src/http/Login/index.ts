@@ -89,7 +89,6 @@ const refreshTokenRequest = async (refresh_token: string) => {
 // Logout
 
 const logoutRequest = () => {
-	// TODO Use oauth2 logout
 	deleteTokenStorage();
 	deleteRefreshTokenStorage();
 	deleteUserStorage();

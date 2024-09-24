@@ -3,6 +3,7 @@ import { TypeSelect } from "@components/FormField";
 import { hazardsToSelectOptions } from "@components/FormField/MultiSelect/HazardsMultiSelect/util";
 import HazardSelect from "@components/FormField/Select/HazardSelect";
 import StateSelect from "@components/FormField/Select/StateSelect";
+import ContextStates from "@components/FormField/Select/StateSelect/ContextStates";
 import {
 	statesToSelectOptions,
 	stateToSelectOption
@@ -129,7 +130,7 @@ function ModalUnsafeControlAction({
 		<ModalContainer open={open} size="big">
 			<ModalHeader onClose={onClose} title="New Unsafe Control Action" />
 			<div className={styles.modal_uca_inputs}>
-				<ModalInputs column="double">
+				<ContextStates>
 					{variables.map(variable => (
 						<StateSelect
 							key={variable.id}
@@ -141,7 +142,7 @@ function ModalUnsafeControlAction({
 							disabled
 						/>
 					))}
-				</ModalInputs>
+				</ContextStates>
 				<ModalInputs>
 					<TypeSelect
 						onChange={(type: SelectOption | null) =>
