@@ -66,7 +66,7 @@ public class ContextTableService {
         return mapper.toContextTableReadDto(createContextTable);
     }
 
-//    @Transactional
+    @Transactional
     public ContextTableReadWithPageDto readContextTableById(UUID id, int page, int size) {
         ContextTable contextTable = contextTableRepository
                 .findById(id)
@@ -88,7 +88,7 @@ public class ContextTableService {
                 .toList();
     }
 
-//    @Transactional
+    @Transactional
     public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
         step2Proxy.getControlActionById(controlActionId);
 
@@ -104,7 +104,7 @@ public class ContextTableService {
         return mapper.toContextTableReadWithPageDto(contextTable, contextsPage);
     }
 
-//    @Transactional
+    @Transactional
     public void deleteContextTable(UUID id) {
         ContextTable contextTable = contextTableRepository
                 .findById(id)
@@ -141,9 +141,9 @@ public class ContextTableService {
         }
     }
 
-//    @Transactional
+    @Transactional
     public void verifyChangesInStates(ContextTable contextTable) {
-        List<UUID> statesIds = contextTable.getContexts().stream()
+        List<UUID> statesIdsOfContextTable = contextTable.getContexts().stream()
                 .flatMap(context -> context.getStateAssociations().stream())
                 .map(ContextState::getStateId)
                 .distinct()
@@ -154,18 +154,26 @@ public class ContextTableService {
         ComponentReadDto source = controlAction.connection().source();
         ComponentReadDto target = controlAction.connection().target();
 
-        List<VariableReadDto> variables = new ArrayList<>();
-        variables.addAll(source.variables());
-        variables.addAll(target.variables());
+        List<VariableReadDto> step2Variables = new ArrayList<>();
+        step2Variables.addAll(source.variables());
+        step2Variables.addAll(target.variables());
 
-        List<StateReadDto> states = variables.stream()
+        List<UUID> step2StatesIds = step2Variables.stream()
                 .flatMap(variable -> variable.states().stream())
+                .map(StateReadDto::id)
                 .distinct()
                 .toList();
 
-        if (states.size() != statesIds.size()) {
-            this.deleteContextTable(contextTable.getId());
-            throw new OperationNotAllowedException("Context table is not valid");
+        // se os ids dos estados da tabela de contexto forem diferentes dos estados do step2, atualiza a tabela de contexto
+        boolean thereWasChangeInStep2 = !statesIdsOfContextTable.equals(step2StatesIds);
+
+        if (thereWasChangeInStep2) {
+            contextTable.getContexts().clear();
+            ruleRepository.deleteAllByControlActionId(contextTable.getControlActionId());
+            ucaRepository.deleteByControlActionId(contextTable.getControlActionId());
+
+            generateAllContexts(step2Variables, 0, new ArrayList<>(), contextTable);
+            contextTableRepository.save(contextTable);
         }
     }
 }
