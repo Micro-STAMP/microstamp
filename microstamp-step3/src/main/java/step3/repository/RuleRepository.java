@@ -11,4 +11,5 @@ public interface RuleRepository extends JpaRepository<Rule, UUID> {
     List<Rule> findByControlActionId(UUID id);
     List<Rule> findByAnalysisId(UUID id);
     Optional<Rule> findByCode(String code);
+    void deleteAllByControlActionId(UUID controlActionId);
 }

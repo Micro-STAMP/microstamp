@@ -16,10 +16,12 @@ import step3.dto.step2.StateReadDto;
 import step3.dto.step2.VariableReadDto;
 import step3.entity.Context;
 import step3.entity.ContextTable;
+import step3.entity.association.ContextState;
 import step3.infra.exceptions.OperationNotAllowedException;
 import step3.proxy.Step2Proxy;
 import step3.repository.ContextRepository;
 import step3.repository.ContextTableRepository;
+import step3.repository.RuleRepository;
 import step3.repository.UnsafeControlActionRepository;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class ContextTableService {
     private final ContextTableRepository contextTableRepository;
     private final ContextRepository contextRepository;
     private final UnsafeControlActionRepository ucaRepository;
+    private final RuleRepository ruleRepository;
     private final Step2Proxy step2Proxy;
     private final ContextTableMapper mapper;
 
@@ -63,10 +66,13 @@ public class ContextTableService {
         return mapper.toContextTableReadDto(createContextTable);
     }
 
+//    @Transactional
     public ContextTableReadWithPageDto readContextTableById(UUID id, int page, int size) {
         ContextTable contextTable = contextTableRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found context table with id: " + id));
+
+        this.verifyChangesInStates(contextTable);
 
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
@@ -82,6 +88,7 @@ public class ContextTableService {
                 .toList();
     }
 
+//    @Transactional
     public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
         step2Proxy.getControlActionById(controlActionId);
 
@@ -89,18 +96,21 @@ public class ContextTableService {
                 .findByControlActionId(controlActionId)
                 .orElseThrow(() -> new EntityNotFoundException("Context table not found with control action id: " + controlActionId));
 
+        this.verifyChangesInStates(contextTable);
+
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
 
         return mapper.toContextTableReadWithPageDto(contextTable, contextsPage);
     }
 
-    @Transactional
+//    @Transactional
     public void deleteContextTable(UUID id) {
         ContextTable contextTable = contextTableRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found context table with id: " + id));
 
+        ruleRepository.deleteAllByControlActionId(contextTable.getControlActionId());
         ucaRepository.deleteByControlActionId(contextTable.getControlActionId());
         contextTableRepository.deleteById(id);
     }
@@ -128,6 +138,34 @@ public class ContextTableService {
             List<StateReadDto> updatedStates = new ArrayList<>(currentStates);
             updatedStates.add(state);
             generateAllContexts(variables, index + 1, updatedStates, contextTable);
+        }
+    }
+
+//    @Transactional
+    public void verifyChangesInStates(ContextTable contextTable) {
+        List<UUID> statesIds = contextTable.getContexts().stream()
+                .flatMap(context -> context.getStateAssociations().stream())
+                .map(ContextState::getStateId)
+                .distinct()
+                .toList();
+
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(contextTable.getControlActionId());
+
+        ComponentReadDto source = controlAction.connection().source();
+        ComponentReadDto target = controlAction.connection().target();
+
+        List<VariableReadDto> variables = new ArrayList<>();
+        variables.addAll(source.variables());
+        variables.addAll(target.variables());
+
+        List<StateReadDto> states = variables.stream()
+                .flatMap(variable -> variable.states().stream())
+                .distinct()
+                .toList();
+
+        if (states.size() != statesIds.size()) {
+            this.deleteContextTable(contextTable.getId());
+            throw new OperationNotAllowedException("Context table is not valid");
         }
     }
 }
