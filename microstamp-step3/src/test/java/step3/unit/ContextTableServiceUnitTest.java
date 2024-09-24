@@ -23,6 +23,7 @@ import step3.infra.exceptions.OperationNotAllowedException;
 import step3.proxy.Step2Proxy;
 import step3.repository.ContextRepository;
 import step3.repository.ContextTableRepository;
+import step3.repository.RuleRepository;
 import step3.repository.UnsafeControlActionRepository;
 import step3.service.ContextTableService;
 
@@ -50,6 +51,9 @@ public class ContextTableServiceUnitTest {
 
     @Mock
     private UnsafeControlActionRepository ucaRepository;
+
+    @Mock
+    private RuleRepository ruleRepository;
 
     @Mock
     private Step2Proxy step2Proxy;
@@ -148,6 +152,9 @@ public class ContextTableServiceUnitTest {
     void readContextTableByIdWhenTheContextTableIsFoundReturnIt() {
         UUID contextTableId = UUID.randomUUID();
         ContextTable mockContextTable = assembleContextTable.apply(contextTableId);
+        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mockContextTable.getControlActionId());
+
+        when(step2Proxy.getControlActionById(mockContextTable.getControlActionId())).thenReturn(mockControlActionRead);
         Pageable pageable = Pageable.ofSize(10).withPage(0);
         Page<Context> mockContext = new PageImpl<>(List.of(assembleContext.apply(mockContextTable.getId())), pageable, 0);
 
@@ -218,13 +225,17 @@ public class ContextTableServiceUnitTest {
     @Test
     @DisplayName("#readContextTableByControlActionId > When the context table is found > Return it")
     void readContextTableByControlActionIdWhenTheContextTableIsFoundReturnIt() {
-        UUID mockControlActionId = UUID.randomUUID();
-        ContextTable mockContextTable = assembleContextTable.apply(mockControlActionId);
+//        UUID mockControlActionId = UUID.randomUUID();
+        UUID mockContextTableId = UUID.randomUUID();
+        ContextTable mockContextTable = assembleContextTable.apply(mockContextTableId);
+        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mockContextTable.getControlActionId());
+
         Pageable pageable = Pageable.ofSize(10).withPage(0);
         Page<Context> mockContext = new PageImpl<>(List.of(assembleContext.apply(mockContextTable.getId())), pageable, 0);
 
-        when(step2Proxy.getControlActionById(mockControlActionId)).thenReturn(null);
-        when(contextTableRepository.findByControlActionId(mockControlActionId)).thenReturn(Optional.of(mockContextTable));
+
+        when(step2Proxy.getControlActionById(mockContextTable.getControlActionId())).thenReturn(mockControlActionRead);
+        when(contextTableRepository.findByControlActionId(mockContextTable.getControlActionId())).thenReturn(Optional.of(mockContextTable));
         when(contextRepository.findByContextTableId(mockContextTable.getId(), pageable)).thenReturn(mockContext);
         when(mapper.toContextTableReadWithPageDto(mockContextTable, mockContext)).thenAnswer(invocation -> {
             ContextTable contextTable = invocation.getArgument(0);
@@ -237,7 +248,7 @@ public class ContextTableServiceUnitTest {
                     .build();
         });
 
-        ContextTableReadWithPageDto response = service.readContextTableByControlActionId(mockControlActionId, 0, 10);
+        ContextTableReadWithPageDto response = service.readContextTableByControlActionId(mockContextTable.getControlActionId(), 0, 10);
 
         assertAll(
                 () -> assertEquals(mockContextTable.getId(), response.id())
