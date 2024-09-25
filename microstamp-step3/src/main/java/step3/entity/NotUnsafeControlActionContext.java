@@ -23,8 +23,8 @@ public class NotUnsafeControlActionContext {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
-//    @JdbcTypeCode(Types.VARCHAR)
-//    private UUID controlActionId;
+    @JdbcTypeCode(Types.VARCHAR)
+    private UUID controlActionId;
 
     @OneToMany(
             mappedBy = "notUcaContext",

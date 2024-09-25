@@ -34,6 +34,12 @@ public class NotUcaContextController {
         return ResponseEntity.ok(notUcaContextReadDtoList);
     }
 
+    @GetMapping("/control-actions/{controlActionId}")
+    public ResponseEntity<List<NotUcaContextReadDto>> readNotUcaContextByControlActionId(@PathVariable UUID controlActionId) {
+        List<NotUcaContextReadDto> notUcaContextReadDtoList = notUcaContextService.getNotUcaContextsByControlActionId(controlActionId);
+        return ResponseEntity.ok(notUcaContextReadDtoList);
+    }
+
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> deleteNotUcaContext(@PathVariable UUID id) {

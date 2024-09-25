@@ -62,6 +62,12 @@ public class NotUcaContextService {
         return mapper.toNotUcaContextReadDtoList(notUcaContexts);
     }
 
+    public List<NotUcaContextReadDto> getNotUcaContextsByControlActionId(UUID controlActionId) {
+        List<NotUnsafeControlActionContext> notUcaContexts = notUcaContextRepository.findAllByControlActionId(controlActionId);
+
+        return mapper.toNotUcaContextReadDtoList(notUcaContexts);
+    }
+
     public void deleteNotUcaContext(UUID notUcaContextId) {
         NotUnsafeControlActionContext notUcaContext = notUcaContextRepository
                 .findById(notUcaContextId)
