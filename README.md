@@ -273,13 +273,14 @@ You can verify the microservices' registration by visiting the Eureka dashboard 
 
 If you wish to understand more in-depth details about any specific microservice, you can refer to the respective directory of each microservice. Each directory contains a comprehensive description of its role and implementation within the MicroSTAMP system. Below is a table with links to the corresponding folders for each microservice:
 
-| Microservice                    | Description                                    | Link                                                                                                |
-| ------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **MicroSTAMP API Gateway**      | Manages routing, security, and load balancing. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)           |
-| **MicroSTAMP Service Registry** | Tracks and manages service instances.          | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
-| **MicroSTAMP STPA Step 1**      | Handles the first step of the STPA analysis.   | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                 |
-| **MicroSTAMP STPA Step 2**      | Handles the second step of the STPA analysis.  | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                 |
-| **MicroSTAMP STPA Step 3**      | Handles the third step of the STPA analysis.   | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                 |
+| Microservice                         | Description                                                                   | Link                                                                                                |
+|--------------------------------------|-------------------------------------------------------------------------------| --------------------------------------------------------------------------------------------------- |
+| **MicroSTAMP Service Registry**      | Registers instances of the microservices for discovery and communication.     | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
+| **MicroSTAMP API Gateway**           | The main entry point, delegating requests to the corresponding microservices. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)           |
+| **MicroSTAMP Authorization Server**  | Controls authorization with OAuth2 and authentication with OpenID.            | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
+| **MicroSTAMP STPA Step 1**           | Handles the **Define Purpose of the Analysis** step.                          | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                 |
+| **MicroSTAMP STPA Step 2**           | Handles the **Model the Control Structure** step.                             | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                 |
+| **MicroSTAMP STPA Step 3**           | Handles the **Identify Unsafe Control Actions** step.                         | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                 |
 
 Each microservice is detailed in its respective repository directory, outlining its purpose, key functionalities, and implementation.
 
