@@ -1,4 +1,4 @@
-# <img src="assets/images/microstamp-logo.png?raw=true" alt="MicroSTAMP Logo" width="65%" style="min-width: 272px;">
+# <img src="assets/images/microstamp-logo.png?raw=true" alt="MicroSTAMP Logo"  width="65%" style="min-width: 272px;">
 
 Microservices for STPA (System-Theoretic Process Analysis)
 
@@ -12,7 +12,6 @@ This repository contains the source code for MicroSTAMP, a web application based
 -   [End Users Guide](#end-users-guide)
 -   [Developers Guide](#developers-guide)
 -   [MicroSTAMP Microservices](#microstamp-microservices)
--   [License](#license)
 -   [Contributing Guidelines](#contributing-guidelines)
 -   [Lead developers](#lead-developers)
 -   [Publications](#publications)
@@ -51,7 +50,7 @@ This repository contains the source code for MicroSTAMP, a web application based
     <img src="https://img.shields.io/badge/Java-E84135?style=for-the-badge&logo=openjdk&logoColor=E84135&labelColor=070707" alt="Java">
     <img src="https://img.shields.io/badge/Maven-c71a36?style=for-the-badge&logo=apache-maven&logoColor=913C76&labelColor=070707" alt="Maven">
     <img src="https://img.shields.io/badge/MySQL-316192?style=for-the-badge&logo=mysql&logoColor=316192&labelColor=070707" alt="MySQL">
-    <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=2496EDe&labelColor=070707" alt="Docker">
+    <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=2496ED&labelColor=070707" alt="Docker">
 </div>
 
 #### User Interface
@@ -199,7 +198,7 @@ Cloning the Project:
 
 Do the same process as the previous microservice for the remaining microservices. Access the folder of each of them and use the command <code>mvn spring-boot:run</code>.
 
-##### 3. Run the User Iterface microstamp-ui
+##### 3. Run the User Interface microstamp-ui
 
 With all the microservices running, open a new terminal window to execute the microstamp-ui.
 
@@ -210,17 +209,17 @@ With all the microservices running, open a new terminal window to execute the mi
    ```
 
 -  `npm i` is needed only when first running  the UI.
--  The user interface will open at the url http://127.0.0.1:5173.
+-  The user interface will open at the URL http://127.0.0.1:5173.
 -  You can now access the MicroSTAMP frontend!
 
-We created a user with some example analysis to provide a global picture of how MicroSTAMP supports STPA.
+We created a user with some example analyses to provide a global picture of how MicroSTAMP supports STPA.
 
 <figure>
   <img src="assets/images/login-form-guest-user.png" alt="Running the service registry">
 	<figcaption>Authenticating with the user guest.</figcaption>
 </figure>
 
-The user guest has some pre-stored STPA analyes and control structure from Step 2 of STPA.
+The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.
 
 <figure>
   <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
@@ -236,145 +235,121 @@ The user guest has some pre-stored STPA analyes and control structure from Step 
 
 ## Developers Guide
 
-#### Running MicroSTAMP within IntelliJ Idea Ultimate Edition
+<details> 
+<summary>Setup the Databases and Tools</summary>
 
-We use IntelliJ IDEA 2023.3.5 Ultimate Edition in this example of how to use IntelliJ to run MicroSTAMP. I what follows we provide the steps needed to get MicroSTAMP up an running.
+Before running MicroSTAMP, ensure that your databases are properly configured. 
+Follow the instructions provided in the [Method 2: Running MicroSTAMP with Maven](#method-2-running-microstamp-with-maven) to configure the necessary databases.
+Additionally, make sure that all required tools and dependencies, such as Java, MySQL and Maven, are properly installed on your system.
+After completing the setup, you can proceed to run the project.
 
-**Step 1 - Run the MicrostampServiceRegistryApplication microservice**
+</details>
+<br>
 
-There several ways to run a microservice with IntelliJ. One possible way is shown in Figure 1.
+<details>
+<summary>Running MicroSTAMP within IntelliJ Idea</summary>
 
-<figure>
-  <img src="assets/images/running-service-registry-within-intellij.png?raw=true" alt="Running the service registry">
-	<figcaption>Figure 1: Running the service registry microservice.</figcaption>
-</figure>
-<p></p>
- As shown in the console output of Figure 2, the MicrostampServiceRegistryApplication runs on Tomcat, port 8761.
-<p></p>
+We use IntelliJ IDEA 2023.3.5 Ultimate Edition in this example of how to run MicroSTAMP. Below are the steps to get MicroSTAMP up and running.
 
-<figure>
-  <img src="assets/images/console-log-after-running-service-registry-within-intellij.png?raw=true" alt="Service registry running on port 8761">
-	<figcaption>Figure 2: The service registry runs on port 8761.</figcaption>
-</figure>
-<p></p>
+1. Run the MicrostampServiceRegistryApplication microservice
 
-We can access the service registry administration page (Spring Eureka) by the URL `http://localhost:8761/`. At this moment, no microservice instances are registered with the service registry.
+There are several ways to run a microservice within IntelliJ. One possible way is illustrated in Figure 1.
+   <figure> 
+      <img width="85%" src="assets/images/running-service-registry-within-intellij.png?raw=true" alt="Running the service registry"> 
+      <figcaption>Figure 1: Running the service registry microservice.</figcaption> 
+   </figure>
 
-<p></p>
+After running the <code>MicrostampServiceRegistryApplication</code>, you can access the service registry administration page (Spring Eureka) at http://localhost:8761/ . At this point, no microservices are registered with the service registry.
 
-<figure>
-  <img src="assets/images/accessing-eureka-landing=page.png?raw=true" alt="Spring Eureka">
-  <figcaption>Figure 3: The service registry administration page.</figcaption>
-</figure>
-<p></p>
+2. Running the Remaining Microservices
+
+Once the service registry is up and running, proceed to start the other microservices that you need. You can follow the same process used to run the service registry, simply selecting the main class of each microservice and running them via IntelliJ.
+
+You can verify the microservices' registration by visiting the Eureka dashboard at http://localhost:8761/, where the services will be listed as they come online.
+
+**Always** start the service-registry first to ensure all other microservices can register properly.
+
+</details>
 
 [⬆️ Back to Top](#table-of-contents)
 
-## MicroSTAMP microservices
+## MicroSTAMP Microservices
 
-[(back to top)](#table-of-contents) <br>
+If you wish to understand more in-depth details about any specific microservice, you can refer to the respective directory of each microservice. Each directory contains a comprehensive description of its role and implementation within the MicroSTAMP system. Below is a table with links to the corresponding folders for each microservice:
 
-### 1. MicroSTAMP Service Registry
+| Microservice                    | Description                                       | Link                                                                                           |
+|----------------------------------|---------------------------------------------------|------------------------------------------------------------------------------------------------|
+| **MicroSTAMP API Gateway**       | Manages routing, security, and load balancing.     | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)       |
+| **MicroSTAMP Service Registry**  | Tracks and manages service instances.             | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
+| **MicroSTAMP STPA Step 1**       | Handles the first step of the STPA analysis.      | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)             |
+| **MicroSTAMP STPA Step 2**       | Handles the second step of the STPA analysis.     | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)             |
+| **MicroSTAMP STPA Step 3**       | Handles the third step of the STPA analysis.      | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)             |
 
-The MicroSTAMP Service Registry microservice(microstamp-service-registry) is implemented with Sprint Cloud Netflix Eureka Server. Service registry and discovery play an important role when running multiple instances of services and we need a mechanism to call other services without hard coding their host names or port numbers.
+Each microservice is detailed in its respective repository directory, outlining its purpose, key functionalities, and implementation.
 
-With MicroSTAMP Service Registry we need to only configure an ID for each microservice that register itself as client with the MicroSTAMP Service Registry. In that sense, we don't have to bother about the hostname and port of the microservices instances that we want to communicate.
+Additionally, you can find the repository for the MicroSTAMP User Interface here: [MicroSTAMP UI](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-ui).
 
-In addition to that, in cloud environments, service instances may come up and go down any time. Hence, we need some automatic service registration and discovery mechanism as the provided in this microservice.
+*Note: Some of the specific READMEs are still under development. If you find that a README does not yet exist, it will be added shortly.*
 
-Basically all MicroSTAMP microservices (microstamp-api-gateway, microstamp-stpa-step1, microstamp-stpa-step2, microstamp-stpa-step3, microstamp-stpa-step4) register themselves to Service Registry, and Service Registry tracks all the MicroSTAMP microservices and its instances. We can use service Registry in order to see what are the microservices are up and what are the microservices down.
+[⬆️ Back to Top](#table-of-contents)
 
-### 2. MicroSTAMP API Gateway
 
-The microstamp-api-gateway is a microservice of MicroSTAMP that implements an **API gateway**. An API gateway is a critical pattern in a microservices architecture that acts as a single entry point for all client interactions with the microservices. It provides a unified interface for external clients to interact with various microservices, managing the complexity of communication between them and offering several essential functions, such as:
+## Contributing Guidelines
 
-1.  **Routing**: Directs incoming requests from clients to the appropriate microservice based on the request path or other criteria.
-2.  **Authentication and Authorization**: Ensures that only authenticated and authorized requests can access the microservices (by delegating the flow of control to the microstamp-authorization-server microservice.
-3.  **Load Balancing**: Distributes incoming traffic evenly across multiple instances of a microservice to prevent overload and improve performance.
-4.  **Rate Limiting and Throttling**: Controls the number of requests allowed from clients to prevent abuse or overuse of services.
-5.  **Caching**: Stores frequently accessed data temporarily to reduce load on backend services and improve response times.
-6.  **Monitoring and Logging**: Tracks requests and responses for performance monitoring, logging, and debugging.
-7.  **Request Transformation**: Modifies request or response headers, payloads, or other attributes to meet specific needs.
+You're welcome to contribute to the MicroSTAMP project! If you find any bugs or have suggestions for new features, please feel free to submit them via pull requests or contact us via email.
 
-In the MicroSTAMP, the API gateway is implemented using the **Spring Cloud Gateway**. Spring Cloud Gateway is part of the **Spring Cloud** ecosystem, specifically designed for building a robust and flexible API gateway on top of the **Spring Framework**. The key features of Spring Cloud Gateway are:
+[⬆️ Back to Top](#table-of-contents)
 
-1.  **Built on Spring Ecosystem**: It leverages the power of the Spring ecosystem, providing seamless integration with other Spring Cloud components like service discovery (Eureka), security (Spring Security), and configuration management.
-2.  **Declarative Routing**: Allows the configuration of routes in a declarative way using Java configuration or YAML/Properties files.
-3.  **Filter Mechanisms**: Provides powerful pre-built filters (such as pre-filters and post-filters) for manipulating requests and responses and allows custom filters to be defined.
-4.  **Reactive Programming Model**: Built on **Spring WebFlux**, a reactive programming model that is non-blocking and asynchronous, making it suitable for handling a large number of concurrent requests efficiently.
-5.  **Integration with OAuth2 and JWT**: Supports modern authentication protocols like OAuth2 and JWT for securing APIs.
+## Lead Developers
 
-Summing up, using an API gateway simplifies the client-side complexity by hiding the details of the underlying microservices, providing a single point of entry, and handling cross-cutting concerns like security, monitoring, and rate limiting. It enables a scalable, efficient, and secure way to manage traffic between clients and services, making it a fundamental component in modern microservices architectures.
-
-## License
-
-[(back to top)](#table-of-contents) <br>
-
-MicroSTAMP is licensed under **MIT License**. The **MIT License** is a permissive open-source license that allows almost unrestricted use of the software. Here’s a summary of its main points:
-
-1.  **Permission to Use, Copy, and Modify**: The license grants anyone the right to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software.
-
-2.  **Attribution Requirement**: The software can be used freely, but the original copyright notice and license text must be included in any copies or substantial portions of the software.
-
-3.  **No Warranty**: The software is provided "as is," without any warranties or guarantees. The authors are not liable for any damages that may result from using the software.
-
-## Contributing Guidelines [(TOP)](#table-of-contents)
-
-You're welcome to contribute to the MicroSTAMP project! If you find any bugs or have suggestions for new features, please feel free to submit them via pull requests.
-
-## Lead developers
-
-[(back to top)](#table-of-contents) <br>
-
-<div style="display: flex; gap: 8px;">
-    <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+    <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao Hugo&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/gabriel-francelino" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Francelino&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/gabriel-piva" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Piva&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-    <a href="https://github.com/ThiagoFranco0202" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Thiago Franco&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-    <a href="https://github.com/felliperey" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=fellipe rey&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/pagliares" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Rodrigo Martins Pagliares&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+    <a href="https://github.com/felliperey" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=fellipe rey&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+    <a href="https://github.com/gabriel-nadalin" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Nadalin&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+   <a href="https://github.com/ThiagoFranco0202" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Thiago Franco&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
 </div>
 
-## Publications
+[⬆️ Back to Top](#table-of-contents)
 
-[(back to top)](#table-of-contents) <br>
+## Publications
 
 Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "**\*MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.\*" In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
  <a href="https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59" target="_blank">
-   <img src="assets/images/conference-paper.png" alt="Running the service registry">
+   <img src="assets/images/conference-paper.png" alt="Running the service registry" width="75%">
  </a>
 
+[⬆️ Back to Top](#table-of-contents)
+
 ## Talks
+1. Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "**MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**." In International Conference on Information Technology-New Generations, Las Vegas, NV, USA. April, 2024.
 
-[(back to top)](#table-of-contents) <br>
-
-1. Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "**\*MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.\*" In \_International Conference on Information Technology-New Generations,Las Vegas, NV, USA. April, 2024.
-
-<figure style="float: right;">
+<figure style="width: 100%">
   <img src="assets/images/vegas-talk.png" width=249 height=278 alt="Rodrigo Martins Pagliares at ITNG 2024" />
   <figcaption style="font-size: small;">Rodrigo Martins Pagliares at ITNG 2024</figcaption>
 </figure>
 
-<br>
-<p></p>
+2. "**_MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture_**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2024.
+   
+   <br>
+   <a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
+      <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
+   </a>
 
-2. "**_MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture_**", 2024.
-
-<a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
-   <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
-</a>
+[⬆️ Back to Top](#table-of-contents)
 
 ## Contact Information
 
-[(back to top)](#table-of-contents) <br>
-
-<address>
 Rodrigo Martins Pagliares<br>
 rodrigo.pagliares@unifal-mg.edu.br<br>
 Universidade Federal de Alfenas - UNIFAL<br>
 Computer Science Department<br>
-Av. Jovino Fernandes Sales, 2600 – Santa Clara – Alfenas/MG  - Brazil<br>
+Av. Jovino Fernandes Sales, 2600 – Santa Clara, Alfenas/MG  - Brazil<br>
 CEP: 37133-840<br>
-Prédio C – 3º andar (Building C, third floor)<br> 
-</address>
+Prédio C – 3º andar (Building C, Third Floor)<br> 
+
+[⬆️ Back to Top](#table-of-contents)
+
