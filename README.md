@@ -117,7 +117,6 @@ To build and run the application as a software developer, you'll need:
 
 -   [JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
 -   [MySQL 8.0](https://dev.mysql.com/downloads/mysql) or higher
--   [Apache Maven](https://maven.apache.org/)
 -   [Node.js and NPM](https://nodejs.org/pt/download/package-manager)
 -   [IntelliJ IDEA Ultimate Edition](https://www.jetbrains.com/idea/) (That's our IDE of choice, but you are free to use other IDEs as well).
 
@@ -157,10 +156,6 @@ That's it! Your MySQL databases are now set up and ready to use.
 <details> 
 <summary>2. Clone the Project </summary>
 <br>
-
-Ensure that **Maven** is installed on your machine. You can download and install Maven from the official website:
-
--   [Download Maven](https://maven.apache.org/download.cgi)
 
 Cloning the Project:
 
