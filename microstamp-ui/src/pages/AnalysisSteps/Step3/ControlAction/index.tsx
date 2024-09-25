@@ -2,7 +2,7 @@ import AnalysisHeader from "@components/AnalysisHeader";
 import Button from "@components/Button";
 import Loader from "@components/Loader";
 import PageActions from "@components/PageActions";
-import { getControlAction } from "@http/Step2/ConnectionActions/ControlActions";
+import { getControlAction } from "@http/Step2/Interactions/ControlActions";
 import { useQuery } from "@tanstack/react-query";
 import { BiErrorAlt as Step3Icon } from "react-icons/bi";
 import { Navigate, useNavigate, useParams } from "react-router-dom";

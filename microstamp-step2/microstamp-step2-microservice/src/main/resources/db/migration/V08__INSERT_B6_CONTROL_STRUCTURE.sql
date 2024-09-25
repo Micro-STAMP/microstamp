@@ -39,7 +39,7 @@ INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VAL
 ("dfaa1957-9326-4eb0-8f16-fd862497095a",0,"fa931cea-9a8a-490e-9b2f-00d135053a2c","c509393c-99bb-4a59-9183-9bf0e131f843","Cn.19",@analysis_id);
 
 
-INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+INSERT INTO interactions (id, interaction_type, name, code, connection_id) VALUES
 ("7a3054e7-ee25-49c2-90e8-5f401878459f",0,"Brake Cmd","CA.01","cd1db4cd-5a97-4d09-aeb3-67c77f464d9b"),
 ("a3d32ca2-4ad6-40a5-8c7e-dedf099d7a39",0,"Braking Signal","CA.02","e301f898-2be5-4886-af2c-47720fe87320"),
 ("395aa6f0-a8d8-419f-a12e-1d7b54447be6",0,"Brake Cmd","CA.03","cc48fed4-5220-4f1f-9324-a220ca849bc5"),

@@ -39,7 +39,7 @@ INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VAL
 ("f9e5211b-1f1a-42d2-873e-1591268956eb",1,"e8c1475c-f3a8-4d37-8b4f-554cd7b2a28b","2ab6605a-07c3-47a9-bd02-571113b26fc7","Cn.25",@analysis_id);
 
 
-INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+INSERT INTO interactions (id, interaction_type, name, code, connection_id) VALUES
 ("fb7f8368-5d77-4cda-a897-4e3dd1192f29",0,"Capability upgrade request","CA.01","75732ce6-4512-4dd6-9e03-4ca50bfe6fbd"),
 ("515d025a-9cc9-4943-9d74-0cbb0690069a",0,"Software revisions","CA.02","05eb5839-e6bc-49a5-b05a-3ed917dc8740"),
 ("5e35e608-1db0-4768-9e54-d9210399401c",0,"Hardware modifications","CA.03","05eb5839-e6bc-49a5-b05a-3ed917dc8740"),

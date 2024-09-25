@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.step2.dto.component.ComponentReadDto;
 import microstamp.step2.dto.connection.ConnectionReadDto;
-import microstamp.step2.dto.connectionaction.ConnectionActionReadDto;
+import microstamp.step2.dto.interaction.InteractionReadDto;
 import microstamp.step2.dto.export.ExportReadDto;
 import microstamp.step2.dto.image.ImageReadDto;
 import microstamp.step2.dto.responsibility.ResponsibilityReadDto;
@@ -150,11 +150,11 @@ public class ExportServiceImpl implements ExportService {
                     .append(" --> ")
                     .append(connection.getTarget().getName());
 
-            for(ConnectionActionReadDto connectionAction : connection.getConnectionActions()){
+            for(InteractionReadDto interaction : connection.getInteractions()){
                 connectionRow.append("\n").append("\u200B    ")
-                        .append("-[").append(connectionAction.getConnectionActionType().getFormattedName()).append("] ")
-                        .append("[").append(connectionAction.getCode()).append("] ")
-                        .append(connectionAction.getName());
+                        .append("-[").append(interaction.getInteractionType().getFormattedName()).append("] ")
+                        .append("[").append(interaction.getCode()).append("] ")
+                        .append(interaction.getName());
             }
 
             connectionsList.add(connectionRow.toString());

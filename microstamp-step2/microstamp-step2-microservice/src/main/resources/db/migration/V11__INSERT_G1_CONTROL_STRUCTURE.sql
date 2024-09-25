@@ -25,7 +25,7 @@ INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VAL
 ("d1e0504c-2b14-45b9-bdb3-afd9b8abcf59",1,"3defb22b-e492-44d8-b5fb-be16cae76d78","33828be2-a812-42f7-a5c7-6bae2ca64b02","Cn.11",@analysis_id);
 
 
-INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+INSERT INTO interactions (id, interaction_type, name, code, connection_id) VALUES
 ("ad60c587-bb5b-418f-88cc-3e212e26732a",3,"Control input or external information wrong or missing","PI.01","92200fd0-765d-4f34-94d5-06e02ce1b7bb"),
 ("8669e605-088e-4052-b559-27cb6b25bcbd",0,"Missing or wrong communication with another components","CA.01","9bd5b7f2-24f4-4986-9a5d-d3d52f09755d"),
 ("8ba7e133-6b97-40ef-8759-7da59f77874c",1,"Missing or wrong communication with another components","FB.01","0ee2ca5c-6160-4318-9a26-07cb0557fac1"),

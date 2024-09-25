@@ -64,22 +64,22 @@ import {
 export type { IConnectionFormData, IConnectionInsertDto, IConnectionReadDto, IConnectionUpdateDto };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
-// * Connection Action DTOs
+// * Interaction DTOs
 
 import {
-	IConnectionActionFormData,
-	IConnectionActionInsertDto,
-	IConnectionActionReadDto,
-	IConnectionActionType,
-	IConnectionActionUpdateDto,
+	IInteractionFormData,
+	IInteractionInsertDto,
+	IInteractionReadDto,
+	IInteractionType,
+	IInteractionUpdateDto,
 	IControlAction
-} from "./IConnectionAction";
-export { IConnectionActionType };
+} from "./IInteraction";
+export { IInteractionType };
 export type {
-	IConnectionActionFormData,
-	IConnectionActionInsertDto,
-	IConnectionActionReadDto,
-	IConnectionActionUpdateDto,
+	IInteractionFormData,
+	IInteractionInsertDto,
+	IInteractionReadDto,
+	IInteractionUpdateDto,
 	IControlAction
 };
 

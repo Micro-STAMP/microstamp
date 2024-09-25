@@ -29,6 +29,6 @@ public class ConnectionReadDto {
 
     private Style style;
 
-    private List<ConnectionActionReadDto> connectionActions;
+    private List<InteractionReadDto> interactions;
 
 }

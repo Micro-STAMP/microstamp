@@ -1,4 +1,4 @@
-import { IComponentReadDto, IConnectionActionReadDto } from "@interfaces/IStep2";
+import { IComponentReadDto, IInteractionReadDto } from "@interfaces/IStep2";
 import { IConnectionStyle } from "./Enums";
 
 interface IConnectionReadDto {
@@ -7,7 +7,7 @@ interface IConnectionReadDto {
 	source: IComponentReadDto;
 	target: IComponentReadDto;
 	style: IConnectionStyle;
-	connectionActions: IConnectionActionReadDto[];
+	interactions: IInteractionReadDto[];
 }
 
 export type { IConnectionReadDto };

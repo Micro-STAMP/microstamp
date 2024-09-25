@@ -1,6 +1,6 @@
 import ModalComponent from "./ModalComponent";
 import ModalConnection from "./ModalConnection";
-import ModalConnectionAction from "./ModalConnectionAction";
+import ModalInteraction from "./ModalInteraction";
 import ModalResponsibility from "./ModalResponsibility";
 import ModalState from "./ModalState";
 import ModalVariable from "./ModalVariable";
@@ -8,7 +8,7 @@ import ModalVariable from "./ModalVariable";
 export {
 	ModalComponent,
 	ModalConnection,
-	ModalConnectionAction,
+	ModalInteraction,
 	ModalResponsibility,
 	ModalState,
 	ModalVariable

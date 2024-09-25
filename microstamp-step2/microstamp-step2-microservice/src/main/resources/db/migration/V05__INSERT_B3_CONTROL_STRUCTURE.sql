@@ -14,7 +14,7 @@ INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VAL
 ("b681bb2a-a41d-4a44-b479-4a7ea2aeeac4",1,"7ce172ea-85ef-41c1-829e-ff1546de51ea","5248db64-90d3-4b97-b93c-18d2076bfb1a","Cn.05",@analysis_id);
 
 
-INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+INSERT INTO interactions (id, interaction_type, name, code, connection_id) VALUES
 ("3ac46352-2384-4eca-bab3-c17a67a17334",0,"Therapeutic Requirements","CA.01","13ce5d58-986f-4352-bdd8-9c7953cd7214"),
 ("8be4fcce-8ab3-40a4-8cd0-56b853a499fd",0,"1. Treatment Specifications (fraction definition, target positioning information, steering file)","CA.02","13ce5d58-986f-4352-bdd8-9c7953cd7214"),
 ("f72fc728-72f8-46fa-9dce-b315c99acf99",0,"2. Capability Upgrade Requests","CA.03","13ce5d58-986f-4352-bdd8-9c7953cd7214"),
