@@ -4,7 +4,7 @@ import Loader from "@components/Loader";
 import { ModalPDFPreview } from "@components/Modal";
 import PageActions from "@components/PageActions";
 import { getStep3PDF } from "@http/Export";
-import { getControlAction } from "@http/Step2/ConnectionActions/ControlActions";
+import { getControlAction } from "@http/Step2/Interactions/ControlActions";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BiExport as PdfIcon } from "react-icons/bi";

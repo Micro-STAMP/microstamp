@@ -13,7 +13,7 @@ import {
 	ModalProps
 } from "@components/Modal/Templates";
 import { getComponents } from "@http/Step2/Components";
-import { getControlActions } from "@http/Step2/ConnectionActions/ControlActions";
+import { getControlActions } from "@http/Step2/Interactions/ControlActions";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";

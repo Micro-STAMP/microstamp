@@ -37,7 +37,7 @@ public class Connection {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_id")
-    private List<ConnectionAction> connectionActions;
+    private List<Interaction> interactions;
 
     @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;

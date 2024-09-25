@@ -1,12 +1,12 @@
 import ModalConfirm from "./ModalConfirm";
-import ModalConnectionActions from "./ModalConnectionActions";
+import ModalInteractions from "./ModalInteractions";
 import ModalLoading from "./ModalLoading";
 import ModalPDFPreview from "./ModalPDFPreview";
 import ModalSelectControlAction from "./ModalSelectControlAction";
 
 export {
 	ModalConfirm,
-	ModalConnectionActions,
+	ModalInteractions,
 	ModalLoading,
 	ModalPDFPreview,
 	ModalSelectControlAction

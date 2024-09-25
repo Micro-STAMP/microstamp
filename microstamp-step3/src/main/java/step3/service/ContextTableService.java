@@ -16,15 +16,19 @@ import step3.dto.step2.StateReadDto;
 import step3.dto.step2.VariableReadDto;
 import step3.entity.Context;
 import step3.entity.ContextTable;
+import step3.entity.association.ContextState;
 import step3.infra.exceptions.OperationNotAllowedException;
 import step3.proxy.Step2Proxy;
 import step3.repository.ContextRepository;
 import step3.repository.ContextTableRepository;
+import step3.repository.RuleRepository;
 import step3.repository.UnsafeControlActionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,6 +36,7 @@ public class ContextTableService {
     private final ContextTableRepository contextTableRepository;
     private final ContextRepository contextRepository;
     private final UnsafeControlActionRepository ucaRepository;
+    private final RuleRepository ruleRepository;
     private final Step2Proxy step2Proxy;
     private final ContextTableMapper mapper;
 
@@ -63,10 +68,13 @@ public class ContextTableService {
         return mapper.toContextTableReadDto(createContextTable);
     }
 
+    @Transactional
     public ContextTableReadWithPageDto readContextTableById(UUID id, int page, int size) {
         ContextTable contextTable = contextTableRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found context table with id: " + id));
+
+        this.verifyChangesInStates(contextTable);
 
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
@@ -82,12 +90,15 @@ public class ContextTableService {
                 .toList();
     }
 
+    @Transactional
     public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
         step2Proxy.getControlActionById(controlActionId);
 
         ContextTable contextTable = contextTableRepository
                 .findByControlActionId(controlActionId)
                 .orElseThrow(() -> new EntityNotFoundException("Context table not found with control action id: " + controlActionId));
+
+        this.verifyChangesInStates(contextTable);
 
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Context> contextsPage = contextRepository.findByContextTableId(contextTable.getId(), pageable);
@@ -101,6 +112,7 @@ public class ContextTableService {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found context table with id: " + id));
 
+        ruleRepository.deleteAllByControlActionId(contextTable.getControlActionId());
         ucaRepository.deleteByControlActionId(contextTable.getControlActionId());
         contextTableRepository.deleteById(id);
     }
@@ -128,6 +140,40 @@ public class ContextTableService {
             List<StateReadDto> updatedStates = new ArrayList<>(currentStates);
             updatedStates.add(state);
             generateAllContexts(variables, index + 1, updatedStates, contextTable);
+        }
+    }
+
+    @Transactional
+    public void verifyChangesInStates(ContextTable contextTable) {
+        Set<UUID> statesIdsOfContextTable = contextTable.getContexts().stream()
+                .flatMap(context -> context.getStateAssociations().stream())
+                .map(ContextState::getStateId)
+                .collect(Collectors.toSet());
+
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(contextTable.getControlActionId());
+
+        ComponentReadDto source = controlAction.connection().source();
+        ComponentReadDto target = controlAction.connection().target();
+
+        List<VariableReadDto> step2Variables = new ArrayList<>();
+        step2Variables.addAll(source.variables());
+        step2Variables.addAll(target.variables());
+
+        Set<UUID> step2StatesIds = step2Variables.stream()
+                .flatMap(variable -> variable.states().stream())
+                .map(StateReadDto::id)
+                .collect(Collectors.toSet());
+
+        // se os ids dos estados da tabela de contexto forem diferentes dos estados do step2, atualiza a tabela de contexto
+        boolean thereWasChangeInStep2 = !statesIdsOfContextTable.equals(step2StatesIds);
+
+        if (thereWasChangeInStep2) {
+            contextTable.setContexts(new ArrayList<>());
+            ruleRepository.deleteAllByControlActionId(contextTable.getControlActionId());
+            ucaRepository.deleteByControlActionId(contextTable.getControlActionId());
+
+            generateAllContexts(step2Variables, 0, new ArrayList<>(), contextTable);
+            contextTableRepository.save(contextTable);
         }
     }
 }

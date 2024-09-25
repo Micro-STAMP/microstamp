@@ -65,11 +65,11 @@ public class Step2PdfHelper {
                     .append(" --> ")
                     .append(connection.getTarget().getName());
 
-            for(ConnectionActionReadDto connectionAction : connection.getConnectionActions()){
+            for(InteractionReadDto interaction : connection.getInteractions()){
                 connectionRow.append("\n").append("\u200B    ")
-                        .append("-[").append(connectionAction.getConnectionActionType().getFormattedName()).append("] ")
-                        .append("[").append(connectionAction.getCode()).append("] ")
-                        .append(connectionAction.getName());
+                        .append("-[").append(interaction.getInteractionType().getFormattedName()).append("] ")
+                        .append("[").append(interaction.getCode()).append("] ")
+                        .append(interaction.getName());
             }
 
             connectionsList.add(connectionRow.toString());
