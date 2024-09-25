@@ -24,7 +24,7 @@ public class NotUcaContextController {
     @Transactional
     public ResponseEntity<NotUcaContextReadDto> createNotUcaContext(@RequestBody NotUcaContextCreateDto notUcaContextCreateDto) {
         NotUcaContextReadDto notUcaContext = notUcaContextService.createNotUcaContext(notUcaContextCreateDto);
-        URI uri = URI.create("/not-uca-contexts/analyses/{analysisId}" + notUcaContext.analysis_id());
+        URI uri = URI.create("/not-uca-contexts/analyses/" + notUcaContext.analysis_id());
         return ResponseEntity.created(uri).body(notUcaContext);
     }
 
