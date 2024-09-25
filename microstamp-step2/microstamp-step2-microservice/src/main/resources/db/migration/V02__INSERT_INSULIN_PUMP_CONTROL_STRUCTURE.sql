@@ -23,7 +23,7 @@ INSERT INTO connections (id, analysis_id, code, style, source_id, target_id) VAL
 
 
 
-INSERT INTO connection_actions (id, code, connection_action_type, name, connection_id) VALUES
+INSERT INTO interactions (id, code, interaction_type, name, connection_id) VALUES
 ('a74f0dd6-1508-49d7-b96a-fd9683aac5b9', 'CA.01', 0, 'Start insulin pump app software', '4aff33be-0c60-4b16-a6db-9739f8317069'),
 ('febd03ba-392d-44c6-b5b8-95a39909b235', 'CA.02', 0, 'Stop insulin pump app software', '4aff33be-0c60-4b16-a6db-9739f8317069'),
 ('fe65a724-a3be-4137-a089-55524c0a4a7d', 'CA.03', 0, 'Start pumping insulin', '4aff33be-0c60-4b16-a6db-9739f8317069'),

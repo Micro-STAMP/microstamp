@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import microstamp.step2.dto.component.ComponentReadDto;
-import microstamp.step2.dto.connectionaction.ConnectionActionReadDto;
-import microstamp.step2.enumeration.ConnectionActionType;
+import microstamp.step2.dto.interaction.InteractionReadDto;
+import microstamp.step2.enumeration.InteractionType;
 import microstamp.step2.enumeration.Style;
 
 import java.util.List;
@@ -32,6 +32,6 @@ public class ConnectionReadDto {
 
     private Style style;
 
-    private List<ConnectionActionReadDto> connectionActions;
+    private List<InteractionReadDto> interactions;
 
 }

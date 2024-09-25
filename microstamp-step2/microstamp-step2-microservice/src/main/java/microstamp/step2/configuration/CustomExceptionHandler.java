@@ -2,7 +2,7 @@ package microstamp.step2.configuration;
 
 import feign.FeignException;
 import microstamp.step2.enumeration.ComponentType;
-import microstamp.step2.enumeration.ConnectionActionType;
+import microstamp.step2.enumeration.InteractionType;
 import microstamp.step2.enumeration.Style;
 import microstamp.step2.exception.*;
 import org.springframework.http.HttpHeaders;
@@ -51,8 +51,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         Step2ErrorResponse errorResponse = new Step2ErrorResponse();
         Throwable cause = ex.getCause();
 
-        if (cause.getMessage().contains(ConnectionActionType.class.getSimpleName())) {
-            errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(), "InvalidEnumValue", "Invalid enum value, valid fields: " + Arrays.toString(ConnectionActionType.values())));
+        if (cause.getMessage().contains(InteractionType.class.getSimpleName())) {
+            errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(), "InvalidEnumValue", "Invalid enum value, valid fields: " + Arrays.toString(InteractionType.values())));
         } else if (cause.getMessage().contains(Style.class.getSimpleName())){
             errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(), "InvalidEnumValue", "Invalid enum value, valid fields: " + Arrays.toString(Style.values())));
         } else if (cause.getMessage().contains(ComponentType.class.getSimpleName())){
@@ -101,8 +101,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler(value = { Step2InvalidConnectionActionException.class })
-    protected ResponseEntity<Object> handleStep2InvalidConnectionAction(Step2InvalidConnectionActionException ex, WebRequest request) {
+    @ExceptionHandler(value = { Step2InvalidInteractionException.class })
+    protected ResponseEntity<Object> handleStep2InvalidInteraction(Step2InvalidInteractionException ex, WebRequest request) {
         Step2ErrorResponse errorResponse = new Step2ErrorResponse();
         errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"InvalidConnection",ex.getMessage()));
         return handleExceptionInternal(ex, errorResponse,
