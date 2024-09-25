@@ -255,6 +255,8 @@ There are several ways to run a microservice within IntelliJ. One possible way i
 
 After running the <code>MicrostampServiceRegistryApplication</code>, you can access the service registry administration page (Spring Eureka) at http://localhost:8761/ . At this point, no microservices are registered with the service registry.
 
+<br>
+
 2. Running the Remaining Microservices
 
 Once the service registry is up and running, proceed to start the other microservices that you need. You can follow the same process used to run the service registry, simply selecting the main class of each microservice and running them via IntelliJ.
@@ -331,9 +333,8 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
 
 2. "**_MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture_**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2024.
 
- <br>
  <a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
-    <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
+     <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
  </a>
 
 [⬆️ Back to Top](#table-of-contents)
