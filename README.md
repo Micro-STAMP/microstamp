@@ -81,30 +81,30 @@ To build and run the application as an end-user, you’ll need:
 
 #### Installation
 
-1. Install Docker and Docker Compose
+1.  Install Docker and Docker Compose
 
     Ensure you have Docker and Docker Compose installed on your machine:
-   -   **Docker**: Download and install Docker from the [official Docker website](https://www.docker.com/).
-   -   **Docker Compose**: It usually comes installed with Docker Desktop.
 
+    -   **Docker**: Download and install Docker from the [official Docker website](https://www.docker.com/).
+    -   **Docker Compose**: It usually comes installed with Docker Desktop.
 
-2. Open a Terminal
+2.  Open a Terminal
 
     Navigate to the directory where the `docker-compose.yaml` file is located.
 
-
-3. Run Docker Compose
+3.  Run Docker Compose
     Execute the following command to start the services defined in the `docker-compose.yaml` file:
-    
-    ```
-    docker-compose up
-    ```
 
-    This command will:
+        ```
+        docker-compose up
+        ```
 
-    -   Build the Docker images if they are not already built.
-    -   Start all the containers defined in the `docker-compose.yaml`.
-</details>
+        This command will:
+
+        -   Build the Docker images if they are not already built.
+        -   Start all the containers defined in the `docker-compose.yaml`.
+
+    </details>
 
 ### Method 2: Running MicroSTAMP with Maven
 
@@ -174,13 +174,13 @@ Cloning the Project:
 
 ##### 1. Run the **microstamp-service-registry** microservice
 
- This microservices must be run **BEFORE** all other MicroSTAMP microservices. The reason is that the other microservices register themselves with the microstamp-service-registry microservice (that must be already running).
- 
- To run this first microservice, go to a terminal or command-prompt, navigate to the directory and execute the command as illustrated
+This microservices must be run **BEFORE** all other MicroSTAMP microservices. The reason is that the other microservices register themselves with the microstamp-service-registry microservice (that must be already running).
 
- ```
- mvn spring-boot:run
- ```
+To run this first microservice, go to a terminal or command-prompt, navigate to the directory and execute the command as illustrated
+
+```
+mvn spring-boot:run
+```
 
  <figure>
    <img src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
@@ -197,15 +197,15 @@ Do the same process as the previous microservice for the remaining microservices
 
 With all the microservices running, open a new terminal window to execute the microstamp-ui.
 
-   ```
-      npm i 
-      
-      npm run dev
-   ```
+```
+   npm i
 
--  `npm i` is needed only when first running  the UI.
--  The user interface will open at the URL http://127.0.0.1:5173.
--  You can now access the MicroSTAMP frontend!
+   npm run dev
+```
+
+-   `npm i` is needed only when first running the UI.
+-   The user interface will open at the URL http://127.0.0.1:5173.
+-   You can now access the MicroSTAMP frontend!
 
 We created a user with some example analyses to provide a global picture of how MicroSTAMP supports STPA.
 
@@ -218,7 +218,7 @@ The user guest has some pre-stored STPA analyses and control structure from Step
 
 <figure>
   <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
-	<figcaption>Authenticating with the user guest.</figcaption>
+	<figcaption>Pre-stored STPA analyses page from user guest.</figcaption>
 </figure>
 
 </details>
@@ -232,7 +232,7 @@ The user guest has some pre-stored STPA analyses and control structure from Step
 <details> 
 <summary>Setup the Databases and Tools</summary>
 
-Before running MicroSTAMP, ensure that your databases are properly configured. 
+Before running MicroSTAMP, ensure that your databases are properly configured.
 Follow the instructions provided in the [Method 2: Running MicroSTAMP with Maven](#method-2-running-microstamp-with-maven) to configure the necessary databases.
 Additionally, make sure that all required tools and dependencies, such as Java, MySQL and Maven, are properly installed on your system.
 After completing the setup, you can proceed to run the project.
@@ -247,6 +247,7 @@ We use IntelliJ IDEA 2023.3.5 Ultimate Edition in this example of how to run Mic
 1. Run the MicrostampServiceRegistryApplication microservice
 
 There are several ways to run a microservice within IntelliJ. One possible way is illustrated in Figure 1.
+
    <figure> 
       <img width="85%" src="assets/images/running-service-registry-within-intellij.png?raw=true" alt="Running the service registry"> 
       <figcaption>Figure 1: Running the service registry microservice.</figcaption> 
@@ -270,22 +271,21 @@ You can verify the microservices' registration by visiting the Eureka dashboard 
 
 If you wish to understand more in-depth details about any specific microservice, you can refer to the respective directory of each microservice. Each directory contains a comprehensive description of its role and implementation within the MicroSTAMP system. Below is a table with links to the corresponding folders for each microservice:
 
-| Microservice                    | Description                                       | Link                                                                                           |
-|----------------------------------|---------------------------------------------------|------------------------------------------------------------------------------------------------|
-| **MicroSTAMP API Gateway**       | Manages routing, security, and load balancing.     | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)       |
-| **MicroSTAMP Service Registry**  | Tracks and manages service instances.             | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
-| **MicroSTAMP STPA Step 1**       | Handles the first step of the STPA analysis.      | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)             |
-| **MicroSTAMP STPA Step 2**       | Handles the second step of the STPA analysis.     | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)             |
-| **MicroSTAMP STPA Step 3**       | Handles the third step of the STPA analysis.      | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)             |
+| Microservice                    | Description                                    | Link                                                                                                |
+| ------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **MicroSTAMP API Gateway**      | Manages routing, security, and load balancing. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)           |
+| **MicroSTAMP Service Registry** | Tracks and manages service instances.          | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
+| **MicroSTAMP STPA Step 1**      | Handles the first step of the STPA analysis.   | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                 |
+| **MicroSTAMP STPA Step 2**      | Handles the second step of the STPA analysis.  | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                 |
+| **MicroSTAMP STPA Step 3**      | Handles the third step of the STPA analysis.   | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                 |
 
 Each microservice is detailed in its respective repository directory, outlining its purpose, key functionalities, and implementation.
 
 Additionally, you can find the repository for the MicroSTAMP User Interface here: [MicroSTAMP UI](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-ui).
 
-*Note: Some of the specific READMEs are still under development. If you find that a README does not yet exist, it will be added shortly.*
+_Note: Some of the specific READMEs are still under development. If you find that a README does not yet exist, it will be added shortly._
 
 [⬆️ Back to Top](#table-of-contents)
-
 
 ## Contributing Guidelines
 
@@ -321,6 +321,7 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
 [⬆️ Back to Top](#table-of-contents)
 
 ## Talks
+
 1. Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "**MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**." In International Conference on Information Technology-New Generations, Las Vegas, NV, USA. April, 2024.
 
 <figure style="width: 100%">
@@ -329,11 +330,11 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
 </figure>
 
 2. "**_MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture_**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2024.
-   
-   <br>
-   <a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
-      <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
-   </a>
+
+ <br>
+ <a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
+    <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
+ </a>
 
 [⬆️ Back to Top](#table-of-contents)
 
@@ -343,9 +344,8 @@ Rodrigo Martins Pagliares<br>
 rodrigo.pagliares@unifal-mg.edu.br<br>
 Universidade Federal de Alfenas - UNIFAL<br>
 Computer Science Department<br>
-Av. Jovino Fernandes Sales, 2600 – Santa Clara, Alfenas/MG  - Brazil<br>
+Av. Jovino Fernandes Sales, 2600 – Santa Clara, Alfenas/MG - Brazil<br>
 CEP: 37133-840<br>
-Prédio C – 3º andar (Building C, Third Floor)<br> 
+Prédio C – 3º andar (Building C, Third Floor)<br>
 
 [⬆️ Back to Top](#table-of-contents)
-
