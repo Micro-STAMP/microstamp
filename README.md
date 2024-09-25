@@ -229,7 +229,6 @@ The user guest has some pre-stored STPA analyses and control structure from Step
 </details>
 
 </details>
-<br>
 
 [⬆️ Back to Top](#table-of-contents)
 
@@ -244,7 +243,6 @@ Additionally, make sure that all required tools and dependencies, such as Java, 
 After completing the setup, you can proceed to run the project.
 
 </details>
-<br>
 
 <details>
 <summary>Running MicroSTAMP within IntelliJ Idea</summary>
@@ -303,7 +301,7 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
 ## Lead Developers
 
 <div style="display: flex; gap: 8px; flex-wrap: wrap">
-    <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao Hugo&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+    <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao Maimone&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/gabriel-francelino" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Francelino&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/gabriel-piva" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Piva&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
     <a href="https://github.com/pagliares" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Rodrigo Martins Pagliares&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
@@ -311,6 +309,7 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
     <a href="https://github.com/gabriel-nadalin" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Nadalin&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
    <a href="https://github.com/ThiagoFranco0202" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Thiago Franco&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
 </div>
+<br>
 
 [⬆️ Back to Top](#table-of-contents)
 
@@ -321,6 +320,8 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
  <a href="https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59" target="_blank">
    <img src="assets/images/conference-paper.png" alt="Running the service registry" width="75%">
  </a>
+
+<br>
 
 [⬆️ Back to Top](#table-of-contents)
 
