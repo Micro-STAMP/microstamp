@@ -1,7 +1,7 @@
 import DualButton from "@components/Button/DualButton";
 import IconButton from "@components/Button/IconButton";
 import { ListItem as Connection } from "@components/Container/ListItem";
-import { ModalConnectionActions } from "@components/Modal";
+import { ModalInteractions } from "@components/Modal";
 import { IConnectionReadDto } from "@interfaces/IStep2";
 import { useState } from "react";
 import { BiInfoCircle as InfoIcon } from "react-icons/bi";
@@ -20,9 +20,9 @@ function ConnectionItem({
 	modalDeleteConnection,
 	modalUpdateConnection
 }: ConnectionItemProps) {
-	const [modalConnectionActionsOpen, setModalConnectionActionsOpen] = useState(false);
-	const toggleModalConnectionActions = () =>
-		setModalConnectionActionsOpen(!modalConnectionActionsOpen);
+	const [modalInteractionsOpen, setModalInteractionsOpen] = useState(false);
+	const toggleModalInteractions = () =>
+		setModalInteractionsOpen(!modalInteractionsOpen);
 
 	const connectionName = (
 		<span className={styles.connection_name}>
@@ -36,7 +36,7 @@ function ConnectionItem({
 			<Connection.Root key={connection.id}>
 				<Connection.Name code={connection.code} name={connectionName} />
 				<Connection.Actions>
-					<IconButton icon={InfoIcon} onClick={toggleModalConnectionActions} />
+					<IconButton icon={InfoIcon} onClick={toggleModalInteractions} />
 					<DualButton
 						onEdit={() => {
 							selectConnection(connection);
@@ -49,9 +49,9 @@ function ConnectionItem({
 					/>
 				</Connection.Actions>
 			</Connection.Root>
-			<ModalConnectionActions
-				open={modalConnectionActionsOpen}
-				onClose={toggleModalConnectionActions}
+			<ModalInteractions
+				open={modalInteractionsOpen}
+				onClose={toggleModalInteractions}
 				connection={connection}
 			/>
 		</>

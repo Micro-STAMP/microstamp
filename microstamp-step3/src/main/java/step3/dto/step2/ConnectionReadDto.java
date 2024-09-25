@@ -12,6 +12,6 @@ public record ConnectionReadDto(
         ComponentReadDto source,
         ComponentReadDto target,
         ConnectionStyle style,
-        List<ConnectionActionReadDto> connectionActions
+        List<InteractionReadDto> interactions
 ) {
 }

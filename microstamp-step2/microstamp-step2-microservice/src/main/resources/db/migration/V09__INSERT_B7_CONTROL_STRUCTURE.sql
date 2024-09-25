@@ -25,7 +25,7 @@ INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VAL
 ("2aeb83f1-47ea-4797-8aef-96353a7b65ae",1,"f1b06583-4160-48a2-ba74-df8001c5c318","3b30979d-4243-4168-9350-c5c79b042a1f","Cn.13",@analysis_id);
 
 
-INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+INSERT INTO interactions (id, interaction_type, name, code, connection_id) VALUES
 ("131f1382-5283-4ceb-88f4-ae6756617c1b",3,"Visual cues","PI.01","6585c057-b304-420a-a924-a014f40c735c"),
 ("0d9f54ac-3370-4dc7-ac6d-e07bb53e7073",3,"Physical feedback","PI.02","6585c057-b304-420a-a924-a014f40c735c"),
 ("772a8329-7afe-4d1c-a1ae-f0a6631a2096",1,"AH Enable","FB.01","c5654ab7-0ad0-47bd-bb6e-af9c435d0ed1"),

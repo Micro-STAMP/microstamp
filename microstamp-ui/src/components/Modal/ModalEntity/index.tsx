@@ -22,7 +22,7 @@ export { ModalAssumption, ModalHazard, ModalLoss, ModalSystemGoal, ModalSystemSa
 import {
 	ModalComponent,
 	ModalConnection,
-	ModalConnectionAction,
+	ModalInteraction,
 	ModalResponsibility,
 	ModalState,
 	ModalVariable
@@ -30,7 +30,7 @@ import {
 export {
 	ModalComponent,
 	ModalConnection,
-	ModalConnectionAction,
+	ModalInteraction,
 	ModalResponsibility,
 	ModalState,
 	ModalVariable

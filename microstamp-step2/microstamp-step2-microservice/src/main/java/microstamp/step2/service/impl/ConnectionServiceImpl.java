@@ -9,7 +9,7 @@ import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.mapper.ConnectionMapper;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ConnectionRepository;
-import microstamp.step2.service.ConnectionActionService;
+import microstamp.step2.service.InteractionService;
 import microstamp.step2.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     private ComponentRepository componentRepository;
 
     @Autowired
-    private ConnectionActionService connectionActionService;
+    private InteractionService interactionService;
 
     public List<ConnectionReadDto> findAll() {
         return connectionRepository.findAll().stream()
@@ -82,8 +82,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         connection.setTarget(target);
         connection.setStyle(connectionUpdateDto.getStyle());
 
-        connection.getConnectionActions().forEach(connectionAction ->
-                connectionActionService.validate(connection, connectionAction.getConnectionActionType()));
+        connection.getInteractions().forEach(interaction ->
+                interactionService.validate(connection, interaction.getInteractionType()));
 
         connectionRepository.save(connection);
     }

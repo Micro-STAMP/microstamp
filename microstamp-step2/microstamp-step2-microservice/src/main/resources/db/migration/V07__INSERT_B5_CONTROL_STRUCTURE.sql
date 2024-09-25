@@ -91,7 +91,7 @@ INSERT INTO connections (id, style, source_id, target_id, code, analysis_id) VAL
 ("b9b2b87a-2afb-4f31-b505-c928b051038f",0,"b36da24a-4078-43f9-b65d-27175d09ec11","b09175b6-34f3-46f2-82c8-c97c9970506e","Cn.59",@analysis_id);
 
 
-INSERT INTO connection_actions (id, connection_action_type, name, code, connection_id) VALUES
+INSERT INTO interactions (id, interaction_type, name, code, connection_id) VALUES
 ("893553c7-6cc1-4b05-afa4-8cbc3f16afa3",0,"Political pressures mandate(e.g.,FDAAA)","CA.01","92bd90bf-4fef-47b0-a38d-ea26e5fe00fe"),
 ("31456cd9-279e-45a5-88f8-1391b9bbef20",2,"Reports","CC.01","4e0f637d-d317-4fa4-931c-cb42ed583233"),
 ("dd90d186-cc23-486a-86a2-92c21e26eb51",0,"Budget allocation","CA.02","7f42ada7-4a5d-4c8f-a182-bb5251a29ab0"),
