@@ -9,8 +9,7 @@ This repository contains the source code for MicroSTAMP, a web application based
 ## Table of Contents
 
 -   [Architecture Overview](#architecture-overview)
--   [End Users Guide](#end-users-guide)
--   [Developers Guide](#developers-guide)
+-   [How to Run MicroSTAMP](#how-to-run-microstamp)
 -   [MicroSTAMP Microservices](#microstamp-microservices)
 -   [Contributing Guidelines](#contributing-guidelines)
 -   [Lead developers](#lead-developers)
@@ -64,72 +63,29 @@ This repository contains the source code for MicroSTAMP, a web application based
 
 [⬆️ Back to Top](#table-of-contents)
 
-## End Users Guide
+## How to Run MicroSTAMP
 
-This section describes two possible methods to run MicroSTAMP as an end user. If you are a software developer, see Section Developers Guide for guidance on how to run MicroSTAMP using IntelliJ IDEA.
-
-### Method 1: Running MicroSTAMP with Docker
-
-<details> 
-<summary>How to Run MicroSTAMP with Docker?</summary>
+This section provides a guide on how to run MicroSTAMP via the command-line using Maven.
 
 #### Prerequisites
 
-To build and run the application as an end-user, you’ll need:
-
--   Docker
-
-#### Installation
-
-1.  Install Docker and Docker Compose
-
-    Ensure you have Docker and Docker Compose installed on your machine:
-
-    -   **Docker**: Download and install Docker from the [official Docker website](https://www.docker.com/).
-    -   **Docker Compose**: It usually comes installed with Docker Desktop.
-
-2.  Open a Terminal
-
-    Navigate to the directory where the `docker-compose.yaml` file is located.
-
-3.  Run Docker Compose
-    Execute the following command to start the services defined in the `docker-compose.yaml` file:
-
-        ```
-        docker-compose up
-        ```
-
-        This command will:
-
-        -   Build the Docker images if they are not already built.
-        -   Start all the containers defined in the `docker-compose.yaml`.
-
-    </details>
-
-### Method 2: Running MicroSTAMP with Maven
-
-<details> 
-<summary>How to Run MicroSTAMP with Maven?</summary>
-
-#### Prerequisites
-
-To build and run the application as a software developer, you'll need:
+To build and run the application, you'll need the following:
 
 -   [JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
 -   [MySQL 8.0](https://dev.mysql.com/downloads/mysql) or higher
+-   [Apache Maven](https://maven.apache.org/)
 -   [Node.js and NPM](https://nodejs.org/pt/download/package-manager)
--   [IntelliJ IDEA Ultimate Edition](https://www.jetbrains.com/idea/) (That's our IDE of choice, but you are free to use other IDEs as well).
 
 #### Command-line setup
 
 <details> 
-<summary>1. Set up MySQL Databases</summary>
+<summary><strong>Set up MySQL Databases</strong></summary>
 <br>
   Ensure that MySQL is installed and running on your machine. The default port for MySQL is <code>3306</code>. If MySQL is not installed, you can download it from the official MySQL website:
 
 -   [Download MySQL](https://dev.mysql.com/downloads/mysql/)
 
-Creating the Databases
+**Creating the Databases**
 
 Once MySQL is installed and running, follow the steps below to create the necessary databases for the project.
 
@@ -154,10 +110,9 @@ That's it! Your MySQL databases are now set up and ready to use.
 </details>
 
 <details> 
-<summary>2. Clone the Project </summary>
-<br>
+<summary><strong>2. Clone the Project</strong></summary>
 
-Cloning the Project:
+**Cloning the Project:**
 
 1.  Open a terminal or command prompt.
 2.  Navigate to the directory where you want to clone the project.
@@ -169,29 +124,28 @@ Cloning the Project:
 
 </details>
 
-<details> 
-<summary>3. Run the Microservices</summary>
+<details>
+<summary><strong>3. Run the Microservices</strong></summary>
 
 ##### 1. Run the **microstamp-service-registry** microservice
 
-This microservices must be run **BEFORE** all other MicroSTAMP microservices. The reason is that the other microservices register themselves with the microstamp-service-registry microservice (that must be already running).
+We recommend running this microservice before all others, to ensures that each microservice can register itself properly, making communication between them more reliable.
 
-To run this first microservice, go to a terminal or command-prompt, navigate to the directory and execute the command as illustrated
+To run this microservice, open a terminal or command prompt, navigate to its directory, and execute the following command:
 
 ```
 mvn spring-boot:run
 ```
 
  <figure>
-   <img src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
+   <img width="85%" src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
      <figcaption><strong>Figure: Running the service registry microservice with Apache Maven in the command-line.</strong></figcaption>
  </figure>
 
-<br>
+Alternatively, you can also run the microservices directly within an IDE. We use **IntelliJ IDEA 2023.3.5 Ultimate Edition**, but feel free to use any IDE of your choice that supports Spring Boot.
 
 ##### 2. Run the Remaining Microservices
-
-Do the same process as the previous microservice for the remaining microservices. Access the folder of each of them and use the command <code>mvn spring-boot:run</code>.
+Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or using your IDE.
 
 ##### 3. Run the User Interface microstamp-ui
 
@@ -210,60 +164,16 @@ With all the microservices running, open a new terminal window to execute the mi
 We created a user with some example analyses to provide a global picture of how MicroSTAMP supports STPA.
 
 <figure>
-  <img src="assets/images/login-form-guest-user.png" alt="Running the service registry">
-	<figcaption>Authenticating with the user guest.</figcaption>
+  <img src="assets/images/login-form-guest-user.png" alt="Login Form Page" width="85%">
+	<figcaption><strong>Figure: Authenticating with the user guest.</strong></figcaption>
 </figure>
 
 The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.
 
 <figure>
-  <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Running the service registry">
-	<figcaption>Pre-stored STPA analyses page from user guest.</figcaption>
+  <img width="85%" src="assets/images/page-with-all-analysis-user-guest.png" alt="Analysis Page">
+	<figcaption><strong>Figure: Pre-stored STPA analyses page from user guest.</strong></figcaption>
 </figure>
-
-</details>
-
-</details>
-
-[⬆️ Back to Top](#table-of-contents)
-
-## Developers Guide
-
-<details> 
-<summary>Setup the Databases and Tools</summary>
-
-Before running MicroSTAMP, ensure that your databases are properly configured.
-Follow the instructions provided in the [Method 2: Running MicroSTAMP with Maven](#method-2-running-microstamp-with-maven) to configure the necessary databases.
-Additionally, make sure that all required tools and dependencies, such as Java, MySQL and Maven, are properly installed on your system.
-After completing the setup, you can proceed to run the project.
-
-</details>
-
-<details>
-<summary>Running MicroSTAMP within IntelliJ Idea</summary>
-
-We use IntelliJ IDEA 2023.3.5 Ultimate Edition in this example of how to run MicroSTAMP. Below are the steps to get MicroSTAMP up and running.
-
-1. Run the MicrostampServiceRegistryApplication microservice
-
-There are several ways to run a microservice within IntelliJ. One possible way is illustrated in Figure 1.
-
-   <figure> 
-      <img width="85%" src="assets/images/running-service-registry-within-intellij.png?raw=true" alt="Running the service registry"> 
-      <figcaption>Figure 1: Running the service registry microservice.</figcaption> 
-   </figure>
-
-After running the <code>MicrostampServiceRegistryApplication</code>, you can access the service registry administration page (Spring Eureka) at http://localhost:8761/ . At this point, no microservices are registered with the service registry.
-
-<br>
-
-2. Running the Remaining Microservices
-
-Once the service registry is up and running, proceed to start the other microservices that you need. You can follow the same process used to run the service registry, simply selecting the main class of each microservice and running them via IntelliJ.
-
-You can verify the microservices' registration by visiting the Eureka dashboard at http://localhost:8761/, where the services will be listed as they come online.
-
-**Always** start the service-registry first to ensure all other microservices can register properly.
 
 </details>
 
@@ -271,16 +181,17 @@ You can verify the microservices' registration by visiting the Eureka dashboard 
 
 ## MicroSTAMP Microservices
 
-If you wish to understand more in-depth details about any specific microservice, you can refer to the respective directory of each microservice. Each directory contains a comprehensive description of its role and implementation within the MicroSTAMP system. Below is a table with links to the corresponding folders for each microservice:
+If you wish to understand more in-depth details about any specific microservice, you can refer to its respective directory.
+Each directory contains a comprehensive description of its role and implementation within the MicroSTAMP system. Below is a table with links to the corresponding folders for each microservice:
 
-| Microservice                         | Description                                                                   | Link                                                                                                |
-|--------------------------------------|-------------------------------------------------------------------------------| --------------------------------------------------------------------------------------------------- |
-| **MicroSTAMP Service Registry**      | Registers instances of the microservices for discovery and communication.     | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
-| **MicroSTAMP API Gateway**           | The main entry point, delegating requests to the corresponding microservices. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)           |
-| **MicroSTAMP Authorization Server**  | Controls authorization with OAuth2 and authentication with OpenID.            | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry) |
-| **MicroSTAMP STPA Step 1**           | Handles the **Define Purpose of the Analysis** step.                          | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                 |
-| **MicroSTAMP STPA Step 2**           | Handles the **Model the Control Structure** step.                             | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                 |
-| **MicroSTAMP STPA Step 3**           | Handles the **Identify Unsafe Control Actions** step.                         | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                 |
+| Microservice                         | Description                                                                   | Link                                                                                                        |
+|--------------------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| **MicroSTAMP Service Registry**      | Registers instances of the microservices for discovery and communication.     | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry)         |
+| **MicroSTAMP API Gateway**           | The main entry point, delegating requests to the corresponding microservices. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)                   |
+| **MicroSTAMP Authorization Server**  | Controls authorization with OAuth2 and authentication with OpenID.            | [Authorization Server](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-authorization-server) |
+| **MicroSTAMP STPA Step 1**           | Handles the **Define Purpose of the Analysis** step.                          | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                         |
+| **MicroSTAMP STPA Step 2**           | Handles the **Model the Control Structure** step.                             | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                         |
+| **MicroSTAMP STPA Step 3**           | Handles the **Identify Unsafe Control Actions** step.                         | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                         |
 
 Each microservice is detailed in its respective repository directory, outlining its purpose, key functionalities, and implementation.
 
@@ -313,10 +224,12 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
 
 ## Publications
 
-Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. "**\*MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**.\*" In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
+Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. 
+"**MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**." 
+In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
  <a href="https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59" target="_blank">
-   <img src="assets/images/conference-paper.png" alt="Running the service registry" width="75%">
+   <img src="assets/images/conference-paper.png" alt="Springer Chapter" width="75%">
  </a>
 
 <br>
@@ -329,13 +242,15 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
 
 <figure style="width: 100%">
   <img src="assets/images/vegas-talk.png" width=249 height=278 alt="Rodrigo Martins Pagliares at ITNG 2024" />
-  <figcaption style="font-size: small;">Rodrigo Martins Pagliares at ITNG 2024</figcaption>
+  <figcaption style="font-size: small;"><strong>Figure: Rodrigo Martins Pagliares at ITNG 2024</strong></figcaption>
 </figure>
+
+<br>
 
 2. "**_MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture_**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2024.
 
  <a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
-     <img src="assets/images/mit_presentation_schedule.png"  width=249 height=278 alt="MIT presentation">
+     <img src="assets/images/mit_presentation_schedule.png" width=249 height=278 alt="MIT presentation">
  </a>
 
 [⬆️ Back to Top](#table-of-contents)
