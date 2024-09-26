@@ -112,8 +112,6 @@ That's it! Your MySQL databases are now set up and ready to use.
 <details> 
 <summary><strong>2. Clone the Project</strong></summary>
 
-**Cloning the Project:**
-
 1.  Open a terminal or command prompt.
 2.  Navigate to the directory where you want to clone the project.
 3.  Clone the project repository using the following command:
@@ -138,18 +136,19 @@ mvn spring-boot:run
 ```
 
  <figure>
-   <img width="85%" src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
-     <figcaption><strong>Figure: Running the service registry microservice with Apache Maven in the command-line.</strong></figcaption>
+   <img src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
+     <figcaption><strong>Figure: Running the service registry in the command-line.</strong></figcaption>
  </figure>
 
+<br>
 Alternatively, you can also run the microservices directly within an IDE. We use **IntelliJ IDEA 2023.3.5 Ultimate Edition**, but feel free to use any IDE of your choice that supports Spring Boot.
 
 ##### 2. Run the Remaining Microservices
-Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or using your IDE.
+Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
 
 ##### 3. Run the User Interface microstamp-ui
 
-With all the microservices running, open a new terminal window to execute the microstamp-ui.
+With the microservices running, open a new terminal window to execute the microstamp-ui. Navigate to its directory and run:
 
 ```
    npm i
@@ -164,14 +163,16 @@ With all the microservices running, open a new terminal window to execute the mi
 We created a user with some example analyses to provide a global picture of how MicroSTAMP supports STPA.
 
 <figure>
-  <img src="assets/images/login-form-guest-user.png" alt="Login Form Page" width="85%">
+  <img src="assets/images/login-form-guest-user.png" alt="Login Form Page">
 	<figcaption><strong>Figure: Authenticating with the user guest.</strong></figcaption>
 </figure>
 
+<br>
 The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.
+<br>
 
 <figure>
-  <img width="85%" src="assets/images/page-with-all-analysis-user-guest.png" alt="Analysis Page">
+  <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Analysis Page">
 	<figcaption><strong>Figure: Pre-stored STPA analyses page from user guest.</strong></figcaption>
 </figure>
 
@@ -229,7 +230,7 @@ Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme R
 In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
  <a href="https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59" target="_blank">
-   <img src="assets/images/conference-paper.png" alt="Springer Chapter" width="75%">
+   <img src="assets/images/conference-paper.png" alt="Springer Chapter" width="65%">
  </a>
 
 <br>
@@ -245,9 +246,9 @@ In _International Conference on Information Technology-New Generations_, pp. 469
   <figcaption style="font-size: small;"><strong>Figure: Rodrigo Martins Pagliares at ITNG 2024</strong></figcaption>
 </figure>
 
-<br>
+<p></p><br>
 
-2. "**_MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture_**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2024.
+2. "**MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2024.
 
  <a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
      <img src="assets/images/mit_presentation_schedule.png" width=249 height=278 alt="MIT presentation">
