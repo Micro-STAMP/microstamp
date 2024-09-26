@@ -141,7 +141,7 @@ mvn spring-boot:run
  </figure>
 
 <br>
-Alternatively, you can also run the microservices directly within an IDE. We use **IntelliJ IDEA 2023.3.5 Ultimate Edition**, but feel free to use any IDE of your choice that supports Spring Boot.
+<p>Alternatively, you can also run the microservices directly within an IDE. We use **IntelliJ IDEA 2023.3.5 Ultimate Edition**, but feel free to use any IDE of your choice that supports Spring Boot.</p>
 
 ##### 2. Run the Remaining Microservices
 Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
@@ -168,7 +168,7 @@ We created a user with some example analyses to provide a global picture of how 
 </figure>
 
 <br>
-The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.
+<p>The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.</p>
 <br>
 
 <figure>
