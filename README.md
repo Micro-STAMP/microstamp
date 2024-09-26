@@ -135,16 +135,12 @@ To run this microservice, open a terminal or command prompt, navigate to its dir
 mvn spring-boot:run
 ```
 
- <figure>
-   <img src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
-     <figcaption><strong>Figure: Running the service registry in the command-line.</strong></figcaption>
- </figure>
-
-<br>
+<figure>
+<img src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
+  <figcaption><strong>Figure: Running the service registry in the command-line.</strong></figcaption>
+</figure>
 
 <p>Alternatively, you can also run the microservices directly within an IDE. We use IntelliJ IDEA 2023.3.5 Ultimate Edition, but feel free to use any IDE of your choice that supports Spring Boot.</p>
-
-<br>
 
 ##### 2. Run the Remaining Microservices
 Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
@@ -164,14 +160,13 @@ With the microservices running, open a new terminal window to execute the micros
 -   You can now access the MicroSTAMP frontend!
 
 We created a user with some example analyses to provide a global picture of how MicroSTAMP supports STPA.
+The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.
 
 <figure>
   <img src="assets/images/login-form-guest-user.png" alt="Login Form Page">
 	<figcaption><strong>Figure: Authenticating with the user guest.</strong></figcaption>
 </figure>
 
-<br>
-<p>The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.</p>
 <br>
 
 <figure>
