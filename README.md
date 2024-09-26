@@ -140,7 +140,9 @@ mvn spring-boot:run
   <figcaption><strong>Figure: Running the service registry in the command-line.</strong></figcaption>
 </figure>
 
-<p>Alternatively, you can also run the microservices directly within an IDE. We use IntelliJ IDEA 2023.3.5 Ultimate Edition, but feel free to use any IDE of your choice that supports Spring Boot.</p>
+<p></p><br>
+
+Alternatively, you can also run the microservices directly within an IDE. We use IntelliJ IDEA 2023.3.5 Ultimate Edition, but feel free to use any IDE of your choice that supports Spring Boot.
 
 ##### 2. Run the Remaining Microservices
 Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
@@ -167,7 +169,7 @@ The user guest has some pre-stored STPA analyses and control structure from Step
 	<figcaption><strong>Figure: Authenticating with the user guest.</strong></figcaption>
 </figure>
 
-<br>
+<p></p><br>
 
 <figure>
   <img src="assets/images/page-with-all-analysis-user-guest.png" alt="Analysis Page">
