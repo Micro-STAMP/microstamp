@@ -10,6 +10,7 @@ import java.util.UUID;
 @Builder
 public record NotUcaContextCreateDto(
         @NotNull UUID analysisId,
+        @NotNull UUID controlActionId,
         @NotNull UCAType type,
         @NotNull List<UUID> statesIds
 ) {

@@ -32,6 +32,7 @@ public class NotUcaContextService {
 
         NotUnsafeControlActionContext notUcaContext = NotUnsafeControlActionContext.builder()
                 .analysisId(notUcaContextCreateDto.analysisId())
+                .controlActionId(notUcaContextCreateDto.controlActionId())
                 .type(notUcaContextCreateDto.type())
                 .build();
 
@@ -58,6 +59,12 @@ public class NotUcaContextService {
         authServerProxy.getAnalysisById(analysisId);
 
         List<NotUnsafeControlActionContext> notUcaContexts = notUcaContextRepository.findAllByAnalysisId(analysisId);
+
+        return mapper.toNotUcaContextReadDtoList(notUcaContexts);
+    }
+
+    public List<NotUcaContextReadDto> getNotUcaContextsByControlActionId(UUID controlActionId) {
+        List<NotUnsafeControlActionContext> notUcaContexts = notUcaContextRepository.findAllByControlActionId(controlActionId);
 
         return mapper.toNotUcaContextReadDtoList(notUcaContexts);
     }

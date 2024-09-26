@@ -62,16 +62,25 @@
 	}
 
 	.not_unsafe_button,
-	.unsafe_button {
+	.unsafe_button,
+	.default_button {
+		display: flex;
+		justify-content: center;
 		border-radius: var(--radius3);
 		font-weight: 600;
-		padding: 0.4rem 1.2rem;
+		padding: 0.4rem;
 		font-size: 1.2rem;
-		width: 7.2rem;
+		width: 8rem;
 	}
-	.not_unsafe_button {
+	.default_button {
 		background-color: var(--color-dark-gray);
 		color: var(--color-yellow);
+	}
+	.not_unsafe_button {
+		background-color: var(--color-gray);
+		color: var(--color-white);
+		text-wrap: nowrap;
+		cursor: default;
 	}
 	.unsafe_button {
 		cursor: default;

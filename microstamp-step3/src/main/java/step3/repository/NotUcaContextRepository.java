@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface NotUcaContextRepository extends JpaRepository<NotUnsafeControlActionContext, UUID> {
     List<NotUnsafeControlActionContext> findAllByAnalysisId(UUID analysisId);
+    List<NotUnsafeControlActionContext> findAllByControlActionId(UUID controlActionId);
 }

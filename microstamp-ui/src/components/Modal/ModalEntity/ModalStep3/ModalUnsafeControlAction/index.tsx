@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { TypeSelect } from "@components/FormField";
+import { Checkbox, TypeSelect } from "@components/FormField";
 import { hazardsToSelectOptions } from "@components/FormField/MultiSelect/HazardsMultiSelect/util";
 import HazardSelect from "@components/FormField/Select/HazardSelect";
 import StateSelect from "@components/FormField/Select/StateSelect";
@@ -19,7 +19,11 @@ import {
 } from "@components/Modal/Templates";
 import { getHazards } from "@http/Step1/Hazards";
 import { IControlAction, IVariableReadDto } from "@interfaces/IStep2";
-import { IContext, IUnsafeControlActionFormData } from "@interfaces/IStep3";
+import {
+	IContext,
+	INotUnsafeContextFormData,
+	IUnsafeControlActionFormData
+} from "@interfaces/IStep3";
 import { IUCAType, ucaTypeToSelectOption } from "@interfaces/IStep3/IUnsafeControlAction/Enums";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -28,7 +32,8 @@ import { toast } from "sonner";
 import styles from "./ModalUnsafeControlAction.module.css";
 
 interface ModalUnsafeControlActionProps extends ModalProps {
-	onSubmit: (uca: IUnsafeControlActionFormData) => Promise<void>;
+	onSubmitUCA: (uca: IUnsafeControlActionFormData) => Promise<void>;
+	onSubmitNotUnsafeContext: (nuc: INotUnsafeContextFormData) => Promise<void>;
 	analysisId: string;
 	isLoading?: boolean;
 	controlAction: IControlAction;
@@ -41,7 +46,8 @@ function ModalUnsafeControlAction({
 	context,
 	open,
 	onClose,
-	onSubmit,
+	onSubmitUCA,
+	onSubmitNotUnsafeContext,
 	type,
 	isLoading = false
 }: ModalUnsafeControlActionProps) {
@@ -102,17 +108,7 @@ function ModalUnsafeControlAction({
 		type: ucaTypeToSelectOption(type),
 		hazard: hazardsOptions[0]
 	});
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Submit Unsafe Control Action
-
-	const handleSubmitUnsafeControlAction = async () => {
-		if (ucaData.states.length === 0 || !ucaData.type || !ucaData.hazard) {
-			toast.warning("A required field is empty.");
-			return;
-		}
-
-		await onSubmit(ucaData);
+	const resetForm = () => {
 		setUCAData({
 			states: [],
 			type: ucaTypeToSelectOption(type),
@@ -123,18 +119,63 @@ function ModalUnsafeControlAction({
 	};
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Submit Unsafe Control Action
+
+	const handleSubmitUnsafeControlAction = async () => {
+		if (ucaData.states.length === 0 || !ucaData.type || !ucaData.hazard) {
+			toast.warning("A required field is empty.");
+			return;
+		}
+
+		await onSubmitUCA(ucaData);
+		resetForm();
+	};
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Submit Not Unsafe Context
+
+	const handleSubmitNotUnsafeContext = async () => {
+		if (ucaData.states.length === 0 || !ucaData.type) {
+			toast.warning("A required field is empty.");
+			return;
+		}
+		const notUnsafeContextData: INotUnsafeContextFormData = {
+			states: ucaData.states,
+			type: ucaData.type
+		};
+		await onSubmitNotUnsafeContext(notUnsafeContextData);
+		resetForm();
+	};
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Is Unsafe State and Submit
+
+	const [isUnsafe, setIsUnsafe] = useState(true);
+
+	const handleSubmit = async () => {
+		if (isUnsafe) {
+			await handleSubmitUnsafeControlAction();
+		} else {
+			await handleSubmitNotUnsafeContext();
+		}
+	};
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	if (isLoadingHazards) return <Loader />;
 	if (isError || hazards === undefined) return <h1>Error</h1>;
 	return (
 		<ModalContainer open={open} size="big">
-			<ModalHeader onClose={onClose} title="New Unsafe Control Action" />
+			<ModalHeader
+				onClose={onClose}
+				title={isUnsafe ? "New Unsafe Control Action" : "New Not Unsafe Context"}
+			/>
 			<div className={styles.modal_uca_inputs}>
 				<ContextStates>
 					{variables.map(variable => (
 						<StateSelect
 							key={variable.id}
-							label={`${variable.name} State`}
+							label={variable.name}
 							states={statesToSelectOptions(variable.states)}
 							value={selectedStates[variable.id] || null}
 							onChange={newValue => handleStateChange(variable.id, newValue)}
@@ -152,27 +193,32 @@ function ModalUnsafeControlAction({
 						disabled
 					/>
 				</ModalInputs>
-				<ModalInputs>
-					<HazardSelect
-						value={ucaData.hazard}
-						onChange={(value: SelectOption | null) =>
-							setUCAData({ ...ucaData, hazard: value })
-						}
-						hazards={hazardsOptions}
-						required
+				<div style={{ width: "100%", margin: "0.8rem 0" }}>
+					<Checkbox
+						checked={isUnsafe}
+						label="Is Unsafe?"
+						onChange={checked => setIsUnsafe(checked)}
 					/>
-				</ModalInputs>
+				</div>
+				{isUnsafe && (
+					<ModalInputs>
+						<HazardSelect
+							value={ucaData.hazard}
+							onChange={(value: SelectOption | null) =>
+								setUCAData({ ...ucaData, hazard: value })
+							}
+							hazards={hazardsOptions}
+							required
+						/>
+					</ModalInputs>
+				)}
 			</div>
+
 			<ModalButtons>
 				<Button variant="dark" onClick={onClose} size="small" icon={ReturnIcon}>
 					Cancel
 				</Button>
-				<Button
-					onClick={handleSubmitUnsafeControlAction}
-					isLoading={isLoading}
-					size="small"
-					icon={CheckIcon}
-				>
+				<Button onClick={handleSubmit} isLoading={isLoading} size="small" icon={CheckIcon}>
 					Create
 				</Button>
 			</ModalButtons>

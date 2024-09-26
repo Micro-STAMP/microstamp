@@ -1,4 +1,8 @@
-import { IContext, IUnsafeControlActionReadDto } from "@interfaces/IStep3";
+import {
+	IContext,
+	INotUnsafeContextReadDto,
+	IUnsafeControlActionReadDto
+} from "@interfaces/IStep3";
 import { IUCAType, ucaTypeSelectOptions } from "@interfaces/IStep3/IUnsafeControlAction/Enums";
 import styles from "@pages/AnalysisSteps/Step3/ControlAction/ContexTable/ContextTable.module.css";
 import UnsafeButton from "./UnsafeButton";
@@ -6,9 +10,15 @@ import UnsafeButton from "./UnsafeButton";
 interface TableRowProps {
 	context: IContext;
 	unsafeControlActions: IUnsafeControlActionReadDto[];
+	notUnsafeContexts: INotUnsafeContextReadDto[];
 	toggleModal: (context: IContext, type: IUCAType) => void;
 }
-function TableRow({ context, unsafeControlActions, toggleModal }: TableRowProps) {
+function TableRow({
+	context,
+	unsafeControlActions,
+	notUnsafeContexts,
+	toggleModal
+}: TableRowProps) {
 	return (
 		<div className={styles.table_row}>
 			{context.states.map(state => (
@@ -22,6 +32,7 @@ function TableRow({ context, unsafeControlActions, toggleModal }: TableRowProps)
 						context={context}
 						type={type.value as IUCAType}
 						unsafeControlActions={unsafeControlActions}
+						notUnsafeContexts={notUnsafeContexts}
 						toggleModal={toggleModal}
 					/>
 				</div>

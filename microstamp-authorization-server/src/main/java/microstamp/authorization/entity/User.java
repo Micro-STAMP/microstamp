@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(name = "users")
-@Table(name = "users")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
+@Entity(name = "users")
 public class User {
 
     @Id

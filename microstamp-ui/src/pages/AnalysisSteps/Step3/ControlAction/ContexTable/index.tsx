@@ -2,6 +2,7 @@ import Loader from "@components/Loader";
 import { ModalUnsafeControlAction } from "@components/Modal/ModalEntity";
 import Pagination from "@components/Pagination";
 import { createContextTable, getContextTable } from "@http/Step3/ContextTable";
+import { createNotUnsafeContext, getNotUnsafeContexts } from "@http/Step3/NotUnsafeContexts";
 import {
 	createUnsafeControlAction,
 	getUnsafeControlActions
@@ -10,6 +11,8 @@ import { IControlAction } from "@interfaces/IStep2";
 import {
 	IContext,
 	IContextTableInsertDto,
+	INotUnsafeContextFormData,
+	INotUnsafeContextInsertDto,
 	IUCAType,
 	IUnsafeControlActionFormData,
 	IUnsafeControlActionInsertDto
@@ -82,6 +85,41 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Not Unsafe Contexts
+
+	const {
+		data: notUnsafeContexts,
+		isLoading: isLoadingNoUnsafe,
+		isError: isErrorNotUnsafe
+	} = useQuery({
+		queryKey: ["context-table-not-unsafe-contexts", controlAction.id],
+		queryFn: () => getNotUnsafeContexts(controlAction.id)
+	});
+
+	// Create
+	const { mutateAsync: requestCreateNotUnsafeContext, isPending: isCreatingNotUnsafe } =
+		useMutation({
+			mutationFn: (nuc: INotUnsafeContextInsertDto) => createNotUnsafeContext(nuc),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ["context-table-not-unsafe-contexts"] });
+				toast.success("Not unsafe context created.");
+			},
+			onError: err => {
+				toast.error(err.message);
+			}
+		});
+	const handleCreateNotUnsafeContext = async (notUnsafeData: INotUnsafeContextFormData) => {
+		if (!ucaContext || !ucaType) return;
+		const notUnsafeContext: INotUnsafeContextInsertDto = {
+			statesIds: notUnsafeData.states.map(st => st.value),
+			type: notUnsafeData.type!.value as IUCAType,
+			analysisId: analysisId,
+			controlActionId: controlAction.id
+		};
+		await requestCreateNotUnsafeContext(notUnsafeContext);
+	};
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Select UCA Context & Type to Creation
 
 	const [ucaContext, setUcaContext] = useState<IContext | null>(null);
@@ -104,17 +142,21 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Create UCAs by Context Table
 
-	const { mutateAsync: requestCreateUnsafeControlAction, isPending: isCreating } = useMutation({
-		mutationFn: (uca: IUnsafeControlActionInsertDto) => createUnsafeControlAction(uca),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["context-table-unsafe-control-actions"] });
-			queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
-			toast.success("Unsafe control action created.");
-		},
-		onError: err => {
-			toast.error(err.message);
+	const { mutateAsync: requestCreateUnsafeControlAction, isPending: isCreatingUCA } = useMutation(
+		{
+			mutationFn: (uca: IUnsafeControlActionInsertDto) => createUnsafeControlAction(uca),
+			onSuccess: () => {
+				queryClient.invalidateQueries({
+					queryKey: ["context-table-unsafe-control-actions"]
+				});
+				queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
+				toast.success("Unsafe control action created.");
+			},
+			onError: err => {
+				toast.error(err.message);
+			}
 		}
-	});
+	);
 	const handleCreateUnsafeControlAction = async (ucaData: IUnsafeControlActionFormData) => {
 		if (!ucaContext || !ucaType) return;
 		const uca: IUnsafeControlActionInsertDto = {
@@ -129,6 +171,8 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
+	if (isLoadingNoUnsafe) return <Loader />;
+	if (notUnsafeContexts === undefined || isErrorNotUnsafe) return <h1>Error</h1>;
 	if (isLoadingUCAs) return <Loader />;
 	if (unsafeControlActions === undefined || isErrorUCAs) return <h1>Error</h1>;
 	if (isLoading || isPending) return <Loader />;
@@ -142,6 +186,7 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 						key={context.id}
 						context={context}
 						unsafeControlActions={unsafeControlActions}
+						notUnsafeContexts={notUnsafeContexts}
 						toggleModal={handleToggleModalCreateUca}
 					/>
 				))}
@@ -155,8 +200,9 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 					onClose={() => handleToggleModalCreateUca(ucaContext, ucaType)}
 					analysisId={analysisId}
 					controlAction={controlAction}
-					onSubmit={handleCreateUnsafeControlAction}
-					isLoading={isCreating}
+					onSubmitUCA={handleCreateUnsafeControlAction}
+					onSubmitNotUnsafeContext={handleCreateNotUnsafeContext}
+					isLoading={isCreatingUCA || isCreatingNotUnsafe}
 					context={ucaContext}
 					type={ucaType}
 				/>
