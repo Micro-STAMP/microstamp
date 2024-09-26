@@ -32,6 +32,7 @@ public class NotUcaContextService {
 
         NotUnsafeControlActionContext notUcaContext = NotUnsafeControlActionContext.builder()
                 .analysisId(notUcaContextCreateDto.analysisId())
+                .controlActionId(notUcaContextCreateDto.controlActionId())
                 .type(notUcaContextCreateDto.type())
                 .build();
 
