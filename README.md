@@ -141,7 +141,10 @@ mvn spring-boot:run
  </figure>
 
 <br>
-<p>Alternatively, you can also run the microservices directly within an IDE. We use **IntelliJ IDEA 2023.3.5 Ultimate Edition**, but feel free to use any IDE of your choice that supports Spring Boot.</p>
+
+<p>Alternatively, you can also run the microservices directly within an IDE. We use IntelliJ IDEA 2023.3.5 Ultimate Edition, but feel free to use any IDE of your choice that supports Spring Boot.</p>
+
+<br>
 
 ##### 2. Run the Remaining Microservices
 Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
