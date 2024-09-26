@@ -21,6 +21,16 @@ import { IContext, IContextTableInsertDto, IContextTableReadDto } from "./IConte
 export type { IContext, IContextTableInsertDto, IContextTableReadDto };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
+// * Not Unsafe Context DTOs
+
+import {
+	INotUnsafeContextFormData,
+	INotUnsafeContextInsertDto,
+	INotUnsafeContextReadDto
+} from "./INotUnsafeContext";
+export type { INotUnsafeContextFormData, INotUnsafeContextInsertDto, INotUnsafeContextReadDto };
+
+/* - - - - - - - - - - - - - - - - - - - - - - */
 // * Rule DTOs
 
 import { IRuleFormData, IRuleInsertDto, IRuleReadDto } from "./IRule";
