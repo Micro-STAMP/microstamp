@@ -1,4 +1,4 @@
-import { ITokenPayload } from "@interfaces/ILogin";
+import { ITokenPayload } from "@interfaces/IAuth";
 import { IUser } from "@interfaces/IUser";
 import { jwtDecode } from "jwt-decode";
 
