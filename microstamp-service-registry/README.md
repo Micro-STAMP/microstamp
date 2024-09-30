@@ -1,4 +1,4 @@
-# Microstamp Service Registry
+# MicroSTAMP Service Registry
 
 This repository contains the source code for the MicroSTAMP Service Registry using Sprint Cloud Netflix Eureka Server. Service registry and discovery play an important role when running multiple instances of services and we need a mechanism to call other services without hard coding their host names or port numbers.
 

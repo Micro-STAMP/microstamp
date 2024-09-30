@@ -174,12 +174,14 @@ public class UnsafeControlActionService {
             try {
                 step2Proxy.getStateById(ucaState.getStateId());
             } catch (EntityNotFoundException e) {
+                unsafeControlActionRepository.deleteById(uca.getId());
                 throw new ChangesInOtherMicroservicesException("There were changes in the UCA states, so it was removed");
             }
 
             try {
                 step1Proxy.getHazardById(uca.getHazardId());
             } catch (EntityNotFoundException e) {
+                unsafeControlActionRepository.deleteById(uca.getId());
                 throw new ChangesInOtherMicroservicesException("There were changes in the UCA's hazard, so it was removed");
             }
         }
