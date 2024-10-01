@@ -1,5 +1,5 @@
 import { IToken } from "@interfaces/IAuth";
-import { deleteTokenStorage, deleteUserStorage } from "@services/storage";
+import { deleteTokenStorage, deleteUserStorage, getTokenStorage } from "@services/storage";
 import axios from "axios";
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
@@ -102,8 +102,18 @@ const refreshTokenRequest = async (refresh_token: string) => {
 // Logout
 
 const logoutRequest = () => {
+	const token = getTokenStorage();
+	if (!token) return;
+
+	const logout_server = "http://127.0.0.1:9000/logout";
+	const post_logout_redirect_uri = `${HOST}/`;
+
+	const logoutUrl = `${logout_server}?id_token_hint=${token.id_token}&post_logout_redirect_uri=${post_logout_redirect_uri}`;
+
 	deleteTokenStorage();
 	deleteUserStorage();
+
+	window.location.href = logoutUrl;
 };
 
 export { authRegisterRequest, authServerRequest, logoutRequest, refreshTokenRequest, tokenRequest };
