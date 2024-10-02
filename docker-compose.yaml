@@ -33,6 +33,57 @@ services:
       - "3307"
     networks:
       - microstamp-network
+  step1-db:
+    image: mysql:8.4
+    container_name: step1-db
+    restart: always
+    command: mysqld --mysql-native-password=ON --character-set-server=utf8mb4
+    environment:
+      - TZ=America/Sao_Paulo
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=step1
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_TCP_PORT=3308
+    ports:
+      - "3308:3308"
+    expose:
+      - "3308"
+    networks:
+      - microstamp-network
+#  step2-db:
+#    image: mysql:8.4
+#    container_name: step2-db
+#    restart: always
+#    command: mysqld --mysql-native-password=ON --character-set-server=utf8mb4
+#    environment:
+#      - TZ=America/Sao_Paulo
+#      - MYSQL_ROOT_PASSWORD=123456
+#      - MYSQL_DATABASE=step2
+#      - MYSQL_ROOT_HOST=%
+#      - MYSQL_TCP_PORT=3309
+#    ports:
+#      - "3309:3309"
+#    expose:
+#      - "3309"
+#    networks:
+#      - microstamp-network
+#  step3-db:
+#    image: mysql:8.4
+#    container_name: step3-db
+#    restart: always
+#    command: mysqld --mysql-native-password=ON --character-set-server=utf8mb4
+#    environment:
+#      - TZ=America/Sao_Paulo
+#      - MYSQL_ROOT_PASSWORD=123456
+#      - MYSQL_DATABASE=step3
+#      - MYSQL_ROOT_HOST=%
+#      - MYSQL_TCP_PORT=3310
+#    ports:
+#      - "3310:3310"
+#    expose:
+#      - "3310"
+#    networks:
+#      - microstamp-network
   microstamp-service-registry:
     image: gabrielfrancelino/microstamp-service-registry:0.0.1-SNAPSHOT
     container_name: microstamp-service-registry
@@ -72,6 +123,29 @@ services:
       - SPRING_FLYWAY_URL=jdbc:mysql://auth-db:3307/microstamp?useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2&allowPublicKeyRetrieval=false
       - SPRING_FLYWAY_USER=root
       - SPRING_FLYWAY_PASSWORD=123456
+    networks:
+      - microstamp-network
+  microstamp-step1:
+    image: gabrielfrancelino/microstamp-step1-microservice:1.0.0
+    container_name: microstamp-step1
+    restart: always
+    ports:
+      - "8091:8091"
+    depends_on:
+      - microstamp-service-registry
+      - step1-db
+    environment:
+        - TZ=America/Sao_Paulo
+        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://microstamp-service-registry:8761/eureka/
+        - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+        - SPRING_DATASOURCE_URL=jdbc:mysql://step1-db:3308/step1?useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2&allowPublicKeyRetrieval=false
+        - SPRING_DATASOURCE_USERNAME=root
+        - SPRING_DATASOURCE_PASSWORD=123456
+        - SPRING_FLYWAY_ENABLED=false
+        - SPRING_FLYWAY_URL=jdbc:mysql://step1-db:3308/step1?useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2&allowPublicKeyRetrieval=false
+        - SPRING_FLYWAY_USER=root
+        - SPRING_FLYWAY_PASSWORD=123456
+        - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://microstamp-authorization-server:9000
     networks:
       - microstamp-network
 networks:
