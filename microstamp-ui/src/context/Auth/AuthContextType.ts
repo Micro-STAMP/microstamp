@@ -1,4 +1,4 @@
-import { IToken } from "@interfaces/ILogin";
+import { IToken } from "@interfaces/IAuth";
 import { IUser } from "@interfaces/IUser";
 
 interface AuthContextType {

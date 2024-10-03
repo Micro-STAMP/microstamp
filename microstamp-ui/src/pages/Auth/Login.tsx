@@ -1,6 +1,6 @@
 import { ModalLoading } from "@components/Modal";
 import { useAuth } from "@hooks/useAuth";
-import { tokenRequest } from "@http/Login";
+import { tokenRequest } from "@http/Auth";
 import { decodeUserFromToken } from "@services/decode";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
