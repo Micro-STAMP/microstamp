@@ -1,5 +1,6 @@
 package step3.infra.config.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -14,21 +15,14 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfig {
 
-    private static final String[] CORS_WHITELIST = {
-            "http://127.0.0.1:9000",
-            "http://127.0.0.1:9001",
-            "http://127.0.0.1:9002",
-            "http://127.0.0.1:9003",
-            "http://127.0.0.1:9004",
-            "http://127.0.0.1:9191",
-            "http://127.0.0.1:5173"
-    };
-
     private static final String[] AUTH_WHITELIST = {
             "/swagger/**",
             "/swagger-ui/**",
             "/v3/**"
     };
+
+    @Value("${cors.whitelist}")
+    private String[] corsWhitelist;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,7 +36,7 @@ public class SecurityConfig {
 
     private UrlBasedCorsConfigurationSource corsConfig() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Arrays.asList(CORS_WHITELIST));
+        corsConfig.setAllowedOrigins(Arrays.asList(corsWhitelist));
         corsConfig.setAllowedMethods(Collections.singletonList("*"));
         corsConfig.setAllowedHeaders(Collections.singletonList("*"));
         corsConfig.setAllowCredentials(true);

@@ -9,7 +9,7 @@ import step3.infra.config.feign.FeignClientConfig;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "MICROSTAMP-STEP2", url = "http://localhost:8090", configuration = FeignClientConfig.class)
+@FeignClient(name = "MICROSTAMP-STEP2", configuration = FeignClientConfig.class)
 public interface Step2Proxy {
     @GetMapping("/controllers/{id}")
     ComponentReadDto getControllerById(@PathVariable UUID id);

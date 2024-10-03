@@ -1,12 +1,14 @@
 package microstamp.authorization.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import microstamp.authorization.dto.AnalysisReadDto;
 import microstamp.authorization.dto.ExportReadDto;
 import microstamp.authorization.exception.NotFoundException;
 import microstamp.authorization.service.AnalysisService;
 import microstamp.authorization.service.ExportService;
 import microstamp.authorization.service.GuestService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 
@@ -16,14 +18,17 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GuestServiceImpl implements GuestService {
 
-    private AnalysisService analysisService;
+    @Value("${security.issuer-uri}")
+    private String issuerUri;
 
-    private ExportService exportService;
+    private final AnalysisService analysisService;
 
-    private JwtEncoder jwtEncoder;
+    private final ExportService exportService;
+
+    private final JwtEncoder jwtEncoder;
 
     public List<AnalysisReadDto> findAll() {
         return analysisService.findGuestAnalyses();
@@ -57,7 +62,7 @@ public class GuestServiceImpl implements GuestService {
 
     private String getGuestToken() {
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("http://localhost:9000")
+                .issuer(issuerUri)
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(10))
                 .subject("guest-request")

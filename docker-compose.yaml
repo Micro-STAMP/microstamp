@@ -13,6 +13,11 @@ services:
             - ./docker/provision/mysql/init:/docker-entrypoint-initdb.d
         environment:
             MYSQL_ROOT_PASSWORD: 123456
+        healthcheck:
+            test: "mysql -u root -p$$MYSQL_ROOT_PASSWORD -e 'USE microstamp;'"
+            interval: 30s
+            retries: 3
+            start_period: 15s
 
     service-registry:
         build:
@@ -20,7 +25,13 @@ services:
         ports:
             - "8761:8761"
         depends_on:
-            - db
+            db:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f http://service-registry:8761"
+            interval: 5s
+            retries: 5
+            start_period: 3s
 
     api-gateway:
         build:
@@ -28,10 +39,16 @@ services:
         ports:
             - "9191:9191"
         depends_on:
-            - service-registry
+            service-registry:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f http://api-gateway:9191/actuator/health"
+            interval: 5s
+            retries: 5
+            start_period: 3s
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
-            - ALLOWED_ORIGINS=http://authorization-server:9000/,http://step1:8091/,http://step2:8090/,http://step3:8080/,http://service-registry:8761/,http://127.0.0.1:5173/
+            - ALLOWED_ORIGINS=http://127.0.0.1:5173
 
     authorization-server:
         build:
@@ -39,10 +56,18 @@ services:
         ports:
             - "9000:9000"
         depends_on:
-            - service-registry
+            service-registry:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f http://authorization-server:9000/login"
+            interval: 5s
+            retries: 5
+            start_period: 3s
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/microstamp
+            - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
+            - SECURITY_ISSUER-URI=http://authorization-server:9000
 
     step1:
         build:
@@ -50,11 +75,18 @@ services:
         ports:
             - "8091:8091"
         depends_on:
-            - service-registry
+            service-registry:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f -s -w '%{http_code}%' http://step1:8091 | grep -q '401'"
+            interval: 5s
+            retries: 5
+            start_period: 3s
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step1
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+            - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
 
     step2:
         build:
@@ -62,11 +94,18 @@ services:
         ports:
             - "8090:8090"
         depends_on:
-            - service-registry
+            service-registry:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f -s -w '%{http_code}%' http://step2:8090 | grep -q '401'"
+            interval: 5s
+            retries: 5
+            start_period: 3s
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step2
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+            - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
 
     step3:
         build:
@@ -74,14 +113,28 @@ services:
         ports:
             - "8080:8080"
         depends_on:
-            - service-registry
+            service-registry:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f -s -w '%{http_code}%' http://step3:8080 | grep -q '401'"
+            interval: 5s
+            retries: 5
+            start_period: 3s
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step3
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+            - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
 
-    # ui:
-    #     build:
-    #         context: ./microstamp-ui
-    #     ports:
-    #         - "5173:5173"
+    ui:
+        build:
+            context: ./microstamp-ui
+        ports:
+            - "5173:80"
+        environment:
+            - VITE_UI_URL=http://127.0.0.1:5173
+            - VITE_GATEWAY_URL=http://api-gateway:9191
+            - VITE_AUTH_URL=http://authorization-server:9000
+            - VITE_TOKEN_AUTH_URL=http://authorization-server:9000
+            - VITE_AUTH_CLIENT_ID=fbefbe1f-933d-4012-b730-16db007cd13e
+            - VITE_AUTH_CLIENT_SECRET=bdbdc73c-63c6-4aac-8634-bfbafa0417b0
