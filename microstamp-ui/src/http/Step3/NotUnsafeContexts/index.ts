@@ -10,7 +10,6 @@ const getNotUnsafeContexts = async (analysisId: string) => {
 		const res = await http.get<INotUnsafeContextReadDto[]>(
 			`${NOT_UNSAFE_CONTEXT_ENDPOINT}/control-actions/${analysisId}`
 		);
-		console.log(res.data);
 		return res.data;
 	} catch (err) {
 		console.error(err);
@@ -23,7 +22,6 @@ const createNotUnsafeContext = async (notUnsafeContext: INotUnsafeContextInsertD
 			NOT_UNSAFE_CONTEXT_ENDPOINT,
 			notUnsafeContext
 		);
-		console.log("CREATE", notUnsafeContext);
 		return res.data;
 	} catch (err) {
 		console.error(err);

@@ -79,7 +79,7 @@ To build and run the application, you'll need the following:
 #### Command-line setup
 
 <details> 
-<summary><strong>Set up MySQL Databases</strong></summary>
+<summary><strong>1. Set up MySQL Databases</strong></summary>
 <br>
   Ensure that MySQL is installed and running on your machine. The default port for MySQL is <code>3306</code>. If MySQL is not installed, you can download it from the official MySQL website:
 

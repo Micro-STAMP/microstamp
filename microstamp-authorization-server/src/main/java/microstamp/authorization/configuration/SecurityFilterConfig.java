@@ -35,7 +35,9 @@ public class SecurityFilterConfig {
             "/swagger-ui/**",
             "/v3/**",
             "/guests/**",
-            "/registration"
+            "/registration",
+            "/login",
+            "/logout"
     };
 
     @Bean

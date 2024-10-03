@@ -1,10 +1,9 @@
-import { logoutRequest } from "@http/Login";
-import { IToken } from "@interfaces/ILogin";
+import { logoutRequest } from "@http/Auth";
+import { IToken } from "@interfaces/IAuth";
 import { IUser } from "@interfaces/IUser";
 import {
 	getTokenStorage,
 	getUserStorage,
-	setRefreshTokenStorage,
 	setTokenStorage,
 	setUserStorage
 } from "@services/storage";
@@ -25,8 +24,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 	}, [authenticated, userData, token]);
 
 	const authenticateUser = (token: IToken, iUser: IUser) => {
-		setTokenStorage(token.access_token);
-		setRefreshTokenStorage(token.refresh_token);
+		setTokenStorage(token);
 		setAuthenticated(true);
 		setUser(iUser);
 		setUserStorage(iUser);

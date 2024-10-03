@@ -1,6 +1,6 @@
 import { ModalConfirm } from "@components/Modal";
 import { useAuth } from "@hooks/useAuth";
-import { authRegisterRequest, authServerRequest } from "@http/Login";
+import { authRegisterRequest, authServerRequest } from "@http/Auth";
 import { useEffect, useState } from "react";
 import { AiOutlineSecurityScan as LogoIcon } from "react-icons/ai";
 import {

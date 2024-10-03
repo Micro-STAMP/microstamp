@@ -8,7 +8,7 @@ const Logout = () => {
 
 	useEffect(() => {
 		deauthenticateUser();
-		console.log("Session expired.");
+		console.log("LOG: Session expired.");
 		navigate("/");
 	}, []);
 

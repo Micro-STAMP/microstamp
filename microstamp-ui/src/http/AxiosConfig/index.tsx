@@ -1,10 +1,5 @@
-import { refreshTokenRequest } from "@http/Login";
-import {
-	getRefreshTokenStorage,
-	getTokenStorage,
-	setRefreshTokenStorage,
-	setTokenStorage
-} from "@services/storage";
+import { refreshTokenRequest } from "@http/Auth";
+import { getTokenStorage, setTokenStorage } from "@services/storage";
 import axios, { AxiosError } from "axios";
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
@@ -27,7 +22,7 @@ const http = axios.create({
 
 http.interceptors.request.use(config => {
 	const token = getTokenStorage();
-	if (token) config.headers.Authorization = `Bearer ${token}`;
+	if (token) config.headers.Authorization = `Bearer ${token.access_token}`;
 	return config;
 });
 
@@ -42,18 +37,11 @@ http.interceptors.response.use(
 	async (error: AxiosError<IErrorResponse>) => {
 		const originalRequest = error.config;
 		const token = getTokenStorage();
-		const refreshToken = getRefreshTokenStorage();
 
-		if (
-			error.response?.status === 401 &&
-			token &&
-			typeof refreshToken === "string" &&
-			originalRequest
-		) {
+		if (error.response?.status === 401 && token && originalRequest) {
 			try {
-				const newToken = await refreshTokenRequest(refreshToken);
-				setTokenStorage(newToken.access_token);
-				setRefreshTokenStorage(newToken.refresh_token);
+				const newToken = await refreshTokenRequest(token.refresh_token);
+				setTokenStorage(newToken);
 				originalRequest.headers.Authorization = `Bearer ${newToken.access_token}`;
 
 				console.log("LOG: Token Updated");

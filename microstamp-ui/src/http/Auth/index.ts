@@ -1,18 +1,16 @@
-import { IToken } from "@interfaces/ILogin";
-import {
-	deleteRefreshTokenStorage,
-	deleteTokenStorage,
-	deleteUserStorage
-} from "@services/storage";
+import { IToken } from "@interfaces/IAuth";
+import { deleteTokenStorage, deleteUserStorage, getTokenStorage } from "@services/storage";
 import axios from "axios";
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
 
-// Send to Auth Server Login
-
 const HOST = "http://127.0.0.1:5173";
 const CLIENT_ID = import.meta.env.VITE_AUTH_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_AUTH_CLIENT_SECRET;
+
+/* - - - - - - - - - - - - - - - - - - - - - - */
+
+// Send to Auth Server Login
 
 const authServerRequest = () => {
 	const auth_server = "http://127.0.0.1:9000/oauth2/authorize";
@@ -104,9 +102,18 @@ const refreshTokenRequest = async (refresh_token: string) => {
 // Logout
 
 const logoutRequest = () => {
+	const token = getTokenStorage();
+	if (!token) return;
+
+	const logout_server = "http://127.0.0.1:9000/logout";
+	const post_logout_redirect_uri = `${HOST}/`;
+
+	const logoutUrl = `${logout_server}?id_token_hint=${token.id_token}&post_logout_redirect_uri=${post_logout_redirect_uri}`;
+
 	deleteTokenStorage();
-	deleteRefreshTokenStorage();
 	deleteUserStorage();
+
+	window.location.href = logoutUrl;
 };
 
 export { authRegisterRequest, authServerRequest, logoutRequest, refreshTokenRequest, tokenRequest };
