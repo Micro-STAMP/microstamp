@@ -15,9 +15,11 @@ services:
             MYSQL_ROOT_PASSWORD: 123456
         healthcheck:
             test: "mysql -u root -p$$MYSQL_ROOT_PASSWORD -e 'USE microstamp;'"
-            interval: 30s
-            retries: 3
-            start_period: 15s
+            interval: 60s
+            retries: 5
+            start_period: 30s
+        networks:
+            - main
 
     service-registry:
         build:
@@ -32,6 +34,8 @@ services:
             interval: 5s
             retries: 5
             start_period: 3s
+        networks:
+            - main
 
     api-gateway:
         build:
@@ -49,6 +53,8 @@ services:
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - ALLOWED_ORIGINS=http://127.0.0.1:5173
+        networks:
+            - main
 
     authorization-server:
         build:
@@ -68,6 +74,8 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/microstamp
             - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
             - SECURITY_ISSUER-URI=http://authorization-server:9000
+        networks:
+            - main
 
     step1:
         build:
@@ -87,6 +95,8 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step1
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
             - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
+        networks:
+            - main
 
     step2:
         build:
@@ -106,6 +116,8 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step2
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
             - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
+        networks:
+            - main
 
     step3:
         build:
@@ -125,6 +137,8 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step3
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
             - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
+        networks:
+            - main
 
     ui:
         build:
@@ -138,3 +152,8 @@ services:
             - VITE_TOKEN_AUTH_URL=http://authorization-server:9000
             - VITE_AUTH_CLIENT_ID=fbefbe1f-933d-4012-b730-16db007cd13e
             - VITE_AUTH_CLIENT_SECRET=bdbdc73c-63c6-4aac-8634-bfbafa0417b0
+        networks:
+            - main
+networks:
+    main:
+        driver: bridge
