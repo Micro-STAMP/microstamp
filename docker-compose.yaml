@@ -1,15 +1,87 @@
 volumes:
-  db:
-    driver: local
+    db:
+        driver: local
 
 services:
-  db:
-    image: mysql:8.0
-    restart: unless-stopped
-    ports:
-      - "3306:3306"
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./docker/provision/mysql/init:/docker-entrypoint-initdb.d
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
+    db:
+        image: mysql:8.0
+        restart: unless-stopped
+        ports:
+            - "3306:3306"
+        command: mysqld --character-set-server=utf8mb4
+        volumes:
+            - ./docker/provision/mysql/init:/docker-entrypoint-initdb.d
+        environment:
+            MYSQL_ROOT_PASSWORD: 123456
+
+    service-registry:
+        build:
+            context: ./microstamp-service-registry
+        ports:
+            - "8761:8761"
+        depends_on:
+            - db
+
+    api-gateway:
+        build:
+            context: ./microstamp-api-gateway
+        ports:
+            - "9191:9191"
+        depends_on:
+            - service-registry
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+            - ALLOWED_ORIGINS=http://authorization-server:9000/,http://step1:8091/,http://step2:8090/,http://step3:8080/,http://service-registry:8761/,http://127.0.0.1:5173/
+
+    authorization-server:
+        build:
+            context: ./microstamp-authorization-server
+        ports:
+            - "9000:9000"
+        depends_on:
+            - service-registry
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/microstamp
+
+    step1:
+        build:
+            context: ./microstamp-step1
+        ports:
+            - "8091:8091"
+        depends_on:
+            - service-registry
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step1
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+
+    step2:
+        build:
+            context: ./microstamp-step2
+        ports:
+            - "8090:8090"
+        depends_on:
+            - service-registry
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step2
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+
+    step3:
+        build:
+            context: ./microstamp-step3
+        ports:
+            - "8080:8080"
+        depends_on:
+            - service-registry
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step3
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+
+    # ui:
+    #     build:
+    #         context: ./microstamp-ui
+    #     ports:
+    #         - "5173:5173"
