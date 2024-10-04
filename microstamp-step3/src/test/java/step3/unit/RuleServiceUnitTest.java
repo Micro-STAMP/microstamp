@@ -161,20 +161,20 @@ public class RuleServiceUnitTest {
         assertThrows(EntityNotFoundException.class, () -> service.readRule(mockRuleId));
     }
 
-//    @Test
-//    @DisplayName("#readRule > When the rule is found > Return the rule")
-//    void readRuleWhenTheRuleIsFoundReturnTheRule() {
-//        UUID mockRuleId = UUID.randomUUID();
-//        Rule mockFirst = assembleRule.get();
-//        RuleReadDto mockRuleReadFirst = fromRuleToReadDTO(mockFirst);
-//
-//        when(ruleRepository.findById(mockRuleId)).thenReturn(Optional.of(mockFirst));
-//        when(mapper.toRuleReadDto(mockFirst)).thenReturn(mockRuleReadFirst);
-//
-//        RuleReadDto response = service.readRule(mockRuleId);
-//
-//        assertEquals(mockRuleReadFirst, response);
-//    }
+    @Test
+    @DisplayName("#readRule > When the rule is found > Return the rule")
+    void readRuleWhenTheRuleIsFoundReturnTheRule() {
+        UUID mockRuleId = UUID.randomUUID();
+        Rule mockFirst = assembleRule.get();
+        RuleReadDto mockRuleReadFirst = fromRuleToReadDTO(mockFirst);
+
+        when(ruleRepository.findById(mockRuleId)).thenReturn(Optional.of(mockFirst));
+        when(mapper.toRuleReadDto(mockFirst)).thenReturn(mockRuleReadFirst);
+
+        RuleReadDto response = service.readRule(mockRuleId);
+
+        assertEquals(mockRuleReadFirst, response);
+    }
     
     @Test
     @DisplayName("#readAllRules > When no rule is found > Return an empty list")
@@ -186,26 +186,26 @@ public class RuleServiceUnitTest {
         assertTrue(response.isEmpty());
     }
 
-//    @Test
-//    @DisplayName("#readAllRules > When the rules are found > Return the rules")
-//    void readAllRulesWhenTheRulesAreFoundReturnTheRules() {
-//        Rule mockFirst = assembleRule.get();
-//        Rule mockSecond = assembleRule.get();
-//        RuleReadListDto mockRuleReadFirst = fromRuleToRuleReadListDTO(mockFirst);
-//        RuleReadListDto mockRuleReadSecond = fromRuleToRuleReadListDTO(mockSecond);
-//
-//        when(ruleRepository.findAll()).thenReturn(List.of(mockFirst, mockSecond));
-//        when(mapper.toRuleReadListDto(mockFirst)).thenReturn(mockRuleReadFirst);
-//        when(mapper.toRuleReadListDto(mockSecond)).thenReturn(mockRuleReadSecond);
-//
-//        List<RuleReadListDto> response = service.readAllRules();
-//
-//        assertAll(
-//                () -> assertEquals(2, response.size()),
-//                () -> assertEquals(mockRuleReadFirst, response.getFirst()),
-//                () -> assertEquals(mockRuleReadSecond, response.getLast())
-//        );
-//    }
+    @Test
+    @DisplayName("#readAllRules > When the rules are found > Return the rules")
+    void readAllRulesWhenTheRulesAreFoundReturnTheRules() {
+        Rule mockFirst = assembleRule.get();
+        Rule mockSecond = assembleRule.get();
+        RuleReadListDto mockRuleReadFirst = fromRuleToRuleReadListDTO(mockFirst);
+        RuleReadListDto mockRuleReadSecond = fromRuleToRuleReadListDTO(mockSecond);
+
+        when(ruleRepository.findAll()).thenReturn(List.of(mockFirst, mockSecond));
+        when(mapper.toRuleReadListDto(mockFirst)).thenReturn(mockRuleReadFirst);
+        when(mapper.toRuleReadListDto(mockSecond)).thenReturn(mockRuleReadSecond);
+
+        List<RuleReadListDto> response = service.readAllRules();
+
+        assertAll(
+                () -> assertEquals(2, response.size()),
+                () -> assertEquals(mockRuleReadFirst, response.getFirst()),
+                () -> assertEquals(mockRuleReadSecond, response.getLast())
+        );
+    }
 
     @Test
     @DisplayName("#readRulesByControlActionId > When no rule is found > Return an empty list")
@@ -219,27 +219,27 @@ public class RuleServiceUnitTest {
         assertTrue(response.isEmpty());
     }
 
-//    @Test
-//    @DisplayName("#readRulesByControlActionId > When the rules are found > Return the rules")
-//    void readRulesByControlActionIdWhenTheRulesAreFoundReturnTheRules() {
-//        UUID controlActionId = UUID.randomUUID();
-//        Rule mockFirst = assembleRule.get();
-//        Rule mockSecond = assembleRule.get();
-//        RuleReadListDto mockRuleReadFirst = fromRuleToRuleReadListDTO(mockFirst);
-//        RuleReadListDto mockRuleReadSecond = fromRuleToRuleReadListDTO(mockSecond);
-//
-//        when(ruleRepository.findByControlActionId(controlActionId)).thenReturn(List.of(mockFirst, mockSecond));
-//        when(mapper.toRuleReadListDto(mockFirst)).thenReturn(mockRuleReadFirst);
-//        when(mapper.toRuleReadListDto(mockSecond)).thenReturn(mockRuleReadSecond);
-//
-//        List<RuleReadListDto> response = service.readRulesByControlActionId(controlActionId);
-//
-//        assertAll(
-//                () -> assertEquals(2, response.size()),
-//                () -> assertEquals(mockRuleReadFirst, response.getFirst()),
-//                () -> assertEquals(mockRuleReadSecond, response.getLast())
-//        );
-//    }
+    @Test
+    @DisplayName("#readRulesByControlActionId > When the rules are found > Return the rules")
+    void readRulesByControlActionIdWhenTheRulesAreFoundReturnTheRules() {
+        UUID controlActionId = UUID.randomUUID();
+        Rule mockFirst = assembleRule.get();
+        Rule mockSecond = assembleRule.get();
+        RuleReadListDto mockRuleReadFirst = fromRuleToRuleReadListDTO(mockFirst);
+        RuleReadListDto mockRuleReadSecond = fromRuleToRuleReadListDTO(mockSecond);
+
+        when(ruleRepository.findByControlActionId(controlActionId)).thenReturn(List.of(mockFirst, mockSecond));
+        when(mapper.toRuleReadListDto(mockFirst)).thenReturn(mockRuleReadFirst);
+        when(mapper.toRuleReadListDto(mockSecond)).thenReturn(mockRuleReadSecond);
+
+        List<RuleReadListDto> response = service.readRulesByControlActionId(controlActionId);
+
+        assertAll(
+                () -> assertEquals(2, response.size()),
+                () -> assertEquals(mockRuleReadFirst, response.getFirst()),
+                () -> assertEquals(mockRuleReadSecond, response.getLast())
+        );
+    }
 
     @Test
     @DisplayName("#readRulesByAnalysisId > When no rule is found > Return an empty list")
@@ -253,27 +253,27 @@ public class RuleServiceUnitTest {
         assertTrue(response.isEmpty());
     }
 
-//    @Test
-//    @DisplayName("#readRulesByAnalysisId > When the rules are found > Return the rules")
-//    void readRulesByAnalysisIdWhenTheRulesAreFoundReturnTheRules() {
-//        UUID analysisId = UUID.randomUUID();
-//        Rule mockFirst = assembleRule.get();
-//        Rule mockSecond = assembleRule.get();
-//        RuleReadListDto mockRuleReadFirst = fromRuleToRuleReadListDTO(mockFirst);
-//        RuleReadListDto mockRuleReadSecond = fromRuleToRuleReadListDTO(mockSecond);
-//
-//        when(ruleRepository.findByAnalysisId(analysisId)).thenReturn(List.of(mockFirst, mockSecond));
-//        when(mapper.toRuleReadListDto(mockFirst)).thenReturn(mockRuleReadFirst);
-//        when(mapper.toRuleReadListDto(mockSecond)).thenReturn(mockRuleReadSecond);
-//
-//        List<RuleReadListDto> response = service.readRulesByAnalysisId(analysisId);
-//
-//        assertAll(
-//                () -> assertEquals(2, response.size()),
-//                () -> assertEquals(mockRuleReadFirst, response.getFirst()),
-//                () -> assertEquals(mockRuleReadSecond, response.getLast())
-//        );
-//    }
+    @Test
+    @DisplayName("#readRulesByAnalysisId > When the rules are found > Return the rules")
+    void readRulesByAnalysisIdWhenTheRulesAreFoundReturnTheRules() {
+        UUID analysisId = UUID.randomUUID();
+        Rule mockFirst = assembleRule.get();
+        Rule mockSecond = assembleRule.get();
+        RuleReadListDto mockRuleReadFirst = fromRuleToRuleReadListDTO(mockFirst);
+        RuleReadListDto mockRuleReadSecond = fromRuleToRuleReadListDTO(mockSecond);
+
+        when(ruleRepository.findByAnalysisId(analysisId)).thenReturn(List.of(mockFirst, mockSecond));
+        when(mapper.toRuleReadListDto(mockFirst)).thenReturn(mockRuleReadFirst);
+        when(mapper.toRuleReadListDto(mockSecond)).thenReturn(mockRuleReadSecond);
+
+        List<RuleReadListDto> response = service.readRulesByAnalysisId(analysisId);
+
+        assertAll(
+                () -> assertEquals(2, response.size()),
+                () -> assertEquals(mockRuleReadFirst, response.getFirst()),
+                () -> assertEquals(mockRuleReadSecond, response.getLast())
+        );
+    }
 
     @Test
     @DisplayName("#deleteRule > When the rule does not exist > Throw an exception")
@@ -348,6 +348,7 @@ public class RuleServiceUnitTest {
             .code("R1")
             .types(new HashSet<>() {{ add(UCAType.NOT_PROVIDED); }})
             .alreadyApplied(Boolean.TRUE)
+            .stateAssociations(new ArrayList<>())
             .analysisId(UUID.randomUUID())
             .hazardId(UUID.randomUUID())
             .build();

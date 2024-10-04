@@ -147,36 +147,36 @@ public class ContextTableServiceUnitTest {
         assertThrows(EntityNotFoundException.class, () -> service.readContextTableById(contextTableId, 0, 10));
     }
 
-//    @Test
-//    @DisplayName("#readContextTableById > When the context table is found > Return it")
-//    void readContextTableByIdWhenTheContextTableIsFoundReturnIt() {
-//        UUID contextTableId = UUID.randomUUID();
-//        ContextTable mockContextTable = assembleContextTable.apply(contextTableId);
-//        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mockContextTable.getControlActionId());
-//
-//        when(step2Proxy.getControlActionById(mockContextTable.getControlActionId())).thenReturn(mockControlActionRead);
-//        Pageable pageable = Pageable.ofSize(10).withPage(0);
-//        Page<Context> mockContext = new PageImpl<>(List.of(assembleContext.apply(mockContextTable.getId())), pageable, 0);
-//
-//        when(contextTableRepository.findById(contextTableId)).thenReturn(Optional.of(mockContextTable));
-//        when(contextRepository.findByContextTableId(mockContextTable.getId(), pageable)).thenReturn(mockContext);
-//        when(mapper.toContextTableReadWithPageDto(mockContextTable, mockContext)).thenAnswer(invocation -> {
-//            ContextTable contextTable = invocation.getArgument(0);
-//            Page<Context> context = invocation.getArgument(1);
-//
-//            return ContextTableReadWithPageDto.builder()
-//                    .id(contextTable.getId())
-//                    .totalPages(context.getTotalPages())
-//                    .currentPage(context.getNumber())
-//                    .build();
-//        });
-//
-//        ContextTableReadWithPageDto response = service.readContextTableById(contextTableId, 0, 10);
-//
-//        assertAll(
-//                () -> assertEquals(mockContextTable.getId(), response.id())
-//        );
-//    }
+    @Test
+    @DisplayName("#readContextTableById > When the context table is found > Return it")
+    void readContextTableByIdWhenTheContextTableIsFoundReturnIt() {
+        UUID contextTableId = UUID.randomUUID();
+        ContextTable mockContextTable = assembleContextTable.apply(contextTableId);
+        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mockContextTable.getControlActionId());
+
+        when(step2Proxy.getControlActionById(mockContextTable.getControlActionId())).thenReturn(mockControlActionRead);
+        Pageable pageable = Pageable.ofSize(10).withPage(0);
+        Page<Context> mockContext = new PageImpl<>(List.of(assembleContext.apply(mockContextTable.getId())), pageable, 0);
+
+        when(contextTableRepository.findById(contextTableId)).thenReturn(Optional.of(mockContextTable));
+        when(contextRepository.findByContextTableId(mockContextTable.getId(), pageable)).thenReturn(mockContext);
+        when(mapper.toContextTableReadWithPageDto(mockContextTable, mockContext)).thenAnswer(invocation -> {
+            ContextTable contextTable = invocation.getArgument(0);
+            Page<Context> context = invocation.getArgument(1);
+
+            return ContextTableReadWithPageDto.builder()
+                    .id(contextTable.getId())
+                    .totalPages(context.getTotalPages())
+                    .currentPage(context.getNumber())
+                    .build();
+        });
+
+        ContextTableReadWithPageDto response = service.readContextTableById(contextTableId, 0, 10);
+
+        assertAll(
+                () -> assertEquals(mockContextTable.getId(), response.id())
+        );
+    }
 
     @Test
     @DisplayName("#readAllContextTables > When no context table is found > Return an empty list")
@@ -222,38 +222,38 @@ public class ContextTableServiceUnitTest {
         assertThrows(EntityNotFoundException.class, () -> service.readContextTableByControlActionId(mockControlActionId, 0, 10));
     }
 
-//    @Test
-//    @DisplayName("#readContextTableByControlActionId > When the context table is found > Return it")
-//    void readContextTableByControlActionIdWhenTheContextTableIsFoundReturnIt() {
-////        UUID mockControlActionId = UUID.randomUUID();
-//        UUID mockContextTableId = UUID.randomUUID();
-//        ContextTable mockContextTable = assembleContextTable.apply(mockContextTableId);
-//        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mockContextTable.getControlActionId());
-//
-//        Pageable pageable = Pageable.ofSize(10).withPage(0);
-//        Page<Context> mockContext = new PageImpl<>(List.of(assembleContext.apply(mockContextTable.getId())), pageable, 0);
-//
-//
-//        when(step2Proxy.getControlActionById(mockContextTable.getControlActionId())).thenReturn(mockControlActionRead);
-//        when(contextTableRepository.findByControlActionId(mockContextTable.getControlActionId())).thenReturn(Optional.of(mockContextTable));
-//        when(contextRepository.findByContextTableId(mockContextTable.getId(), pageable)).thenReturn(mockContext);
-//        when(mapper.toContextTableReadWithPageDto(mockContextTable, mockContext)).thenAnswer(invocation -> {
-//            ContextTable contextTable = invocation.getArgument(0);
-//            Page<Context> context = invocation.getArgument(1);
-//
-//            return ContextTableReadWithPageDto.builder()
-//                    .id(contextTable.getId())
-//                    .totalPages(context.getTotalPages())
-//                    .currentPage(context.getNumber())
-//                    .build();
-//        });
-//
-//        ContextTableReadWithPageDto response = service.readContextTableByControlActionId(mockContextTable.getControlActionId(), 0, 10);
-//
-//        assertAll(
-//                () -> assertEquals(mockContextTable.getId(), response.id())
-//        );
-//    }
+    @Test
+    @DisplayName("#readContextTableByControlActionId > When the context table is found > Return it")
+    void readContextTableByControlActionIdWhenTheContextTableIsFoundReturnIt() {
+//        UUID mockControlActionId = UUID.randomUUID();
+        UUID mockContextTableId = UUID.randomUUID();
+        ContextTable mockContextTable = assembleContextTable.apply(mockContextTableId);
+        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mockContextTable.getControlActionId());
+
+        Pageable pageable = Pageable.ofSize(10).withPage(0);
+        Page<Context> mockContext = new PageImpl<>(List.of(assembleContext.apply(mockContextTable.getId())), pageable, 0);
+
+
+        when(step2Proxy.getControlActionById(mockContextTable.getControlActionId())).thenReturn(mockControlActionRead);
+        when(contextTableRepository.findByControlActionId(mockContextTable.getControlActionId())).thenReturn(Optional.of(mockContextTable));
+        when(contextRepository.findByContextTableId(mockContextTable.getId(), pageable)).thenReturn(mockContext);
+        when(mapper.toContextTableReadWithPageDto(mockContextTable, mockContext)).thenAnswer(invocation -> {
+            ContextTable contextTable = invocation.getArgument(0);
+            Page<Context> context = invocation.getArgument(1);
+
+            return ContextTableReadWithPageDto.builder()
+                    .id(contextTable.getId())
+                    .totalPages(context.getTotalPages())
+                    .currentPage(context.getNumber())
+                    .build();
+        });
+
+        ContextTableReadWithPageDto response = service.readContextTableByControlActionId(mockContextTable.getControlActionId(), 0, 10);
+
+        assertAll(
+                () -> assertEquals(mockContextTable.getId(), response.id())
+        );
+    }
 
     @Test
     @DisplayName("#deleteContextTable > When no context table are found > Throw an exception")
@@ -329,7 +329,7 @@ public class ContextTableServiceUnitTest {
     private final Function<UUID, ContextTable> assembleContextTable = (id) -> ContextTable.builder()
             .id(id)
             .controlActionId(UUID.randomUUID())
-            .contexts(List.of())
+            .contexts(new ArrayList<>())
             .build();
 
     private final Function<UUID, ControlActionReadDto> assembleControlActionRead = (id) -> ControlActionReadDto.builder()

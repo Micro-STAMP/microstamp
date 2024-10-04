@@ -28,10 +28,7 @@ import step3.repository.StateAssociationRepository;
 import step3.repository.UnsafeControlActionRepository;
 import step3.service.UnsafeControlActionService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -211,19 +208,19 @@ public class UnsafeControlActionServiceUnitTest {
         assertThrows(EntityNotFoundException.class, () -> service.readUnsafeControlAction(mockUnsafeControlActionId));
     }
 
-//    @Test
-//    @DisplayName("#readUnsafeControlAction > When the unsafe control action is found > Return the unsafe control action")
-//    void readUnsafeControlActionWhenTheUnsafeControlActionIsFoundReturnTheUnsafeControlAction() {
-//        UnsafeControlAction mockUnsafeControlAction = assembleUnsafeControlAction.get();
-//        UnsafeControlActionReadDto mockUnsafeControlActionRead = assembleUnsafeControlActionRead.apply(mockUnsafeControlAction.getId());
-//
-//        when(unsafeControlActionRepository.findById(mockUnsafeControlAction.getId())).thenReturn(Optional.of(mockUnsafeControlAction));
-//        when(mapper.toUcaReadDto(mockUnsafeControlAction)).thenReturn(mockUnsafeControlActionRead);
-//
-//        UnsafeControlActionReadDto response = service.readUnsafeControlAction(mockUnsafeControlActionRead.id());
-//
-//        assertEquals(mockUnsafeControlActionRead, response);
-//    }
+    @Test
+    @DisplayName("#readUnsafeControlAction > When the unsafe control action is found > Return the unsafe control action")
+    void readUnsafeControlActionWhenTheUnsafeControlActionIsFoundReturnTheUnsafeControlAction() {
+        UnsafeControlAction mockUnsafeControlAction = assembleUnsafeControlAction.get();
+        UnsafeControlActionReadDto mockUnsafeControlActionRead = assembleUnsafeControlActionRead.apply(mockUnsafeControlAction.getId());
+
+        when(unsafeControlActionRepository.findById(mockUnsafeControlAction.getId())).thenReturn(Optional.of(mockUnsafeControlAction));
+        when(mapper.toUcaReadDto(mockUnsafeControlAction)).thenReturn(mockUnsafeControlActionRead);
+
+        UnsafeControlActionReadDto response = service.readUnsafeControlAction(mockUnsafeControlActionRead.id());
+
+        assertEquals(mockUnsafeControlActionRead, response);
+    }
 
 
     @Test
@@ -235,25 +232,25 @@ public class UnsafeControlActionServiceUnitTest {
         assertTrue(service.readAllUnsafeControlActions().isEmpty());
     }
 
-//    @Test
-//    @DisplayName("#readAllUnsafeControlActions > When the unsafe control action are found > Return the list of unsafe control actions")
-//    void readAllUnsafeControlActionsWhenTheUnsafeControlActionAreFoundReturnTheListOfUnsafeControlActions() {
-//        UnsafeControlAction mockFirst = assembleUnsafeControlAction.get();
-//        UnsafeControlAction mockSecond = assembleUnsafeControlAction.get();
-//        UnsafeControlActionReadDto mockFirstRead = assembleUnsafeControlActionRead.apply(mockFirst.getId());
-//        UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
-//
-//        when(unsafeControlActionRepository.findAll()).thenReturn(List.of(mockFirst, mockSecond));
-//        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
-//
-//        List<UnsafeControlActionReadDto> result = service.readAllUnsafeControlActions();
-//
-//        assertAll(
-//                () -> assertEquals(2, result.size()),
-//                () -> assertEquals(mockFirstRead, result.getFirst()),
-//                () -> assertEquals(mockSecondRead, result.getLast())
-//        );
-//    }
+    @Test
+    @DisplayName("#readAllUnsafeControlActions > When the unsafe control action are found > Return the list of unsafe control actions")
+    void readAllUnsafeControlActionsWhenTheUnsafeControlActionAreFoundReturnTheListOfUnsafeControlActions() {
+        UnsafeControlAction mockFirst = assembleUnsafeControlAction.get();
+        UnsafeControlAction mockSecond = assembleUnsafeControlAction.get();
+        UnsafeControlActionReadDto mockFirstRead = assembleUnsafeControlActionRead.apply(mockFirst.getId());
+        UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
+
+        when(unsafeControlActionRepository.findAll()).thenReturn(List.of(mockFirst, mockSecond));
+        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
+
+        List<UnsafeControlActionReadDto> result = service.readAllUnsafeControlActions();
+
+        assertAll(
+                () -> assertEquals(2, result.size()),
+                () -> assertEquals(mockFirstRead, result.getFirst()),
+                () -> assertEquals(mockSecondRead, result.getLast())
+        );
+    }
 
     @Test
     @DisplayName("#readAllUCAByControlActionId > When no unsafe control action is found > Return an empty list")
@@ -265,26 +262,26 @@ public class UnsafeControlActionServiceUnitTest {
         assertTrue(service.readAllUCAByControlActionId(mockControlActionId).isEmpty());
     }
 
-//    @Test
-//    @DisplayName("#readAllUCAByControlActionId > When the unsafe control action are found > Return the list of unsafe control actions")
-//    void readAllUCAByControlActionIdWhenTheUnsafeControlActionAreFoundReturnTheListOfUnsafeControlActions() {
-//        UUID mockControlActionId = UUID.randomUUID();
-//        UnsafeControlAction mockFirst = assembleUnsafeControlAction.get();
-//        UnsafeControlAction mockSecond = assembleUnsafeControlAction.get();
-//        UnsafeControlActionReadDto mockFirstRead = assembleUnsafeControlActionRead.apply(mockFirst.getId());
-//        UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
-//
-//        when(unsafeControlActionRepository.findByControlActionId(mockControlActionId)).thenReturn(List.of(mockFirst, mockSecond));
-//        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
-//
-//        List<UnsafeControlActionReadDto> result = service.readAllUCAByControlActionId(mockControlActionId);
-//
-//        assertAll(
-//                () -> assertEquals(2, result.size()),
-//                () -> assertEquals(mockFirstRead, result.getFirst()),
-//                () -> assertEquals(mockSecondRead, result.getLast())
-//        );
-//    }
+    @Test
+    @DisplayName("#readAllUCAByControlActionId > When the unsafe control action are found > Return the list of unsafe control actions")
+    void readAllUCAByControlActionIdWhenTheUnsafeControlActionAreFoundReturnTheListOfUnsafeControlActions() {
+        UUID mockControlActionId = UUID.randomUUID();
+        UnsafeControlAction mockFirst = assembleUnsafeControlAction.get();
+        UnsafeControlAction mockSecond = assembleUnsafeControlAction.get();
+        UnsafeControlActionReadDto mockFirstRead = assembleUnsafeControlActionRead.apply(mockFirst.getId());
+        UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
+
+        when(unsafeControlActionRepository.findByControlActionId(mockControlActionId)).thenReturn(List.of(mockFirst, mockSecond));
+        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
+
+        List<UnsafeControlActionReadDto> result = service.readAllUCAByControlActionId(mockControlActionId);
+
+        assertAll(
+                () -> assertEquals(2, result.size()),
+                () -> assertEquals(mockFirstRead, result.getFirst()),
+                () -> assertEquals(mockSecondRead, result.getLast())
+        );
+    }
 
     @Test
     @DisplayName("#readAllUCAByAnalysisId > When no unsafe control action is found > Return an empty list")
@@ -296,26 +293,26 @@ public class UnsafeControlActionServiceUnitTest {
         assertTrue(service.readAllUCAByAnalysisId(mockAnalysisId).isEmpty());
     }
 
-//    @Test
-//    @DisplayName("#readAllUCAByAnalysisId > When the unsafe control action are found > Return the list of unsafe control actions")
-//    void readAllUcaByAnalysisIdWhenTheUnsafeControlActionAreFoundReturnTheListOfUnsafeControlActions() {
-//        UUID mockAnalysisId = UUID.randomUUID();
-//        UnsafeControlAction mockFirst = assembleUnsafeControlAction.get();
-//        UnsafeControlAction mockSecond = assembleUnsafeControlAction.get();
-//        UnsafeControlActionReadDto mockFirstRead = assembleUnsafeControlActionRead.apply(mockFirst.getId());
-//        UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
-//
-//        when(unsafeControlActionRepository.findByAnalysisId(mockAnalysisId)).thenReturn(List.of(mockFirst, mockSecond));
-//        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
-//
-//        List<UnsafeControlActionReadDto> result = service.readAllUCAByAnalysisId(mockAnalysisId);
-//
-//        assertAll(
-//                () -> assertEquals(2, result.size()),
-//                () -> assertEquals(mockFirstRead, result.getFirst()),
-//                () -> assertEquals(mockSecondRead, result.getLast())
-//        );
-//    }
+    @Test
+    @DisplayName("#readAllUCAByAnalysisId > When the unsafe control action are found > Return the list of unsafe control actions")
+    void readAllUcaByAnalysisIdWhenTheUnsafeControlActionAreFoundReturnTheListOfUnsafeControlActions() {
+        UUID mockAnalysisId = UUID.randomUUID();
+        UnsafeControlAction mockFirst = assembleUnsafeControlAction.get();
+        UnsafeControlAction mockSecond = assembleUnsafeControlAction.get();
+        UnsafeControlActionReadDto mockFirstRead = assembleUnsafeControlActionRead.apply(mockFirst.getId());
+        UnsafeControlActionReadDto mockSecondRead = assembleUnsafeControlActionRead.apply(mockSecond.getId());
+
+        when(unsafeControlActionRepository.findByAnalysisId(mockAnalysisId)).thenReturn(List.of(mockFirst, mockSecond));
+        when(mapper.toUcaReadDtoList(List.of(mockFirst, mockSecond))).thenReturn(List.of(mockFirstRead, mockSecondRead));
+
+        List<UnsafeControlActionReadDto> result = service.readAllUCAByAnalysisId(mockAnalysisId);
+
+        assertAll(
+                () -> assertEquals(2, result.size()),
+                () -> assertEquals(mockFirstRead, result.getFirst()),
+                () -> assertEquals(mockSecondRead, result.getLast())
+        );
+    }
 
     @Test
     @DisplayName("#deleteUnsafeControlAction > When no unsafe control action is found > Throw an exception")
@@ -385,6 +382,7 @@ public class UnsafeControlActionServiceUnitTest {
             .id(UUID.randomUUID())
             .hazardId(UUID.randomUUID())
             .type(UCAType.PROVIDED)
+            .stateAssociations(new ArrayList<>())
             .build();
 
     private final Function<UUID, UnsafeControlActionReadDto> assembleUnsafeControlActionRead = (id) -> UnsafeControlActionReadDto.builder()
