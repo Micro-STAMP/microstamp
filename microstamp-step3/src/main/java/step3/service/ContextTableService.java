@@ -68,7 +68,6 @@ public class ContextTableService {
         return mapper.toContextTableReadDto(createContextTable);
     }
 
-    @Transactional
     public ContextTableReadWithPageDto readContextTableById(UUID id, int page, int size) {
         ContextTable contextTable = contextTableRepository
                 .findById(id)
@@ -90,7 +89,6 @@ public class ContextTableService {
                 .toList();
     }
 
-    @Transactional
     public ContextTableReadWithPageDto readContextTableByControlActionId(UUID controlActionId, int page, int size) {
         step2Proxy.getControlActionById(controlActionId);
 
@@ -143,7 +141,6 @@ public class ContextTableService {
         }
     }
 
-    @Transactional
     public void verifyChangesInStates(ContextTable contextTable) {
         Set<UUID> statesIdsOfContextTable = contextTable.getContexts().stream()
                 .flatMap(context -> context.getStateAssociations().stream())
@@ -164,14 +161,10 @@ public class ContextTableService {
                 .map(StateReadDto::id)
                 .collect(Collectors.toSet());
 
-        // se os ids dos estados da tabela de contexto forem diferentes dos estados do step2, atualiza a tabela de contexto
         boolean thereWasChangeInStep2 = !statesIdsOfContextTable.equals(step2StatesIds);
 
         if (thereWasChangeInStep2) {
-            contextTable.setContexts(new ArrayList<>());
-            ruleRepository.deleteAllByControlActionId(contextTable.getControlActionId());
-            ucaRepository.deleteByControlActionId(contextTable.getControlActionId());
-
+            contextTable.getContexts().clear();
             generateAllContexts(step2Variables, 0, new ArrayList<>(), contextTable);
             contextTableRepository.save(contextTable);
         }

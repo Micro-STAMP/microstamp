@@ -14,6 +14,17 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(ChangesInOtherMicroservicesException.class)
+    public ResponseEntity<Step3ExceptionResponse> handleChangesInOtherMicroservicesException(ChangesInOtherMicroservicesException exception) {
+        Step3ExceptionResponse errorMessage = Step3ExceptionResponse.builder()
+                .code("409")
+                .type(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Step3ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
         Step3ExceptionResponse errorMessage = Step3ExceptionResponse.builder()

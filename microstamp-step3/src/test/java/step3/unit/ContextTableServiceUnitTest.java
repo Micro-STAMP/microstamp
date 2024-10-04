@@ -329,7 +329,7 @@ public class ContextTableServiceUnitTest {
     private final Function<UUID, ContextTable> assembleContextTable = (id) -> ContextTable.builder()
             .id(id)
             .controlActionId(UUID.randomUUID())
-            .contexts(List.of())
+            .contexts(new ArrayList<>())
             .build();
 
     private final Function<UUID, ControlActionReadDto> assembleControlActionRead = (id) -> ControlActionReadDto.builder()

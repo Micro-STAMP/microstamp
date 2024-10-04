@@ -348,6 +348,7 @@ public class RuleServiceUnitTest {
             .code("R1")
             .types(new HashSet<>() {{ add(UCAType.NOT_PROVIDED); }})
             .alreadyApplied(Boolean.TRUE)
+            .stateAssociations(new ArrayList<>())
             .analysisId(UUID.randomUUID())
             .hazardId(UUID.randomUUID())
             .build();
