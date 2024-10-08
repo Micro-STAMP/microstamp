@@ -93,7 +93,7 @@ services:
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step1
-            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:9000
             - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
         networks:
             - main
@@ -114,7 +114,7 @@ services:
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step2
-            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:9000
             - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
         networks:
             - main
@@ -135,7 +135,7 @@ services:
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step3
-            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://authorization-server:9000
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:9000
             - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
         networks:
             - main
@@ -143,15 +143,15 @@ services:
     ui:
         build:
             context: ./microstamp-ui
+            args:
+                - VITE_UI_URL=http://127.0.0.1:5173
+                - VITE_GATEWAY_URL=http://127.0.0.1:9191
+                - VITE_AUTH_URL=http://127.0.0.1:9000
+                - VITE_TOKEN_AUTH_URL=http://localhost:9000
+                - VITE_AUTH_CLIENT_ID=fbefbe1f-933d-4012-b730-16db007cd13e
+                - VITE_AUTH_CLIENT_SECRET=bdbdc73c-63c6-4aac-8634-bfbafa0417b0
         ports:
             - "5173:80"
-        environment:
-            - VITE_UI_URL=http://127.0.0.1:5173
-            - VITE_GATEWAY_URL=http://api-gateway:9191
-            - VITE_AUTH_URL=http://authorization-server:9000
-            - VITE_TOKEN_AUTH_URL=http://authorization-server:9000
-            - VITE_AUTH_CLIENT_ID=fbefbe1f-933d-4012-b730-16db007cd13e
-            - VITE_AUTH_CLIENT_SECRET=bdbdc73c-63c6-4aac-8634-bfbafa0417b0
         networks:
             - main
 networks:

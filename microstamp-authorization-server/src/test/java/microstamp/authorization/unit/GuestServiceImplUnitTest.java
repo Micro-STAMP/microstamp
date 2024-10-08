@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@TestPropertySource(properties = {"security.issuer-uri = http://localhost:9000"})
 public class GuestServiceImplUnitTest {
 
     @InjectMocks
@@ -107,6 +109,7 @@ public class GuestServiceImplUnitTest {
     void exportAllWhenAnAnalysisIsFoundReturnAListWithTheAnalysisExported() {
         ExportReadDto mock = assembleExportRead.get();
         String mockToken = "mockedGuestToken";
+        service.setIssuerUri("http://localhost:9000");
 
         when(analysisService.findGuestAnalyses()).thenReturn(List.of(mock.getAnalysis()));
         when(exportService.exportToJson(mock.getAnalysis().getId(), "Bearer ".concat(mockToken))).thenReturn(mock);
@@ -136,6 +139,7 @@ public class GuestServiceImplUnitTest {
         String mockToken = "mockedGuestToken";
         AnalysisReadDto mock = assembleAnalysisRead.get();
         ExportReadDto expected = assembleExportRead.get();
+        service.setIssuerUri("http://localhost:9000");
 
         when(analysisService.findGuestAnalyses()).thenReturn(List.of(mock));
         when(exportService.exportToJson(mock.getId(), "Bearer ".concat(mockToken))).thenReturn(expected);
@@ -153,6 +157,7 @@ public class GuestServiceImplUnitTest {
         String mockToken = "mockedGuestToken";
         AnalysisReadDto mock = assembleAnalysisRead.get();
         ExportReadDto expected = assembleExportRead.get();
+        service.setIssuerUri("http://localhost:9000");
 
         when(analysisService.findGuestAnalyses()).thenReturn(List.of(mock));
         when(jwtEncoder.encode(any())).thenReturn(new Jwt(mockToken, null, null, new HashMap<>() {{ put("Teste", "Teste"); }}, new HashMap<>() {{ put("Teste", "Teste"); }}));

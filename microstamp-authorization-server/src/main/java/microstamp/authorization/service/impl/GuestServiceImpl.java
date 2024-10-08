@@ -1,7 +1,7 @@
 package microstamp.authorization.service.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import microstamp.authorization.dto.AnalysisReadDto;
 import microstamp.authorization.dto.ExportReadDto;
 import microstamp.authorization.exception.NotFoundException;
@@ -19,6 +19,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+@Setter
 public class GuestServiceImpl implements GuestService {
 
     @Value("${security.issuer-uri}")
