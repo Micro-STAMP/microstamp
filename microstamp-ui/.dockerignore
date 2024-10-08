@@ -1,0 +1,26 @@
+# BUILD
+/node_modules
+
+# IDEs
+/.idea
+/.vscode
+
+# LOGS and TEMP
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tmp
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# GIT
+.git
+.gitignore
+
+# MD
+*.md
