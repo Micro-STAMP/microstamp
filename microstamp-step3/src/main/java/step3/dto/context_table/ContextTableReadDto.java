@@ -8,9 +8,9 @@ import java.util.UUID;
 @Builder
 public record ContextTableReadDto(
         UUID id,
-        UUID source_id,
-        UUID target_id,
+        UUID sourceId,
+        UUID targetId,
         List<ContextReadDto> contexts,
-        UUID control_action_id
+        UUID controlActionId
 ) {
 }

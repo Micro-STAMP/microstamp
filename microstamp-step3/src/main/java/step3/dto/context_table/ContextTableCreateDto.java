@@ -8,5 +8,5 @@ import java.util.UUID;
 @Builder
 public record ContextTableCreateDto(
         @NotNull
-        UUID control_action_id
+        UUID controlActionId
 ) {}

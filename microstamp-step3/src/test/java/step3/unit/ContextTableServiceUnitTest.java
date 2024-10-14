@@ -66,7 +66,7 @@ public class ContextTableServiceUnitTest {
     void createContextTableWhenThereIsAnErrorWhenCommunicatingWithStep2ProxyThrowAnException() {
         ContextTableCreateDto mock = assembleContextTableCreate.get();
 
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenThrow(FeignException.class);
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenThrow(FeignException.class);
 
         assertThrows(FeignException.class, () -> service.createContextTable(mock));
     }
@@ -75,9 +75,9 @@ public class ContextTableServiceUnitTest {
     @DisplayName("#createContextTable > When the variables are empty > Throw an exception")
     void createContextTableWhenTheVariablesAreEmptyThrowAnException() {
         ContextTableCreateDto mock = assembleContextTableCreate.get();
-        ControlActionReadDto mockControlActionRead = assembleControlActionReadWithoutVariables.apply(mock.control_action_id());
+        ControlActionReadDto mockControlActionRead = assembleControlActionReadWithoutVariables.apply(mock.controlActionId());
 
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(mockControlActionRead);
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(mockControlActionRead);
 
         assertThrows(OperationNotAllowedException.class, () -> service.createContextTable(mock));
     }
@@ -86,9 +86,9 @@ public class ContextTableServiceUnitTest {
     @DisplayName("#createContextTable > When the variables are not empty > When there is an empty state > Throw an exception")
     void createContextTableWhenTheVariablesAreNotEmptyWhenThereIsAnEmptyStateThrowAnException() {
         ContextTableCreateDto mock = assembleContextTableCreate.get();
-        ControlActionReadDto mockControlActionRead = assembleControlActionReadWithVariablesButEmptyState.apply(mock.control_action_id());
+        ControlActionReadDto mockControlActionRead = assembleControlActionReadWithVariablesButEmptyState.apply(mock.controlActionId());
 
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(mockControlActionRead);
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(mockControlActionRead);
 
         assertThrows(OperationNotAllowedException.class, () -> service.createContextTable(mock));
     }
@@ -97,14 +97,14 @@ public class ContextTableServiceUnitTest {
     @DisplayName("#createContextTable > When there is a context table for the given control action > Throw an exception")
     void createContextTableWhenThereIsAContextTableForTheGivenControlActionThrowAnException() {
         ContextTableCreateDto mock = assembleContextTableCreate.get();
-        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mock.control_action_id());
+        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mock.controlActionId());
 
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(mockControlActionRead);
-        when(contextTableRepository.findByControlActionId(mock.control_action_id())).thenReturn(Optional.of(assembleContextTable.apply(UUID.randomUUID())));
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(mockControlActionRead);
+        when(contextTableRepository.findByControlActionId(mock.controlActionId())).thenReturn(Optional.of(assembleContextTable.apply(UUID.randomUUID())));
 
         assertAll(
                 () -> assertThrows(OperationNotAllowedException.class, () -> service.createContextTable(mock)),
-                () -> verify(contextTableRepository, times(1)).findByControlActionId(mock.control_action_id()),
+                () -> verify(contextTableRepository, times(1)).findByControlActionId(mock.controlActionId()),
                 () -> verify(contextTableRepository, times(0)).save(any())
         );
     }
@@ -113,10 +113,10 @@ public class ContextTableServiceUnitTest {
     @DisplayName("#createContextTable > When all information are valid > Create the context table")
     void createContextTableWhenAllInformationAreValidCreateTheContextTable() {
         ContextTableCreateDto mock = assembleContextTableCreate.get();
-        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mock.control_action_id());
+        ControlActionReadDto mockControlActionRead = assembleControlActionRead.apply(mock.controlActionId());
 
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(mockControlActionRead);
-        when(contextTableRepository.findByControlActionId(mock.control_action_id())).thenReturn(Optional.empty());
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(mockControlActionRead);
+        when(contextTableRepository.findByControlActionId(mock.controlActionId())).thenReturn(Optional.empty());
         when(contextTableRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(mapper.toContextTableReadDto(any())).thenAnswer(invocation -> {
             ContextTable contextTable = invocation.getArgument(0);
@@ -131,7 +131,7 @@ public class ContextTableServiceUnitTest {
 
         assertAll(
                 () -> assertEquals(4, response.contexts().size()),
-                () -> verify(contextTableRepository, times(1)).findByControlActionId(mock.control_action_id()),
+                () -> verify(contextTableRepository, times(1)).findByControlActionId(mock.controlActionId()),
                 () -> verify(contextTableRepository, times(1)).save(any())
         );
     }

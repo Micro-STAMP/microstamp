@@ -41,7 +41,7 @@ public class ContextTableService {
     private final ContextTableMapper mapper;
 
     public ContextTableReadDto createContextTable(ContextTableCreateDto contextTableCreateDto) {
-        ControlActionReadDto controlAction = step2Proxy.getControlActionById(contextTableCreateDto.control_action_id());
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(contextTableCreateDto.controlActionId());
 
         ComponentReadDto source = controlAction.connection().source();
         ComponentReadDto target = controlAction.connection().target();

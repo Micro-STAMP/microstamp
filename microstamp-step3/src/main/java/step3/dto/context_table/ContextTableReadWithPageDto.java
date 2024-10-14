@@ -8,8 +8,8 @@ import java.util.UUID;
 @Builder
 public record ContextTableReadWithPageDto(
         UUID id,
-        UUID source_id,
-        UUID target_id,
+        UUID sourceId,
+        UUID targetId,
         List<ContextReadDto> contexts,
         int totalPages,
         int currentPage

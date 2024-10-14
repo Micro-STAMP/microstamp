@@ -28,10 +28,10 @@ public class ContextTableMapper {
 
         return ContextTableReadDto.builder()
                 .id(contextTable.getId())
-                .source_id(controlAction.connection().source().id())
-                .target_id(controlAction.connection().target().id())
+                .sourceId(controlAction.connection().source().id())
+                .targetId(controlAction.connection().target().id())
                 .contexts(this.generateContextList(contexts))
-                .control_action_id(controlAction.id())
+                .controlActionId(controlAction.id())
                 .build();
     }
 
@@ -41,8 +41,8 @@ public class ContextTableMapper {
 
         return ContextTableReadWithPageDto.builder()
                 .id(contextTable.getId())
-                .source_id(controlAction.connection().source().id())
-                .target_id(controlAction.connection().target().id())
+                .sourceId(controlAction.connection().source().id())
+                .targetId(controlAction.connection().target().id())
                 .contexts(this.generateContextList(contextsList))
                 .totalPages(contexts.getTotalPages())
                 .currentPage(contexts.getNumber())
