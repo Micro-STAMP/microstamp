@@ -66,7 +66,7 @@ public class UnsafeControlActionServiceUnitTest {
     @DisplayName("#createUnsafeControlAction > When there is an error when communicating with auth server proxy > Throw an exception")
     void createUnsafeControlActionWhenThereIsAnErrorWhenCommunicatingWithAuthServerProxyThrowAnException() {
         UnsafeControlActionCreateDto mock = UnsafeControlActionCreateDto.builder()
-                .analysis_id(UUID.randomUUID())
+                .analysisId(UUID.randomUUID())
                 .build();
 
         when(authServerProxy.getAnalysisById(mock.analysisId())).thenThrow(FeignException.class);
@@ -79,8 +79,8 @@ public class UnsafeControlActionServiceUnitTest {
     @DisplayName("#createUnsafeControlAction > When there is an error when communicating with Step 2 proxy > Throw an exception")
     void createUnsafeControlActionWhenThereIsAnErrorWhenCommunicatingWithStep2ProxyThrowAnException() {
         UnsafeControlActionCreateDto mock = UnsafeControlActionCreateDto.builder()
-                .analysis_id(UUID.randomUUID())
-                .control_action_id(UUID.randomUUID())
+                .analysisId(UUID.randomUUID())
+                .controlActionId(UUID.randomUUID())
                 .build();
 
         when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(AnalysisReadDto.builder().build());
@@ -97,10 +97,10 @@ public class UnsafeControlActionServiceUnitTest {
     @DisplayName("#createUnsafeControlAction > When there is an error when communicating with Step 1 proxy > Throw an exception")
     void createUnsafeControlActionWhenThereIsAnErrorWhenCommunicatingWithStep1ProxyThrowAnException() {
         UnsafeControlActionCreateDto mock = UnsafeControlActionCreateDto.builder()
-                .analysis_id(UUID.randomUUID())
-                .control_action_id(UUID.randomUUID())
-                .states_ids(List.of(UUID.randomUUID(), UUID.randomUUID()))
-                .hazard_id(UUID.randomUUID())
+                .analysisId(UUID.randomUUID())
+                .controlActionId(UUID.randomUUID())
+                .statesIds(List.of(UUID.randomUUID(), UUID.randomUUID()))
+                .hazardId(UUID.randomUUID())
                 .build();
 
         when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(AnalysisReadDto.builder().build());
@@ -117,11 +117,11 @@ public class UnsafeControlActionServiceUnitTest {
     @DisplayName("#createUnsafeControlAction > When the provided parameters are correct > When there is no error when communicating with other microservices > Create the unsafe control action")
     void createUnsafeControlActionWhenTheProvidedParametersAreCorrectWhenThereIsNoErrorWhenCommunicatingWithOtherMicroservicesCreateTheUnsafeControlAction() {
         UnsafeControlActionCreateDto mock = UnsafeControlActionCreateDto.builder()
-                .analysis_id(UUID.randomUUID())
-                .control_action_id(UUID.randomUUID())
-                .states_ids(List.of(UUID.randomUUID(), UUID.randomUUID()))
-                .hazard_id(UUID.randomUUID())
-                .rule_code("-")
+                .analysisId(UUID.randomUUID())
+                .controlActionId(UUID.randomUUID())
+                .statesIds(List.of(UUID.randomUUID(), UUID.randomUUID()))
+                .hazardId(UUID.randomUUID())
+                .ruleCode("-")
                 .build();
 
         when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(AnalysisReadDto.builder().build());
@@ -132,8 +132,8 @@ public class UnsafeControlActionServiceUnitTest {
             UnsafeControlAction uca = invocation.getArgument(0);
             return UnsafeControlActionReadDto.builder()
                     .id(uca.getId())
-                    .hazard_code("H-1")
-                    .analysis_id(uca.getAnalysisId())
+                    .hazardCode("H-1")
+                    .analysisId(uca.getAnalysisId())
                     .build();
         });
 
@@ -181,8 +181,8 @@ public class UnsafeControlActionServiceUnitTest {
             UnsafeControlAction uca = invocation.getArgument(0);
             return UnsafeControlActionReadDto.builder()
                     .id(uca.getId())
-                    .hazard_code("H-1")
-                    .analysis_id(uca.getAnalysisId())
+                    .hazardCode("H-1")
+                    .analysisId(uca.getAnalysisId())
                     .build();
         });
 

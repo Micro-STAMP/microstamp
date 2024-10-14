@@ -125,7 +125,7 @@ public class SafetyConstraintServiceUnitTest {
     private final BiFunction<UUID, UUID, SafetyConstraintReadDto> assembleSafetyConstraintRead = (id, ucaId) -> SafetyConstraintReadDto.builder()
             .id(id)
             .name("Name")
-            .uca_id(ucaId)
+            .ucaId(ucaId)
             .build();
 
 }

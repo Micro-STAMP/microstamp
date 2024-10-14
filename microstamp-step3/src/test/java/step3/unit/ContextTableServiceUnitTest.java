@@ -122,7 +122,7 @@ public class ContextTableServiceUnitTest {
             ContextTable contextTable = invocation.getArgument(0);
             return ContextTableReadDto.builder()
                     .id(contextTable.getId())
-                    .control_action_id(contextTable.getControlActionId())
+                    .controlActionId(contextTable.getControlActionId())
                     .contexts(contextTable.getContexts().stream().map(ct -> ContextReadDto.builder().id(ct.getId()).build()).toList())
                     .build();
         });
@@ -196,7 +196,7 @@ public class ContextTableServiceUnitTest {
             ContextTable contextTable = invocation.getArgument(0);
             return ContextTableReadDto.builder()
                     .id(contextTable.getId())
-                    .control_action_id(contextTable.getControlActionId())
+                    .controlActionId(contextTable.getControlActionId())
                     .build();
         });
 
@@ -392,7 +392,7 @@ public class ContextTableServiceUnitTest {
             .build();
 
     private final Supplier<ContextTableCreateDto> assembleContextTableCreate = () -> ContextTableCreateDto.builder()
-            .control_action_id(UUID.randomUUID())
+            .controlActionId(UUID.randomUUID())
             .build();
 
 }

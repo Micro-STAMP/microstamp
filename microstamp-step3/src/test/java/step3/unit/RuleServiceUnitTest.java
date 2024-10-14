@@ -360,12 +360,12 @@ public class RuleServiceUnitTest {
             .build();
 
     private final Supplier<RuleCreateDto> assembleRuleCreate = () -> RuleCreateDto.builder()
-            .analysis_id(UUID.randomUUID())
-            .control_action_id(UUID.randomUUID())
-            .hazard_id(UUID.randomUUID())
+            .analysisId(UUID.randomUUID())
+            .controlActionId(UUID.randomUUID())
+            .hazardId(UUID.randomUUID())
             .code("R1")
             .types(new HashSet<>() {{ add(UCAType.NOT_PROVIDED); }})
-            .states_ids(List.of())
+            .statesIds(List.of())
             .build();
 
 }

@@ -132,11 +132,11 @@ public class ExportServiceUnitTest {
 
     private final Function<UUID, UnsafeControlActionReadDto> assembleUnsafeControlActionRead = (analysisId) -> UnsafeControlActionReadDto.builder()
             .id(UUID.randomUUID())
-            .analysis_id(analysisId)
-            .hazard_code("H-1")
+            .analysisId(analysisId)
+            .hazardCode("H-1")
             .constraintName("Mock Constraint")
             .type(UCAType.NOT_PROVIDED.name())
-            .rule_code("R1")
+            .ruleCode("R1")
             .states(List.of())
             .build();
 
@@ -144,7 +144,7 @@ public class ExportServiceUnitTest {
             .id(UUID.randomUUID())
             .code("R1")
             .types(new HashSet<>() {{ add(UCAType.NOT_PROVIDED); }})
-            .control_action_name("Mock UCA name")
+            .controlActionName("Mock UCA name")
             .states(List.of())
             .build();
 
