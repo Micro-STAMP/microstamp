@@ -69,7 +69,7 @@ public class UnsafeControlActionServiceUnitTest {
                 .analysis_id(UUID.randomUUID())
                 .build();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenThrow(FeignException.class);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenThrow(FeignException.class);
 
         assertThrows(FeignException.class, () -> service.createUnsafeControlAction(mock));
     }
@@ -83,13 +83,13 @@ public class UnsafeControlActionServiceUnitTest {
                 .control_action_id(UUID.randomUUID())
                 .build();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(AnalysisReadDto.builder().build());
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenThrow(FeignException.class);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(AnalysisReadDto.builder().build());
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenThrow(FeignException.class);
 
         assertAll(
                 () -> assertThrows(FeignException.class, () -> service.createUnsafeControlAction(mock)),
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(1)).getControlActionById(mock.control_action_id())
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step2Proxy, times(1)).getControlActionById(mock.controlActionId())
         );
     }
 
@@ -103,13 +103,13 @@ public class UnsafeControlActionServiceUnitTest {
                 .hazard_id(UUID.randomUUID())
                 .build();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(AnalysisReadDto.builder().build());
-        when(step1Proxy.getHazardById(mock.hazard_id())).thenThrow(FeignException.class);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(AnalysisReadDto.builder().build());
+        when(step1Proxy.getHazardById(mock.hazardId())).thenThrow(FeignException.class);
 
         assertAll(
                 () -> assertThrows(FeignException.class, () -> service.createUnsafeControlAction(mock)),
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazard_id())
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazardId())
         );
     }
 
@@ -124,9 +124,9 @@ public class UnsafeControlActionServiceUnitTest {
                 .rule_code("-")
                 .build();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(AnalysisReadDto.builder().build());
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(ControlActionReadDto.builder().id(mock.control_action_id()).build());
-        when(step1Proxy.getHazardById(mock.hazard_id())).thenReturn(HazardReadDto.builder().code("H-1").id(mock.hazard_id()).build());
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(AnalysisReadDto.builder().build());
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(ControlActionReadDto.builder().id(mock.controlActionId()).build());
+        when(step1Proxy.getHazardById(mock.hazardId())).thenReturn(HazardReadDto.builder().code("H-1").id(mock.hazardId()).build());
         when(unsafeControlActionRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(mapper.toUcaReadDto(any())).thenAnswer(invocation -> {
             UnsafeControlAction uca = invocation.getArgument(0);
@@ -140,11 +140,11 @@ public class UnsafeControlActionServiceUnitTest {
         UnsafeControlActionReadDto response = service.createUnsafeControlAction(mock);
 
         assertAll(
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(1)).getControlActionById(mock.control_action_id()),
-                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazard_id()),
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step2Proxy, times(1)).getControlActionById(mock.controlActionId()),
+                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazardId()),
                 () -> verify(unsafeControlActionRepository, times(2)).save(any()),
-                () -> assertEquals("H-1", response.hazard_code())
+                () -> assertEquals("H-1", response.hazardCode())
         );
     }
 
@@ -193,7 +193,7 @@ public class UnsafeControlActionServiceUnitTest {
                 () -> verify(step2Proxy, times(1)).getControlActionById(mock.getControlActionId()),
                 () -> verify(step1Proxy, times(1)).getHazardById(mock.getHazardId()),
                 () -> verify(unsafeControlActionRepository, times(2)).save(any()),
-                () -> assertEquals("H-1", response.getFirst().hazard_code())
+                () -> assertEquals("H-1", response.getFirst().hazardCode())
         );
     }
 

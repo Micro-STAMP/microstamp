@@ -86,9 +86,9 @@ public class ExportService {
         // Populating table rows
         for (UnsafeControlActionReadDto uca : ucaList) {
             StringBuilder ucaName = new StringBuilder(uca.name());
-            ucaName.append(" [").append(uca.hazard_code()).append("]");
-            if (!uca.rule_code().isEmpty()) {
-                ucaName.append("[").append(uca.rule_code()).append("]");
+            ucaName.append(" [").append(uca.hazardCode()).append("]");
+            if (!uca.ruleCode().isEmpty()) {
+                ucaName.append("[").append(uca.ruleCode()).append("]");
             }
 
             table.addCell(ucaName.toString());

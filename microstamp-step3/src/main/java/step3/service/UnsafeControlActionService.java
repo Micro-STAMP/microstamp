@@ -40,16 +40,16 @@ public class UnsafeControlActionService {
     private final UnsafeControlActionMapper mapper;
 
     public UnsafeControlActionReadDto createUnsafeControlAction(UnsafeControlActionCreateDto ucaCreateDto) {
-        authServerProxy.getAnalysisById(ucaCreateDto.analysis_id());
-        step1Proxy.getHazardById(ucaCreateDto.hazard_id());
-        ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.control_action_id());
+        authServerProxy.getAnalysisById(ucaCreateDto.analysisId());
+        step1Proxy.getHazardById(ucaCreateDto.hazardId());
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.controlActionId());
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())
-                .hazardId(ucaCreateDto.hazard_id())
+                .hazardId(ucaCreateDto.hazardId())
                 .type(ucaCreateDto.type())
-                .analysisId(ucaCreateDto.analysis_id())
-                .ruleCode(ucaCreateDto.rule_code() == null ? "" : ucaCreateDto.rule_code())
+                .analysisId(ucaCreateDto.analysisId())
+                .ruleCode(ucaCreateDto.ruleCode() == null ? "" : ucaCreateDto.ruleCode())
                 .build();
 
         SafetyConstraint constraint = SafetyConstraint.builder()
@@ -61,7 +61,7 @@ public class UnsafeControlActionService {
         UnsafeControlAction createdUCA = unsafeControlActionRepository.save(uca);
 
         List<UnsafeControlActionState> stateAssociations = new ArrayList<>();
-        for (UUID stateId : ucaCreateDto.states_ids()) {
+        for (UUID stateId : ucaCreateDto.statesIds()) {
             step2Proxy.getStateById(stateId);
 
             UnsafeControlActionState stateAssociation = UnsafeControlActionState.builder()
@@ -90,12 +90,12 @@ public class UnsafeControlActionService {
 
         for (UCAType type : rule.getTypes()) {
             UnsafeControlActionCreateDto dto = UnsafeControlActionCreateDto.builder()
-                    .control_action_id(rule.getControlActionId())
-                    .hazard_id(rule.getHazardId())
-                    .analysis_id(rule.getAnalysisId())
-                    .rule_code(rule.getCode())
+                    .controlActionId(rule.getControlActionId())
+                    .hazardId(rule.getHazardId())
+                    .analysisId(rule.getAnalysisId())
+                    .ruleCode(rule.getCode())
                     .type(type)
-                    .states_ids(rule.getStateAssociations()
+                    .statesIds(rule.getStateAssociations()
                             .stream()
                             .map(RuleState::getStateId)
                             .toList())

@@ -9,10 +9,10 @@ import java.util.UUID;
 @Builder
 public record UnsafeControlActionReadDto(
         UUID id,
-        UUID analysis_id,
+        UUID analysisId,
         String name,
-        String hazard_code,
-        String rule_code,
+        String hazardCode,
+        String ruleCode,
         List<StateReadDto> states,
         String type,
         String constraintName

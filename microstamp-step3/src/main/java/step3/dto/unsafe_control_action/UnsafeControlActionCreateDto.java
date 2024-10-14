@@ -11,14 +11,14 @@ import java.util.UUID;
 @Builder
 public record UnsafeControlActionCreateDto(
         @NotNull
-        UUID control_action_id,
+        UUID controlActionId,
         @NotEmpty
-        List<UUID> states_ids,
+        List<UUID> statesIds,
         @NotNull
-        UUID hazard_id,
+        UUID hazardId,
         @NotNull
         UCAType type,
         @NotNull
-        UUID analysis_id,
-        String rule_code
+        UUID analysisId,
+        String ruleCode
 ) {}
