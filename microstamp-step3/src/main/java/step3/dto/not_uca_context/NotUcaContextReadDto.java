@@ -9,7 +9,7 @@ import java.util.UUID;
 @Builder
 public record NotUcaContextReadDto(
         UUID id,
-        UUID analysis_id,
+        UUID analysisId,
         UUID controlActionId,
         List<StateReadDto> states,
         String type

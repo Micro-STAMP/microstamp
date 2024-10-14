@@ -24,7 +24,7 @@ public class NotUcaContextMapper {
 
         return NotUcaContextReadDto.builder()
                 .id(notUcaContext.getId())
-                .analysis_id(notUcaContext.getAnalysisId())
+                .analysisId(notUcaContext.getAnalysisId())
                 .controlActionId(notUcaContext.getControlActionId())
                 .type(notUcaContext.getType().toString())
                 .states(states)
