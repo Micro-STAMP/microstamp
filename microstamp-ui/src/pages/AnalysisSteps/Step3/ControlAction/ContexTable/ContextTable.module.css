@@ -80,7 +80,6 @@
 		background-color: var(--color-gray);
 		color: var(--color-white);
 		text-wrap: nowrap;
-		cursor: default;
 	}
 	.unsafe_button {
 		cursor: default;
