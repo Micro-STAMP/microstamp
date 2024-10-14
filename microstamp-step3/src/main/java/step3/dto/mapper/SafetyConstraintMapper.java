@@ -14,7 +14,7 @@ public class SafetyConstraintMapper {
     public SafetyConstraintReadDto toSafetyConstraintReadDto(SafetyConstraint safetyConstraint) {
         return SafetyConstraintReadDto.builder()
                 .id(safetyConstraint.getId())
-                .uca_id(safetyConstraint.getUnsafeControlAction().getId())
+                .ucaId(safetyConstraint.getUnsafeControlAction().getId())
                 .name(safetyConstraint.getUnsafeControlAction().generateNameTo(step2Proxy, "constraint"))
                 .build();
     }
