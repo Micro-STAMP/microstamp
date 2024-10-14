@@ -34,9 +34,9 @@ public class RuleService {
     private final RuleMapper mapper;
 
     public RuleReadDto createRule(RuleCreateDto ruleCreateDto) {
-        authServerProxy.getAnalysisById(ruleCreateDto.analysis_id());
-        step2Proxy.getControlActionById(ruleCreateDto.control_action_id());
-        step1Proxy.getHazardById(ruleCreateDto.hazard_id());
+        authServerProxy.getAnalysisById(ruleCreateDto.analysisId());
+        step2Proxy.getControlActionById(ruleCreateDto.controlActionId());
+        step1Proxy.getHazardById(ruleCreateDto.hazardId());
 
         if (ruleRepository.findByCode(ruleCreateDto.code()).isPresent()) {
             throw new IllegalArgumentException("Rule with code " + ruleCreateDto.code() + " already exists");
@@ -44,9 +44,9 @@ public class RuleService {
 
         Rule rule = Rule.builder()
                 .name(ruleCreateDto.name())
-                .controlActionId(ruleCreateDto.control_action_id())
-                .analysisId(ruleCreateDto.analysis_id())
-                .hazardId(ruleCreateDto.hazard_id())
+                .controlActionId(ruleCreateDto.controlActionId())
+                .analysisId(ruleCreateDto.analysisId())
+                .hazardId(ruleCreateDto.hazardId())
                 .types(ruleCreateDto.types())
                 .code(ruleCreateDto.code())
                 .build();
@@ -54,7 +54,7 @@ public class RuleService {
         Rule createdRule = ruleRepository.save(rule);
 
         List<RuleState> statesAssociations = new ArrayList<>();
-        for (UUID stateId : ruleCreateDto.states_ids()) {
+        for (UUID stateId : ruleCreateDto.statesIds()) {
             step2Proxy.getStateById(stateId);
 
             RuleState ruleState = RuleState.builder()

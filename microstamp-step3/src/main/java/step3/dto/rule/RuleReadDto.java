@@ -14,7 +14,7 @@ import java.util.UUID;
 public record RuleReadDto(
         UUID id,
         String name,
-        ControlActionReadDto control_action,
+        ControlActionReadDto controlAction,
         List<StateReadDto> states,
         Set<UCAType> types,
         HazardReadDto hazard,

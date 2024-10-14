@@ -13,7 +13,7 @@ import java.util.UUID;
 public record RuleReadListDto(
         UUID id,
         String name,
-        String control_action_name,
+        String controlActionName,
         List<StateReadDto> states,
         Set<UCAType> types,
         HazardReadDto hazard,

@@ -129,7 +129,7 @@ public class ExportService {
         // Populating table rows
         for (RuleReadListDto rule : ruleList) {
             table.addCell(rule.name());
-            table.addCell(rule.control_action_name());
+            table.addCell(rule.controlActionName());
             table.addCell(String.join(", ", statesNames));
             table.addCell(rule.types().toString());
             table.addCell(rule.hazard().name());

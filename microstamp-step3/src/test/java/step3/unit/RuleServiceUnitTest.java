@@ -57,13 +57,13 @@ public class RuleServiceUnitTest {
     void createRuleWhenThereIsAnErrorWhenCommunicatingWithAuthServerProxyThrowAnException() {
         RuleCreateDto mock = assembleRuleCreate.get();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenThrow(FeignException.class);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenThrow(FeignException.class);
 
         assertAll(
                 () -> assertThrows(FeignException.class, () -> service.createRule(mock)),
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(0)).getControlActionById(mock.control_action_id()),
-                () -> verify(step1Proxy, times(0)).getHazardById(mock.hazard_id())
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step2Proxy, times(0)).getControlActionById(mock.controlActionId()),
+                () -> verify(step1Proxy, times(0)).getHazardById(mock.hazardId())
         );
     }
 
@@ -72,14 +72,14 @@ public class RuleServiceUnitTest {
     void createRuleWhenThereIsAnErrorWhenCommunicatingWithStep2ProxyThrowAnException() {
         RuleCreateDto mock = assembleRuleCreate.get();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(null);
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenThrow(FeignException.class);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(null);
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenThrow(FeignException.class);
 
         assertAll(
                 () -> assertThrows(FeignException.class, () -> service.createRule(mock)),
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(1)).getControlActionById(mock.control_action_id()),
-                () -> verify(step1Proxy, times(0)).getHazardById(mock.hazard_id())
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step2Proxy, times(1)).getControlActionById(mock.controlActionId()),
+                () -> verify(step1Proxy, times(0)).getHazardById(mock.hazardId())
         );
     }
 
@@ -88,15 +88,15 @@ public class RuleServiceUnitTest {
     void createRuleWhenThereIsAnErrorWhenCommunicatingWithStep1ProxyThrowAnException() {
         RuleCreateDto mock = assembleRuleCreate.get();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(null);
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(null);
-        when(step1Proxy.getHazardById(mock.hazard_id())).thenThrow(FeignException.class);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(null);
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(null);
+        when(step1Proxy.getHazardById(mock.hazardId())).thenThrow(FeignException.class);
 
         assertAll(
                 () -> assertThrows(FeignException.class, () -> service.createRule(mock)),
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(1)).getControlActionById(mock.control_action_id()),
-                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazard_id())
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step2Proxy, times(1)).getControlActionById(mock.controlActionId()),
+                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazardId())
         );
     }
 
@@ -105,16 +105,16 @@ public class RuleServiceUnitTest {
     void createRuleWhenThereIsARuleWithTheGivenCodeThrowAnException() {
         RuleCreateDto mock = assembleRuleCreate.get();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(null);
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(null);
-        when(step1Proxy.getHazardById(mock.hazard_id())).thenReturn(null);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(null);
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(null);
+        when(step1Proxy.getHazardById(mock.hazardId())).thenReturn(null);
         when(ruleRepository.findByCode(mock.code())).thenReturn(Optional.of(assembleRule.get()));
 
         assertAll(
                 () -> assertThrows(IllegalArgumentException.class, () -> service.createRule(mock)),
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(1)).getControlActionById(mock.control_action_id()),
-                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazard_id())
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step2Proxy, times(1)).getControlActionById(mock.controlActionId()),
+                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazardId())
         );
     }
 
@@ -123,9 +123,9 @@ public class RuleServiceUnitTest {
     void createRuleWhenAllGivenInformationAreCorrectCreateTheRule() {
         RuleCreateDto mock = assembleRuleCreate.get();
 
-        when(authServerProxy.getAnalysisById(mock.analysis_id())).thenReturn(null);
-        when(step2Proxy.getControlActionById(mock.control_action_id())).thenReturn(null);
-        when(step1Proxy.getHazardById(mock.hazard_id())).thenReturn(null);
+        when(authServerProxy.getAnalysisById(mock.analysisId())).thenReturn(null);
+        when(step2Proxy.getControlActionById(mock.controlActionId())).thenReturn(null);
+        when(step1Proxy.getHazardById(mock.hazardId())).thenReturn(null);
         when(ruleRepository.findByCode(mock.code())).thenReturn(Optional.empty());
         when(ruleRepository.save(any(Rule.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(mapper.toRuleReadDto(any())).thenAnswer(invocation -> {
@@ -141,9 +141,9 @@ public class RuleServiceUnitTest {
         RuleReadDto response = service.createRule(mock);
 
         assertAll(
-                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysis_id()),
-                () -> verify(step2Proxy, times(1)).getControlActionById(mock.control_action_id()),
-                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazard_id()),
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mock.analysisId()),
+                () -> verify(step2Proxy, times(1)).getControlActionById(mock.controlActionId()),
+                () -> verify(step1Proxy, times(1)).getHazardById(mock.hazardId()),
                 () -> verify(ruleRepository, times(2)).save(any()),
                 () -> assertEquals(mock.code(), response.code()),
                 () -> assertEquals(mock.name(), response.name()),

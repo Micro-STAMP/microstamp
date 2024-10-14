@@ -15,14 +15,14 @@ public record RuleCreateDto(
         @NotBlank
         String name,
         @NotNull
-        UUID analysis_id,
+        UUID analysisId,
         @NotNull
-        UUID control_action_id,
+        UUID controlActionId,
         @NotEmpty
-        List<UUID> states_ids,
+        List<UUID> statesIds,
         @NotEmpty
         Set<UCAType> types,
         @NotNull
-        UUID hazard_id,
+        UUID hazardId,
         String code
 ) {}
