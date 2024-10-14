@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/safety-constraint")
+@RequestMapping("/safety-constraints")
 @Tag(name = "SafetyConstraint")
 public class SafetyConstraintController {
     private final SafetyConstraintService safetyConstraintService;

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/rule")
+@RequestMapping("/rules")
 @Tag(name = "Rule")
 public class RuleController {
     private final RuleService ruleService;

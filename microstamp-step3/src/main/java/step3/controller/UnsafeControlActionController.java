@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/unsafe-control-action")
+@RequestMapping("/unsafe-control-actions")
 @Tag(name = "UnsafeControlAction")
 public class UnsafeControlActionController {
     private final UnsafeControlActionService unsafeControlActionService;
