@@ -65,8 +65,10 @@ function UnsafeButton({
 		if (notUnsafeContextId) {
 			await deleteNotUnsafeContext(notUnsafeContextId);
 			setNotUnsafeContextId(null);
+			setModalDeleteNotUnsafeContextOpen(false);
 		}
 		setNotUnsafeContextId(null);
+		setModalDeleteNotUnsafeContextOpen(false);
 	};
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
