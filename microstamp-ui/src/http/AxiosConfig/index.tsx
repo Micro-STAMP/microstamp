@@ -6,7 +6,7 @@ import axios, { AxiosError } from "axios";
 
 // Axios Instance
 
-const BACK_URL = import.meta.env.VITE_BACK_URL;
+const BACK_URL = import.meta.env.VITE_GATEWAY_URL;
 
 const http = axios.create({
 	baseURL: BACK_URL,

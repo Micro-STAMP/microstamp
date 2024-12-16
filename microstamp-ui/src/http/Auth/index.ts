@@ -4,7 +4,13 @@ import axios from "axios";
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
 
-const HOST = "http://127.0.0.1:5173";
+// Environment
+
+const HOST = import.meta.env.VITE_UI_URL;
+
+const AUTH = import.meta.env.VITE_AUTH_URL;
+const TOKEN_AUTH = import.meta.env.VITE_TOKEN_AUTH_URL;
+
 const CLIENT_ID = import.meta.env.VITE_AUTH_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_AUTH_CLIENT_SECRET;
 
@@ -13,7 +19,7 @@ const CLIENT_SECRET = import.meta.env.VITE_AUTH_CLIENT_SECRET;
 // Send to Auth Server Login
 
 const authServerRequest = () => {
-	const auth_server = "http://127.0.0.1:9000/oauth2/authorize";
+	const auth_server = `${AUTH}/oauth2/authorize`;
 	const auth_callback = `${HOST}/login/oauth2/code/client-server-microstamp`;
 	const response_type = "code";
 	const scope = "openid profile";
@@ -28,7 +34,7 @@ const authServerRequest = () => {
 // Send to Auth Register User
 
 const authRegisterRequest = () => {
-	const register_auth_server = "http://127.0.0.1:9000/registration";
+	const register_auth_server = `${AUTH}/registration`;
 	const auth_callback = `${HOST}/login/oauth2/code/client-server-microstamp`;
 	const response_type = "code";
 	const scope = "openid profile";
@@ -51,16 +57,12 @@ const tokenRequest = async (code: string) => {
 	});
 
 	try {
-		const res = await axios.post<IToken>(
-			"http://localhost:9000/oauth2/token",
-			params.toString(),
-			{
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
-					Authorization: `Basic ${credentials}`
-				}
+		const res = await axios.post<IToken>(`${TOKEN_AUTH}/oauth2/token`, params.toString(), {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				Authorization: `Basic ${credentials}`
 			}
-		);
+		});
 		return res.data;
 	} catch (error) {
 		console.error("Failed to exchange code for token:", error);
@@ -80,16 +82,12 @@ const refreshTokenRequest = async (refresh_token: string) => {
 	});
 
 	try {
-		const res = await axios.post<IToken>(
-			"http://localhost:9000/oauth2/token",
-			params.toString(),
-			{
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
-					Authorization: `Basic ${credentials}`
-				}
+		const res = await axios.post<IToken>(`${TOKEN_AUTH}/oauth2/token`, params.toString(), {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				Authorization: `Basic ${credentials}`
 			}
-		);
+		});
 		return res.data;
 	} catch (error) {
 		console.error("Failed to refresh token:", error);
@@ -105,7 +103,7 @@ const logoutRequest = () => {
 	const token = getTokenStorage();
 	if (!token) return;
 
-	const logout_server = "http://127.0.0.1:9000/logout";
+	const logout_server = `${AUTH}/logout`;
 	const post_logout_redirect_uri = `${HOST}/`;
 
 	const logoutUrl = `${logout_server}?id_token_hint=${token.id_token}&post_logout_redirect_uri=${post_logout_redirect_uri}`;

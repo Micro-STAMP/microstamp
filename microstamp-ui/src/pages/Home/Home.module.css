@@ -38,7 +38,7 @@
 	.image {
 		width: clamp(252px, 49%, 612px);
 		height: 24rem;
-		background: url("assets/logo-main.svg") no-repeat center;
+		background: url("/assets/logo-main.svg") no-repeat center;
 		background-size: contain;
 		border-radius: 8px;
 		border: var(--border3);

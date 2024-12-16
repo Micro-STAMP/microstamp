@@ -1,5 +1,6 @@
 package microstamp.authorization.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -20,16 +21,6 @@ import java.util.Collections;
 @Configuration
 public class SecurityFilterConfig {
 
-    private static final String[] CORS_WHITELIST = {
-            "http://127.0.0.1:9000",
-            "http://127.0.0.1:9001",
-            "http://127.0.0.1:9002",
-            "http://127.0.0.1:9003",
-            "http://127.0.0.1:9004",
-            "http://127.0.0.1:9191",
-            "http://127.0.0.1:5173"
-    };
-
     private static final String[] AUTH_WHITELIST = {
             "/swagger/**",
             "/swagger-ui/**",
@@ -39,6 +30,9 @@ public class SecurityFilterConfig {
             "/login",
             "/logout"
     };
+
+    @Value("${cors.whitelist}")
+    private String[] corsWhitelist;
 
     @Bean
     @Order(1)
@@ -77,7 +71,7 @@ public class SecurityFilterConfig {
 
     private UrlBasedCorsConfigurationSource corsConfig() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Arrays.asList(CORS_WHITELIST));
+        corsConfig.setAllowedOrigins(Arrays.asList(corsWhitelist));
         corsConfig.setAllowedMethods(Collections.singletonList("*"));
         corsConfig.setAllowedHeaders(Collections.singletonList("*"));
         corsConfig.setAllowCredentials(true);
