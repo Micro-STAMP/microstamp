@@ -28,10 +28,7 @@ import step3.repository.StateAssociationRepository;
 import step3.repository.UnsafeControlActionRepository;
 import step3.service.UnsafeControlActionService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -385,6 +382,7 @@ public class UnsafeControlActionServiceUnitTest {
             .id(UUID.randomUUID())
             .hazardId(UUID.randomUUID())
             .type(UCAType.PROVIDED)
+            .stateAssociations(new ArrayList<>())
             .build();
 
     private final Function<UUID, UnsafeControlActionReadDto> assembleUnsafeControlActionRead = (id) -> UnsafeControlActionReadDto.builder()

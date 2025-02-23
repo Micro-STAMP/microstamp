@@ -15,6 +15,7 @@ import step3.entity.UCAType;
 import step3.entity.UnsafeControlAction;
 import step3.entity.association.RuleState;
 import step3.entity.association.UnsafeControlActionState;
+import step3.infra.exceptions.ChangesInOtherMicroservicesException;
 import step3.infra.exceptions.OperationNotAllowedException;
 import step3.proxy.AuthServerProxy;
 import step3.proxy.Step1Proxy;
@@ -110,23 +111,40 @@ public class UnsafeControlActionService {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Unsafe control action not found with id " + id));
 
+        this.verifyChanges(uca);
+
         return mapper.toUcaReadDto(uca);
     }
 
     public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
-        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository.findAll();
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository
+                .findAll()
+                .stream()
+                .peek(this::verifyChanges)
+                .toList();
+
         return mapper.toUcaReadDtoList(unsafeControlActions);
     }
 
     public List<UnsafeControlActionReadDto> readAllUCAByControlActionId(UUID controlActionId) {
         step2Proxy.getControlActionById(controlActionId);
-        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository.findByControlActionId(controlActionId);
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository
+                .findByControlActionId(controlActionId)
+                .stream()
+                .peek(this::verifyChanges)
+                .toList();
+
         return mapper.toUcaReadDtoList(unsafeControlActions);
     }
 
     public List<UnsafeControlActionReadDto> readAllUCAByAnalysisId(UUID analysisId) {
         authServerProxy.getAnalysisById(analysisId);
-        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository.findByAnalysisId(analysisId);
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository
+                .findByAnalysisId(analysisId)
+                .stream()
+                .peek(this::verifyChanges)
+                .toList();
+
         return mapper.toUcaReadDtoList(unsafeControlActions);
     }
 
@@ -149,5 +167,23 @@ public class UnsafeControlActionService {
             states.add(state);
         }
         return states;
+    }
+
+    public void verifyChanges(UnsafeControlAction uca) {
+        for (UnsafeControlActionState ucaState : uca.getStateAssociations()) {
+            try {
+                step2Proxy.getStateById(ucaState.getStateId());
+            } catch (EntityNotFoundException e) {
+                unsafeControlActionRepository.deleteById(uca.getId());
+                throw new ChangesInOtherMicroservicesException("There were changes in the UCA states, so it was removed");
+            }
+
+            try {
+                step1Proxy.getHazardById(uca.getHazardId());
+            } catch (EntityNotFoundException e) {
+                unsafeControlActionRepository.deleteById(uca.getId());
+                throw new ChangesInOtherMicroservicesException("There were changes in the UCA's hazard, so it was removed");
+            }
+        }
     }
 }

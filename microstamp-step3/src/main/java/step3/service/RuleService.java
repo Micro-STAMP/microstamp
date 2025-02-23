@@ -11,6 +11,7 @@ import step3.dto.step2.StateReadDto;
 import step3.entity.Rule;
 import step3.entity.UnsafeControlAction;
 import step3.entity.association.RuleState;
+import step3.infra.exceptions.ChangesInOtherMicroservicesException;
 import step3.proxy.AuthServerProxy;
 import step3.proxy.Step1Proxy;
 import step3.proxy.Step2Proxy;
@@ -74,17 +75,21 @@ public class RuleService {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Rule not found with id " + id));
 
+        this.verifyChanges(rule);
+
         return mapper.toRuleReadDto(rule);
     }
 
     public List<RuleReadListDto> readAllRules() {
         return ruleRepository.findAll().stream()
+                .peek(this::verifyChanges)
                 .map(mapper::toRuleReadListDto)
                 .toList();
     }
 
     public List<RuleReadListDto> readRulesByControlActionId(UUID controlActionId) {
         return ruleRepository.findByControlActionId(controlActionId).stream()
+                .peek(this::verifyChanges)
                 .map(mapper::toRuleReadListDto)
                 .sorted(Comparator.comparing(RuleReadListDto::code))
                 .toList();
@@ -92,6 +97,7 @@ public class RuleService {
 
     public List<RuleReadListDto> readRulesByAnalysisId(UUID analysisId) {
         return ruleRepository.findByAnalysisId(analysisId).stream()
+                .peek(this::verifyChanges)
                 .map(mapper::toRuleReadListDto)
                 .toList();
     }
@@ -115,5 +121,24 @@ public class RuleService {
             states.add(state);
         }
         return states;
+    }
+
+    public void verifyChanges(Rule rule) {
+        for (RuleState ruleState : rule.getStateAssociations()) {
+            try {
+                step2Proxy.getStateById(ruleState.getStateId());
+            } catch (EntityNotFoundException e) {
+                ruleRepository.delete(rule);
+                throw new ChangesInOtherMicroservicesException("There were changes in the rule states, so it was removed");
+            }
+
+            try {
+                step1Proxy.getHazardById(rule.getHazardId());
+            } catch (EntityNotFoundException e) {
+                ruleRepository.delete(rule);
+                throw new ChangesInOtherMicroservicesException("There were changes in the rule's hazard, so it was removed");
+            }
+        }
+
     }
 }
