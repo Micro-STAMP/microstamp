@@ -65,7 +65,28 @@ This repository contains the source code for MicroSTAMP, a web application based
 
 ## How to Run MicroSTAMP
 
-This section provides a guide on how to run MicroSTAMP via the command-line using Maven.
+This section provides two options for running MicroSTAMP: Option 1 uses Maven and runs the services locally, while Option 2 uses Docker for a containerized setup.
+
+Before proceeding, clone the project repository to your local machine:
+
+<details>
+<summary><strong>Clone the Project</strong></summary>
+
+1.  Open a terminal or command prompt.
+2.  Navigate to the directory where you want to clone the project.
+3.  Clone the project repository using the following command:
+
+    ```
+    git clone https://github.com/Micro-STAMP/microstamp.git
+    ```
+
+</details>
+
+Once the repository is cloned, you can choose one of the two options below to run MicroSTAMP.
+
+<details>
+<summary><strong>Option 1: Run MicroSTAMP with Maven (Local Setup)</strong></summary>
+This option runs the microservices and UI locally using Maven and Node.js.
 
 #### Prerequisites
 
@@ -109,21 +130,8 @@ That's it! Your MySQL databases are now set up and ready to use.
 
 </details>
 
-<details> 
-<summary><strong>2. Clone the Project</strong></summary>
-
-1.  Open a terminal or command prompt.
-2.  Navigate to the directory where you want to clone the project.
-3.  Clone the project repository using the following command:
-
-    ```
-    git clone https://github.com/Micro-STAMP/microstamp.git
-    ```
-
-</details>
-
 <details>
-<summary><strong>3. Run the Microservices</strong></summary>
+<summary><strong>2. Run the Microservices</strong></summary>
 
 ##### 1. Run the **microstamp-service-registry** microservice
 
@@ -145,6 +153,7 @@ mvn spring-boot:run
 Alternatively, you can also run the microservices directly within an IDE. We use IntelliJ IDEA 2023.3.5 Ultimate Edition, but feel free to use any IDE of your choice that supports Spring Boot.
 
 ##### 2. Run the Remaining Microservices
+
 Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
 
 ##### 3. Run the User Interface microstamp-ui
@@ -161,8 +170,46 @@ With the microservices running, open a new terminal window to execute the micros
 -   The user interface will open at the URL http://127.0.0.1:5173.
 -   You can now access the MicroSTAMP frontend!
 
+</details>
+</details>
+
+<p></p>
+
+<details>
+<summary><strong>Option 2: Run MicroSTAMP with Docker (Containerized Setup)</strong></summary>
+This option runs MicroSTAMP using Docker, which simplifies the setup process by containerizing all services. 
+
+#### Set up Docker
+
+Ensure Docker and Docker Compose are installed and running on your machine. If not, download and install them from the official Docker website:
+
+-   [Download Docker](https://docs.docker.com/get-started/get-docker/)
+-   [Download Docker Compose](https://docs.docker.com/compose/install/)
+
+#### Run the Docker Compose file
+1.  Open a terminal or command prompt.
+2.  Navigate to the root directory of the cloned project.
+3.  Run the following command to start all services:
+    ```
+    docker-compose up --build
+    ```
+
+This command will build and start all the microservices, the MySQL databases, and the UI.
+
+#### Access the Application
+- The user interface will be available at: http://127.0.0.1:5173.
+- The microservices will be running on their respective ports as defined in the [Architecture Overview](#architecture-overview).
+<br>
+
+</details>
+
+Once MicroSTAMP is running (via either Option 1 or Option 2), you can explore the application using a pre-configured guest account.
+
+<details>
+<summary><strong>Exploring MicroSTAMP with the Guest User</strong></summary>
+
 We created a user with some example analyses to provide a global picture of how MicroSTAMP supports STPA.
-The user guest has some pre-stored STPA analyses and control structure from Step 2 of STPA.
+The user **guest** has some pre-stored STPA analyses and control structure from Step 2 of STPA.
 
 <figure>
   <img src="assets/images/login-form-guest-user.png" alt="Login Form Page">
@@ -178,6 +225,8 @@ The user guest has some pre-stored STPA analyses and control structure from Step
 
 </details>
 
+<br>
+
 [⬆️ Back to Top](#table-of-contents)
 
 ## MicroSTAMP Microservices
@@ -185,14 +234,14 @@ The user guest has some pre-stored STPA analyses and control structure from Step
 If you wish to understand more in-depth details about any specific microservice, you can refer to its respective directory.
 Each directory contains a comprehensive description of its role and implementation within the MicroSTAMP system. Below is a table with links to the corresponding folders for each microservice:
 
-| Microservice                         | Description                                                                   | Link                                                                                                        |
-|--------------------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| **MicroSTAMP Service Registry**      | Registers instances of the microservices for discovery and communication.     | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry)         |
-| **MicroSTAMP API Gateway**           | The main entry point, delegating requests to the corresponding microservices. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)                   |
-| **MicroSTAMP Authorization Server**  | Controls authorization with OAuth2 and authentication with OpenID.            | [Authorization Server](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-authorization-server) |
-| **MicroSTAMP STPA Step 1**           | Handles the **Define Purpose of the Analysis** step.                          | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                         |
-| **MicroSTAMP STPA Step 2**           | Handles the **Model the Control Structure** step.                             | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                         |
-| **MicroSTAMP STPA Step 3**           | Handles the **Identify Unsafe Control Actions** step.                         | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                         |
+| Microservice                        | Description                                                                   | Link                                                                                                        |
+| ----------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **MicroSTAMP Service Registry**     | Registers instances of the microservices for discovery and communication.     | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry)         |
+| **MicroSTAMP API Gateway**          | The main entry point, delegating requests to the corresponding microservices. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)                   |
+| **MicroSTAMP Authorization Server** | Controls authorization with OAuth2 and authentication with OpenID.            | [Authorization Server](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-authorization-server) |
+| **MicroSTAMP STPA Step 1**          | Handles the **Define Purpose of the Analysis** step.                          | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                         |
+| **MicroSTAMP STPA Step 2**          | Handles the **Model the Control Structure** step.                             | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                         |
+| **MicroSTAMP STPA Step 3**          | Handles the **Identify Unsafe Control Actions** step.                         | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                         |
 
 Each microservice is detailed in its respective repository directory, outlining its purpose, key functionalities, and implementation.
 
@@ -225,8 +274,8 @@ You're welcome to contribute to the MicroSTAMP project! If you find any bugs or 
 
 ## Publications
 
-Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares. 
-"**MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**." 
+Maimone, João Hugo Marinho, Thiago Franco de Carvalho Dias, Fellipe Guilherme Rey de Souza, and Rodrigo Martins Pagliares.
+"**MicroSTAMP: Microservices for Steps 1 and 2 of the System-Theoretic Process Analysis (STPA) Technique**."
 In _International Conference on Information Technology-New Generations_, pp. 469-476. Cham: Springer Nature Switzerland, 2024.
 
  <a href="https://link.springer.com/chapter/10.1007/978-3-031-56599-1_59" target="_blank">
