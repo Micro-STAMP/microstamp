@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>microstamp</groupId>
 	<artifactId>microstamp-service-registry</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>microstamp-service-registry</name>
 	<description>Service Registry and Discovery for MicroSTAMP</description>
 	<url/>
