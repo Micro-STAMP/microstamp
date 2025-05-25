@@ -17,8 +17,8 @@ function Home() {
 						on a microservices architecture to support STPA. While the project is{" "}
 						<strong>still under active development,</strong> MicroSTAMP already offers
 						support for <strong>Steps 1, 2, and 3 of the STPA.</strong> We estimate
-						releasing the microservice for Step 4 by January 2025. Please note that all
-						steps are subject to ongoing changes and improvements.
+						releasing the microservice for Step 4 by September 2025. Please note that
+						all steps are subject to ongoing changes and improvements.
 					</span>
 				</div>
 				<div className={styles.image}></div>

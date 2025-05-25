@@ -1,3 +1,4 @@
+import { ModalConfirm } from "@components/Modal";
 import {
 	IContext,
 	INotUnsafeContextReadDto,
@@ -13,13 +14,15 @@ interface UnsafeButtonProps {
 	type: IUCAType;
 	context: IContext;
 	toggleModal: (context: IContext, type: IUCAType) => void;
+	deleteNotUnsafeContext: (id: string) => Promise<void>;
 }
 function UnsafeButton({
 	unsafeControlActions,
 	notUnsafeContexts,
 	type,
 	context,
-	toggleModal
+	toggleModal,
+	deleteNotUnsafeContext
 }: UnsafeButtonProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle if a list of states match a context
@@ -51,6 +54,24 @@ function UnsafeButton({
 	};
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Deleting Not Unsafe Context Modal
+
+	const [modalDeleteNotUnsafeContextOpen, setModalDeleteNotUnsafeContextOpen] = useState(false);
+	const toggleModalDeleteNotUnsafeContext = () =>
+		setModalDeleteNotUnsafeContextOpen(!modalDeleteNotUnsafeContextOpen);
+
+	const [notUnsafeContextId, setNotUnsafeContextId] = useState<string | null>(null);
+	const handleDeleteNotUnsafeContext = async () => {
+		if (notUnsafeContextId) {
+			await deleteNotUnsafeContext(notUnsafeContextId);
+			setNotUnsafeContextId(null);
+			setModalDeleteNotUnsafeContextOpen(false);
+		}
+		setNotUnsafeContextId(null);
+		setModalDeleteNotUnsafeContextOpen(false);
+	};
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle if context is included in existing Not Unsafe Context
 
 	const [isNotUnsafe, setIsNotUnsafe] = useState(false);
@@ -59,6 +80,7 @@ function UnsafeButton({
 		for (const notUnsafe of notUnsafeContexts) {
 			const notUnsafeStates = notUnsafe.states.map(st => st.id);
 			if (notUnsafe.type === type && isContextMatching(notUnsafeStates, contextStates)) {
+				setNotUnsafeContextId(notUnsafe.id);
 				setIsNotUnsafe(true);
 				return;
 			}
@@ -86,9 +108,15 @@ function UnsafeButton({
 		<>
 			<button
 				type="button"
-				onClick={() => toggleModal(context, type)}
+				onClick={() => {
+					if (notUnsafeContextId) {
+						toggleModalDeleteNotUnsafeContext();
+						return;
+					}
+					toggleModal(context, type);
+				}}
 				className={buttonClass}
-				disabled={isUnsafe || isNotUnsafe}
+				disabled={isUnsafe}
 			>
 				{isUnsafe ? (
 					ucaRuleCode ? (
@@ -102,6 +130,16 @@ function UnsafeButton({
 					<span>Unsafe?</span>
 				)}
 			</button>
+			{isNotUnsafe && (
+				<ModalConfirm
+					open={modalDeleteNotUnsafeContextOpen}
+					onClose={toggleModalDeleteNotUnsafeContext}
+					message="Do you want to delete this not unsafe context?"
+					onConfirm={handleDeleteNotUnsafeContext}
+					title="Delete Not Unsafe Context"
+					btnText="Delete"
+				/>
+			)}
 		</>
 	);
 }
