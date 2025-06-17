@@ -1,4 +1,4 @@
-import { BiPlusMedical as PlusIcon } from "react-icons/bi";
+import { BiDotsHorizontalRounded as OptionsIcon, BiPlusMedical as PlusIcon } from "react-icons/bi";
 import styles from "./Container.module.css";
 
 interface ContainerProps {
@@ -6,15 +6,23 @@ interface ContainerProps {
 	children: React.ReactNode;
 	justTitle?: boolean;
 	onClick?: () => void;
+	onOptions?: () => void;
 }
-function Container({ title, justTitle = false, onClick, children }: ContainerProps) {
+function Container({ title, justTitle = false, onClick, onOptions, children }: ContainerProps) {
 	return (
 		<div className={styles.container}>
 			<header className={styles.header}>
-				<span className={styles.title}>{title}</span>
-				{!justTitle && (
-					<button type="button" className={styles.button} onClick={onClick}>
-						<PlusIcon className={styles.icon} />
+				<div className={styles.header_container}>
+					<span className={styles.title}>{title}</span>
+					{!justTitle && (
+						<button type="button" className={styles.button} onClick={onClick}>
+							<PlusIcon className={styles.icon} />
+						</button>
+					)}
+				</div>
+				{onOptions && (
+					<button type="button" className={styles.header_options} onClick={onOptions}>
+						<OptionsIcon className={styles.icon} />
 					</button>
 				)}
 			</header>

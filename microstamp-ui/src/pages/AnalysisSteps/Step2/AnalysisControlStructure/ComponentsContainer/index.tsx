@@ -144,7 +144,7 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 	if (isError || components === undefined) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Components" onClick={toggleModalCreateComponent}>
+			<Container title="Components" onOptions={() => {}} onClick={toggleModalCreateComponent}>
 				<ComponentsList
 					components={components}
 					modalDeleteComponent={toggleModalDeleteComponent}
