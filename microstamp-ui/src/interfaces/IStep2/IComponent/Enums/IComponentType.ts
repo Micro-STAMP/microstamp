@@ -22,8 +22,7 @@ const componentTypeSelectOptions: SelectOption[] = [
 	{ label: "Controller", value: IComponentType.CONTROLLER },
 	{ label: "Controlled Process", value: IComponentType.CONTROLLED_PROCESS },
 	{ label: "Actuator", value: IComponentType.ACTUATOR },
-	{ label: "Sensor", value: IComponentType.SENSOR },
-	{ label: "Environment", value: IComponentType.ENVIRONMENT }
+	{ label: "Sensor", value: IComponentType.SENSOR }
 ];
 
 export { componentTypeSelectOptions };
@@ -37,7 +36,10 @@ const componentTypeToSelectOptionMap: Record<IComponentType, SelectOption> = {
 	[IComponentType.CONTROLLED_PROCESS]: componentTypeSelectOptions[1],
 	[IComponentType.ACTUATOR]: componentTypeSelectOptions[2],
 	[IComponentType.SENSOR]: componentTypeSelectOptions[3],
-	[IComponentType.ENVIRONMENT]: componentTypeSelectOptions[4]
+	[IComponentType.ENVIRONMENT]: {
+		label: "Environment",
+		value: IComponentType.ENVIRONMENT
+	}
 };
 const componentTypeToSelectOption = (componentType: IComponentType): SelectOption => {
 	return componentTypeToSelectOptionMap[componentType];

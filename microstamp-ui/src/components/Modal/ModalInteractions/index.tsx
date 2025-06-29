@@ -6,18 +6,14 @@ import ListWrapper from "@components/Container/ListWrapper";
 import { ModalConfirm } from "@components/Modal";
 import { ModalInteraction } from "@components/Modal/ModalEntity";
 import { ModalButtons, ModalContainer, ModalHeader, ModalProps } from "@components/Modal/Templates";
+import { createInteraction, deleteInteraction, updateInteraction } from "@http/Step2/Interactions";
 import {
-	createInteraction,
-	deleteInteraction,
-	updateInteraction
-} from "@http/Step2/Interactions";
-import {
+	IConnectionReadDto,
 	IInteractionFormData,
 	IInteractionInsertDto,
 	IInteractionReadDto,
 	IInteractionType,
-	IInteractionUpdateDto,
-	IConnectionReadDto
+	IInteractionUpdateDto
 } from "@interfaces/IStep2";
 import { interactionTypeToSelectOption } from "@interfaces/IStep2/IInteraction/Enums";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -30,8 +26,9 @@ interface ModalInteractionsProps extends ModalProps {
 }
 function ModalInteractions({ open, onClose, connection }: ModalInteractionsProps) {
 	const queryClient = useQueryClient();
-	const [selectedInteraction, setSelectedInteraction] =
-		useState<IInteractionReadDto | null>(null);
+	const [selectedInteraction, setSelectedInteraction] = useState<IInteractionReadDto | null>(
+		null
+	);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Create Interaction
@@ -41,24 +38,21 @@ function ModalInteractions({ open, onClose, connection }: ModalInteractionsProps
 		setModalCreateInteractionOpen(!modalCreateInteractionOpen);
 
 	const { mutateAsync: requestCreateInteraction, isPending: isCreating } = useMutation({
-		mutationFn: (interaction: IInteractionInsertDto) =>
-			createInteraction(interaction),
+		mutationFn: (interaction: IInteractionInsertDto) => createInteraction(interaction),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-connections"] });
+			queryClient.invalidateQueries({ queryKey: ["component-dependencies-connections"] });
 			toast.success("Interaction created.");
 		},
 		onError: err => {
 			toast.error(err.message);
 		}
 	});
-	const handleCreateInteraction = async (
-		interactionData: IInteractionFormData
-	) => {
+	const handleCreateInteraction = async (interactionData: IInteractionFormData) => {
 		const interaction: IInteractionInsertDto = {
 			name: interactionData.name,
 			code: interactionData.code,
-			interactionType: interactionData.interactionType!
-				.value as IInteractionType,
+			interactionType: interactionData.interactionType!.value as IInteractionType,
 			connectionId: connection.id
 		};
 		await requestCreateInteraction(interaction);
@@ -72,29 +66,23 @@ function ModalInteractions({ open, onClose, connection }: ModalInteractionsProps
 		setModalUpdateInteractionOpen(!modalUpdateInteractionOpen);
 
 	const { mutateAsync: requestUpdateInteraction, isPending: isUpdating } = useMutation({
-		mutationFn: ({
-			id,
-			interaction
-		}: {
-			id: string;
-			interaction: IInteractionUpdateDto;
-		}) => updateInteraction(id, interaction),
+		mutationFn: ({ id, interaction }: { id: string; interaction: IInteractionUpdateDto }) =>
+			updateInteraction(id, interaction),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-connections"] });
+			queryClient.invalidateQueries({ queryKey: ["component-dependencies-connections"] });
+
 			toast.success("Interaction updated.");
 		},
 		onError: err => {
 			toast.error(err.message);
 		}
 	});
-	const handleUpdateInteraction = async (
-		interactionData: IInteractionFormData
-	) => {
+	const handleUpdateInteraction = async (interactionData: IInteractionFormData) => {
 		const interaction: IInteractionUpdateDto = {
 			name: interactionData.name,
 			code: interactionData.code,
-			interactionType: interactionData.interactionType!
-				.value as IInteractionType
+			interactionType: interactionData.interactionType!.value as IInteractionType
 		};
 		if (selectedInteraction) {
 			await requestUpdateInteraction({
@@ -116,6 +104,8 @@ function ModalInteractions({ open, onClose, connection }: ModalInteractionsProps
 		mutationFn: (id: string) => deleteInteraction(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-connections"] });
+			queryClient.invalidateQueries({ queryKey: ["component-dependencies-connections"] });
+
 			toast.success("Interaction deleted.");
 		},
 		onError: err => {
@@ -144,9 +134,8 @@ function ModalInteractions({ open, onClose, connection }: ModalInteractionsProps
 							<Interaction.Root key={interaction.id}>
 								<Interaction.Name
 									code={
-										interactionTypeToSelectOption(
-											interaction.interactionType
-										).label
+										interactionTypeToSelectOption(interaction.interactionType)
+											.label
 									}
 									name={interaction.name}
 								/>
@@ -177,6 +166,8 @@ function ModalInteractions({ open, onClose, connection }: ModalInteractionsProps
 				onClose={toggleModalCreateInteraction}
 				onSubmit={handleCreateInteraction}
 				isLoading={isCreating}
+				source={connection.source}
+				target={connection.target}
 				title="Create Interaction"
 				btnText="Create"
 			/>
@@ -185,6 +176,8 @@ function ModalInteractions({ open, onClose, connection }: ModalInteractionsProps
 				onClose={toggleModalUpdateInteraction}
 				onSubmit={handleUpdateInteraction}
 				isLoading={isUpdating}
+				source={connection.source}
+				target={connection.target}
 				title="Update Interaction"
 				btnText="Update"
 				interaction={selectedInteraction || undefined}
