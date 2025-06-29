@@ -17,7 +17,9 @@ const handleComponentType = (component: any): IComponentReadDto => {
 			? IComponentType.ACTUATOR
 			: component.type === "Sensor"
 			? IComponentType.SENSOR
-			: IComponentType.CONTROLLED_PROCESS;
+			: component.type === "ControlledProcess"
+			? IComponentType.CONTROLLED_PROCESS
+			: IComponentType.ENVIRONMENT;
 	return {
 		...component,
 		type: typeEnum
