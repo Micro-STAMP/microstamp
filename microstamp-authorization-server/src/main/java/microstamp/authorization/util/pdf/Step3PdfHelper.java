@@ -1,6 +1,9 @@
 package microstamp.authorization.util.pdf;
 
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Link;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.UnitValue;
@@ -10,7 +13,6 @@ import microstamp.authorization.dto.step3.UnsafeControlActionReadDto;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 public class Step3PdfHelper {
     public static void setUcaAndConstraintSection(Document document, List<UnsafeControlActionReadDto> ucaList) throws IOException {
@@ -26,16 +28,35 @@ public class Step3PdfHelper {
         table.addHeaderCell("Unsafe Control Action");
         table.addHeaderCell("Safety Constraint");
 
+        String frontendHazardUrl = "127.0.0.1:5173/analyses/" + ucaList.getFirst().analysis_id() + "/purpose";
+
         // Populating table rows
         for (UnsafeControlActionReadDto uca : ucaList) {
-            StringBuilder ucaName = new StringBuilder(uca.name());
-            ucaName.append(" [").append(uca.hazard_code()).append("]");
-            if (!uca.rule_code().isEmpty()) {
-                ucaName.append("[").append(uca.rule_code()).append("]");
+            Paragraph ucaContent = new Paragraph(uca.name());
+
+            if (uca.rule_code() != null && !uca.rule_code().isEmpty()) {
+                String ruleCode = " [" + uca.rule_code() + "]";
+                ucaContent.add(ruleCode);
             }
 
-            table.addCell(ucaName.toString());
+            if (uca.hazard_code() != null && !uca.hazard_code().isEmpty()) {
+                String hazardCode = " [" + uca.hazard_code() + "]";
+                Link hazardLink = new Link(hazardCode, PdfAction.createURI(frontendHazardUrl));
+                hazardLink.setFontColor(ColorConstants.BLUE);
+                ucaContent.add(hazardLink);
+            }
+
+            table.addCell(ucaContent);
             table.addCell(uca.constraintName());
+
+//            StringBuilder ucaName = new StringBuilder(uca.name());
+//            ucaName.append(" [").append(uca.hazard_code()).append("]");
+//            if (!uca.rule_code().isEmpty()) {
+//                ucaName.append("[").append(uca.rule_code()).append("]");
+//            }
+//
+//            table.addCell(ucaName.toString());
+//            table.addCell(uca.constraintName());
         }
 
         document.add(table);
