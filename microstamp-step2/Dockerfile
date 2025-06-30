@@ -1,4 +1,3 @@
-# Etapa de build usando Maven e OpenJDK 21
 FROM openjdk:21-jdk-slim AS build
 
 WORKDIR /app
