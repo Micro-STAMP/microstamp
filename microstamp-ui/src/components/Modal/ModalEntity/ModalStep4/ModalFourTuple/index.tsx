@@ -8,22 +8,28 @@ import {
 	ModalInputs,
 	ModalProps
 } from "@components/Modal/Templates";
-import { IFourTupleFormData } from "@interfaces/IStep4";
+import { IFourTupleFormData, IFourTupleReadDto } from "@interfaces/IStep4";
 import { useState } from "react";
 import { BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
 import { toast } from "sonner";
 
 interface ModalFourTupleProps extends ModalProps {
+	title: string;
 	onSubmit: (tuple: IFourTupleFormData) => Promise<void>;
+	fourTuple?: IFourTupleReadDto;
 	analysisId: string;
 	isLoading?: boolean;
+	btnText?: string;
 }
 function ModalFourTuple({
 	analysisId,
+	title,
+	fourTuple,
 	open,
 	onClose,
 	onSubmit,
-	isLoading = false
+	isLoading = false,
+	btnText = "Confirm"
 }: ModalFourTupleProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Four Tuple Data
@@ -63,7 +69,7 @@ function ModalFourTuple({
 
 	return (
 		<ModalContainer open={open} size="big">
-			<ModalHeader onClose={onClose} title="Causal Scenario" />
+			<ModalHeader onClose={onClose} title={title} />
 			<ModalInputs column="double">
 				<Input
 					label="Code"
@@ -119,7 +125,7 @@ function ModalFourTuple({
 					size="small"
 					icon={CheckIcon}
 				>
-					Create
+					{btnText}
 				</Button>
 			</ModalButtons>
 		</ModalContainer>

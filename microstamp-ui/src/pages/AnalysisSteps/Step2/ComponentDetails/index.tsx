@@ -1,7 +1,7 @@
-import { IComponentType } from "@/interfaces/IStep2";
 import AnalysisHeader from "@components/AnalysisHeader";
 import Loader from "@components/Loader";
 import { getComponent } from "@http/Step2/Components";
+import { IComponentType } from "@interfaces/IStep2";
 import { useQuery } from "@tanstack/react-query";
 import { Navigate, useParams } from "react-router-dom";
 import ComponentConnectionsContainer from "./ComponentConnectionsContainer";

@@ -1,8 +1,13 @@
 /* - - - - - - - - - - - - - - - - - - - - - - */
 // * Four Tuples DTOs
 
-import { IFourTupleFormData, IFourTupleInsertDto, IFourTupleReadDto } from "./IFourTuple";
+import {
+	IFourTupleFormData,
+	IFourTupleInsertDto,
+	IFourTupleReadDto,
+	IFourTupleUpdateDto
+} from "./IFourTuple";
 
-export type { IFourTupleFormData, IFourTupleInsertDto, IFourTupleReadDto };
+export type { IFourTupleFormData, IFourTupleInsertDto, IFourTupleReadDto, IFourTupleUpdateDto };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

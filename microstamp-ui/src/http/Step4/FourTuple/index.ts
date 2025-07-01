@@ -1,5 +1,5 @@
 import { http } from "@http/AxiosConfig";
-import { IFourTupleInsertDto, IFourTupleReadDto } from "@interfaces/IStep4";
+import { IFourTupleInsertDto, IFourTupleReadDto, IFourTupleUpdateDto } from "@interfaces/IStep4";
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -31,16 +31,16 @@ const createFourTuple = async (fourTuple: IFourTupleInsertDto) => {
 		return res.data;
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error creating four tuple.");
+		throw new Error("Error creating scenario.");
 	}
 };
-const updateFourTuple = async (id: string, fourTuple: IFourTupleInsertDto) => {
+const updateFourTuple = async (id: string, fourTuple: IFourTupleUpdateDto) => {
 	try {
 		const res = await http.put<IFourTupleReadDto>(`${FOUR_TUPLES_ENDPOINT}/${id}`, fourTuple);
 		return res.data;
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error updating four tuple.");
+		throw new Error("Error updating scenario.");
 	}
 };
 const deleteFourTuple = async (id: string) => {
@@ -48,7 +48,7 @@ const deleteFourTuple = async (id: string) => {
 		await http.delete(`${FOUR_TUPLES_ENDPOINT}/${id}`);
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error deleting four tuple.");
+		throw new Error("Error deleting scenario.");
 	}
 };
 

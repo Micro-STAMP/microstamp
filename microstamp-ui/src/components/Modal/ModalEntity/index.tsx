@@ -45,3 +45,9 @@ import { ModalRule, ModalUnsafeControlAction } from "./ModalStep3";
 export { ModalRule, ModalUnsafeControlAction };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
+// * Step 4 Entities
+
+import { ModalFourTuple } from "./ModalStep4";
+export { ModalFourTuple };
+
+/* - - - - - - - - - - - - - - - - - - - - - - */
