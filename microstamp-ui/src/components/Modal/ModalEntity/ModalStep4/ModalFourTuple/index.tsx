@@ -1,5 +1,6 @@
 import Button from "@components/Button";
-import { Input, MultiSelect } from "@components/FormField";
+import { Input } from "@components/FormField";
+import UCAsMultiSelect from "@components/FormField/MultiSelect/UCAsMultiSelect";
 import { SelectOption } from "@components/FormField/Templates";
 import {
 	ModalButtons,
@@ -9,7 +10,7 @@ import {
 	ModalProps
 } from "@components/Modal/Templates";
 import { IFourTupleFormData, IFourTupleReadDto } from "@interfaces/IStep4";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
 import { toast } from "sonner";
 
@@ -43,7 +44,31 @@ function ModalFourTuple({
 		code: "",
 		unsafeControlActions: []
 	};
-	const [tupleData, setTupleData] = useState<IFourTupleFormData>(tupleInitialData);
+	const [tupleData, setTupleData] = useState<IFourTupleFormData>({
+		analysisId: analysisId,
+		associatedCausalFactor: fourTuple?.associatedCausalFactor || "",
+		rationale: fourTuple?.rationale || "",
+		recommendation: fourTuple?.recommendation || "",
+		scenario: fourTuple?.scenario || "",
+		code: fourTuple?.code || "",
+		unsafeControlActions: []
+	});
+
+	useEffect(() => {
+		if (fourTuple) {
+			setTupleData({
+				analysisId: analysisId,
+				associatedCausalFactor: fourTuple.associatedCausalFactor,
+				rationale: fourTuple.rationale,
+				recommendation: fourTuple.recommendation,
+				scenario: fourTuple.scenario,
+				code: fourTuple.code,
+				unsafeControlActions: []
+			});
+		} else {
+			setTupleData(tupleInitialData);
+		}
+	}, [fourTuple]);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Submit Four Tuple
@@ -68,9 +93,9 @@ function ModalFourTuple({
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	return (
-		<ModalContainer open={open} size="big">
+		<ModalContainer open={open} size="large">
 			<ModalHeader onClose={onClose} title={title} />
-			<ModalInputs column="double">
+			<ModalInputs column="single">
 				<Input
 					label="Code"
 					value={tupleData.code}
@@ -105,13 +130,11 @@ function ModalFourTuple({
 					onChange={(value: string) => setTupleData({ ...tupleData, rationale: value })}
 					required
 				/>
-				<MultiSelect
-					label="Unsafe Control Actions"
-					values={tupleData.unsafeControlActions}
-					options={[]}
-					optionsPosition="top"
-					onChange={(options: SelectOption[]) =>
-						setTupleData({ ...tupleData, unsafeControlActions: options })
+				<UCAsMultiSelect
+					analysisId={analysisId}
+					ucas={tupleData.unsafeControlActions}
+					onChange={(ucas: SelectOption[]) =>
+						setTupleData({ ...tupleData, unsafeControlActions: ucas })
 					}
 				/>
 			</ModalInputs>

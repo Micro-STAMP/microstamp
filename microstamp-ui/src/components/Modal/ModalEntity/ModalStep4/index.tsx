@@ -1,2 +1,3 @@
 import ModalFourTuple from "./ModalFourTuple";
-export { ModalFourTuple };
+import ModalFourTupleDetails from "./ModalFourTupleDetails";
+export { ModalFourTuple, ModalFourTupleDetails };

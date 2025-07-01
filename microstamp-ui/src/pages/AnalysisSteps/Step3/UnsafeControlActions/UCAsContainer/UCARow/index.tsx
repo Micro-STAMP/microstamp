@@ -26,6 +26,7 @@ function UCARow({ unsafeControlAction }: UCARowProps) {
 		mutationFn: () => deleteUnsafeControlAction(unsafeControlAction.id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
+			queryClient.invalidateQueries({ queryKey: ["ucas-multi-select"] });
 			queryClient.invalidateQueries({ queryKey: ["context-table-unsafe-control-actions"] });
 			toast.success("Unsafe control action deleted.");
 		},

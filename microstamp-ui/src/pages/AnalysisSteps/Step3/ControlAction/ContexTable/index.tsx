@@ -175,6 +175,7 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 					queryKey: ["context-table-unsafe-control-actions"]
 				});
 				queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
+				queryClient.invalidateQueries({ queryKey: ["ucas-multi-select"] });
 				toast.success("Unsafe control action created.");
 			},
 			onError: err => {

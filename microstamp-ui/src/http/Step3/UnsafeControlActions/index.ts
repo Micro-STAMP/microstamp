@@ -16,6 +16,15 @@ const getUnsafeControlActions = async (controlActionId: string) => {
 		throw err;
 	}
 };
+const getUnsafeControlActionsByAnalysis = async (analysisId: string) => {
+	try {
+		const res = await http.get<IUnsafeControlActionReadDto[]>(`${UCA_ENDPOINT}`);
+		return res.data.filter(uca => uca.analysis_id === analysisId);
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+};
 const getUnsafeControlAction = async (id: string) => {
 	try {
 		const res = await http.get<IUnsafeControlActionReadDto>(`${UCA_ENDPOINT}/${id}`);
@@ -57,7 +66,8 @@ export {
 	createUnsafeControlActionsByRule,
 	deleteUnsafeControlAction,
 	getUnsafeControlAction,
-	getUnsafeControlActions
+	getUnsafeControlActions,
+	getUnsafeControlActionsByAnalysis
 };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

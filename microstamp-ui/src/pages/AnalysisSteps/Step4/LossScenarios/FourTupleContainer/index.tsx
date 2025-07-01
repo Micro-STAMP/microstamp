@@ -1,10 +1,14 @@
+import Button from "@components/Button";
 import DualButton from "@components/Button/DualButton";
+import IconButton from "@components/Button/IconButton";
 import Container from "@components/Container";
 import { ListItem as FourTuple } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
 import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalFourTuple } from "@components/Modal/ModalEntity";
+import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
+import PageActions from "@components/PageActions";
 import {
 	createFourTuple,
 	deleteFourTuple,
@@ -19,6 +23,7 @@ import {
 } from "@interfaces/IStep4";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { BiInfoCircle as InfoIcon, BiExport as PdfIcon } from "react-icons/bi";
 import { toast } from "sonner";
 
 interface FourTupleContainerProps {
@@ -27,6 +32,13 @@ interface FourTupleContainerProps {
 function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 	const queryClient = useQueryClient();
 	const [selectedTuple, setSelectedTuple] = useState<IFourTupleReadDto | null>(null);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Four Tuple Details
+
+	const [modalFourTupleDetailsOpen, setModalFourTupleDetailsOpen] = useState(false);
+	const toggleModalFourTupleDetails = () =>
+		setModalFourTupleDetailsOpen(!modalFourTupleDetailsOpen);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Create Four Tuple
@@ -38,7 +50,7 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 		mutationFn: (tuple: IFourTupleInsertDto) => createFourTuple(tuple),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["four-tuples"] });
-			toast.success("Causal scenario created.");
+			toast.success("Loss scenario created.");
 		},
 		onError: err => {
 			toast.error(err.message);
@@ -64,7 +76,7 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 			updateFourTuple(id, tuple),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["four-tuples"] });
-			toast.success("Causal scenario updated.");
+			toast.success("Loss scenario updated.");
 		},
 		onError: err => {
 			toast.error(err.message);
@@ -91,7 +103,7 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 		mutationFn: (id: string) => deleteFourTuple(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["four-tuples"] });
-			toast.success("Causal scenario deleted.");
+			toast.success("Loss scenario deleted.");
 		},
 		onError: err => {
 			toast.error(err.message);
@@ -123,12 +135,19 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 	if (isError || fourTuples === undefined) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Causal Scenarios" onClick={toggleModalCreateFourTuple}>
+			<Container title="Loss Scenarios" onClick={toggleModalCreateFourTuple}>
 				<ListWrapper>
 					{fourTuples.map(ft => (
 						<FourTuple.Root key={ft.id}>
 							<FourTuple.Name code={ft.code} name={ft.scenario} />
 							<FourTuple.Actions>
+								<IconButton
+									icon={InfoIcon}
+									onClick={() => {
+										setSelectedTuple(ft);
+										toggleModalFourTupleDetails();
+									}}
+								/>
 								<DualButton
 									onEdit={() => {
 										setSelectedTuple(ft);
@@ -144,6 +163,11 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 					))}
 				</ListWrapper>
 			</Container>
+			<PageActions>
+				<Button variant="dark" icon={PdfIcon}>
+					Export Step 4
+				</Button>
+			</PageActions>
 			<ModalFourTuple
 				analysisId={analysisId}
 				open={modalCreateFourTupleOpen}
@@ -153,25 +177,34 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 				title="New Scenario"
 				btnText="Create"
 			/>
-			<ModalFourTuple
-				analysisId={analysisId}
-				open={modalUpdateFourTupleOpen}
-				onClose={toggleModalUpdateFourTuple}
-				onSubmit={handleUpdateFourTuple}
-				isLoading={isUpdating}
-				title="Update Scenario"
-				btnText="Update"
-				fourTuple={selectedTuple || undefined}
-			/>
-			<ModalConfirm
-				open={modalDeleteFourTupleOpen}
-				onClose={toggleModalDeleteFourTuple}
-				onConfirm={handleDeleteFourTuple}
-				isLoading={isDeleting}
-				message="Do you want to delete this scenario?"
-				title="Delete Scenario"
-				btnText="Delete"
-			/>
+			{selectedTuple && (
+				<>
+					<ModalFourTupleDetails
+						fourTuple={selectedTuple}
+						open={modalFourTupleDetailsOpen}
+						onClose={toggleModalFourTupleDetails}
+					/>
+					<ModalFourTuple
+						analysisId={analysisId}
+						open={modalUpdateFourTupleOpen}
+						onClose={toggleModalUpdateFourTuple}
+						onSubmit={handleUpdateFourTuple}
+						isLoading={isUpdating}
+						title="Update Scenario"
+						btnText="Update"
+						fourTuple={selectedTuple || undefined}
+					/>
+					<ModalConfirm
+						open={modalDeleteFourTupleOpen}
+						onClose={toggleModalDeleteFourTuple}
+						onConfirm={handleDeleteFourTuple}
+						isLoading={isDeleting}
+						message="Do you want to delete this scenario?"
+						title="Delete Scenario"
+						btnText="Delete"
+					/>
+				</>
+			)}
 		</>
 	);
 }

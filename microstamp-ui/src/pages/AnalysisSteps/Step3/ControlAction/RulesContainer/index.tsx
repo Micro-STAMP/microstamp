@@ -27,6 +27,7 @@ function RulesContainer({ analysisId, controlAction }: RulesContainerProps) {
 		mutationFn: (ruleId: string) => createUnsafeControlActionsByRule(ruleId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
+			queryClient.invalidateQueries({ queryKey: ["ucas-multi-select"] });
 			queryClient.invalidateQueries({ queryKey: ["context-table-unsafe-control-actions"] });
 			toast.success("Unsafe control actions created by rule.");
 		},
@@ -84,6 +85,7 @@ function RulesContainer({ analysisId, controlAction }: RulesContainerProps) {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-rules"] });
 			queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
+			queryClient.invalidateQueries({ queryKey: ["ucas-multi-select"] });
 			queryClient.invalidateQueries({ queryKey: ["context-table-unsafe-control-actions"] });
 			toast.success("Rule deleted.");
 		},
