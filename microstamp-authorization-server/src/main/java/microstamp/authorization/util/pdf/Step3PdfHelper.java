@@ -1,11 +1,13 @@
 package microstamp.authorization.util.pdf;
 
 import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.colors.WebColors;
 import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Link;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.UnitValue;
 import microstamp.authorization.dto.step2.StateReadDto;
 import microstamp.authorization.dto.step3.RuleReadListDto;
@@ -24,39 +26,28 @@ public class Step3PdfHelper {
         Table table = new Table(UnitValue.createPercentArray(new float[]{50, 50}))
                 .useAllAvailableWidth();
 
-        // Adding header
         table.addHeaderCell("Unsafe Control Action");
         table.addHeaderCell("Safety Constraint");
 
-        String frontendHazardUrl = "127.0.0.1:5173/analyses/" + ucaList.getFirst().analysis_id() + "/purpose";
-
-        // Populating table rows
         for (UnsafeControlActionReadDto uca : ucaList) {
             Paragraph ucaContent = new Paragraph(uca.name());
 
             if (uca.rule_code() != null && !uca.rule_code().isEmpty()) {
                 String ruleCode = " [" + uca.rule_code() + "]";
-                ucaContent.add(ruleCode);
+                Link ruleLink = new Link(ruleCode, PdfAction.createGoTo(uca.rule_code()));
+                ruleLink.setFontColor(WebColors.getRGBColor("#b4894d"));
+                ucaContent.add(ruleLink);
             }
 
             if (uca.hazard_code() != null && !uca.hazard_code().isEmpty()) {
                 String hazardCode = " [" + uca.hazard_code() + "]";
-                Link hazardLink = new Link(hazardCode, PdfAction.createURI(frontendHazardUrl));
-                hazardLink.setFontColor(ColorConstants.BLUE);
+                Link hazardLink = new Link(hazardCode, PdfAction.createGoTo(uca.hazard_code()));
+                hazardLink.setFontColor(WebColors.getRGBColor("#b4894d"));
                 ucaContent.add(hazardLink);
             }
 
             table.addCell(ucaContent);
             table.addCell(uca.constraintName());
-
-//            StringBuilder ucaName = new StringBuilder(uca.name());
-//            ucaName.append(" [").append(uca.hazard_code()).append("]");
-//            if (!uca.rule_code().isEmpty()) {
-//                ucaName.append("[").append(uca.rule_code()).append("]");
-//            }
-//
-//            table.addCell(ucaName.toString());
-//            table.addCell(uca.constraintName());
         }
 
         document.add(table);
@@ -91,7 +82,9 @@ public class Step3PdfHelper {
             table.addCell(String.join(", ", statesNames));
             table.addCell(rule.types().toString());
             table.addCell(rule.hazard().getName());
-            table.addCell(rule.code());
+
+            Paragraph ruleCode = new Paragraph(rule.code()).setDestination(rule.code());
+            table.addCell(ruleCode);
         }
 
         document.add(table);
