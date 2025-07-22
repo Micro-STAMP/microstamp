@@ -1,4 +1,3 @@
-import Button from "@components/Button";
 import DualButton from "@components/Button/DualButton";
 import IconButton from "@components/Button/IconButton";
 import Container from "@components/Container";
@@ -8,7 +7,6 @@ import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalFourTuple } from "@components/Modal/ModalEntity";
 import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
-import PageActions from "@components/PageActions";
 import {
 	createFourTuple,
 	deleteFourTuple,
@@ -23,7 +21,7 @@ import {
 } from "@interfaces/IStep4";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { BiInfoCircle as InfoIcon, BiExport as PdfIcon } from "react-icons/bi";
+import { BiInfoCircle as InfoIcon } from "react-icons/bi";
 import { toast } from "sonner";
 
 interface FourTupleContainerProps {
@@ -163,11 +161,6 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 					))}
 				</ListWrapper>
 			</Container>
-			<PageActions>
-				<Button variant="dark" icon={PdfIcon}>
-					Export Step 4
-				</Button>
-			</PageActions>
 			<ModalFourTuple
 				analysisId={analysisId}
 				open={modalCreateFourTupleOpen}

@@ -1,0 +1,24 @@
+.four_tuples_list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.6rem;
+
+	.uca_section {
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
+		padding-bottom: 2rem;
+		border-bottom: 2px solid var(--color-gray);
+
+		&:last-child {
+			border-bottom-width: 0px;
+			padding-bottom: 0px;
+		}
+
+		.title {
+			color: var(--color-yellow);
+			font-size: 1.5rem;
+			font-weight: 500;
+		}
+	}
+}
