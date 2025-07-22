@@ -50,6 +50,7 @@ public class UnsafeControlActionService {
                 .type(ucaCreateDto.type())
                 .analysisId(ucaCreateDto.analysis_id())
                 .ruleCode(ucaCreateDto.rule_code() == null ? "" : ucaCreateDto.rule_code())
+                .ucaCode("UCA-" + (unsafeControlActionRepository.count()+1))
                 .build();
 
         SafetyConstraint constraint = SafetyConstraint.builder()

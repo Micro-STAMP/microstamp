@@ -54,6 +54,9 @@ public class UnsafeControlAction {
 
     private String ruleCode;
 
+    @Column(name = "uca_code", nullable = false, unique = true, length = 20)
+    private String ucaCode;
+
     public String generateNameTo(Step2Proxy step2Proxy, String to) {
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(this.controlActionId);
 
