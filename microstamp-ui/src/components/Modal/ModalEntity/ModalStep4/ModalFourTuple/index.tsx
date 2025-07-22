@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { Input } from "@components/FormField";
+import { Input, Textarea } from "@components/FormField";
 import UCAsMultiSelect from "@components/FormField/MultiSelect/UCAsMultiSelect";
 import { SelectOption } from "@components/FormField/Templates";
 import {
@@ -95,47 +95,53 @@ function ModalFourTuple({
 	return (
 		<ModalContainer open={open} size="large">
 			<ModalHeader onClose={onClose} title={title} />
-			<ModalInputs column="single">
-				<Input
-					label="Code"
-					value={tupleData.code}
-					onChange={(value: string) => setTupleData({ ...tupleData, code: value })}
-					required
-				/>
-				<Input
+			<ModalInputs column="double">
+				<ModalInputs column="single">
+					<Input
+						label="Code"
+						value={tupleData.code}
+						onChange={(value: string) => setTupleData({ ...tupleData, code: value })}
+						required
+					/>
+					<UCAsMultiSelect
+						analysisId={analysisId}
+						ucas={tupleData.unsafeControlActions}
+						onChange={(ucas: SelectOption[]) =>
+							setTupleData({ ...tupleData, unsafeControlActions: ucas })
+						}
+					/>
+				</ModalInputs>
+				<Textarea
 					label="Scenario"
 					value={tupleData.scenario}
 					onChange={(value: string) => setTupleData({ ...tupleData, scenario: value })}
+					rows={3}
 					required
 				/>
-				<Input
+				<Textarea
 					label="Associated Causal Factor"
 					value={tupleData.associatedCausalFactor}
 					onChange={(value: string) =>
 						setTupleData({ ...tupleData, associatedCausalFactor: value })
 					}
+					rows={3}
 					required
 				/>
-				<Input
+				<Textarea
 					label="Recommendation"
 					value={tupleData.recommendation}
 					onChange={(value: string) =>
 						setTupleData({ ...tupleData, recommendation: value })
 					}
+					rows={3}
 					required
 				/>
-				<Input
+				<Textarea
 					label="Rationale"
 					value={tupleData.rationale}
 					onChange={(value: string) => setTupleData({ ...tupleData, rationale: value })}
+					rows={3}
 					required
-				/>
-				<UCAsMultiSelect
-					analysisId={analysisId}
-					ucas={tupleData.unsafeControlActions}
-					onChange={(ucas: SelectOption[]) =>
-						setTupleData({ ...tupleData, unsafeControlActions: ucas })
-					}
 				/>
 			</ModalInputs>
 			<ModalButtons>

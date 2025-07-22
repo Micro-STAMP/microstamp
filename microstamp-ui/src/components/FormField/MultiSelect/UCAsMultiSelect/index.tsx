@@ -37,7 +37,7 @@ function UCAsMultiSelect({ analysisId, ucas, onChange, disabled }: UCAsSelectPro
 				values={ucas.map(uca => ({ label: truncateText(uca.label, 30), value: uca.value }))}
 				options={ucasOptions}
 				disabled={isLoading || isError || disabled}
-				optionsPosition="top"
+				optionsPosition="bottom"
 				onChange={onChange}
 			/>
 		</>
