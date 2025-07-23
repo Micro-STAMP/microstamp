@@ -149,6 +149,21 @@ public class UnsafeControlActionService {
         return mapper.toUcaReadDtoList(unsafeControlActions);
     }
 
+    public UnsafeControlActionReadDto updateUcaCode(UUID ucaId, String newCode) {
+        UnsafeControlAction uca = unsafeControlActionRepository
+                .findById(ucaId)
+                .orElseThrow(() -> new EntityNotFoundException("Unsafe control action not found with id " + ucaId));
+
+        if (StringUtils.isBlank(newCode)) {
+            throw new IllegalArgumentException("New code cannot be blank");
+        }
+
+        uca.setUcaCode(newCode);
+        UnsafeControlAction updatedUCA = unsafeControlActionRepository.save(uca);
+
+        return mapper.toUcaReadDto(updatedUCA);
+    }
+
     public void deleteUnsafeControlAction(UUID id) {
         UnsafeControlAction uca = unsafeControlActionRepository
                 .findById(id)

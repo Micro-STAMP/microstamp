@@ -54,6 +54,13 @@ public class UnsafeControlActionController {
         return ResponseEntity.ok(unsafeControlActionService.readAllUCAByControlActionId(controlActionId));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<UnsafeControlActionReadDto> updateUnsafeControlActionCode(@PathVariable UUID id, @RequestBody String ucaCode) {
+        UnsafeControlActionReadDto updatedUCA = unsafeControlActionService.updateUcaCode(id, ucaCode);
+
+        return ResponseEntity.ok(updatedUCA);
+    }
+
     @DeleteMapping("/{id}") @Transactional
     public ResponseEntity<Void> deleteUnsafeControlAction(@PathVariable UUID id) {
         unsafeControlActionService.deleteUnsafeControlAction(id);
