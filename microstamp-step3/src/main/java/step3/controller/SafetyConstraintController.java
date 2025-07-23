@@ -33,4 +33,9 @@ public class SafetyConstraintController {
     public ResponseEntity<List<SafetyConstraintReadDto>> readAllSafetyConstraints() {
         return ResponseEntity.ok(safetyConstraintService.readAllSafetyConstraints());
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<SafetyConstraintReadDto> updateSafetyConstraintCode(@PathVariable UUID id, @RequestBody String newCode) {
+        return ResponseEntity.ok(safetyConstraintService.updateSafetyConstraintCode(id, newCode));
+    }
 }

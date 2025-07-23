@@ -55,6 +55,7 @@ public class UnsafeControlActionService {
 
         SafetyConstraint constraint = SafetyConstraint.builder()
                 .unsafeControlAction(uca)
+                .safetyConstraintCode("SC-" + (unsafeControlActionRepository.count() + 1))
                 .build();
 
         uca.setConstraint(constraint);
