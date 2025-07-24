@@ -16,6 +16,7 @@ public class SafetyConstraintMapper {
                 .id(safetyConstraint.getId())
                 .uca_id(safetyConstraint.getUnsafeControlAction().getId())
                 .name(safetyConstraint.getUnsafeControlAction().generateNameTo(step2Proxy, "constraint"))
+                .safety_constraint_code(safetyConstraint.getSafetyConstraintCode())
                 .build();
     }
 }
