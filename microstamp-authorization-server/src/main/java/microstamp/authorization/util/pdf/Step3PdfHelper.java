@@ -30,7 +30,9 @@ public class Step3PdfHelper {
         table.addHeaderCell("Safety Constraint");
 
         for (UnsafeControlActionReadDto uca : ucaList) {
-            Paragraph ucaContent = new Paragraph(uca.name());
+            String ucaCode = "[" + uca.uca_code() + "] ";
+            Paragraph ucaContent = new Paragraph(ucaCode + uca.name());
+            ucaContent.setDestination(uca.uca_code());
 
             if (uca.rule_code() != null && !uca.rule_code().isEmpty()) {
                 String ruleCode = " [" + uca.rule_code() + "]";
@@ -47,7 +49,11 @@ public class Step3PdfHelper {
             }
 
             table.addCell(ucaContent);
-            table.addCell(uca.constraintName());
+
+            String constraintCode = "[" + uca.constraint_code() + "] ";
+            Paragraph constraintContent = new Paragraph(constraintCode + uca.constraintName());
+            constraintContent.setDestination(uca.constraint_code());
+            table.addCell(constraintContent);
         }
 
         document.add(table);
