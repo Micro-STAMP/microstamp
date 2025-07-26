@@ -2,7 +2,11 @@ import Loader from "@components/Loader";
 import { ModalUnsafeControlAction } from "@components/Modal/ModalEntity";
 import Pagination from "@components/Pagination";
 import { createContextTable, getContextTable } from "@http/Step3/ContextTable";
-import { createNotUnsafeContext, getNotUnsafeContexts } from "@http/Step3/NotUnsafeContexts";
+import {
+	createNotUnsafeContext,
+	deleteNotUnsafeContext,
+	getNotUnsafeContexts
+} from "@http/Step3/NotUnsafeContexts";
 import {
 	createUnsafeControlAction,
 	getUnsafeControlActions
@@ -119,6 +123,27 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 		await requestCreateNotUnsafeContext(notUnsafeContext);
 	};
 
+	// Delete
+	const { mutateAsync: requestDeleteNotUnsafeContext } = useMutation({
+		mutationFn: (id: string) => deleteNotUnsafeContext(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["context-table-not-unsafe-contexts"] });
+			toast.success("Not unsafe context deleted.");
+		},
+		onError: err => {
+			toast.error(err.message);
+		}
+	});
+	const handleDeleteNotUnsafeContext = async (id: string) => {
+		const toastLoading = toast.loading("Deleting not unsafe context.");
+		try {
+			await requestDeleteNotUnsafeContext(id);
+		} catch (err) {
+		} finally {
+			toast.dismiss(toastLoading);
+		}
+	};
+
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Select UCA Context & Type to Creation
 
@@ -150,6 +175,7 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 					queryKey: ["context-table-unsafe-control-actions"]
 				});
 				queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
+				queryClient.invalidateQueries({ queryKey: ["ucas-multi-select"] });
 				toast.success("Unsafe control action created.");
 			},
 			onError: err => {
@@ -188,6 +214,7 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 						unsafeControlActions={unsafeControlActions}
 						notUnsafeContexts={notUnsafeContexts}
 						toggleModal={handleToggleModalCreateUca}
+						deleteNotUnsafeContext={handleDeleteNotUnsafeContext}
 					/>
 				))}
 			</div>

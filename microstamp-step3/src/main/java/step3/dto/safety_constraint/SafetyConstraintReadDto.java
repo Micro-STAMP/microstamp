@@ -10,5 +10,6 @@ import java.util.UUID;
 public record SafetyConstraintReadDto(
         UUID id,
         String name,
+        String safety_constraint_code,
         UUID uca_id
 ) {}

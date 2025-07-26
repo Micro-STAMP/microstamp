@@ -6,7 +6,6 @@ import { IoWarningOutline as Step3Icon } from "react-icons/io5";
 import { PiTreeStructure as Step2Icon, PiCirclesFour as StepsIcon } from "react-icons/pi";
 import { RiArrowGoBackLine as Step4Icon } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import styles from "./AnalysisStepsMenu.module.css";
 
 interface AnalysisStepsMenuProps {
@@ -56,10 +55,7 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 						icon={Step4Icon}
 						variant="dark"
 						onClick={() => {
-							// navigate("loss-scenarios")
-							toast.info(
-								"Step 4 has not been implemented yet, but will be added soon."
-							);
+							navigate("loss-scenarios");
 						}}
 					>
 						Identify Loss Scenarios

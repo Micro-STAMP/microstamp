@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import step3.dto.unsafe_control_action.UcaCodeUpdateDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionCreateDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.service.UnsafeControlActionService;
@@ -52,6 +53,13 @@ public class UnsafeControlActionController {
     @GetMapping("/control-action/{controlActionId}")
     public ResponseEntity<List<UnsafeControlActionReadDto>> readAllUCAByControlActionId(@PathVariable UUID controlActionId) {
         return ResponseEntity.ok(unsafeControlActionService.readAllUCAByControlActionId(controlActionId));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UnsafeControlActionReadDto> updateUnsafeControlActionCode(@PathVariable UUID id, @RequestBody @Valid UcaCodeUpdateDto ucaCode) {
+        UnsafeControlActionReadDto updatedUCA = unsafeControlActionService.updateUcaCode(id, ucaCode.code());
+
+        return ResponseEntity.ok(updatedUCA);
     }
 
     @DeleteMapping("/{id}") @Transactional

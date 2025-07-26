@@ -8,7 +8,8 @@ enum IComponentType {
 	CONTROLLER = "CONTROLLER",
 	CONTROLLED_PROCESS = "CONTROLLED_PROCESS",
 	ACTUATOR = "ACTUATOR",
-	SENSOR = "SENSOR"
+	SENSOR = "SENSOR",
+	ENVIRONMENT = "ENVIRONMENT"
 }
 
 export { IComponentType };
@@ -34,7 +35,11 @@ const componentTypeToSelectOptionMap: Record<IComponentType, SelectOption> = {
 	[IComponentType.CONTROLLER]: componentTypeSelectOptions[0],
 	[IComponentType.CONTROLLED_PROCESS]: componentTypeSelectOptions[1],
 	[IComponentType.ACTUATOR]: componentTypeSelectOptions[2],
-	[IComponentType.SENSOR]: componentTypeSelectOptions[3]
+	[IComponentType.SENSOR]: componentTypeSelectOptions[3],
+	[IComponentType.ENVIRONMENT]: {
+		label: "Environment",
+		value: IComponentType.ENVIRONMENT
+	}
 };
 const componentTypeToSelectOption = (componentType: IComponentType): SelectOption => {
 	return componentTypeToSelectOptionMap[componentType];

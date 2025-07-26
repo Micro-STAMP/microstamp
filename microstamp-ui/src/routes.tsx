@@ -8,6 +8,7 @@ import { Login, Logout } from "@pages/Auth";
 import Home from "@pages/Home";
 import Layout from "@pages/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LossScenarios from "./pages/AnalysisSteps/Step4/LossScenarios";
 
 function AppRoutes() {
 	return (
@@ -41,6 +42,9 @@ function AppRoutes() {
 										path="unsafe-control-actions"
 										element={<UnsafeControlActions />}
 									/>
+								</Route>
+								<Route path="loss-scenarios">
+									<Route index element={<LossScenarios />} />
 								</Route>
 							</Route>
 						</Route>

@@ -49,7 +49,6 @@ function HazardsContainer({ analysisId }: HazardsContainerProps) {
 			fatherId: hazardData.father ? hazardData.father.value : null,
 			analysisId: analysisId
 		};
-		console.log(hazard);
 		await requestCreateHazard(hazard);
 	};
 

@@ -12,12 +12,14 @@ interface TableRowProps {
 	unsafeControlActions: IUnsafeControlActionReadDto[];
 	notUnsafeContexts: INotUnsafeContextReadDto[];
 	toggleModal: (context: IContext, type: IUCAType) => void;
+	deleteNotUnsafeContext: (id: string) => Promise<void>;
 }
 function TableRow({
 	context,
 	unsafeControlActions,
 	notUnsafeContexts,
-	toggleModal
+	toggleModal,
+	deleteNotUnsafeContext
 }: TableRowProps) {
 	return (
 		<div className={styles.table_row}>
@@ -34,6 +36,7 @@ function TableRow({
 						unsafeControlActions={unsafeControlActions}
 						notUnsafeContexts={notUnsafeContexts}
 						toggleModal={toggleModal}
+						deleteNotUnsafeContext={deleteNotUnsafeContext}
 					/>
 				</div>
 			))}

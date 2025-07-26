@@ -8,18 +8,21 @@ import {
 	ModalInputs,
 	ModalProps
 } from "@components/Modal/Templates";
-import { IInteractionFormData, IInteractionReadDto } from "@interfaces/IStep2";
+import { IComponentReadDto, IInteractionFormData, IInteractionReadDto } from "@interfaces/IStep2";
 import {
+	IInteractionType,
 	interactionTypesSelectOptions,
 	interactionTypeToSelectOption
 } from "@interfaces/IStep2/IInteraction/Enums";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
 import { toast } from "sonner";
 
 interface ModalInteractionProps extends ModalProps {
 	onSubmit: (interaction: IInteractionFormData) => Promise<void>;
 	title: string;
+	source: IComponentReadDto;
+	target: IComponentReadDto;
 	isLoading?: boolean;
 	interaction?: IInteractionReadDto;
 	btnText?: string;
@@ -31,8 +34,43 @@ function ModalInteraction({
 	title,
 	isLoading = false,
 	interaction,
+	source,
+	target,
 	btnText = "Confirm"
 }: ModalInteractionProps) {
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Get Valid Interaction Types
+
+	const getValidInteractionTypes = (
+		source: IComponentReadDto,
+		target: IComponentReadDto
+	): SelectOption[] => {
+		const sourceIsEnv = source.type.toString() === "Environment";
+		const targetIsEnv = target.type.toString() === "Environment";
+
+		let types: IInteractionType[] = [];
+
+		if (sourceIsEnv) {
+			types = [IInteractionType.PROCESS_INPUT, IInteractionType.DISTURBANCE];
+		} else if (targetIsEnv) {
+			types = [IInteractionType.PROCESS_OUTPUT];
+		} else {
+			types = [
+				IInteractionType.CONTROL_ACTION,
+				IInteractionType.FEEDBACK,
+				IInteractionType.COMMUNICATION_CHANNEL
+			];
+		}
+		return types.map(type => interactionTypeToSelectOption(type));
+	};
+
+	const interactionTypeOptions = useMemo(() => {
+		return getValidInteractionTypes(source, target);
+	}, [source, target, interaction, open]);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Interaction Data
+
 	const [interactionData, setInteractionData] = useState<IInteractionFormData>({
 		name: interaction?.name || "",
 		code: interaction?.code || "",
@@ -46,25 +84,36 @@ function ModalInteraction({
 			setInteractionData({
 				name: interaction.name,
 				code: interaction.code,
-				interactionType: interactionTypeToSelectOption(
-					interaction.interactionType
-				)
+				interactionType: interactionTypeToSelectOption(interaction.interactionType)
 			});
 		} else {
 			setInteractionData({
 				name: "",
 				code: "",
-				interactionType: interactionTypesSelectOptions[0]
+				interactionType: interactionTypeOptions[0]
 			});
 		}
 	}, [interaction]);
 
-	const handleSubmitInteraction = async () => {
+	useEffect(() => {
 		if (
-			!interactionData.name ||
-			!interactionData.code ||
-			!interactionData.interactionType
+			interactionData.interactionType &&
+			!interactionTypeOptions.find(
+				option => option.value === interactionData.interactionType?.value
+			)
 		) {
+			setInteractionData(data => ({
+				...data,
+				interactionType: interactionTypeOptions[0]
+			}));
+		}
+	}, [interactionTypeOptions]);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Submit Interaction
+
+	const handleSubmitInteraction = async () => {
+		if (!interactionData.name || !interactionData.code || !interactionData.interactionType) {
 			toast.warning("A required field is empty.");
 			return;
 		}
@@ -78,6 +127,8 @@ function ModalInteraction({
 		});
 		onClose();
 	};
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	return (
 		<ModalContainer open={open}>
@@ -101,7 +152,7 @@ function ModalInteraction({
 				/>
 				<Select
 					label="Type"
-					options={interactionTypesSelectOptions}
+					options={interactionTypeOptions}
 					onChange={(interaction: SelectOption | null) =>
 						setInteractionData({
 							...interactionData,

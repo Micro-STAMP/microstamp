@@ -12,7 +12,6 @@ services:
         volumes:
             - ./docker/provision/mysql/init:/docker-entrypoint-initdb.d
             - db:/var/lib/mysql
-
         environment:
             MYSQL_ROOT_PASSWORD: 123456
         healthcheck:
