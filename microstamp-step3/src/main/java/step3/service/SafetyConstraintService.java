@@ -37,4 +37,19 @@ public class SafetyConstraintService {
                 .map(mapper::toSafetyConstraintReadDto)
                 .toList();
     }
+
+    public SafetyConstraintReadDto updateSafetyConstraintCode(UUID id, String newCode) {
+        SafetyConstraint constraint = safetyConstraintRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Safety Constraint not found with id: " + id));
+
+        if (newCode == null || newCode.isBlank()) {
+            throw new IllegalArgumentException("New code cannot be null or blank");
+        }
+
+        constraint.setSafetyConstraintCode(newCode);
+        safetyConstraintRepository.save(constraint);
+
+        return mapper.toSafetyConstraintReadDto(constraint);
+    }
 }

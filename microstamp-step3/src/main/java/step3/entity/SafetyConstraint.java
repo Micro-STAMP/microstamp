@@ -20,6 +20,9 @@ public class SafetyConstraint {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
+    @Column(name = "safety_constraint_code", unique = true, length = 20)
+    private String safetyConstraintCode;
+
     @OneToOne @JoinColumn(name = "uca_id")
     UnsafeControlAction unsafeControlAction;
 }

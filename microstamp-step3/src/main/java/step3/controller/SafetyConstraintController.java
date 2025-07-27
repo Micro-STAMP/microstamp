@@ -1,9 +1,11 @@
 package step3.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import step3.dto.safety_constraint.SafetyConstraintCodeUpdateDto;
 import step3.dto.safety_constraint.SafetyConstraintReadDto;
 import step3.service.SafetyConstraintService;
 
@@ -32,5 +34,10 @@ public class SafetyConstraintController {
     @GetMapping
     public ResponseEntity<List<SafetyConstraintReadDto>> readAllSafetyConstraints() {
         return ResponseEntity.ok(safetyConstraintService.readAllSafetyConstraints());
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<SafetyConstraintReadDto> updateSafetyConstraintCode(@PathVariable UUID id, @RequestBody @Valid SafetyConstraintCodeUpdateDto newCode) {
+        return ResponseEntity.ok(safetyConstraintService.updateSafetyConstraintCode(id, newCode.code()));
     }
 }
