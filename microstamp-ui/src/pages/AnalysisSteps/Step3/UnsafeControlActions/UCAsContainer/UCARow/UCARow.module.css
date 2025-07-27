@@ -17,6 +17,13 @@
 		font-size: 1.6rem;
 		text-align: center;
 		text-wrap: pretty;
+
+		.uca_code,
+		.sc_code {
+			font-size: 1.3rem;
+			font-weight: 600;
+			color: var(--color-yellow);
+		}
 	}
 	.uca {
 		border-right: 2px solid var(--color-dark-gray);

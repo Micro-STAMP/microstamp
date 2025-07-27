@@ -14,7 +14,19 @@ const getSafetyConstraint = async (ucaId: string) => {
 		throw err;
 	}
 };
+const updateSafetyConstraintCode = async (scId: string, code: string) => {
+	try {
+		const res = await http.patch<ISafetyConstraintReadDto>(
+			`${SAFETY_CONTRAINTS_ENDPOINT}/${scId}`,
+			{ code: code }
+		);
+		return res.data;
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+};
 
-export { getSafetyConstraint };
+export { getSafetyConstraint, updateSafetyConstraintCode };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

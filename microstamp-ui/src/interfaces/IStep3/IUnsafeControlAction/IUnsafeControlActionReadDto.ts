@@ -6,6 +6,7 @@ interface IUnsafeControlActionReadDto {
 	name: string;
 	analysis_id: string;
 	hazard_code: string;
+	uca_code: string;
 	rule_code: string;
 	states: IStateReadDto[];
 	type: IUCAType;
