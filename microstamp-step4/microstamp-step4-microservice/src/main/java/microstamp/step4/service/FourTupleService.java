@@ -3,7 +3,7 @@ package microstamp.step4.service;
 import microstamp.step4.dto.fourtuple.FourTupleInsertDto;
 import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleUpdateDto;
-import microstamp.step4.dto.unsafecontrolcation.UnsafeControlActionFullReadDto;
+import microstamp.step4.dto.unsafecontrolaction.UnsafeControlActionFullReadDto;
 
 import java.util.List;
 import java.util.UUID;

@@ -2,7 +2,7 @@ package microstamp.step4.dto.export;
 
 import lombok.*;
 import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
-import microstamp.step4.dto.unsafecontrolcation.UnsafeControlActionFullReadDto;
+import microstamp.step4.dto.unsafecontrolaction.UnsafeControlActionFullReadDto;
 
 import java.util.List;
 import java.util.UUID;

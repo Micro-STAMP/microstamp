@@ -2,7 +2,7 @@ package microstamp.step4.mapper;
 
 import microstamp.step3.dto.unsafecontrolaction.UnsafeControlActionReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleReadDto;
-import microstamp.step4.dto.unsafecontrolcation.UnsafeControlActionFullReadDto;
+import microstamp.step4.dto.unsafecontrolaction.UnsafeControlActionFullReadDto;
 
 import java.util.List;
 

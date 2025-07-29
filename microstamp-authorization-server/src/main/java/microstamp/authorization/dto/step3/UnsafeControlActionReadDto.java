@@ -13,6 +13,7 @@ public record UnsafeControlActionReadDto(
         String name,
         String hazard_code,
         String rule_code,
+        String uca_code,
         List<StateReadDto> states,
         String type,
         String constraintName

@@ -1,4 +1,4 @@
-package microstamp.step4.dto.unsafecontrolcation;
+package microstamp.step4.dto.unsafecontrolaction;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

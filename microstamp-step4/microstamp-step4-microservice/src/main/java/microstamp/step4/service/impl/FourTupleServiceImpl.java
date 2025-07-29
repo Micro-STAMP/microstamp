@@ -10,7 +10,7 @@ import microstamp.step4.dto.fourtuple.FourTupleInsertDto;
 import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleUpdateDto;
-import microstamp.step4.dto.unsafecontrolcation.UnsafeControlActionFullReadDto;
+import microstamp.step4.dto.unsafecontrolaction.UnsafeControlActionFullReadDto;
 import microstamp.step4.entity.FourTuple;
 import microstamp.step4.exception.Step4IllegalArgumentException;
 import microstamp.step4.exception.Step4NotFoundException;

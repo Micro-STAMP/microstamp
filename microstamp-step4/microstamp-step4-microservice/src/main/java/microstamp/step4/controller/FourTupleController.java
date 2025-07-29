@@ -7,7 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import microstamp.step4.dto.fourtuple.FourTupleInsertDto;
 import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleUpdateDto;
-import microstamp.step4.dto.unsafecontrolcation.UnsafeControlActionFullReadDto;
+import microstamp.step4.dto.unsafecontrolaction.UnsafeControlActionFullReadDto;
 import microstamp.step4.exception.Step4NotFoundException;
 import microstamp.step4.service.FourTupleService;
 import org.springframework.http.HttpStatus;
