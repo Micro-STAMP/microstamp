@@ -5,8 +5,9 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.step4.dto.fourtuple.FourTupleInsertDto;
-import microstamp.step4.dto.fourtuple.FourTupleReadDto;
+import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleUpdateDto;
+import microstamp.step4.dto.unsafecontrolcation.UnsafeControlActionFullReadDto;
 import microstamp.step4.exception.Step4NotFoundException;
 import microstamp.step4.service.FourTupleService;
 import org.springframework.http.HttpStatus;
@@ -26,26 +27,33 @@ public class FourTupleController {
     private FourTupleService service;
 
     @GetMapping
-    public ResponseEntity<List<FourTupleReadDto>> findAll() {
+    public ResponseEntity<List<FourTupleFullReadDto>> findAll() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FourTupleReadDto> findById(@PathVariable(name = "id") UUID id) throws Step4NotFoundException {
+    public ResponseEntity<FourTupleFullReadDto> findById(@PathVariable(name = "id") UUID id) throws Step4NotFoundException {
         log.info("Request received to find 4-tuple by id {}", id);
 
         return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/analysis/{id}")
-    public ResponseEntity<List<FourTupleReadDto>> findByAnalysisId(@PathVariable(name = "id") UUID id) {
+    public ResponseEntity<List<FourTupleFullReadDto>> findByAnalysisId(@PathVariable(name = "id") UUID id) {
         log.info("Request received to find 4-tuple by analysis id {}", id);
 
         return new ResponseEntity<>(service.findByAnalysisId(id), HttpStatus.OK);
     }
 
+    @GetMapping("/analysis/{id}/unsafe-control-actions")
+    public ResponseEntity<List<UnsafeControlActionFullReadDto>> findByAnalysisIdSortedByUnsafeControlActions(@PathVariable(name = "id") UUID id) {
+        log.info("Request received to find all UCAs and 4-tuples by analysis id {}", id);
+
+        return new ResponseEntity<>(service.findByAnalysisIdSortedByUnsafeControlActions(id), HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<FourTupleReadDto> insert(@Valid @RequestBody FourTupleInsertDto fourTupleInsertDto) throws Step4NotFoundException {
+    public ResponseEntity<FourTupleFullReadDto> insert(@Valid @RequestBody FourTupleInsertDto fourTupleInsertDto) throws Step4NotFoundException {
         log.info("Request received to insert 4-tuple with information {}", fourTupleInsertDto);
 
         return new ResponseEntity<>(service.insert(fourTupleInsertDto), HttpStatus.CREATED);

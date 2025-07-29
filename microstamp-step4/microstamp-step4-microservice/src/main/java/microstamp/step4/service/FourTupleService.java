@@ -1,8 +1,9 @@
 package microstamp.step4.service;
 
 import microstamp.step4.dto.fourtuple.FourTupleInsertDto;
-import microstamp.step4.dto.fourtuple.FourTupleReadDto;
+import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleUpdateDto;
+import microstamp.step4.dto.unsafecontrolcation.UnsafeControlActionFullReadDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +15,7 @@ public interface FourTupleService {
      *
      * @return List<FourTupleReadDto> containing all 4-tuples in the database
      */
-    List<FourTupleReadDto> findAll();
+    List<FourTupleFullReadDto> findAll();
 
     /**
      * Find a 4-tuple by it UUID
@@ -22,14 +23,21 @@ public interface FourTupleService {
      * @param id The UUID from 4-tuple
      * @return FourTupleReadDto containing the information of the 4-tuple
      */
-    FourTupleReadDto findById(UUID id);
+    FourTupleFullReadDto findById(UUID id);
 
     /**
      * Find all 4-tuples from an analysis
      * @param id The id of the analysis
      * @return List<FourTupleReadDto> containing all 4-tuples found for the provided analysis id
      */
-    List<FourTupleReadDto> findByAnalysisId(UUID id);
+    List<FourTupleFullReadDto> findByAnalysisId(UUID id);
+
+    /**
+     * Find all UCAs and 4-tuples from an analysis
+     * @param id The id of the analysis
+     * @return List<UnsafeControlActionFullReadDto> containing all UCAs and all 4-tuples found for the provided analysis id
+     */
+    List<UnsafeControlActionFullReadDto> findByAnalysisIdSortedByUnsafeControlActions(UUID id);
 
     /**
      * Create a new record of 4-tuple
@@ -37,7 +45,7 @@ public interface FourTupleService {
      * @param fourTupleInsertDto The information of the new 4-tuple
      * @return FourTupleReadDto containing the information of the created 4-tuple
      */
-    FourTupleReadDto insert(FourTupleInsertDto fourTupleInsertDto);
+    FourTupleFullReadDto insert(FourTupleInsertDto fourTupleInsertDto);
 
     /**
      * Updates a 4-tuple
