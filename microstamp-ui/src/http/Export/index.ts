@@ -93,3 +93,26 @@ const getStep3PDF = async (analysisId: string) => {
 export { getStep3PDF };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
+
+// Get Step 4 PDF
+
+const STEP4_EXPORT_ENDPOINT = "step4/export/analysis";
+
+const getStep4PDF = async (analysisId: string) => {
+	try {
+		const res = await http.get<Blob>(`${STEP4_EXPORT_ENDPOINT}/${analysisId}/pdf`, {
+			headers: {
+				Accept: "application/pdf"
+			},
+			responseType: "blob"
+		});
+		return res.data;
+	} catch (err) {
+		console.error("Error fetching Step 4 PDF:", err);
+		throw new Error("Failed to fetch Step 4 PDF.");
+	}
+};
+
+export { getStep4PDF };
+
+/* - - - - - - - - - - - - - - - - - - - - - - */

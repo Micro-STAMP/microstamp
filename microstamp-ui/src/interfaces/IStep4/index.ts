@@ -5,9 +5,16 @@ import {
 	IFourTupleFormData,
 	IFourTupleInsertDto,
 	IFourTupleReadDto,
+	IFourTupleUCADto,
 	IFourTupleUpdateDto
 } from "./IFourTuple";
 
-export type { IFourTupleFormData, IFourTupleInsertDto, IFourTupleReadDto, IFourTupleUpdateDto };
+export type {
+	IFourTupleFormData,
+	IFourTupleInsertDto,
+	IFourTupleReadDto,
+	IFourTupleUCADto,
+	IFourTupleUpdateDto
+};
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

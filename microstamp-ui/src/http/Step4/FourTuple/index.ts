@@ -1,5 +1,10 @@
 import { http } from "@http/AxiosConfig";
-import { IFourTupleInsertDto, IFourTupleReadDto, IFourTupleUpdateDto } from "@interfaces/IStep4";
+import {
+	IFourTupleInsertDto,
+	IFourTupleReadDto,
+	IFourTupleUCADto,
+	IFourTupleUpdateDto
+} from "@interfaces/IStep4";
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -9,6 +14,17 @@ const getFourTuples = async (analysisId: string) => {
 	try {
 		const res = await http.get<IFourTupleReadDto[]>(
 			`${FOUR_TUPLES_ENDPOINT}/analysis/${analysisId}`
+		);
+		return res.data;
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+};
+const getFourTuplesByUCA = async (analysisId: string) => {
+	try {
+		const res = await http.get<IFourTupleUCADto[]>(
+			`${FOUR_TUPLES_ENDPOINT}/analysis/${analysisId}/unsafe-control-actions`
 		);
 		return res.data;
 	} catch (err) {
@@ -52,6 +68,13 @@ const deleteFourTuple = async (id: string) => {
 	}
 };
 
-export { createFourTuple, deleteFourTuple, getFourTuple, getFourTuples, updateFourTuple };
+export {
+	createFourTuple,
+	deleteFourTuple,
+	getFourTuple,
+	getFourTuples,
+	getFourTuplesByUCA,
+	updateFourTuple
+};
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

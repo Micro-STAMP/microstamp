@@ -4,8 +4,7 @@ import { ListItem as FourTuple } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
 import Loader from "@components/Loader";
 import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
-import { getUnsafeControlActionsByAnalysis } from "@http/Step3/UnsafeControlActions";
-import { getFourTuples } from "@http/Step4/FourTuple";
+import { getFourTuplesByUCA } from "@http/Step4/FourTuple";
 import { IFourTupleReadDto } from "@interfaces/IStep4";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -26,92 +25,48 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 		setModalFourTupleDetailsOpen(!modalFourTupleDetailsOpen);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle Get All Unsafe Control Actions
+	// * Handle List Four Tuples By UCA
 
 	const {
-		data: ucas,
-		isLoading: isLoadingUCAs,
-		isError: isErrorUCAs
+		data: ucasWithFourTuples,
+		isLoading,
+		isError
 	} = useQuery({
-		queryKey: ["all-unsafe-control-actions"],
-		queryFn: () => getUnsafeControlActionsByAnalysis(analysisId)
+		queryKey: ["four-tuples-by-uca", analysisId],
+		queryFn: () => getFourTuplesByUCA(analysisId)
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle List Four Tuples
 
-	const {
-		data: fourTuples,
-		isLoading: isLoadingFourTuples,
-		isError: isErrorFourTuples
-	} = useQuery({
-		queryKey: ["four-tuples", analysisId],
-		queryFn: () => getFourTuples(analysisId)
-	});
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Group Four Tuples by UCA
-
-	const groupFourTuplesByUCA = () => {
-		if (!ucas || !fourTuples) return [];
-
-		const ucaMap = new Map<string, string>();
-		ucas.forEach(uca => {
-			ucaMap.set(uca.id, uca.name);
-		});
-
-		const grouped = new Map<string, { ucaName: string; tuples: IFourTupleReadDto[] }>();
-		fourTuples.forEach(tuple => {
-			tuple.unsafeControlActionIds.forEach(ucaId => {
-				if (!grouped.has(ucaId)) {
-					grouped.set(ucaId, {
-						ucaName: ucaMap.get(ucaId) || `UCA ${ucaId}`,
-						tuples: []
-					});
-				}
-				grouped.get(ucaId)?.tuples.push(tuple);
-			});
-		});
-
-		return Array.from(grouped.entries()).map(([ucaId, group]) => ({
-			ucaId,
-			ucaName: group.ucaName,
-			tuples: group.tuples
-		}));
-	};
-
-	const groupedTuples = groupFourTuplesByUCA();
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-
-	if (isLoadingFourTuples || isLoadingUCAs) return <Loader />;
-	if (isErrorFourTuples || fourTuples === undefined || isErrorUCAs || ucas === undefined)
-		return <h1>Error</h1>;
+	if (isLoading) return <Loader />;
+	if (isError || ucasWithFourTuples === undefined) return <h1>Error</h1>;
 	return (
 		<>
 			<Container title="Scenarios by Unsafe Control Actions" justTitle>
 				<div className={styles.four_tuples_list}>
-					{groupedTuples.map(group => (
-						<div key={group.ucaId} className={styles.uca_section}>
-							<span className={styles.title}> - {group.ucaName}</span>
-							<ListWrapper>
-								{group.tuples.map(ft => (
-									<FourTuple.Root key={ft.id}>
-										<FourTuple.Name code={ft.code} name={ft.scenario} />
-										<FourTuple.Actions>
-											<IconButton
-												icon={InfoIcon}
-												onClick={() => {
-													setSelectedTuple(ft);
-													toggleModalFourTupleDetails();
-												}}
-											/>
-										</FourTuple.Actions>
-									</FourTuple.Root>
-								))}
-							</ListWrapper>
-						</div>
-					))}
+					{ucasWithFourTuples
+						.filter(uca => uca.fourTuples.length > 0)
+						.map(uca => (
+							<div key={uca.id} className={styles.uca_section}>
+								<span className={styles.title}> - {uca.name}</span>
+								<ListWrapper>
+									{uca.fourTuples.map(ft => (
+										<FourTuple.Root key={ft.id}>
+											<FourTuple.Name code={ft.code} name={ft.scenario} />
+											<FourTuple.Actions>
+												<IconButton
+													icon={InfoIcon}
+													onClick={() => {
+														setSelectedTuple(ft);
+														toggleModalFourTupleDetails();
+													}}
+												/>
+											</FourTuple.Actions>
+										</FourTuple.Root>
+									))}
+								</ListWrapper>
+							</div>
+						))}
 				</div>
 			</Container>
 			{selectedTuple && (
