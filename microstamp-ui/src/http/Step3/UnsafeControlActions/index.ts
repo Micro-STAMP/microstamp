@@ -52,6 +52,17 @@ const createUnsafeControlActionsByRule = async (ruleId: string) => {
 		throw new Error("Error creating unsafe control actions by rule.");
 	}
 };
+const updateUnsafeControlActionCode = async (ucaId: string, code: string) => {
+	try {
+		const res = await http.patch<IUnsafeControlActionReadDto>(`${UCA_ENDPOINT}/${ucaId}`, {
+			code: code
+		});
+		return res.data;
+	} catch (err) {
+		console.error(err);
+		throw new Error("Error updating unsafe control action code.");
+	}
+};
 const deleteUnsafeControlAction = async (id: string) => {
 	try {
 		await http.delete(`${UCA_ENDPOINT}/${id}`);
@@ -67,7 +78,8 @@ export {
 	deleteUnsafeControlAction,
 	getUnsafeControlAction,
 	getUnsafeControlActions,
-	getUnsafeControlActionsByAnalysis
+	getUnsafeControlActionsByAnalysis,
+	updateUnsafeControlActionCode
 };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

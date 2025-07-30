@@ -50,6 +50,11 @@ public class UnsafeControlActionController {
         return ResponseEntity.ok(unsafeControlActionService.readAllUnsafeControlActions());
     }
 
+    @GetMapping("/analysis/{analysisId}")
+    public ResponseEntity<List<UnsafeControlActionReadDto>> readAllUCAByAnalysisId(@PathVariable UUID analysisId) {
+        return ResponseEntity.ok(unsafeControlActionService.readAllUCAByAnalysisId(analysisId));
+    }
+
     @GetMapping("/control-action/{controlActionId}")
     public ResponseEntity<List<UnsafeControlActionReadDto>> readAllUCAByControlActionId(@PathVariable UUID controlActionId) {
         return ResponseEntity.ok(unsafeControlActionService.readAllUCAByControlActionId(controlActionId));

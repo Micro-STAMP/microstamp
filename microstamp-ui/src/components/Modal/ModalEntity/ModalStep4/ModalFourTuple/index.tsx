@@ -1,7 +1,7 @@
 import Button from "@components/Button";
-import { Input } from "@components/FormField";
-import UCAsMultiSelect from "@components/FormField/MultiSelect/UCAsMultiSelect";
+import { Input, MultiSelectSearch, Textarea } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
+import { ModalUCAsOptions } from "@components/Modal/ModalSelectOptions/Entities";
 import {
 	ModalButtons,
 	ModalContainer,
@@ -32,6 +32,12 @@ function ModalFourTuple({
 	isLoading = false,
 	btnText = "Confirm"
 }: ModalFourTupleProps) {
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Modal UCAs Options
+
+	const [modalUCAsOptionsOpen, setModalUCAsOptionsOpen] = useState(false);
+	const toggleModalUCAsOptions = () => setModalUCAsOptionsOpen(!modalUCAsOptionsOpen);
+
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Four Tuple Data
 
@@ -93,65 +99,90 @@ function ModalFourTuple({
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	return (
-		<ModalContainer open={open} size="large">
-			<ModalHeader onClose={onClose} title={title} />
-			<ModalInputs column="single">
-				<Input
-					label="Code"
-					value={tupleData.code}
-					onChange={(value: string) => setTupleData({ ...tupleData, code: value })}
-					required
-				/>
-				<Input
-					label="Scenario"
-					value={tupleData.scenario}
-					onChange={(value: string) => setTupleData({ ...tupleData, scenario: value })}
-					required
-				/>
-				<Input
-					label="Associated Causal Factor"
-					value={tupleData.associatedCausalFactor}
-					onChange={(value: string) =>
-						setTupleData({ ...tupleData, associatedCausalFactor: value })
-					}
-					required
-				/>
-				<Input
-					label="Recommendation"
-					value={tupleData.recommendation}
-					onChange={(value: string) =>
-						setTupleData({ ...tupleData, recommendation: value })
-					}
-					required
-				/>
-				<Input
-					label="Rationale"
-					value={tupleData.rationale}
-					onChange={(value: string) => setTupleData({ ...tupleData, rationale: value })}
-					required
-				/>
-				<UCAsMultiSelect
-					analysisId={analysisId}
-					ucas={tupleData.unsafeControlActions}
-					onChange={(ucas: SelectOption[]) =>
-						setTupleData({ ...tupleData, unsafeControlActions: ucas })
-					}
-				/>
-			</ModalInputs>
-			<ModalButtons>
-				<Button variant="dark" onClick={onClose} size="small" icon={ReturnIcon}>
-					Cancel
-				</Button>
-				<Button
-					onClick={handleSubmitFourTuple}
-					isLoading={isLoading}
-					size="small"
-					icon={CheckIcon}
-				>
-					{btnText}
-				</Button>
-			</ModalButtons>
-		</ModalContainer>
+		<>
+			<ModalContainer open={open} size="large">
+				<ModalHeader onClose={onClose} title={title} />
+				<ModalInputs column="double">
+					<ModalInputs column="single">
+						<Input
+							label="Code"
+							value={tupleData.code}
+							onChange={(value: string) =>
+								setTupleData({ ...tupleData, code: value })
+							}
+							required
+						/>
+						<MultiSelectSearch
+							label="Unsafe Control Actions"
+							values={tupleData.unsafeControlActions}
+							onSearch={toggleModalUCAsOptions}
+							onChange={(ucas: SelectOption[]) =>
+								setTupleData({ ...tupleData, unsafeControlActions: ucas })
+							}
+							truncate
+						/>
+					</ModalInputs>
+					<Textarea
+						label="Scenario"
+						value={tupleData.scenario}
+						onChange={(value: string) =>
+							setTupleData({ ...tupleData, scenario: value })
+						}
+						rows={3}
+						required
+					/>
+					<Textarea
+						label="Associated Causal Factor"
+						value={tupleData.associatedCausalFactor}
+						onChange={(value: string) =>
+							setTupleData({ ...tupleData, associatedCausalFactor: value })
+						}
+						rows={3}
+						required
+					/>
+					<Textarea
+						label="Recommendation"
+						value={tupleData.recommendation}
+						onChange={(value: string) =>
+							setTupleData({ ...tupleData, recommendation: value })
+						}
+						rows={3}
+						required
+					/>
+					<Textarea
+						label="Rationale"
+						value={tupleData.rationale}
+						onChange={(value: string) =>
+							setTupleData({ ...tupleData, rationale: value })
+						}
+						rows={3}
+						required
+					/>
+				</ModalInputs>
+				<ModalButtons>
+					<Button variant="dark" onClick={onClose} size="small" icon={ReturnIcon}>
+						Cancel
+					</Button>
+					<Button
+						onClick={handleSubmitFourTuple}
+						isLoading={isLoading}
+						size="small"
+						icon={CheckIcon}
+					>
+						{btnText}
+					</Button>
+				</ModalButtons>
+			</ModalContainer>
+			<ModalUCAsOptions
+				open={modalUCAsOptionsOpen}
+				onClose={toggleModalUCAsOptions}
+				analysisId={analysisId}
+				ucas={tupleData.unsafeControlActions}
+				onChange={(ucas: SelectOption[]) =>
+					setTupleData({ ...tupleData, unsafeControlActions: ucas })
+				}
+			/>
+		</>
 	);
 }
 
