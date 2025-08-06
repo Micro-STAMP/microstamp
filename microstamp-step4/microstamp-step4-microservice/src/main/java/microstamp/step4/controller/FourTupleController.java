@@ -52,6 +52,13 @@ public class FourTupleController {
         return new ResponseEntity<>(service.findByAnalysisIdSortedByUnsafeControlActions(id), HttpStatus.OK);
     }
 
+    @GetMapping("/unsafe-control-action/{ucaId}")
+    public ResponseEntity<UnsafeControlActionFullReadDto> findByUcaId(@PathVariable(name = "ucaId") UUID ucaId) {
+        log.info("Request received to find 4-tuple by UCA id {}", ucaId);
+
+        return new ResponseEntity<>(service.findByUcaId(ucaId), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<FourTupleFullReadDto> insert(@Valid @RequestBody FourTupleInsertDto fourTupleInsertDto) throws Step4NotFoundException {
         log.info("Request received to insert 4-tuple with information {}", fourTupleInsertDto);

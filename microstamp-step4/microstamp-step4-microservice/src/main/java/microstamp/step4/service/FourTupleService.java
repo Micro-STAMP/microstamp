@@ -40,6 +40,14 @@ public interface FourTupleService {
     List<UnsafeControlActionFullReadDto> findByAnalysisIdSortedByUnsafeControlActions(UUID id);
 
     /**
+     * Find all 4-tuples that contain a given UCA
+     *
+     * @param ucaId The id of the UCA
+     * @return List<FourTupleReadDto> containing all 4-tuples that contain the provided UCA
+     */
+    UnsafeControlActionFullReadDto findByUcaId(UUID ucaId);
+
+    /**
      * Create a new record of 4-tuple
      *
      * @param fourTupleInsertDto The information of the new 4-tuple

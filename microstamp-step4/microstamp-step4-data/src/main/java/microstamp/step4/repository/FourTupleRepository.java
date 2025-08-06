@@ -12,4 +12,6 @@ public interface FourTupleRepository extends JpaRepository<FourTuple, UUID> {
 
     List<FourTuple> findByAnalysisId(UUID id);
 
+    List<FourTuple> findByUnsafeControlActionsIs(UUID id);
+
 }

@@ -87,6 +87,19 @@ public class FourTupleServiceImpl implements FourTupleService {
                 .toList();
     }
 
+    public UnsafeControlActionFullReadDto findByUcaId(UUID ucaId) {
+        log.info("Finding 4-tuples by unsafe control action id {}", ucaId);
+
+        List<FourTupleReadDto> fourTuples = fourTupleRepository.findByUnsafeControlActionsIs(ucaId).stream()
+                .map(f -> FourTupleMapper.toDto(f, f.getUnsafeControlActions()))
+                .sorted(Comparator.comparing(FourTupleReadDto::getCode))
+                .toList();
+
+        UnsafeControlActionReadDto uca = microStampStep3Client.readUnsafeControlAction(ucaId);
+
+        return UnsafeControlActionMapper.toFullDto(uca, fourTuples);
+    }
+
     public FourTupleFullReadDto insert(FourTupleInsertDto fourTupleInsertDto) throws Step4NotFoundException {
         log.debug("Verifying if the 4-tuple insert is valid");
         if (Objects.isNull(fourTupleInsertDto)) {
