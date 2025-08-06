@@ -18,6 +18,9 @@ import microstamp.step4.mapper.FourTupleMapper;
 import microstamp.step4.mapper.UnsafeControlActionMapper;
 import microstamp.step4.repository.FourTupleRepository;
 import microstamp.step4.service.FourTupleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -57,6 +60,15 @@ public class FourTupleServiceImpl implements FourTupleService {
                 .map(f -> FourTupleMapper.toFullDto(f, fetchUCAsFromExistingFourTuple(f)))
                 .sorted(Comparator.comparing(FourTupleFullReadDto::getCode))
                 .toList();
+    }
+
+    public Page<FourTupleFullReadDto> findByAnalysisId(UUID id, int page, int size) {
+        log.info("Finding 4-tuple by the analysis id: {} with pagination", id);
+
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return fourTupleRepository
+                .findByAnalysisIdOrderByCode(id, pageable)
+                .map(f -> FourTupleMapper.toFullDto(f, fetchUCAsFromExistingFourTuple(f)));
     }
 
     public List<UnsafeControlActionFullReadDto> findByAnalysisIdSortedByUnsafeControlActions(UUID analysisId) {

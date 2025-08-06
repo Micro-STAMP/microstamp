@@ -10,6 +10,7 @@ import microstamp.step4.dto.fourtuple.FourTupleUpdateDto;
 import microstamp.step4.dto.unsafecontrolaction.UnsafeControlActionFullReadDto;
 import microstamp.step4.exception.Step4NotFoundException;
 import microstamp.step4.service.FourTupleService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +39,20 @@ public class FourTupleController {
         return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/analysis/{id}")
+    @GetMapping("/analysis/{id}/all")
     public ResponseEntity<List<FourTupleFullReadDto>> findByAnalysisId(@PathVariable(name = "id") UUID id) {
         log.info("Request received to find 4-tuple by analysis id {}", id);
 
         return new ResponseEntity<>(service.findByAnalysisId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/analysis/{id}")
+    public ResponseEntity<Page<FourTupleFullReadDto>> findByAnalysisId(@PathVariable(name = "id") UUID id,
+                                                                       @RequestParam(name = "page", defaultValue = "0") int page,
+                                                                       @RequestParam(name = "size", defaultValue = "10") int size) {
+        log.info("Request received to find 4-tuple by analysis id {} with pagination", id);
+
+        return new ResponseEntity<>(service.findByAnalysisId(id, page, size), HttpStatus.OK);
     }
 
     @GetMapping("/analysis/{id}/unsafe-control-actions")
