@@ -1,10 +1,12 @@
+import { IUnsafeControlActionReadDto } from "@interfaces/IStep3";
+
 interface IFourTupleReadDto {
 	id: string;
 	scenario: string;
 	associatedCausalFactor: string;
 	recommendation: string;
 	rationale: string;
-	unsafeControlActionIds: string[];
+	unsafeControlActions: IUnsafeControlActionReadDto[];
 	code: string;
 }
 

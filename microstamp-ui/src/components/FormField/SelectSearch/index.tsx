@@ -2,16 +2,16 @@ import { SelectOption } from "@components/FormField/Templates";
 import { BiSearch as SearchIcon } from "react-icons/bi";
 import styles from "./SelectSearch.module.css";
 
-interface SelectProps {
-	label: string;
+interface SelectSearchProps {
+	label?: string;
 	value: SelectOption | null;
 	onSearch: () => void;
 	disabled?: boolean;
 }
-function Select({ label, value, onSearch, disabled = false }: SelectProps) {
+function SelectSearch({ label, value, onSearch, disabled = false }: SelectSearchProps) {
 	return (
 		<label className={styles.select_search_label}>
-			<span className={styles.name}>{label}:</span>
+			{label && <span className={styles.name}>{label}:</span>}
 			<div className={`${styles.select_search_container} ${disabled && styles.disabled}`}>
 				<button
 					type="button"
@@ -32,4 +32,4 @@ function Select({ label, value, onSearch, disabled = false }: SelectProps) {
 	);
 }
 
-export default Select;
+export default SelectSearch;

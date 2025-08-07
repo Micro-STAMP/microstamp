@@ -7,6 +7,7 @@ import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalFourTuple } from "@components/Modal/ModalEntity";
 import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
+import Pagination from "@components/Pagination";
 import {
 	createFourTuple,
 	deleteFourTuple,
@@ -19,7 +20,7 @@ import {
 	IFourTupleReadDto,
 	IFourTupleUpdateDto
 } from "@interfaces/IStep4";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { BiInfoCircle as InfoIcon } from "react-icons/bi";
 import { toast } from "sonner";
@@ -118,26 +119,33 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle List Four Tuples
 
+	const [page, setPage] = useState(0);
 	const {
-		data: fourTuples,
+		data: fourTuplesPage,
 		isLoading,
-		isError
+		isError,
+		isPlaceholderData
 	} = useQuery({
-		queryKey: ["four-tuples", analysisId],
-		queryFn: () => getFourTuples(analysisId)
+		queryKey: ["four-tuples", page, analysisId],
+		queryFn: () => getFourTuples(analysisId, page),
+		placeholderData: keepPreviousData
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoading) return <Loader />;
-	if (isError || fourTuples === undefined) return <h1>Error</h1>;
+	if (isLoading && !isPlaceholderData) return <Loader />;
+	if (isError || fourTuplesPage === undefined) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Loss Scenarios" onClick={toggleModalCreateFourTuple}>
+			<Container title="All Loss Scenarios" onClick={toggleModalCreateFourTuple}>
 				<ListWrapper>
-					{fourTuples.map(ft => (
+					{fourTuplesPage.fourTuples.map(ft => (
 						<FourTuple.Root key={ft.id}>
-							<FourTuple.Name code={ft.code} name={ft.scenario} />
+							<FourTuple.Name
+								code={ft.code}
+								name={ft.scenario}
+								dependencies={ft.unsafeControlActions.map(uca => uca.uca_code)}
+							/>
 							<FourTuple.Actions>
 								<IconButton
 									icon={InfoIcon}
@@ -159,6 +167,13 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 							</FourTuple.Actions>
 						</FourTuple.Root>
 					))}
+					{fourTuplesPage.fourTuples.length > 0 && fourTuplesPage.totalPages > 1 && (
+						<Pagination
+							page={page}
+							changePage={setPage}
+							pages={fourTuplesPage.totalPages}
+						/>
+					)}
 				</ListWrapper>
 			</Container>
 			<ModalFourTuple

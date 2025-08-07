@@ -2,18 +2,45 @@ import { http } from "@http/AxiosConfig";
 import {
 	IFourTupleInsertDto,
 	IFourTupleReadDto,
-	IFourTupleUCADto,
-	IFourTupleUpdateDto
+	IFourTupleUpdateDto,
+	IUCAWithFourTuplesDto
 } from "@interfaces/IStep4";
+import { IFourTuplePaginationDto } from "@interfaces/IStep4/IFourTuple";
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
 
 const FOUR_TUPLES_ENDPOINT = "step4/four-tuples";
 
-const getFourTuples = async (analysisId: string) => {
+const getFourTuples = async (
+	analysisId: string,
+	page: number
+): Promise<IFourTuplePaginationDto> => {
 	try {
-		const res = await http.get<IFourTupleReadDto[]>(
-			`${FOUR_TUPLES_ENDPOINT}/analysis/${analysisId}`
+		const res = await http.get<{
+			totalPages: number;
+			number: number;
+			content: IFourTupleReadDto[];
+		}>(`${FOUR_TUPLES_ENDPOINT}/analysis/${analysisId}`, {
+			params: {
+				page: page,
+				size: 15
+			}
+		});
+
+		return {
+			totalPages: res.data.totalPages,
+			currentPage: res.data.number,
+			fourTuples: res.data.content
+		};
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+};
+const getFourTuplesByAnalysisUCAs = async (analysisId: string) => {
+	try {
+		const res = await http.get<IUCAWithFourTuplesDto[]>(
+			`${FOUR_TUPLES_ENDPOINT}/analysis/${analysisId}/unsafe-control-actions`
 		);
 		return res.data;
 	} catch (err) {
@@ -21,10 +48,10 @@ const getFourTuples = async (analysisId: string) => {
 		throw err;
 	}
 };
-const getFourTuplesByUCA = async (analysisId: string) => {
+const getFourTuplesByUCA = async (ucaId: string) => {
 	try {
-		const res = await http.get<IFourTupleUCADto[]>(
-			`${FOUR_TUPLES_ENDPOINT}/analysis/${analysisId}/unsafe-control-actions`
+		const res = await http.get<IUCAWithFourTuplesDto>(
+			`${FOUR_TUPLES_ENDPOINT}/unsafe-control-action/${ucaId}`
 		);
 		return res.data;
 	} catch (err) {
@@ -73,6 +100,7 @@ export {
 	deleteFourTuple,
 	getFourTuple,
 	getFourTuples,
+	getFourTuplesByAnalysisUCAs,
 	getFourTuplesByUCA,
 	updateFourTuple
 };

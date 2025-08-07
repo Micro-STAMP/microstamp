@@ -10,8 +10,16 @@ interface ModalUCAsOptionsProps extends ModalProps {
 	analysisId: string;
 	ucas: SelectOption[];
 	onChange: (ucas: SelectOption[]) => void;
+	multiple?: boolean;
 }
-function ModalUCAsOptions({ open, onClose, analysisId, ucas, onChange }: ModalUCAsOptionsProps) {
+function ModalUCAsOptions({
+	open,
+	onClose,
+	analysisId,
+	ucas,
+	onChange,
+	multiple = true
+}: ModalUCAsOptionsProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * UCAs to Select Options
 
@@ -25,7 +33,7 @@ function ModalUCAsOptions({ open, onClose, analysisId, ucas, onChange }: ModalUC
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle UCAs Options
 
-	const [ucasOptions, setucasOptions] = useState<SelectOption[]>([]);
+	const [ucasOptions, setUCAsOptions] = useState<SelectOption[]>([]);
 	const {
 		data: ucasList,
 		isLoading,
@@ -34,9 +42,10 @@ function ModalUCAsOptions({ open, onClose, analysisId, ucas, onChange }: ModalUC
 		queryKey: ["ucas-multi-select", analysisId],
 		queryFn: () => getUnsafeControlActionsByAnalysis(analysisId)
 	});
+
 	useEffect(() => {
 		if (ucasList) {
-			setucasOptions(ucasToSelectOptions(ucasList));
+			setUCAsOptions(ucasToSelectOptions(ucasList));
 		}
 	}, [ucasList]);
 
@@ -47,11 +56,15 @@ function ModalUCAsOptions({ open, onClose, analysisId, ucas, onChange }: ModalUC
 			<ModalSelectOptions
 				open={open && !isLoading && !isError}
 				onClose={onClose}
-				title={"Select the Unsafe Control Actions"}
+				title={
+					multiple
+						? "Select the Unsafe Control Actions"
+						: "Select the Unsafe Control Action"
+				}
 				onChange={onChange}
 				selectedOptions={ucas}
 				options={ucasOptions}
-				multiple
+				multiple={multiple}
 			/>
 		</>
 	);

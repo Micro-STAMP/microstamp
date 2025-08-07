@@ -2,13 +2,18 @@ import IconButton from "@components/Button/IconButton";
 import Container from "@components/Container";
 import { ListItem as FourTuple } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
+import { SelectSearch } from "@components/FormField";
+import { SelectOption } from "@components/FormField/Templates";
 import Loader from "@components/Loader";
 import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
+import { ModalUCAsOptions } from "@components/Modal/ModalSelectOptions/Entities";
+import { getUnsafeControlActionsByAnalysis } from "@http/Step3/UnsafeControlActions";
 import { getFourTuplesByUCA } from "@http/Step4/FourTuple";
 import { IFourTupleReadDto } from "@interfaces/IStep4";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { BiInfoCircle as InfoIcon } from "react-icons/bi";
+import { MdSearchOff as NoResulIcon } from "react-icons/md";
 import styles from "./FourTupleByUCAsContainer.module.css";
 
 interface FourTupleByUCAsContainerProps {
@@ -25,48 +30,90 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 		setModalFourTupleDetailsOpen(!modalFourTupleDetailsOpen);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Modal UCAs Options
+
+	const [modalUCAsOptionsOpen, setModalUCAsOptionsOpen] = useState(false);
+	const toggleModalUCAsOptions = () => setModalUCAsOptionsOpen(!modalUCAsOptionsOpen);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle UCAs Search
+
+	const [selectedUCA, setSelectedUCA] = useState<SelectOption | null>(null);
+	const { data: ucasList, isLoading: isLoadingUcas } = useQuery({
+		queryKey: ["ucas-multi-select", analysisId],
+		queryFn: () => getUnsafeControlActionsByAnalysis(analysisId)
+	});
+
+	useEffect(() => {
+		if (ucasList && ucasList.length > 0 && !selectedUCA) {
+			const firstUCA = {
+				label: `${ucasList[0].uca_code}: ${ucasList[0].name}`,
+				value: ucasList[0].id
+			};
+			setSelectedUCA(firstUCA);
+		}
+	}, [ucasList, selectedUCA]);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle List Four Tuples By UCA
 
 	const {
-		data: ucasWithFourTuples,
+		data: ucaWithFourTuples,
 		isLoading,
-		isError
+		isError,
+		isPlaceholderData
 	} = useQuery({
-		queryKey: ["four-tuples-by-uca", analysisId],
-		queryFn: () => getFourTuplesByUCA(analysisId)
+		queryKey: ["four-tuples-by-uca", selectedUCA, analysisId],
+		queryFn: () => getFourTuplesByUCA(selectedUCA!.value),
+		placeholderData: keepPreviousData,
+		enabled: !!selectedUCA
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoading) return <Loader />;
-	if (isError || ucasWithFourTuples === undefined) return <h1>Error</h1>;
+	if (isLoadingUcas) return <Loader />;
+	if (isError || !selectedUCA) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Scenarios by Unsafe Control Actions" justTitle>
+			<Container title="Scenarios by Unsafe Control Action" justTitle>
 				<div className={styles.four_tuples_list}>
-					{ucasWithFourTuples
-						.filter(uca => uca.fourTuples.length > 0)
-						.map(uca => (
-							<div key={uca.id} className={styles.uca_section}>
-								<span className={styles.title}> - {uca.name}</span>
-								<ListWrapper>
-									{uca.fourTuples.map(ft => (
-										<FourTuple.Root key={ft.id}>
-											<FourTuple.Name code={ft.code} name={ft.scenario} />
-											<FourTuple.Actions>
-												<IconButton
-													icon={InfoIcon}
-													onClick={() => {
-														setSelectedTuple(ft);
-														toggleModalFourTupleDetails();
-													}}
-												/>
-											</FourTuple.Actions>
-										</FourTuple.Root>
-									))}
-								</ListWrapper>
-							</div>
-						))}
+					<SelectSearch
+						label="Select the Unsafe Control Action"
+						value={selectedUCA}
+						onSearch={toggleModalUCAsOptions}
+					/>
+					{isLoading && !isPlaceholderData ? (
+						<Loader />
+					) : (
+						<>
+							{ucaWithFourTuples && ucaWithFourTuples.fourTuples.length > 0 ? (
+								<div key={ucaWithFourTuples?.id} className={styles.uca_section}>
+									<span className={styles.title}> Scenarios:</span>
+									<ListWrapper>
+										{ucaWithFourTuples?.fourTuples.map(ft => (
+											<FourTuple.Root key={ft.id}>
+												<FourTuple.Name code={ft.code} name={ft.scenario} />
+												<FourTuple.Actions>
+													<IconButton
+														icon={InfoIcon}
+														onClick={() => {
+															setSelectedTuple(ft);
+															toggleModalFourTupleDetails();
+														}}
+													/>
+												</FourTuple.Actions>
+											</FourTuple.Root>
+										))}
+									</ListWrapper>
+								</div>
+							) : (
+								<div className={styles.message}>
+									<NoResulIcon />
+									No scenario identified for this UCA.
+								</div>
+							)}
+						</>
+					)}
 				</div>
 			</Container>
 			{selectedTuple && (
@@ -76,6 +123,14 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 					onClose={toggleModalFourTupleDetails}
 				/>
 			)}
+			<ModalUCAsOptions
+				open={modalUCAsOptionsOpen}
+				onClose={toggleModalUCAsOptions}
+				analysisId={analysisId}
+				ucas={[selectedUCA]}
+				onChange={(ucas: SelectOption[]) => setSelectedUCA(ucas[0])}
+				multiple={false}
+			/>
 		</>
 	);
 }

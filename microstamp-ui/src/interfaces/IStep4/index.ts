@@ -5,16 +5,16 @@ import {
 	IFourTupleFormData,
 	IFourTupleInsertDto,
 	IFourTupleReadDto,
-	IFourTupleUCADto,
-	IFourTupleUpdateDto
+	IFourTupleUpdateDto,
+	IUCAWithFourTuplesDto
 } from "./IFourTuple";
 
 export type {
 	IFourTupleFormData,
 	IFourTupleInsertDto,
 	IFourTupleReadDto,
-	IFourTupleUCADto,
-	IFourTupleUpdateDto
+	IFourTupleUpdateDto,
+	IUCAWithFourTuplesDto
 };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

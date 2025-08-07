@@ -23,8 +23,8 @@ function LossScenarios() {
 	return (
 		<>
 			<AnalysisHeader analysisId={id} icon="step4" />
-			<FourTupleContainer analysisId={id} />
 			<FourTupleByUCAsContainer analysisId={id} />
+			<FourTupleContainer analysisId={id} />
 			<PageActions>
 				<Button variant="dark" icon={PdfIcon} onClick={toggleModalStep4Pdf}>
 					Export Step 4
