@@ -18,8 +18,10 @@ const getUnsafeControlActions = async (controlActionId: string) => {
 };
 const getUnsafeControlActionsByAnalysis = async (analysisId: string) => {
 	try {
-		const res = await http.get<IUnsafeControlActionReadDto[]>(`${UCA_ENDPOINT}`);
-		return res.data.filter(uca => uca.analysis_id === analysisId);
+		const res = await http.get<IUnsafeControlActionReadDto[]>(
+			`${UCA_ENDPOINT}/analysis/${analysisId}`
+		);
+		return res.data;
 	} catch (err) {
 		console.error(err);
 		throw err;

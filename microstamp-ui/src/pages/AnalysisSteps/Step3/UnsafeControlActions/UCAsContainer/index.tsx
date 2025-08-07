@@ -113,7 +113,7 @@ function UCAsContainer({ controlAction }: UCAsContainerProps) {
 			mutationFn: ({ code, constraintId }: { constraintId: string; code: string }) =>
 				updateSafetyConstraintCode(constraintId, code),
 			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ["associated-safety-constraint"] });
+				queryClient.invalidateQueries({ queryKey: ["unsafe-control-actions"] });
 				toast.success("Constraint code updated.");
 			},
 			onError: err => {

@@ -10,6 +10,9 @@ interface IUnsafeControlActionReadDto {
 	rule_code: string;
 	states: IStateReadDto[];
 	type: IUCAType;
+	constraintName: string;
+	constraint_code: string;
+	constraint_id: string;
 }
 
 export type { IUnsafeControlActionReadDto };
