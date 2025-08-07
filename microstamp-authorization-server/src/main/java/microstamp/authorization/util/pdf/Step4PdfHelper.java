@@ -1,6 +1,10 @@
 package microstamp.authorization.util.pdf;
 
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.colors.WebColors;
+import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Link;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.UnitValue;
@@ -42,15 +46,26 @@ public class Step4PdfHelper {
                     fourTuple.getRationale()
             );
 
-            String ucaCodes = fourTuple.getUnsafeControlActions() == null || fourTuple.getUnsafeControlActions().isEmpty()
-                    ? ""
-                    : fourTuple.getUnsafeControlActions().stream()
-                    .map(uca -> "[" + uca.uca_code() + "]")
-                    .collect(Collectors.joining(" "));
+//            String ucaCodes = fourTuple.getUnsafeControlActions() == null || fourTuple.getUnsafeControlActions().isEmpty()
+//                    ? ""
+//                    : fourTuple.getUnsafeControlActions().stream()
+//                    .map(uca -> "[" + uca.uca_code() + "]")
+//                    .collect(Collectors.joining(" "));
+            Paragraph ucaCodeContent = new Paragraph();
+
+            if (fourTuple.getUnsafeControlActions() != null && !fourTuple.getUnsafeControlActions().isEmpty()) {
+                fourTuple.getUnsafeControlActions().stream()
+                        .map(uca -> {
+                            Link ucaLink = new Link("[" + uca.uca_code() + "]", PdfAction.createGoTo(uca.uca_code()));
+                            ucaLink.setFontColor(WebColors.getRGBColor("#b4894d"));
+                            return ucaLink;
+                        })
+                        .forEach(ucaLink -> ucaCodeContent.add(ucaLink).add(" "));
+            }
 
             table.addCell(fourTuple.getCode());
             table.addCell(description);
-            table.addCell(ucaCodes);
+            table.addCell(ucaCodeContent);
         }
 
         document.add(table);

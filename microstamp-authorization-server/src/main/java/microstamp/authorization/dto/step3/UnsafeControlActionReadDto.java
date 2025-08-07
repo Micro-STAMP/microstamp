@@ -16,6 +16,7 @@ public record UnsafeControlActionReadDto(
         String uca_code,
         List<StateReadDto> states,
         String type,
-        String constraintName
+        String constraintName,
+        String constraint_code
 ) {
 }
