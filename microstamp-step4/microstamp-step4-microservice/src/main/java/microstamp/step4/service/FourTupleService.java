@@ -4,6 +4,7 @@ import microstamp.step4.dto.fourtuple.FourTupleInsertDto;
 import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleUpdateDto;
 import microstamp.step4.dto.unsafecontrolaction.UnsafeControlActionFullReadDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,11 +34,29 @@ public interface FourTupleService {
     List<FourTupleFullReadDto> findByAnalysisId(UUID id);
 
     /**
+     * Find all 4-tuples from an analysis with pagination
+     *
+     * @param id The id of the analysis
+     * @param page The page number to retrieve
+     * @param size The number of records per page
+     * @return Page<FourTupleReadDto> containing the paginated 4-tuples found for the provided analysis id
+     */
+    Page<FourTupleFullReadDto> findByAnalysisId(UUID id, int page, int size);
+
+    /**
      * Find all UCAs and 4-tuples from an analysis
      * @param id The id of the analysis
      * @return List<UnsafeControlActionFullReadDto> containing all UCAs and all 4-tuples found for the provided analysis id
      */
     List<UnsafeControlActionFullReadDto> findByAnalysisIdSortedByUnsafeControlActions(UUID id);
+
+    /**
+     * Find all 4-tuples that contain a given UCA
+     *
+     * @param ucaId The id of the UCA
+     * @return List<FourTupleReadDto> containing all 4-tuples that contain the provided UCA
+     */
+    UnsafeControlActionFullReadDto findByUcaId(UUID ucaId);
 
     /**
      * Create a new record of 4-tuple

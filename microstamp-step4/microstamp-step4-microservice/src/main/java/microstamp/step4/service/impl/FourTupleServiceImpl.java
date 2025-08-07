@@ -18,6 +18,9 @@ import microstamp.step4.mapper.FourTupleMapper;
 import microstamp.step4.mapper.UnsafeControlActionMapper;
 import microstamp.step4.repository.FourTupleRepository;
 import microstamp.step4.service.FourTupleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -59,6 +62,15 @@ public class FourTupleServiceImpl implements FourTupleService {
                 .toList();
     }
 
+    public Page<FourTupleFullReadDto> findByAnalysisId(UUID id, int page, int size) {
+        log.info("Finding 4-tuple by the analysis id: {} with pagination", id);
+
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return fourTupleRepository
+                .findByAnalysisIdOrderByCode(id, pageable)
+                .map(f -> FourTupleMapper.toFullDto(f, fetchUCAsFromExistingFourTuple(f)));
+    }
+
     public List<UnsafeControlActionFullReadDto> findByAnalysisIdSortedByUnsafeControlActions(UUID analysisId) {
         log.info("Finding all UCAs and 4-tuples by analysis id {}", analysisId);
 
@@ -85,6 +97,19 @@ public class FourTupleServiceImpl implements FourTupleService {
                 .map(uca -> UnsafeControlActionMapper
                         .toFullDto(uca, ucaIdToFourTuples.getOrDefault(uca.getId(), List.of())))
                 .toList();
+    }
+
+    public UnsafeControlActionFullReadDto findByUcaId(UUID ucaId) {
+        log.info("Finding 4-tuples by unsafe control action id {}", ucaId);
+
+        List<FourTupleReadDto> fourTuples = fourTupleRepository.findByUnsafeControlActionsIs(ucaId).stream()
+                .map(f -> FourTupleMapper.toDto(f, f.getUnsafeControlActions()))
+                .sorted(Comparator.comparing(FourTupleReadDto::getCode))
+                .toList();
+
+        UnsafeControlActionReadDto uca = microStampStep3Client.readUnsafeControlAction(ucaId);
+
+        return UnsafeControlActionMapper.toFullDto(uca, fourTuples);
     }
 
     public FourTupleFullReadDto insert(FourTupleInsertDto fourTupleInsertDto) throws Step4NotFoundException {
