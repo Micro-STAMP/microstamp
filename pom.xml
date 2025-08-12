@@ -21,6 +21,7 @@
         <module>microstamp-step3</module>
         <module>microstamp-step4</module>
         <module>microstamp-ui</module>
+        <module>microstamp-step4-new</module>
     </modules>
 
     <properties>

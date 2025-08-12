@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import step3.dto.unsafe_control_action.UcaCodeUpdateDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionCreateDto;
+import step3.dto.unsafe_control_action.UnsafeControlActionFullReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.service.UnsafeControlActionService;
 
@@ -43,6 +44,11 @@ public class UnsafeControlActionController {
     @GetMapping("/{id}")
     public ResponseEntity<UnsafeControlActionReadDto> readUnsafeControlAction(@PathVariable UUID id) {
         return  ResponseEntity.ok(unsafeControlActionService.readUnsafeControlAction(id));
+    }
+
+    @GetMapping("/full/{id}")
+    public ResponseEntity<UnsafeControlActionFullReadDto> readFullUnsafeControlAction(@PathVariable UUID id) {
+        return  ResponseEntity.ok(unsafeControlActionService.readFullUnsafeControlAction(id));
     }
 
     @GetMapping
