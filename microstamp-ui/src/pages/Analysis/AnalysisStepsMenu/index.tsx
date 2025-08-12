@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { ModalSelectControlAction } from "@components/Modal";
+import { ModalSelectControlAction, ModalSelectStep4 } from "@components/Modal";
 import { useState } from "react";
 import { GoGoal as Step1Icon } from "react-icons/go";
 import { IoWarningOutline as Step3Icon } from "react-icons/io5";
@@ -17,6 +17,9 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 	const [modalSelectControlActionOpen, setModalSelectControlActionOpen] = useState(false);
 	const toggleModalSelectControlAction = () =>
 		setModalSelectControlActionOpen(!modalSelectControlActionOpen);
+
+	const [modalSelectStep4Open, setModalSelectStep4Open] = useState(false);
+	const toggleModalSelectStep4 = () => setModalSelectStep4Open(!modalSelectStep4Open);
 
 	return (
 		<>
@@ -55,7 +58,7 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 						icon={Step4Icon}
 						variant="dark"
 						onClick={() => {
-							navigate("loss-scenarios");
+							toggleModalSelectStep4();
 						}}
 					>
 						Identify Loss Scenarios
@@ -66,6 +69,11 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 				analysisId={analysisId}
 				open={modalSelectControlActionOpen}
 				onClose={toggleModalSelectControlAction}
+			/>
+			<ModalSelectStep4
+				open={modalSelectStep4Open}
+				onClose={toggleModalSelectStep4}
+				analysisId={analysisId}
 			/>
 		</>
 	);

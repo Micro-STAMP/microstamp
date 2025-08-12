@@ -21,12 +21,14 @@ interface AnalysisHeaderProps {
 	analysisId: string;
 	component?: string;
 	controlAction?: string;
+	uca?: string;
 	icon?: AnalysisIconType;
 }
 function AnalysisHeader({
 	analysisId,
 	component,
 	controlAction,
+	uca,
 	icon = "default"
 }: AnalysisHeaderProps) {
 	const navigate = useNavigate();
@@ -54,6 +56,12 @@ function AnalysisHeader({
 					<div className={styles.component_name}>
 						<strong>Control Action: </strong>
 						<span>{controlAction}</span>
+					</div>
+				)}
+				{uca && (
+					<div className={styles.component_name}>
+						<strong>UCA: </strong>
+						<span>{uca}</span>
 					</div>
 				)}
 			</div>

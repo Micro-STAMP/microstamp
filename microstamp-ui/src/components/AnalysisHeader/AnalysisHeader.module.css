@@ -6,20 +6,41 @@
 	border-radius: var(--radius3);
 	border: var(--border3);
 	box-shadow: var(--shadow25);
+	overflow: hidden;
 
 	.analysis {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		gap: 1.2rem;
 		font-size: 1.6rem;
 		text-shadow: var(--shadow25);
 		padding: 0 1.6rem;
+		width: 100%;
+		min-width: 0;
 
 		.analysis_icon {
 			color: var(--color-yellow);
 			font-size: 2rem;
 			min-width: 2rem;
+			flex-shrink: 0;
+		}
+
+		.analysis_name,
+		.component_name {
+			display: flex;
+			align-items: center;
+			gap: 0.4rem;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			min-width: 0;
+			flex-shrink: 1;
+
+			span {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
 		}
 
 		.analysis_name {
@@ -28,6 +49,7 @@
 			strong {
 				font-weight: 600;
 				color: var(--color-yellow);
+				flex-shrink: 0; /* Mantém o label "Analysis:" sempre visível */
 			}
 		}
 
@@ -35,6 +57,7 @@
 			strong {
 				font-weight: 600;
 				color: var(--color-yellow);
+				flex-shrink: 0; /* Mantém os labels sempre visíveis */
 			}
 		}
 	}
@@ -49,6 +72,7 @@
 		font-weight: 500;
 		padding: 0.8rem 1.4rem;
 		font-size: 1.4rem;
+		flex-shrink: 0;
 
 		.icon {
 			font-size: 1.6rem;
@@ -71,6 +95,7 @@
 		flex-direction: column;
 		align-items: center;
 		padding: 1.2rem 0;
+
 		.back_button {
 			span {
 				display: flex;
@@ -83,7 +108,10 @@
 			justify-content: center;
 			text-align: center;
 
-			.analysis_name {
+			.analysis_name,
+			.component_name {
+				width: 100%;
+				justify-content: center;
 				border-left: 0px solid;
 				padding: 0.8rem 0;
 			}
