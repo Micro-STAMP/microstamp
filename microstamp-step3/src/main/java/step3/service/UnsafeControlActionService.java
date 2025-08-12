@@ -8,6 +8,7 @@ import step3.dto.mapper.UnsafeControlActionMapper;
 import step3.dto.step2.ControlActionReadDto;
 import step3.dto.step2.StateReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionCreateDto;
+import step3.dto.unsafe_control_action.UnsafeControlActionFullReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.entity.Rule;
 import step3.entity.SafetyConstraint;
@@ -116,6 +117,16 @@ public class UnsafeControlActionService {
         this.verifyChanges(uca);
 
         return mapper.toUcaReadDto(uca);
+    }
+
+    public UnsafeControlActionFullReadDto readFullUnsafeControlAction(UUID id) {
+        UnsafeControlAction uca = unsafeControlActionRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Unsafe control action not found with id " + id));
+
+        this.verifyChanges(uca);
+
+        return mapper.toUcaFullReadDto(uca);
     }
 
     public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {

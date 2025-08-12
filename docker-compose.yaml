@@ -162,6 +162,27 @@ services:
         networks:
             - main
 
+    step4-new:
+        build:
+            context: ./microstamp-step4-new
+        ports:
+            - "8085:8085"
+        depends_on:
+            service-registry:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f -s -w '%{http_code}%' http://step4-new:8085 | grep -q '401'"
+            interval: 5s
+            retries: 5
+            start_period: 3s
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step4-new
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:9000
+            - CORS_WHITELIST=http://api-gateway:9191,http://127.0.0.1:5173
+        networks:
+            - main
+
     ui:
         build:
             context: ./microstamp-ui
