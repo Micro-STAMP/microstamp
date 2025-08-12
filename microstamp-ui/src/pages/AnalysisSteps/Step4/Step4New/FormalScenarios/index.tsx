@@ -4,6 +4,7 @@ import Loader from "@components/Loader";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
 import { useQuery } from "@tanstack/react-query";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
+import HighLevelScenariosContainer from "./HighLevelScenariosContainer";
 
 function FormalScenarios() {
 	const { id } = useParams();
@@ -26,9 +27,7 @@ function FormalScenarios() {
 	return (
 		<>
 			<AnalysisHeader analysisId={id} uca={uca.name} icon="step4" />
-			<Container title="4.1 Identify High-Level Scenarios" justTitle>
-				<></>
-			</Container>
+			<HighLevelScenariosContainer ucaId={ucaId} />
 			<Container title="4.2 Identify High-Level Solutions" justTitle>
 				<></>
 			</Container>
