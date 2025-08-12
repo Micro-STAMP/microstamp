@@ -7,6 +7,7 @@ import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalFourTuple } from "@components/Modal/ModalEntity";
 import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
+import NoResultsMessage from "@components/NoResultsMessage";
 import Pagination from "@components/Pagination";
 import {
 	createFourTuple,
@@ -49,6 +50,7 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 		mutationFn: (tuple: IFourTupleInsertDto) => createFourTuple(tuple),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["four-tuples"] });
+			queryClient.invalidateQueries({ queryKey: ["four-tuples-by-uca"] });
 			toast.success("Loss scenario created.");
 		},
 		onError: err => {
@@ -75,6 +77,7 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 			updateFourTuple(id, tuple),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["four-tuples"] });
+			queryClient.invalidateQueries({ queryKey: ["four-tuples-by-uca"] });
 			toast.success("Loss scenario updated.");
 		},
 		onError: err => {
@@ -102,6 +105,7 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 		mutationFn: (id: string) => deleteFourTuple(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["four-tuples"] });
+			queryClient.invalidateQueries({ queryKey: ["four-tuples-by-uca"] });
 			toast.success("Loss scenario deleted.");
 		},
 		onError: err => {
@@ -133,46 +137,59 @@ function FourTupleContainer({ analysisId }: FourTupleContainerProps) {
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoading && !isPlaceholderData) return <Loader />;
-	if (isError || fourTuplesPage === undefined) return <h1>Error</h1>;
+	if (isError) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="All Loss Scenarios" onClick={toggleModalCreateFourTuple}>
+			<Container title="Identified Loss Scenarios" onClick={toggleModalCreateFourTuple}>
 				<ListWrapper>
-					{fourTuplesPage.fourTuples.map(ft => (
-						<FourTuple.Root key={ft.id}>
-							<FourTuple.Name
-								code={ft.code}
-								name={ft.scenario}
-								dependencies={ft.unsafeControlActions.map(uca => uca.uca_code)}
-							/>
-							<FourTuple.Actions>
-								<IconButton
-									icon={InfoIcon}
-									onClick={() => {
-										setSelectedTuple(ft);
-										toggleModalFourTupleDetails();
-									}}
-								/>
-								<DualButton
-									onEdit={() => {
-										setSelectedTuple(ft);
-										toggleModalUpdateFourTuple();
-									}}
-									onDelete={() => {
-										setSelectedTuple(ft);
-										toggleModalDeleteFourTuple();
-									}}
-								/>
-							</FourTuple.Actions>
-						</FourTuple.Root>
-					))}
-					{fourTuplesPage.fourTuples.length > 0 && fourTuplesPage.totalPages > 1 && (
-						<Pagination
-							page={page}
-							changePage={setPage}
-							pages={fourTuplesPage.totalPages}
-						/>
+					{isLoading && !isPlaceholderData ? (
+						<Loader />
+					) : (
+						<>
+							{fourTuplesPage && fourTuplesPage.fourTuples.length > 0 ? (
+								<>
+									{fourTuplesPage.fourTuples.map(ft => (
+										<FourTuple.Root key={ft.id}>
+											<FourTuple.Name
+												code={ft.code}
+												name={ft.scenario}
+												dependencies={ft.unsafeControlActions.map(
+													uca => uca.uca_code
+												)}
+											/>
+											<FourTuple.Actions>
+												<IconButton
+													icon={InfoIcon}
+													onClick={() => {
+														setSelectedTuple(ft);
+														toggleModalFourTupleDetails();
+													}}
+												/>
+												<DualButton
+													onEdit={() => {
+														setSelectedTuple(ft);
+														toggleModalUpdateFourTuple();
+													}}
+													onDelete={() => {
+														setSelectedTuple(ft);
+														toggleModalDeleteFourTuple();
+													}}
+												/>
+											</FourTuple.Actions>
+										</FourTuple.Root>
+									))}
+									{fourTuplesPage.totalPages > 1 && (
+										<Pagination
+											page={page}
+											changePage={setPage}
+											pages={fourTuplesPage.totalPages}
+										/>
+									)}
+								</>
+							) : (
+								<NoResultsMessage message="No loss scenarios found." />
+							)}
+						</>
 					)}
 				</ListWrapper>
 			</Container>

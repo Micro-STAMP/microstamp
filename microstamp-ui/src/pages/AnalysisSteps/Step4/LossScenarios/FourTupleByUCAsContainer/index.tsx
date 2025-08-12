@@ -7,13 +7,13 @@ import { SelectOption } from "@components/FormField/Templates";
 import Loader from "@components/Loader";
 import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
 import { ModalUCAsOptions } from "@components/Modal/ModalSelectOptions/Entities";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { getUnsafeControlActionsByAnalysis } from "@http/Step3/UnsafeControlActions";
 import { getFourTuplesByUCA } from "@http/Step4/FourTuple";
 import { IFourTupleReadDto } from "@interfaces/IStep4";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { BiInfoCircle as InfoIcon } from "react-icons/bi";
-import { MdSearchOff as NoResulIcon } from "react-icons/md";
 import styles from "./FourTupleByUCAsContainer.module.css";
 
 interface FourTupleByUCAsContainerProps {
@@ -71,50 +71,49 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoadingUcas) return <Loader />;
-	if (isError || !selectedUCA) return <h1>Error</h1>;
+	if (isError) return <h1>Error</h1>;
 	return (
 		<>
 			<Container title="Scenarios by Unsafe Control Action" justTitle>
-				<div className={styles.four_tuples_list}>
-					<SelectSearch
-						label="Select the Unsafe Control Action"
-						value={selectedUCA}
-						onSearch={toggleModalUCAsOptions}
-					/>
-					{isLoading && !isPlaceholderData ? (
-						<Loader />
-					) : (
-						<>
-							{ucaWithFourTuples && ucaWithFourTuples.fourTuples.length > 0 ? (
-								<div key={ucaWithFourTuples?.id} className={styles.uca_section}>
-									<span className={styles.title}> Scenarios:</span>
-									<ListWrapper>
-										{ucaWithFourTuples?.fourTuples.map(ft => (
-											<FourTuple.Root key={ft.id}>
-												<FourTuple.Name code={ft.code} name={ft.scenario} />
-												<FourTuple.Actions>
-													<IconButton
-														icon={InfoIcon}
-														onClick={() => {
-															setSelectedTuple(ft);
-															toggleModalFourTupleDetails();
-														}}
+				{isLoadingUcas || !selectedUCA ? (
+					<Loader />
+				) : (
+					<div className={styles.four_tuples_list}>
+						<SelectSearch value={selectedUCA} onSearch={toggleModalUCAsOptions} />
+						{isLoading && !isPlaceholderData ? (
+							<Loader />
+						) : (
+							<>
+								{ucaWithFourTuples && ucaWithFourTuples.fourTuples.length > 0 ? (
+									<div key={ucaWithFourTuples?.id} className={styles.uca_section}>
+										<span className={styles.title}> Scenarios:</span>
+										<ListWrapper>
+											{ucaWithFourTuples?.fourTuples.map(ft => (
+												<FourTuple.Root key={ft.id}>
+													<FourTuple.Name
+														code={ft.code}
+														name={ft.scenario}
 													/>
-												</FourTuple.Actions>
-											</FourTuple.Root>
-										))}
-									</ListWrapper>
-								</div>
-							) : (
-								<div className={styles.message}>
-									<NoResulIcon />
-									No scenario identified for this UCA.
-								</div>
-							)}
-						</>
-					)}
-				</div>
+													<FourTuple.Actions>
+														<IconButton
+															icon={InfoIcon}
+															onClick={() => {
+																setSelectedTuple(ft);
+																toggleModalFourTupleDetails();
+															}}
+														/>
+													</FourTuple.Actions>
+												</FourTuple.Root>
+											))}
+										</ListWrapper>
+									</div>
+								) : (
+									<NoResultsMessage message="No scenario identified for this UCA." />
+								)}
+							</>
+						)}
+					</div>
+				)}
 			</Container>
 			{selectedTuple && (
 				<ModalFourTupleDetails
@@ -123,14 +122,16 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 					onClose={toggleModalFourTupleDetails}
 				/>
 			)}
-			<ModalUCAsOptions
-				open={modalUCAsOptionsOpen}
-				onClose={toggleModalUCAsOptions}
-				analysisId={analysisId}
-				ucas={[selectedUCA]}
-				onChange={(ucas: SelectOption[]) => setSelectedUCA(ucas[0])}
-				multiple={false}
-			/>
+			{selectedUCA && (
+				<ModalUCAsOptions
+					open={modalUCAsOptionsOpen}
+					onClose={toggleModalUCAsOptions}
+					analysisId={analysisId}
+					ucas={[selectedUCA]}
+					onChange={(ucas: SelectOption[]) => setSelectedUCA(ucas[0])}
+					multiple={false}
+				/>
+			)}
 		</>
 	);
 }

@@ -1,3 +1,4 @@
+import { ucasToSelectOptions } from "@/components/FormField/MultiSelect/UCAsMultiSelect/util";
 import Button from "@components/Button";
 import { Input, MultiSelectSearch, Textarea } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
@@ -57,7 +58,9 @@ function ModalFourTuple({
 		recommendation: fourTuple?.recommendation || "",
 		scenario: fourTuple?.scenario || "",
 		code: fourTuple?.code || "",
-		unsafeControlActions: []
+		unsafeControlActions: fourTuple?.unsafeControlActions
+			? ucasToSelectOptions(fourTuple.unsafeControlActions)
+			: []
 	});
 
 	useEffect(() => {
@@ -69,7 +72,7 @@ function ModalFourTuple({
 				recommendation: fourTuple.recommendation,
 				scenario: fourTuple.scenario,
 				code: fourTuple.code,
-				unsafeControlActions: []
+				unsafeControlActions: ucasToSelectOptions(fourTuple.unsafeControlActions)
 			});
 		} else {
 			setTupleData(tupleInitialData);
