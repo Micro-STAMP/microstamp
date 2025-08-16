@@ -1,0 +1,12 @@
+.analysis_content {
+	display: grid;
+	gap: 2.4rem;
+	grid-template-columns: 3fr 2fr;
+	width: 100%;
+
+	@media (max-width: 1024px) {
+		display: flex;
+		flex-direction: column;
+		gap: 2.4rem;
+	}
+}

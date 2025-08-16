@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BiExport as PdfIcon } from "react-icons/bi";
 import { Navigate, useParams } from "react-router-dom";
+import styles from "./Analysis.module.css";
 import AnalysisDisplay from "./AnalysisDisplay";
 import AnalysisImage from "./AnalysisImage";
 import AnalysisStepsMenu from "./AnalysisStepsMenu";
@@ -41,8 +42,10 @@ function Analysis() {
 	return (
 		<>
 			<AnalysisStepsMenu analysisId={id} />
-			<AnalysisDisplay analysis={analysis} />
-			<AnalysisImage analysisId={analysis.id} image={analysis.image} />
+			<div className={styles.analysis_content}>
+				<AnalysisDisplay analysis={analysis} />
+				<AnalysisImage analysisId={analysis.id} image={analysis.image} />
+			</div>
 			<PageActions>
 				<Button variant="dark" icon={PdfIcon} onClick={toggleModalAnalysisPdf}>
 					Export Analysis

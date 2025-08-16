@@ -84,10 +84,20 @@ function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
 						</div>
 					</div>
 					<footer className={styles.analysis_actions}>
-						<Button size="small" icon={EditIcon} onClick={toggleModalUpdateAnalysis}>
+						<Button
+							size="small"
+							variant="dark"
+							icon={EditIcon}
+							onClick={toggleModalUpdateAnalysis}
+						>
 							Edit
 						</Button>
-						<Button size="small" icon={DeleteIcon} onClick={toggleModalDeleteAnalysis}>
+						<Button
+							size="small"
+							variant="dark"
+							icon={DeleteIcon}
+							onClick={toggleModalDeleteAnalysis}
+						>
 							Delete
 						</Button>
 					</footer>

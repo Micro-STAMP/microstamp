@@ -8,14 +8,21 @@
 		flex-direction: column;
 		gap: 1.6rem;
 		font-size: 1.6rem;
-		font-weight: 300;
+		font-weight: 400;
+		height: 30rem;
+		overflow-y: auto;
+
+		@media (max-width: 1024px) {
+			height: auto;
+		}
 
 		.text {
 			display: flex;
 			flex-direction: column;
 
 			strong {
-				font-weight: 500;
+				color: var(--color-yellow);
+				font-weight: 600;
 			}
 		}
 	}

@@ -1,6 +1,6 @@
-import NoResultsMessage from "@/components/NoResultsMessage";
 import Container from "@components/Container";
 import { ModalAnalysis } from "@components/Modal/ModalEntity";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { useAuth } from "@hooks/useAuth";
 import { createAnalysis, getAnalyses } from "@http/Analyses";
 import { IAnalysisFormData, IAnalysisInsertDto } from "@interfaces/IAnalysis";
@@ -61,7 +61,7 @@ function Analyses() {
 						))}
 					</div>
 				) : (
-					<NoResultsMessage message="No analyses found." />
+					<NoResultsMessage message="No analyses found. Create your first analysis." />
 				)}
 			</Container>
 			<ModalAnalysis

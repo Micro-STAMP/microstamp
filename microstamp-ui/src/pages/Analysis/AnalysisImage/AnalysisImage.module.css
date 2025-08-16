@@ -1,13 +1,13 @@
 .image_container {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	flex-direction: column;
 	gap: 1.8rem;
 
 	.image {
-		width: 90%;
-		margin: 1.6rem 0;
+		width: clamp(18rem, 40rem, 100%);
+		aspect-ratio: 4/3;
 		border-radius: var(--radius1);
 		box-shadow: var(--shadow25);
 	}
@@ -18,15 +18,21 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.6rem;
+
 		color: var(--color-yellow);
-		margin: 1.6rem;
+		box-shadow: var(--shadow25);
+
+		width: clamp(18rem, 40rem, 100%);
+		height: 30rem;
+		border-radius: var(--radius1);
+		box-shadow: var(--shadow25);
 
 		.icon {
-			font-size: 3.6rem;
+			font-size: 3.2rem;
 		}
 		.text {
 			text-align: center;
-			font-size: 1.8rem;
+			font-size: 1.6rem;
 			font-weight: 500;
 			text-shadow: var(--shadow25);
 		}
@@ -35,7 +41,7 @@
 	.image_actions {
 		display: flex;
 		gap: 0.8rem;
-		justify-content: flex-end;
+		justify-content: flex-start;
 		width: 100%;
 	}
 }
