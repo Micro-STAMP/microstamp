@@ -26,7 +26,7 @@ function HighLevelScenariosContainer({ ucaId }: HighLevelScenariosContainerProps
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	return (
-		<Container title="4.1 Identify High-Level Scenarios" justTitle>
+		<Container title="4.1 Identify High-Level Scenarios" collapsible justTitle>
 			<div className={styles.high_level_scenarios}>
 				{isLoading ? (
 					<Loader />

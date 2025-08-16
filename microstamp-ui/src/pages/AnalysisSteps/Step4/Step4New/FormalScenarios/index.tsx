@@ -1,10 +1,15 @@
 import AnalysisHeader from "@components/AnalysisHeader";
-import Container from "@components/Container";
+import Button from "@components/Button";
 import Loader from "@components/Loader";
+import PageActions from "@components/PageActions";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
 import { useQuery } from "@tanstack/react-query";
+import { BiExport as ExportIcon } from "react-icons/bi";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import HighLevelScenariosContainer from "./HighLevelScenariosContainer";
+import HighLevelSolutionsContainer from "./HighLevelSolutionsContainer";
+import RefinedScenariosContainer from "./RefinedScenariosContainer";
+import RefinedSolutionsContainer from "./RefinedSolutionsContainer";
 
 function FormalScenarios() {
 	const { id } = useParams();
@@ -28,15 +33,14 @@ function FormalScenarios() {
 		<>
 			<AnalysisHeader analysisId={id} uca={uca.name} icon="step4" />
 			<HighLevelScenariosContainer ucaId={ucaId} />
-			<Container title="4.2 Identify High-Level Solutions" justTitle>
-				<></>
-			</Container>
-			<Container title="4.3 Identify Refined Scenarios" justTitle>
-				<></>
-			</Container>
-			<Container title="4.4 Identify Refined Solutions" justTitle>
-				<></>
-			</Container>
+			<HighLevelSolutionsContainer />
+			<RefinedScenariosContainer />
+			<RefinedSolutionsContainer />
+			<PageActions>
+				<Button variant="dark" icon={ExportIcon}>
+					Export New Step 4
+				</Button>
+			</PageActions>
 		</>
 	);
 }
