@@ -2,7 +2,6 @@ import DualButton from "@components/Button/DualButton";
 import Container from "@components/Container";
 import { ListItem as Hazard } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalHazard } from "@components/Modal/ModalEntity";
 import { createHazard, deleteHazard, getHazards, updateHazard } from "@http/Step1/Hazards";
@@ -122,39 +121,45 @@ function HazardsContainer({ analysisId }: HazardsContainerProps) {
 		queryFn: () => getHazards(analysisId)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || hazards === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
-			<Container title="Hazards" onClick={toggleModalCreateHazard}>
+			<Container
+				title="Hazards"
+				onClick={toggleModalCreateHazard}
+				isLoading={isLoading}
+				isError={isError || hazards === undefined}
+			>
 				<ListWrapper>
-					{hazards.map(hazard => (
-						<Hazard.Root key={hazard.id}>
-							<Hazard.Name
-								code={hazard.code}
-								name={hazard.name}
-								dependencies={
-									hazard.father
-										? [hazard.father.code].concat(
-												hazard.losses.map(l => l.code)
-										  )
-										: hazard.losses.map(l => l.code)
-								}
-							/>
-							<Hazard.Actions>
-								<DualButton
-									onEdit={() => {
-										setSelectedHazard(hazard);
-										toggleModalUpdateHazard();
-									}}
-									onDelete={() => {
-										setSelectedHazard(hazard);
-										toggleModalDeleteHazard();
-									}}
+					{hazards &&
+						hazards.map(hazard => (
+							<Hazard.Root key={hazard.id}>
+								<Hazard.Name
+									code={hazard.code}
+									name={hazard.name}
+									dependencies={
+										hazard.father
+											? [hazard.father.code].concat(
+													hazard.losses.map(l => l.code)
+											  )
+											: hazard.losses.map(l => l.code)
+									}
 								/>
-							</Hazard.Actions>
-						</Hazard.Root>
-					))}
+								<Hazard.Actions>
+									<DualButton
+										onEdit={() => {
+											setSelectedHazard(hazard);
+											toggleModalUpdateHazard();
+										}}
+										onDelete={() => {
+											setSelectedHazard(hazard);
+											toggleModalDeleteHazard();
+										}}
+									/>
+								</Hazard.Actions>
+							</Hazard.Root>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalHazard

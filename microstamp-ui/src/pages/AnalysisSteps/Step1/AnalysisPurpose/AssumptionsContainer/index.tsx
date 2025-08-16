@@ -2,7 +2,6 @@ import DualButton from "@components/Button/DualButton";
 import Container from "@components/Container";
 import { ListItem as Assumption } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalAssumption } from "@components/Modal/ModalEntity";
 import {
@@ -116,29 +115,35 @@ function AssumptionsContainer({ analysisId }: AssumptionsContainerProps) {
 		queryFn: () => getAssumptions(analysisId)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || assumptions === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
-			<Container title="Assumptions" onClick={toggleModalCreateAssumption}>
+			<Container
+				title="Assumptions"
+				onClick={toggleModalCreateAssumption}
+				isError={isError || assumptions === undefined}
+				isLoading={isLoading}
+			>
 				<ListWrapper>
-					{assumptions.map(assumption => (
-						<Assumption.Root key={assumption.id}>
-							<Assumption.Name code={assumption.code} name={assumption.name} />
-							<Assumption.Actions>
-								<DualButton
-									onEdit={() => {
-										setSelectedAssumption(assumption);
-										toggleModalUpdateAssumption();
-									}}
-									onDelete={() => {
-										setSelectedAssumption(assumption);
-										toggleModalDeleteAssumption();
-									}}
-								/>
-							</Assumption.Actions>
-						</Assumption.Root>
-					))}
+					{assumptions &&
+						assumptions.map(assumption => (
+							<Assumption.Root key={assumption.id}>
+								<Assumption.Name code={assumption.code} name={assumption.name} />
+								<Assumption.Actions>
+									<DualButton
+										onEdit={() => {
+											setSelectedAssumption(assumption);
+											toggleModalUpdateAssumption();
+										}}
+										onDelete={() => {
+											setSelectedAssumption(assumption);
+											toggleModalDeleteAssumption();
+										}}
+									/>
+								</Assumption.Actions>
+							</Assumption.Root>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalAssumption

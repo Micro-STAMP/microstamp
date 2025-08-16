@@ -2,7 +2,6 @@ import DualButton from "@components/Button/DualButton";
 import Container from "@components/Container";
 import { ListItem as SystemSafetyConstraint } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalSystemSafetyConstraint } from "@components/Modal/ModalEntity";
 import {
@@ -136,36 +135,39 @@ function SystemSafetyConstraintsContainer({ analysisId }: SystemSafetyConstraint
 		queryFn: () => getSystemSafetyConstraints(analysisId)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || systemSafetyConstraints === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
 			<Container
 				title="System Safety Constraints"
 				onClick={toggleModalCreateSystemSafetyConstraint}
+				isLoading={isLoading}
+				isError={isError || systemSafetyConstraints === undefined}
 			>
 				<ListWrapper>
-					{systemSafetyConstraints.map(ssc => (
-						<SystemSafetyConstraint.Root key={ssc.id}>
-							<SystemSafetyConstraint.Name
-								code={ssc.code}
-								name={ssc.name}
-								dependencies={ssc.hazards.map(h => h.code)}
-							/>
-							<SystemSafetyConstraint.Actions>
-								<DualButton
-									onEdit={() => {
-										setSelectedSystemSafetyConstraint(ssc);
-										toggleModalUpdateSystemSafetyConstraint();
-									}}
-									onDelete={() => {
-										setSelectedSystemSafetyConstraint(ssc);
-										toggleModalDeleteSystemSafetyConstraint();
-									}}
+					{systemSafetyConstraints &&
+						systemSafetyConstraints.map(ssc => (
+							<SystemSafetyConstraint.Root key={ssc.id}>
+								<SystemSafetyConstraint.Name
+									code={ssc.code}
+									name={ssc.name}
+									dependencies={ssc.hazards.map(h => h.code)}
 								/>
-							</SystemSafetyConstraint.Actions>
-						</SystemSafetyConstraint.Root>
-					))}
+								<SystemSafetyConstraint.Actions>
+									<DualButton
+										onEdit={() => {
+											setSelectedSystemSafetyConstraint(ssc);
+											toggleModalUpdateSystemSafetyConstraint();
+										}}
+										onDelete={() => {
+											setSelectedSystemSafetyConstraint(ssc);
+											toggleModalDeleteSystemSafetyConstraint();
+										}}
+									/>
+								</SystemSafetyConstraint.Actions>
+							</SystemSafetyConstraint.Root>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalSystemSafetyConstraint

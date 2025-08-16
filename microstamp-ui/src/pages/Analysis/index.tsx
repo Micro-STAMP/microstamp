@@ -35,7 +35,6 @@ function Analysis() {
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle Create Assumption
 
 	if (isLoading) return <Loader />;
 	if (isError || analysis === undefined) return <h1>Error</h1>;

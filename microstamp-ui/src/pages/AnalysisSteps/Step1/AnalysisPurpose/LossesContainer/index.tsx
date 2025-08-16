@@ -2,7 +2,6 @@ import DualButton from "@components/Button/DualButton";
 import Container from "@components/Container";
 import { ListItem as Loss } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalLoss } from "@components/Modal/ModalEntity";
 import { createLoss, deleteLoss, getLosses, updateLoss } from "@http/Step1/Losses";
@@ -105,29 +104,35 @@ function LossesContainer({ analysisId }: LossesContainerProps) {
 		queryFn: () => getLosses(analysisId)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || losses === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
-			<Container title="Losses" onClick={toggleModalCreateLoss}>
+			<Container
+				title="Losses"
+				onClick={toggleModalCreateLoss}
+				isLoading={isLoading}
+				isError={isError || losses === undefined}
+			>
 				<ListWrapper>
-					{losses.map(loss => (
-						<Loss.Root key={loss.id}>
-							<Loss.Name code={loss.code} name={loss.name} />
-							<Loss.Actions>
-								<DualButton
-									onEdit={() => {
-										setSelectedLoss(loss);
-										toggleModalUpdateLoss();
-									}}
-									onDelete={() => {
-										setSelectedLoss(loss);
-										toggleModalDeleteLoss();
-									}}
-								/>
-							</Loss.Actions>
-						</Loss.Root>
-					))}
+					{losses &&
+						losses.map(loss => (
+							<Loss.Root key={loss.id}>
+								<Loss.Name code={loss.code} name={loss.name} />
+								<Loss.Actions>
+									<DualButton
+										onEdit={() => {
+											setSelectedLoss(loss);
+											toggleModalUpdateLoss();
+										}}
+										onDelete={() => {
+											setSelectedLoss(loss);
+											toggleModalDeleteLoss();
+										}}
+									/>
+								</Loss.Actions>
+							</Loss.Root>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalLoss
