@@ -11,7 +11,7 @@ import NoResultsMessage from "@components/NoResultsMessage";
 import { getUnsafeControlActionsByAnalysis } from "@http/Step3/UnsafeControlActions";
 import { getFourTuplesByUCA } from "@http/Step4/FourTuple";
 import { IFourTupleReadDto } from "@interfaces/IStep4";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { BiInfoCircle as InfoIcon } from "react-icons/bi";
 import styles from "./FourTupleByUCAsContainer.module.css";
@@ -60,35 +60,39 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 	const {
 		data: ucaWithFourTuples,
 		isLoading,
-		isError,
-		isPlaceholderData
+		isError
 	} = useQuery({
 		queryKey: ["four-tuples-by-uca", selectedUCA, analysisId],
 		queryFn: () => getFourTuplesByUCA(selectedUCA!.value),
-		placeholderData: keepPreviousData,
 		enabled: !!selectedUCA
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isError) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Scenarios by Unsafe Control Action" justTitle>
-				{isLoadingUcas || !selectedUCA ? (
-					<Loader />
-				) : (
+			<Container
+				title="Scenarios by Unsafe Control Action"
+				justTitle
+				isLoading={isLoadingUcas}
+				isError={isError || ucasList === undefined}
+			>
+				{selectedUCA && ucasList && (
 					<div className={styles.four_tuples_list}>
-						<SelectSearch value={selectedUCA} onSearch={toggleModalUCAsOptions} />
-						{isLoading && !isPlaceholderData ? (
+						<SelectSearch
+							value={selectedUCA}
+							onSearch={toggleModalUCAsOptions}
+							disabled={isLoadingUcas || !ucasList}
+						/>
+						{isLoading ? (
 							<Loader />
 						) : (
 							<>
 								{ucaWithFourTuples && ucaWithFourTuples.fourTuples.length > 0 ? (
-									<div key={ucaWithFourTuples?.id} className={styles.uca_section}>
+									<div key={ucaWithFourTuples.id} className={styles.uca_section}>
 										<span className={styles.title}> Scenarios:</span>
 										<ListWrapper>
-											{ucaWithFourTuples?.fourTuples.map(ft => (
+											{ucaWithFourTuples.fourTuples.map(ft => (
 												<FourTuple.Root key={ft.id}>
 													<FourTuple.Name
 														code={ft.code}

@@ -45,7 +45,6 @@ function ModalSelectStep4({ open, onClose, analysisId }: ModalSelectStep4Props) 
 		<>
 			<ModalContainer open={open} size="big">
 				<ModalHeader title="Select Step 4 Approach" onClose={onClose} />
-
 				<div className={styles.modal_select_step4}>
 					<span className={styles.subtitle}>
 						You can choose between two analysis approaches for{" "}
@@ -100,7 +99,6 @@ function ModalSelectStep4({ open, onClose, analysisId }: ModalSelectStep4Props) 
 						</>
 					)}
 				</div>
-
 				<ModalButtons>
 					<Button variant="dark" onClick={onClose} size="small" icon={ReturnIcon}>
 						Cancel

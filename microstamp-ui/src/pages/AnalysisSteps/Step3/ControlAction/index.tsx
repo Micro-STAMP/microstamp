@@ -1,6 +1,7 @@
 import AnalysisHeader from "@components/AnalysisHeader";
 import Button from "@components/Button";
 import Loader from "@components/Loader";
+import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getControlAction } from "@http/Step2/Interactions/ControlActions";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +26,8 @@ function ControlAction() {
 	});
 
 	if (isLoading) return <Loader />;
-	if (isError || controlAction === undefined) return <h1>Error</h1>;
+	if (isError || controlAction === undefined)
+		return <NoResultsMessage message="Error loading control action." />;
 	return (
 		<>
 			<AnalysisHeader analysisId={id} controlAction={controlAction.name} icon="step3" />

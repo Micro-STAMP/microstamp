@@ -1,6 +1,5 @@
 import Button from "@components/Button";
 import Container from "@components/Container";
-import Loader from "@components/Loader";
 import {
 	deleteControlStructureImage,
 	getControlStructureImages,
@@ -23,7 +22,6 @@ import styles from "./ControlStructureImage.module.css";
 interface ControlStructureImageProps {
 	analysisId: string;
 }
-
 function ControlStructureImage({ analysisId }: ControlStructureImageProps) {
 	const queryClient = useQueryClient();
 
@@ -104,69 +102,78 @@ function ControlStructureImage({ analysisId }: ControlStructureImageProps) {
 		queryFn: () => getControlStructureImages(analysisId)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || images === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
-			<Container title="Control Structure Image" justTitle>
-				<div className={styles.image_container}>
-					{previewImage ? (
-						<img className={styles.image} src={previewImage} alt="Preview" />
-					) : images.length > 0 ? (
-						<img
-							className={styles.image}
-							src={`data:image/png;base64,${images[0].base64}`}
-							alt="Control Structure Image"
-						/>
-					) : (
-						<div className={styles.message}>
-							<ImageIcon className={styles.icon} />
-							<span className={styles.text}>No images have been added</span>
-						</div>
-					)}
+			<Container
+				title="Control Structure Image"
+				justTitle
+				isLoading={isLoading}
+				isError={isError || images === undefined}
+			>
+				{images && (
+					<div className={styles.image_container}>
+						{previewImage ? (
+							<img className={styles.image} src={previewImage} alt="Preview" />
+						) : images.length > 0 ? (
+							<img
+								className={styles.image}
+								src={`data:image/png;base64,${images[0].base64}`}
+								alt="Control Structure Image"
+							/>
+						) : (
+							<div className={styles.message}>
+								<ImageIcon className={styles.icon} />
+								<span className={styles.text}>No images have been added</span>
+							</div>
+						)}
 
-					<footer className={styles.image_actions}>
-						{images.length === 0 && (
-							<>
-								<InputFile
-									file={imageFile}
-									label="Choose Image"
-									onChangeFile={handleFileChange}
-									fileType={FileType.Image}
-								/>
+						<footer className={styles.image_actions}>
+							{images.length === 0 && (
+								<>
+									<InputFile
+										file={imageFile}
+										label="Choose Image"
+										onChangeFile={handleFileChange}
+										fileType={FileType.Image}
+									/>
+									<Button
+										size="small"
+										icon={UploadIcon}
+										onClick={handleSaveImage}
+										isLoading={isCreating}
+									>
+										Save
+									</Button>
+								</>
+							)}
+							{images.length > 0 && (
 								<Button
 									size="small"
-									icon={UploadIcon}
-									onClick={handleSaveImage}
-									isLoading={isCreating}
+									variant="dark"
+									icon={DeleteIcon}
+									onClick={toggleModalDeleteImage}
+									isLoading={isDeleting}
 								>
-									Save
+									Remove Image
 								</Button>
-							</>
-						)}
-						{images.length > 0 && (
-							<Button
-								size="small"
-								variant="dark"
-								icon={DeleteIcon}
-								onClick={toggleModalDeleteImage}
-								isLoading={isDeleting}
-							>
-								Remove Image
-							</Button>
-						)}
-					</footer>
-				</div>
+							)}
+						</footer>
+					</div>
+				)}
 			</Container>
-			<ModalConfirm
-				open={modalDeleteImageOpen}
-				onClose={toggleModalDeleteImage}
-				onConfirm={() => handleDeleteImage(images[0].id)}
-				isLoading={isDeleting}
-				message="Do you want to remove the image?"
-				title="Delete Image"
-				btnText="Delete"
-			/>
+			{images && (
+				<ModalConfirm
+					open={modalDeleteImageOpen}
+					onClose={toggleModalDeleteImage}
+					onConfirm={() => handleDeleteImage(images[0].id)}
+					isLoading={isDeleting}
+					message="Do you want to remove the image?"
+					title="Delete Image"
+					btnText="Delete"
+				/>
+			)}
 		</>
 	);
 }

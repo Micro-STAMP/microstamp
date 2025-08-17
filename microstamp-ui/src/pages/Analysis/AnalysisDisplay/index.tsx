@@ -13,9 +13,17 @@ import { toast } from "sonner";
 import styles from "./AnalysisDisplay.module.css";
 
 interface AnalysisDisplayProps {
-	analysis: IAnalysisReadDto;
+	analysisId: string;
+	analysis?: IAnalysisReadDto;
+	isLoading?: boolean;
+	isError?: boolean;
 }
-function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
+function AnalysisDisplay({
+	analysis,
+	analysisId,
+	isLoading = false,
+	isError = false
+}: AnalysisDisplayProps) {
 	const navigate = useNavigate();
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
@@ -26,7 +34,7 @@ function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
 
 	const queryClient = useQueryClient();
 	const { mutateAsync: requestUpdateAnalysis, isPending: isUpdating } = useMutation({
-		mutationFn: (analysisDto: IAnalysisUpdateDto) => updateAnalysis(analysis.id, analysisDto),
+		mutationFn: (analysisDto: IAnalysisUpdateDto) => updateAnalysis(analysisId, analysisDto),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["user-analyses"] });
 			queryClient.invalidateQueries({ queryKey: ["analysis-display"] });
@@ -48,7 +56,7 @@ function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
 	const toggleModalDeleteAnalysis = () => setModalDeleteAnalysisOpen(!modalDeleteAnalysisOpen);
 
 	const { mutateAsync: requestDeleteAnalysis, isPending: isDeleting } = useMutation({
-		mutationFn: () => deleteAnalysis(analysis.id),
+		mutationFn: () => deleteAnalysis(analysisId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["user-analyses"] });
 			queryClient.invalidateQueries({ queryKey: ["analysis-display"] });
@@ -67,41 +75,43 @@ function AnalysisDisplay({ analysis }: AnalysisDisplayProps) {
 
 	return (
 		<>
-			<Container title="Analysis" justTitle>
-				<div className={styles.analysis_display}>
-					<div className={styles.display}>
-						<div className={styles.text}>
-							<strong>Name: </strong>
-							<span>{analysis.name}</span>
+			<Container title="Analysis" justTitle isLoading={isLoading} isError={isError}>
+				{analysis && (
+					<div className={styles.analysis_display}>
+						<div className={styles.display}>
+							<div className={styles.text}>
+								<strong>Name: </strong>
+								<span>{analysis.name}</span>
+							</div>
+							<div className={styles.text}>
+								<strong>Description: </strong>
+								<span>{analysis.description}</span>
+							</div>
+							<div className={styles.text}>
+								<strong>Creation Date: </strong>
+								<span>{formatDate(analysis.creationDate)}</span>
+							</div>
 						</div>
-						<div className={styles.text}>
-							<strong>Description: </strong>
-							<span>{analysis.description}</span>
-						</div>
-						<div className={styles.text}>
-							<strong>Creation Date: </strong>
-							<span>{formatDate(analysis.creationDate)}</span>
-						</div>
+						<footer className={styles.analysis_actions}>
+							<Button
+								size="small"
+								variant="dark"
+								icon={EditIcon}
+								onClick={toggleModalUpdateAnalysis}
+							>
+								Edit
+							</Button>
+							<Button
+								size="small"
+								variant="dark"
+								icon={DeleteIcon}
+								onClick={toggleModalDeleteAnalysis}
+							>
+								Delete
+							</Button>
+						</footer>
 					</div>
-					<footer className={styles.analysis_actions}>
-						<Button
-							size="small"
-							variant="dark"
-							icon={EditIcon}
-							onClick={toggleModalUpdateAnalysis}
-						>
-							Edit
-						</Button>
-						<Button
-							size="small"
-							variant="dark"
-							icon={DeleteIcon}
-							onClick={toggleModalDeleteAnalysis}
-						>
-							Delete
-						</Button>
-					</footer>
-				</div>
+				)}
 			</Container>
 			<ModalAnalysis
 				open={modalUpdateAnalysisOpen}

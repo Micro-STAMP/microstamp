@@ -4,7 +4,6 @@ import { componentsToSelectOptions } from "@components/FormField/Select/Componen
 import ControlActionSelect from "@components/FormField/Select/ControlActionSelect";
 import { controlActionsToSelectOptions } from "@components/FormField/Select/ControlActionSelect/util";
 import { SelectOption } from "@components/FormField/Templates";
-import Loader from "@components/Loader";
 import {
 	ModalButtons,
 	ModalContainer,
@@ -23,17 +22,12 @@ import styles from "./ModalSelectControlAction.module.css";
 interface ModalSelectControlActionProps extends ModalProps {
 	analysisId: string;
 }
-
 function ModalSelectControlAction({ open, onClose, analysisId }: ModalSelectControlActionProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Component Options
 
 	const [componentsOptions, setComponentsOptions] = useState<SelectOption[]>([]);
-	const {
-		data: components,
-		isLoading: isLoadingComponents,
-		isError: isErrorComponents
-	} = useQuery({
+	const { data: components } = useQuery({
 		queryKey: ["control-action-components-select-options", analysisId],
 		queryFn: () => getComponents(analysisId)
 	});
@@ -61,11 +55,7 @@ function ModalSelectControlAction({ open, onClose, analysisId }: ModalSelectCont
 	// * Control Action Options
 
 	const [controlActionsOptions, setControlActionsOptions] = useState<SelectOption[]>([]);
-	const {
-		data: controlActions,
-		isLoading: isLoadingControlActions,
-		isError: isErrorControlActions
-	} = useQuery({
+	const { data: controlActions, isLoading: isLoadingControlActions } = useQuery({
 		queryKey: ["control-actions-select-options", analysisId],
 		queryFn: () => getControlActions(analysisId)
 	});
@@ -106,9 +96,6 @@ function ModalSelectControlAction({ open, onClose, analysisId }: ModalSelectCont
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoadingComponents || isLoadingControlActions) return <Loader />;
-	if (isErrorComponents || isErrorControlActions || controlActions === undefined)
-		return <h1>Error</h1>;
 	return (
 		<ModalContainer open={open} size="normal">
 			<ModalHeader onClose={onClose} title="Select the Control Action" />

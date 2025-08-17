@@ -1,6 +1,5 @@
 import Container from "@components/Container";
 import ListWrapper from "@components/Container/ListWrapper";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalConnection } from "@components/Modal/ModalEntity";
 import {
@@ -124,21 +123,27 @@ function ConnectionsContainer({ analysisId }: ConnectionsContainerProps) {
 		queryFn: () => getConnections(analysisId)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || connections === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
-			<Container title="Connections" onClick={toggleModalCreateConnection}>
+			<Container
+				title="Connections"
+				onClick={toggleModalCreateConnection}
+				isLoading={isLoading}
+				isError={isError || connections === undefined}
+			>
 				<ListWrapper>
-					{connections.map(connection => (
-						<ConnectionItem
-							key={connection.id}
-							connection={connection}
-							modalDeleteConnection={toggleModalDeleteConnection}
-							modalUpdateConnection={toggleModalUpdateConnection}
-							selectConnection={setSelectedConnection}
-						/>
-					))}
+					{connections &&
+						connections.map(connection => (
+							<ConnectionItem
+								key={connection.id}
+								connection={connection}
+								modalDeleteConnection={toggleModalDeleteConnection}
+								modalUpdateConnection={toggleModalUpdateConnection}
+								selectConnection={setSelectedConnection}
+							/>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalConnection

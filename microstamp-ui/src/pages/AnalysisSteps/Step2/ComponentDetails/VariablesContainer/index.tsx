@@ -99,6 +99,8 @@ function VariablesContainer({ componentId, variables }: VariablesContainerProps)
 		}
 	};
 
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
 			<Container title="Variables" onClick={toggleModalCreateVariable}>

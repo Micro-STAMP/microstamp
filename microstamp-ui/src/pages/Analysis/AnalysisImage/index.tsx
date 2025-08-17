@@ -17,10 +17,11 @@ import styles from "./AnalysisImage.module.css";
 
 interface AnalysisImageProps {
 	analysisId: string;
-	image: IImageReadDto | null;
+	image?: IImageReadDto | null;
+	isLoading?: boolean;
+	isError?: boolean;
 }
-
-function AnalysisImage({ image, analysisId }: AnalysisImageProps) {
+function AnalysisImage({ image, analysisId, isLoading, isError }: AnalysisImageProps) {
 	const queryClient = useQueryClient();
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
@@ -90,55 +91,57 @@ function AnalysisImage({ image, analysisId }: AnalysisImageProps) {
 
 	return (
 		<>
-			<Container title="Analysis Image" justTitle>
-				<div className={styles.image_container}>
-					{previewImage ? (
-						<img className={styles.image} src={previewImage} alt="Preview" />
-					) : image ? (
-						<img
-							className={styles.image}
-							src={`data:image/png;base64,${image.base64}`}
-							alt="Analysis Image"
-						/>
-					) : (
-						<div className={styles.message}>
-							<ImageIcon className={styles.icon} />
-							<span className={styles.text}>No images have been added</span>
-						</div>
-					)}
+			<Container title="Analysis Image" justTitle isLoading={isLoading} isError={isError}>
+				{image !== undefined && (
+					<div className={styles.image_container}>
+						{previewImage ? (
+							<img className={styles.image} src={previewImage} alt="Preview" />
+						) : image ? (
+							<img
+								className={styles.image}
+								src={`data:image/png;base64,${image.base64}`}
+								alt="Analysis Image"
+							/>
+						) : (
+							<div className={styles.message}>
+								<ImageIcon className={styles.icon} />
+								<span className={styles.text}>No images have been added</span>
+							</div>
+						)}
 
-					<footer className={styles.image_actions}>
-						{!image && (
-							<>
-								<InputFile
-									file={imageFile}
-									label="Choose Image"
-									onChangeFile={handleFileChange}
-									fileType={FileType.Image}
-								/>
+						<footer className={styles.image_actions}>
+							{!image && (
+								<>
+									<InputFile
+										file={imageFile}
+										label="Choose Image"
+										onChangeFile={handleFileChange}
+										fileType={FileType.Image}
+									/>
+									<Button
+										size="small"
+										icon={UploadIcon}
+										onClick={handleSaveImage}
+										isLoading={isCreatingImage}
+									>
+										Save
+									</Button>
+								</>
+							)}
+							{image && (
 								<Button
 									size="small"
-									icon={UploadIcon}
-									onClick={handleSaveImage}
-									isLoading={isCreatingImage}
+									variant="dark"
+									icon={DeleteIcon}
+									onClick={toggleModalDeleteImage}
+									isLoading={isDeletingImage}
 								>
-									Save
+									Remove Image
 								</Button>
-							</>
-						)}
-						{image && (
-							<Button
-								size="small"
-								variant="dark"
-								icon={DeleteIcon}
-								onClick={toggleModalDeleteImage}
-								isLoading={isDeletingImage}
-							>
-								Remove Image
-							</Button>
-						)}
-					</footer>
-				</div>
+							)}
+						</footer>
+					</div>
+				)}
 			</Container>
 			<ModalConfirm
 				open={modalDeleteImageOpen}

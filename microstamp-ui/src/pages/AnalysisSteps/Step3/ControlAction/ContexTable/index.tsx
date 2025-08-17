@@ -1,5 +1,6 @@
 import Loader from "@components/Loader";
 import { ModalUnsafeControlAction } from "@components/Modal/ModalEntity";
+import NoResultsMessage from "@components/NoResultsMessage";
 import Pagination from "@components/Pagination";
 import { createContextTable, getContextTable } from "@http/Step3/ContextTable";
 import {
@@ -197,12 +198,16 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoadingNoUnsafe) return <Loader />;
-	if (notUnsafeContexts === undefined || isErrorNotUnsafe) return <h1>Error</h1>;
-	if (isLoadingUCAs) return <Loader />;
-	if (unsafeControlActions === undefined || isErrorUCAs) return <h1>Error</h1>;
-	if (isLoading || isPending) return <Loader />;
-	if (contextTable === undefined || isError) return <h1>Error</h1>;
+	if (isLoadingNoUnsafe || isLoadingUCAs || isLoading || isPending) return <Loader />;
+	if (
+		notUnsafeContexts === undefined ||
+		isErrorNotUnsafe ||
+		unsafeControlActions === undefined ||
+		isErrorUCAs ||
+		contextTable === undefined ||
+		isError
+	)
+		return <NoResultsMessage message="Error loading context table." />;
 	return (
 		<>
 			<div className={styles.context_table_container}>

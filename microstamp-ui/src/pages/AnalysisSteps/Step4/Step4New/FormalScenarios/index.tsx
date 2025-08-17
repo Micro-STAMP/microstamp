@@ -1,6 +1,7 @@
 import AnalysisHeader from "@components/AnalysisHeader";
 import Button from "@components/Button";
 import Loader from "@components/Loader";
+import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +29,8 @@ function FormalScenarios() {
 	});
 
 	if (isLoading) return <Loader />;
-	if (isError || uca === undefined) return <h1>Error</h1>;
+	if (isError || uca === undefined)
+		return <NoResultsMessage message="Error loading formal scenarios." />;
 	return (
 		<>
 			<AnalysisHeader analysisId={id} uca={uca.name} icon="step4" />

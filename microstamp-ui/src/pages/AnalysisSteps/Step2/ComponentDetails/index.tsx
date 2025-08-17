@@ -1,5 +1,6 @@
 import AnalysisHeader from "@components/AnalysisHeader";
 import Loader from "@components/Loader";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { getComponent } from "@http/Step2/Components";
 import { IComponentType } from "@interfaces/IStep2";
 import { useQuery } from "@tanstack/react-query";
@@ -13,6 +14,9 @@ function ComponentDetails() {
 	if (!id) return <Navigate to="/analyses" />;
 	if (!componentId) return <Navigate to={`/analyses/${id}/control-structure`} />;
 
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get Component
+
 	const {
 		data: component,
 		isLoading,
@@ -22,16 +26,19 @@ function ComponentDetails() {
 		queryFn: () => getComponent(componentId)
 	});
 
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	if (isLoading) return <Loader />;
-	if (isError || component === undefined) return <h1>Error</h1>;
+	if (isError || component === undefined)
+		return <NoResultsMessage message="Error loading component details." />;
 	return (
 		<>
 			<AnalysisHeader analysisId={id} component={component.name} icon="step2" />
 			{component.type !== IComponentType.ENVIRONMENT && (
 				<ResponsibilitiesContainer analysisId={id} componentId={component.id} />
 			)}
-			<ComponentConnectionsContainer analysisId={id} componentId={component.id} />
 			<VariablesContainer componentId={component.id} variables={component.variables} />
+			<ComponentConnectionsContainer analysisId={id} componentId={component.id} />
 		</>
 	);
 }

@@ -1,6 +1,5 @@
 import Container from "@components/Container";
 import ListWrapper from "@components/Container/ListWrapper";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalRule } from "@components/Modal/ModalEntity";
 import { createRule, deleteRule, getRules } from "@http/Step3/Rules";
@@ -115,22 +114,26 @@ function RulesContainer({ analysisId, controlAction }: RulesContainerProps) {
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoading) return <Loader />;
-	if (isError || rules === undefined) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Rules" onClick={toggleModalCreateRule}>
+			<Container
+				title="Rules"
+				onClick={toggleModalCreateRule}
+				isLoading={isLoading}
+				isError={isError || rules === undefined}
+			>
 				<ListWrapper>
-					{rules.map(rule => (
-						<RuleItem
-							rule={rule}
-							modalDeleteRule={toggleModalDeleteRule}
-							selectRule={setSelectedRule}
-							key={rule.id}
-							applyRule={handleCreateUCAsByRule}
-							isApplyingRule={isCreatingUCAs}
-						/>
-					))}
+					{rules &&
+						rules.map(rule => (
+							<RuleItem
+								rule={rule}
+								modalDeleteRule={toggleModalDeleteRule}
+								selectRule={setSelectedRule}
+								key={rule.id}
+								applyRule={handleCreateUCAsByRule}
+								isApplyingRule={isCreatingUCAs}
+							/>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalRule

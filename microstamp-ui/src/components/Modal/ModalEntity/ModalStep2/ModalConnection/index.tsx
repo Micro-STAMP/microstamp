@@ -14,6 +14,7 @@ import {
 	ModalInputs,
 	ModalProps
 } from "@components/Modal/Templates";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { getComponents } from "@http/Step2/Components";
 import { IConnectionFormData, IConnectionReadDto } from "@interfaces/IStep2";
 import {
@@ -122,8 +123,19 @@ function ModalConnection({
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoadingComponents) return <Loader />;
-	if (isError || components === undefined) return <h1>Error</h1>;
+	if (isLoadingComponents)
+		return (
+			<ModalContainer open={open} size="small">
+				<Loader />;
+			</ModalContainer>
+		);
+	if (isError || components === undefined)
+		return (
+			<ModalContainer open={open} size="small">
+				<ModalHeader onClose={onClose} title="Error" />
+				<NoResultsMessage message="Error loading modal." />
+			</ModalContainer>
+		);
 	return (
 		<ModalContainer open={open} size="big">
 			<ModalHeader onClose={onClose} title={title} />

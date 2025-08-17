@@ -14,6 +14,7 @@ import {
 	ModalInputs,
 	ModalProps
 } from "@components/Modal/Templates";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { getSystemSafetyConstraints } from "@http/Step1/SystemSafetyConstraints";
 import { IResponsibilityFormData, IResponsibilityReadDto } from "@interfaces/IStep2";
 import { useQuery } from "@tanstack/react-query";
@@ -112,8 +113,19 @@ function ModalResponsibility({
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoadingSSCs) return <Loader />;
-	if (isError || systemSafetyConstraints === undefined) return <h1>Error</h1>;
+	if (isLoadingSSCs)
+		return (
+			<ModalContainer open={open} size="small">
+				<Loader />;
+			</ModalContainer>
+		);
+	if (isError || systemSafetyConstraints === undefined)
+		return (
+			<ModalContainer open={open} size="small">
+				<ModalHeader onClose={onClose} title="Error" />
+				<NoResultsMessage message="Error loading modal." />
+			</ModalContainer>
+		);
 	return (
 		<ModalContainer open={open} size="big">
 			<ModalHeader onClose={onClose} title={title} />

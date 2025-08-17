@@ -1,5 +1,6 @@
 import Loader from "@components/Loader";
 import { ModalConfirm, ModalUpdateCode } from "@components/Modal";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { updateSafetyConstraintCode } from "@http/Step3/SafetyConstraint";
 import {
 	deleteUnsafeControlAction,
@@ -23,11 +24,7 @@ function UCAsContainer({ controlAction }: UCAsContainerProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Get Unsafe Control Actions
 
-	const {
-		data: ucas,
-		isLoading,
-		isError
-	} = useQuery({
+	const { data: ucas, isLoading } = useQuery({
 		queryKey: ["unsafe-control-actions", controlAction.id],
 		queryFn: () => getUnsafeControlActions(controlAction.id)
 	});
@@ -127,36 +124,42 @@ function UCAsContainer({ controlAction }: UCAsContainerProps) {
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoading) return <Loader />;
-	if (isError || !ucas) return <h1>Error</h1>;
 	return (
 		<>
-			<div className={styles.ucas_container}>
-				<header className={styles.container_header}>
-					<span className={styles.column_tag}>Unsafe Control Actions</span>
-					<span className={styles.column_tag}>Associated Controller's Constraints</span>
-				</header>
-				<div className={styles.ucas_list}>
-					{ucas.map(uca => (
-						<UCARow
-							key={uca.id}
-							unsafeControlAction={uca}
-							onDeleteUCA={() => {
-								setSelectedUCA(uca);
-								setModalDeleteUCAOpen(true);
-							}}
-							onUpdateUCA={() => {
-								setSelectedUCA(uca);
-								setModalUpdateUCAOpen(true);
-							}}
-							onUpdateConstraint={constraint => {
-								setSelectedConstraint(constraint);
-								setModalUpdateConstraintOpen(true);
-							}}
-						/>
-					))}
+			{isLoading ? (
+				<Loader />
+			) : ucas && ucas.length > 0 ? (
+				<div className={styles.ucas_container}>
+					<header className={styles.container_header}>
+						<span className={styles.column_tag}>Unsafe Control Actions</span>
+						<span className={styles.column_tag}>
+							Associated Controller's Constraints
+						</span>
+					</header>
+					<div className={styles.ucas_list}>
+						{ucas.map(uca => (
+							<UCARow
+								key={uca.id}
+								unsafeControlAction={uca}
+								onDeleteUCA={() => {
+									setSelectedUCA(uca);
+									setModalDeleteUCAOpen(true);
+								}}
+								onUpdateUCA={() => {
+									setSelectedUCA(uca);
+									setModalUpdateUCAOpen(true);
+								}}
+								onUpdateConstraint={constraint => {
+									setSelectedConstraint(constraint);
+									setModalUpdateConstraintOpen(true);
+								}}
+							/>
+						))}
+					</div>
 				</div>
-			</div>
+			) : (
+				<NoResultsMessage message="No unsafe control actions identified." />
+			)}
 			{selectedUCA && (
 				<>
 					<ModalUpdateCode

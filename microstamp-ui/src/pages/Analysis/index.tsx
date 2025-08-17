@@ -1,5 +1,4 @@
 import Button from "@components/Button";
-import Loader from "@components/Loader";
 import { ModalPDFPreview } from "@components/Modal";
 import PageActions from "@components/PageActions";
 import { getAnalysis } from "@http/Analyses";
@@ -37,14 +36,22 @@ function Analysis() {
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoading) return <Loader />;
-	if (isError || analysis === undefined) return <h1>Error</h1>;
 	return (
 		<>
 			<AnalysisStepsMenu analysisId={id} />
 			<div className={styles.analysis_content}>
-				<AnalysisDisplay analysis={analysis} />
-				<AnalysisImage analysisId={analysis.id} image={analysis.image} />
+				<AnalysisDisplay
+					analysisId={id}
+					analysis={analysis}
+					isLoading={isLoading}
+					isError={isError || analysis === undefined}
+				/>
+				<AnalysisImage
+					analysisId={id}
+					image={analysis?.image}
+					isLoading={isLoading}
+					isError={isError || analysis === undefined}
+				/>
 			</div>
 			<PageActions>
 				<Button variant="dark" icon={PdfIcon} onClick={toggleModalAnalysisPdf}>

@@ -2,6 +2,7 @@ import AnalysisHeader from "@components/AnalysisHeader";
 import Button from "@components/Button";
 import Loader from "@components/Loader";
 import { ModalPDFPreview } from "@components/Modal";
+import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getStep3PDF } from "@http/Export";
 import { getControlAction } from "@http/Step2/Interactions/ControlActions";
@@ -37,7 +38,8 @@ function UnsafeControlActions() {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	if (isLoading) return <Loader />;
-	if (isError || controlAction === undefined) return <h1>Error</h1>;
+	if (isError || controlAction === undefined)
+		return <NoResultsMessage message="Error loading unsafe control actions." />;
 	return (
 		<>
 			<AnalysisHeader analysisId={id} controlAction={controlAction.name} icon="step3" />
