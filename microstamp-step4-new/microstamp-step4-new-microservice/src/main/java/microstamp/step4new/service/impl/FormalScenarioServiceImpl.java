@@ -10,7 +10,7 @@ import microstamp.step4new.entity.FormalScenario;
 import microstamp.step4new.entity.FormalScenarioClass;
 import microstamp.step4new.constants.FormalScenarioCodes;
 import microstamp.step4new.exception.Step4NewNotFoundException;
-import microstamp.step4new.helper.FormalScenarioHelper;
+import microstamp.step4new.mapper.FormalScenarioMapper;
 import microstamp.step4new.repository.FormalScenarioRepository;
 import microstamp.step4new.service.FormalScenarioService;
 import org.springframework.stereotype.Component;
@@ -56,14 +56,14 @@ public class FormalScenarioServiceImpl implements FormalScenarioService {
         repository.save(entity);
 
         log.info("FormalScenario created for UCA {} with id {}", unsafeControlActionId, entity.getId());
-        return FormalScenarioHelper.buildScenario(uca);
+        return FormalScenarioMapper.toReadDto(uca, entity.getClasses());
     }
 
     @Override
     public FormalScenarioReadDto getOrCreate(UUID unsafeControlActionId) {
         UnsafeControlActionFullReadDto uca = step3Client.readUnsafeControlAction(unsafeControlActionId);
         return repository.findByUnsafeControlActionId(unsafeControlActionId)
-                .map(existing -> FormalScenarioHelper.buildScenario(uca))
+                .map(existing -> FormalScenarioMapper.toReadDto(uca, existing.getClasses()))
                 .orElseGet(() -> create(uca.analysis_id(), unsafeControlActionId));
     }
 
@@ -73,7 +73,7 @@ public class FormalScenarioServiceImpl implements FormalScenarioService {
         return repository.findById(id)
                 .map(existing -> {
                     UnsafeControlActionFullReadDto uca = step3Client.readUnsafeControlAction(existing.getUnsafeControlActionId());
-                    return FormalScenarioHelper.buildScenario(uca);
+                    return FormalScenarioMapper.toReadDto(uca, existing.getClasses());
                 })
                 .orElseThrow(() -> new Step4NewNotFoundException("FormalScenario", id.toString()));
     }

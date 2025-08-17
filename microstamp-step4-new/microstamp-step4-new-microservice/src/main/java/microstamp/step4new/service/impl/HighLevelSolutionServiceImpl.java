@@ -75,14 +75,7 @@ public class HighLevelSolutionServiceImpl implements HighLevelSolutionService {
     @Override
     public List<HighLevelSolutionReadDto> findByUnsafeControlActionId(UUID unsafeControlActionId) {
         log.info("Finding HighLevelSolutions by UCA id: {}", unsafeControlActionId);
-        List<UUID> classIds = formalScenarioClassRepository.findAll().stream()
-                .filter(c -> c.getFormalScenario() != null && unsafeControlActionId.equals(c.getFormalScenario().getUnsafeControlActionId()))
-                .map(FormalScenarioClass::getId)
-                .toList();
-
-        if (classIds.isEmpty()) return List.of();
-
-        return repository.findByFormalScenarioClassIdIn(classIds).stream()
+        return repository.findByFormalScenarioClass_FormalScenario_UnsafeControlActionId(unsafeControlActionId).stream()
                 .map(HighLevelSolutionMapper::toDto)
                 .toList();
     }

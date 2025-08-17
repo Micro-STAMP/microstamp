@@ -4,6 +4,7 @@ import microstamp.step4new.dto.highlevelsolution.HighLevelSolutionInsertDto;
 import microstamp.step4new.dto.highlevelsolution.HighLevelSolutionReadDto;
 import microstamp.step4new.dto.highlevelsolution.HighLevelSolutionUpdateDto;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface HighLevelSolutionService {
@@ -12,7 +13,7 @@ public interface HighLevelSolutionService {
 
     HighLevelSolutionReadDto findByFormalScenarioClassId(UUID formalScenarioClassId);
 
-    java.util.List<HighLevelSolutionReadDto> findByUnsafeControlActionId(UUID unsafeControlActionId);
+    List<HighLevelSolutionReadDto> findByUnsafeControlActionId(UUID unsafeControlActionId);
 
     HighLevelSolutionReadDto create(HighLevelSolutionInsertDto dto);
 

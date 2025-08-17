@@ -13,6 +13,6 @@ public interface HighLevelSolutionRepository extends JpaRepository<HighLevelSolu
 
     Optional<HighLevelSolution> findByFormalScenarioClassId(UUID formalScenarioClassId);
 
-    List<HighLevelSolution> findByFormalScenarioClassIdIn(List<UUID> formalScenarioClassIds);
+	List<HighLevelSolution> findByFormalScenarioClass_FormalScenario_UnsafeControlActionId(UUID unsafeControlActionId);
 
 }
