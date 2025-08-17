@@ -1,7 +1,11 @@
 package microstamp.authorization.util.pdf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.itextpdf.kernel.colors.WebColors;
+import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Link;
+import com.itextpdf.layout.element.ListItem;
 import com.itextpdf.layout.element.Paragraph;
 import microstamp.authorization.dto.step1.*;
 
@@ -18,8 +22,11 @@ public class Step1PdfHelper {
     public static void setSystemGoalSection(Document document, List<SystemGoalReadDto> systemGoals) throws JsonProcessingException {
         com.itextpdf.layout.element.List systemGoalsList = new com.itextpdf.layout.element.List();
 
-        for(SystemGoalReadDto systemGoal : systemGoals)
-            systemGoalsList.add("[" + systemGoal.getCode() + "] " + systemGoal.getName());
+        for(SystemGoalReadDto systemGoal : systemGoals) {
+            ListItem systemGoalItem = new ListItem("[" + systemGoal.getCode() + "] " + systemGoal.getName());
+            systemGoalItem.setDestination(systemGoal.getCode());
+            systemGoalsList.add(systemGoalItem);
+        }
 
         document.add(new Paragraph("System Goals")
                 .setBold()
@@ -30,8 +37,11 @@ public class Step1PdfHelper {
     public static void setAssumptionSection(Document document, List<AssumptionReadDto> assumptions) throws JsonProcessingException {
         com.itextpdf.layout.element.List assumptionsList = new com.itextpdf.layout.element.List();
 
-        for(AssumptionReadDto assumption : assumptions)
+        for(AssumptionReadDto assumption : assumptions) {
+            ListItem assumptionItem = new ListItem("[" + assumption.getCode() + "] " + assumption.getName());
+            assumptionItem.setDestination(assumption.getCode());
             assumptionsList.add("[" + assumption.getCode() + "] " + assumption.getName());
+        }
 
         document.add(new Paragraph("\n"));
         document.add(new Paragraph("Assumptions")
@@ -43,8 +53,11 @@ public class Step1PdfHelper {
     public static void setLossesSection(Document document, List<LossReadDto> losses) throws JsonProcessingException {
         com.itextpdf.layout.element.List lossesList = new com.itextpdf.layout.element.List();
 
-        for(LossReadDto loss : losses)
-            lossesList.add("[" + loss.getCode() + "] " + loss.getName());
+        for(LossReadDto loss : losses) {
+            ListItem lossItem = new ListItem("[" + loss.getCode() + "] " + loss.getName());
+            lossItem.setDestination(loss.getCode());
+            lossesList.add(lossItem);
+        }
 
         document.add(new Paragraph("\n"));
         document.add(new Paragraph("Losses")
@@ -57,14 +70,23 @@ public class Step1PdfHelper {
         com.itextpdf.layout.element.List hazardsList = new com.itextpdf.layout.element.List();
 
         for(HazardReadDto hazard : hazards) {
-            StringBuilder hazardRow = new StringBuilder("[" + hazard.getCode() + "] " + hazard.getName());
-            if(hazard.getFather() != null)
-                hazardRow.append(" [").append(hazard.getFather().getCode()).append("] ");
+            Paragraph hazardParagraph = new Paragraph("[" + hazard.getCode() + "] " + hazard.getName());
+            hazardParagraph.setDestination(hazard.getCode());
 
-            for(LossReadDto loss : hazard.getLosses())
-                hazardRow.append(" [").append(loss.getCode()).append("] ");
+            if (hazard.getFather() != null) {
+                hazardParagraph.add(" [" + hazard.getFather().getCode() + "] ");
+                hazardParagraph.setDestination(hazard.getFather().getCode());
+            }
 
-            hazardsList.add(hazardRow.toString());
+            for (LossReadDto loss : hazard.getLosses()) {
+                Link lossLink = new Link(" [" + loss.getCode() + "] ", PdfAction.createGoTo(loss.getCode()));
+                lossLink.setFontColor(WebColors.getRGBColor("#b4894d"));
+                hazardParagraph.add(lossLink);
+            }
+
+            ListItem hazardItem = new ListItem();
+            hazardItem.add(hazardParagraph);
+            hazardsList.add(hazardItem);
         }
 
         document.add(new Paragraph("\n"));
@@ -78,12 +100,18 @@ public class Step1PdfHelper {
         com.itextpdf.layout.element.List systemSafetyConstraintsList = new com.itextpdf.layout.element.List();
 
         for(SystemSafetyConstraintReadDto systemSafetyConstraint : systemSafetyConstraints) {
-            StringBuilder systemSafetyConstraintRow = new StringBuilder("[" + systemSafetyConstraint.getCode() + "] " + systemSafetyConstraint.getName());
+            Paragraph systemSafetyConstraintParagraph = new Paragraph("[" + systemSafetyConstraint.getCode() + "] " + systemSafetyConstraint.getName());
+            systemSafetyConstraintParagraph.setDestination(systemSafetyConstraint.getCode());
 
-            for(HazardReadDto hazard : systemSafetyConstraint.getHazards())
-                systemSafetyConstraintRow.append(" [").append(hazard.getCode()).append("] ");
+            for (HazardReadDto hazard : systemSafetyConstraint.getHazards()) {
+                Link hazardLink = new Link(" [" + hazard.getCode() + "] ", PdfAction.createGoTo(hazard.getCode()));
+                hazardLink.setFontColor(WebColors.getRGBColor("#b4894d"));
+                systemSafetyConstraintParagraph.add(hazardLink);
+            }
 
-            systemSafetyConstraintsList.add(systemSafetyConstraintRow.toString());
+            ListItem systemSafetyConstraintItem = new ListItem();
+            systemSafetyConstraintItem.add(systemSafetyConstraintParagraph);
+            systemSafetyConstraintsList.add(systemSafetyConstraintItem);
         }
 
         document.add(new Paragraph("\n"));

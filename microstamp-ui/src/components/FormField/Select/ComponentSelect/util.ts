@@ -1,5 +1,5 @@
 import { SelectOption } from "@components/FormField/Templates";
-import { IComponentReadDto } from "@interfaces/IStep2";
+import { IComponentReadDto, IComponentType } from "@interfaces/IStep2";
 import { truncateText } from "@services/text";
 
 const componentToSelectOption = (component: IComponentReadDto): SelectOption => {
@@ -8,8 +8,17 @@ const componentToSelectOption = (component: IComponentReadDto): SelectOption => 
 		value: component.id
 	};
 };
-const componentsToSelectOptions = (components: IComponentReadDto[]): SelectOption[] => {
-	return components.map(component => componentToSelectOption(component));
+const componentsToSelectOptions = (
+	components: IComponentReadDto[],
+	environmentOption: boolean = false
+): SelectOption[] => {
+	if (environmentOption) {
+		return components.map(component => componentToSelectOption(component));
+	} else {
+		return components
+			.filter(component => component.type !== IComponentType.ENVIRONMENT)
+			.map(component => componentToSelectOption(component));
+	}
 };
 
 export { componentsToSelectOptions, componentToSelectOption };

@@ -28,8 +28,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
             errorMessage = fieldName + " is mandatory";
 
-            Step1Error step2Error = new Step1Error(ex.getClass().getSimpleName(), fieldName, errorMessage);
-            errorResponse.addError(step2Error);
+            Step1Error step1Error = new Step1Error(ex.getClass().getSimpleName(), fieldName, errorMessage);
+            errorResponse.addError(step1Error);
         });
 
         return handleExceptionInternal(ex, errorResponse,

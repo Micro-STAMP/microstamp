@@ -58,7 +58,7 @@ function ModalConnection({
 
 	useEffect(() => {
 		if (components) {
-			setComponentsOptions(componentsToSelectOptions(components));
+			setComponentsOptions(componentsToSelectOptions(components, true));
 		}
 	}, [components]);
 

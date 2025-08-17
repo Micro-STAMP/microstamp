@@ -1,0 +1,46 @@
+.select_options {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+	width: 100%;
+	min-height: 18rem;
+
+	.option_item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.2rem;
+
+		background-color: var(--color-dark-gray);
+		color: var(--color-light-gray);
+		border-radius: var(--radius1);
+
+		padding: 1.2rem;
+		cursor: pointer;
+
+		&:hover {
+			color: var(--color-yellow);
+			transition: all 0.2s;
+		}
+		&.selected {
+			color: var(--color-yellow);
+		}
+
+		.option_label {
+			display: flex;
+			align-items: center;
+			gap: 0.8rem;
+			font-weight: 500;
+			font-size: 1.3rem;
+		}
+		.checkmark {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: var(--radius1);
+			color: var(--color-yellow);
+			font-size: 1.6rem;
+			flex-shrink: 0;
+		}
+	}
+}

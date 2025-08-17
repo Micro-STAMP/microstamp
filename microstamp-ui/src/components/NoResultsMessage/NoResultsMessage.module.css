@@ -1,0 +1,16 @@
+.no_result_message {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.6rem;
+	align-items: center;
+
+	font-weight: 500;
+	font-size: 1.4rem;
+	color: var(--color-yellow);
+	margin: 2rem 0;
+
+	svg {
+		font-size: 2.4rem;
+	}
+}

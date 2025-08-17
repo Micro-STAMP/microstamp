@@ -4,6 +4,7 @@ import lombok.*;
 import microstamp.authorization.dto.step1.Step1ExportReadDto;
 import microstamp.authorization.dto.step2.Step2ExportReadDto;
 import microstamp.authorization.dto.step3.Step3ExportReadDto;
+import microstamp.authorization.dto.step4.Step4ExportReadDto;
 
 @Getter
 @Setter
@@ -19,4 +20,6 @@ public class ExportReadDto {
     private Step2ExportReadDto step2;
 
     private Step3ExportReadDto step3;
+
+    private Step4ExportReadDto step4;
 }

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>microstamp</groupId>
 	<artifactId>microstamp-authorization-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>microstamp-authorization-server</name>
 	<description>MicroSTAMP-Authorization-Server</description>
 	<url/>

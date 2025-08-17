@@ -22,6 +22,7 @@ function ComponentsList({
 	);
 	const actuatorList = components.filter(c => c.type === IComponentType.ACTUATOR);
 	const sensorList = components.filter(c => c.type === IComponentType.SENSOR);
+	const environmentList = components.filter(c => c.type === IComponentType.ENVIRONMENT);
 
 	const renderComponentList = (title: string, componentList: IComponentReadDto[]) => {
 		return (
@@ -50,6 +51,7 @@ function ComponentsList({
 			{renderComponentList("Controlled Processes", controlledProcessList)}
 			{renderComponentList("Actuators", actuatorList)}
 			{renderComponentList("Sensors", sensorList)}
+			{renderComponentList("Environment", environmentList)}
 		</div>
 	);
 }

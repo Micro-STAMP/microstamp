@@ -1,7 +1,7 @@
 import Container from "@components/Container";
 import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
-import { ModalComponent } from "@components/Modal/ModalEntity";
+import { ModalComponent, ModalEnvironment } from "@components/Modal/ModalEntity";
 import {
 	createComponent,
 	deleteComponent,
@@ -27,6 +27,12 @@ interface ComponentsContainerProps {
 function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 	const queryClient = useQueryClient();
 	const [selectedComponent, setSelectedComponent] = useState<IComponentReadDto | null>(null);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Environment Component
+
+	const [modalEnvironmentOpen, setModalEnvironmentOpen] = useState(false);
+	const toggleModalEnvironment = () => setModalEnvironmentOpen(!modalEnvironmentOpen);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Create Component
@@ -140,11 +146,17 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 		queryFn: () => getComponents(analysisId)
 	});
 
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	if (isLoading) return <Loader />;
 	if (isError || components === undefined) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Components" onClick={toggleModalCreateComponent}>
+			<Container
+				title="Components"
+				onOptions={toggleModalEnvironment}
+				onClick={toggleModalCreateComponent}
+			>
 				<ComponentsList
 					components={components}
 					modalDeleteComponent={toggleModalDeleteComponent}
@@ -179,6 +191,12 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 				message="Do you want to delete this component?"
 				title="Delete Component"
 				btnText="Delete"
+			/>
+			<ModalEnvironment
+				analysisId={analysisId}
+				components={components}
+				onClose={toggleModalEnvironment}
+				open={modalEnvironmentOpen}
 			/>
 		</>
 	);

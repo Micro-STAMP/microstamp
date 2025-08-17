@@ -1,7 +1,7 @@
 import DualButton from "@components/Button/DualButton";
 import IconButton from "@components/Button/IconButton";
 import { ListItem as Component } from "@components/Container/ListItem";
-import { IComponentReadDto } from "@interfaces/IStep2";
+import { IComponentReadDto, IComponentType } from "@interfaces/IStep2";
 import { BiInfoCircle as InfoIcon } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
@@ -32,16 +32,18 @@ function ComponentItem({
 						navigate(`component/${component.id}`);
 					}}
 				/>
-				<DualButton
-					onEdit={() => {
-						selectComponent(component);
-						modalUpdateComponent();
-					}}
-					onDelete={() => {
-						selectComponent(component);
-						modalDeleteComponent();
-					}}
-				/>
+				{component.type !== IComponentType.ENVIRONMENT && (
+					<DualButton
+						onEdit={() => {
+							selectComponent(component);
+							modalUpdateComponent();
+						}}
+						onDelete={() => {
+							selectComponent(component);
+							modalDeleteComponent();
+						}}
+					/>
+				)}
 			</Component.Actions>
 		</Component.Root>
 	);
