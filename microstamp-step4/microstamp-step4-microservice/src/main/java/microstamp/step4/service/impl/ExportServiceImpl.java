@@ -141,24 +141,28 @@ public class ExportServiceImpl implements ExportService {
             document.add(new Paragraph("[" + unsafeControlAction.getUca_code() + "] " + unsafeControlAction.getName())
                     .setBold());
 
-            Table table = new Table(UnitValue.createPercentArray(UCA_COLUMN_WIDTHS))
-                    .useAllAvailableWidth();
+            if (unsafeControlAction.getFourTuples().isEmpty()) {
+                document.add(new Paragraph("\nNo scenario identified for this UCA"));
+            } else {
+                Table table = new Table(UnitValue.createPercentArray(UCA_COLUMN_WIDTHS))
+                        .useAllAvailableWidth();
 
-            table.addHeaderCell("Code");
-            table.addHeaderCell("Scenario");
-            table.addHeaderCell("Associated Causal Factor");
-            table.addHeaderCell("Recommendation");
-            table.addHeaderCell("Rationale");
+                table.addHeaderCell("Code");
+                table.addHeaderCell("Scenario");
+                table.addHeaderCell("Associated Causal Factor");
+                table.addHeaderCell("Recommendation");
+                table.addHeaderCell("Rationale");
 
-            for(FourTupleReadDto fourTuple : unsafeControlAction.getFourTuples()) {
-                table.addCell(fourTuple.getCode() != null ? fourTuple.getCode() : "");
-                table.addCell(fourTuple.getScenario());
-                table.addCell(fourTuple.getAssociatedCausalFactor());
-                table.addCell(fourTuple.getRecommendation());
-                table.addCell(fourTuple.getRationale());
+                for(FourTupleReadDto fourTuple : unsafeControlAction.getFourTuples()) {
+                    table.addCell(fourTuple.getCode() != null ? fourTuple.getCode() : "");
+                    table.addCell(fourTuple.getScenario());
+                    table.addCell(fourTuple.getAssociatedCausalFactor());
+                    table.addCell(fourTuple.getRecommendation());
+                    table.addCell(fourTuple.getRationale());
+                }
+
+                document.add(table);
             }
-
-            document.add(table);
         }
     }
 }

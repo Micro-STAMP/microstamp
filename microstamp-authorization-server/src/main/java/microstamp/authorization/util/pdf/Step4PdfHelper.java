@@ -1,6 +1,5 @@
 package microstamp.authorization.util.pdf;
 
-import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.WebColors;
 import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.layout.Document;
@@ -13,7 +12,6 @@ import microstamp.authorization.dto.step4.FourTupleReadDto;
 import microstamp.authorization.dto.step4.UnsafeControlActionFullReadDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Step4PdfHelper {
 
@@ -46,11 +44,6 @@ public class Step4PdfHelper {
                     fourTuple.getRationale()
             );
 
-//            String ucaCodes = fourTuple.getUnsafeControlActions() == null || fourTuple.getUnsafeControlActions().isEmpty()
-//                    ? ""
-//                    : fourTuple.getUnsafeControlActions().stream()
-//                    .map(uca -> "[" + uca.uca_code() + "]")
-//                    .collect(Collectors.joining(" "));
             Paragraph ucaCodeContent = new Paragraph();
 
             if (fourTuple.getUnsafeControlActions() != null && !fourTuple.getUnsafeControlActions().isEmpty()) {
@@ -85,24 +78,28 @@ public class Step4PdfHelper {
             document.add(new Paragraph("[" + unsafeControlAction.getUca_code() + "] " + unsafeControlAction.getName())
                     .setBold());
 
-            Table table = new Table(UnitValue.createPercentArray(UCA_COLUMN_WIDTHS))
-                    .useAllAvailableWidth();
+            if (unsafeControlAction.getFourTuples().isEmpty()) {
+                document.add(new Paragraph("\nNo scenario identified for this UCA"));
+            } else {
+                Table table = new Table(UnitValue.createPercentArray(UCA_COLUMN_WIDTHS))
+                        .useAllAvailableWidth();
 
-            table.addHeaderCell("Code");
-            table.addHeaderCell("Scenario");
-            table.addHeaderCell("Associated Causal Factor");
-            table.addHeaderCell("Recommendation");
-            table.addHeaderCell("Rationale");
+                table.addHeaderCell("Code");
+                table.addHeaderCell("Scenario");
+                table.addHeaderCell("Associated Causal Factor");
+                table.addHeaderCell("Recommendation");
+                table.addHeaderCell("Rationale");
 
-            for(FourTupleReadDto fourTuple : unsafeControlAction.getFourTuples()) {
-                table.addCell(fourTuple.getCode() != null ? fourTuple.getCode() : "");
-                table.addCell(fourTuple.getScenario());
-                table.addCell(fourTuple.getAssociatedCausalFactor());
-                table.addCell(fourTuple.getRecommendation());
-                table.addCell(fourTuple.getRationale());
+                for(FourTupleReadDto fourTuple : unsafeControlAction.getFourTuples()) {
+                    table.addCell(fourTuple.getCode() != null ? fourTuple.getCode() : "");
+                    table.addCell(fourTuple.getScenario());
+                    table.addCell(fourTuple.getAssociatedCausalFactor());
+                    table.addCell(fourTuple.getRecommendation());
+                    table.addCell(fourTuple.getRationale());
+                }
+
+                document.add(table);
             }
-
-            document.add(table);
         }
     }
 }
