@@ -1,28 +1,10 @@
+import { IFormalScenarioClassDto } from "./IFormalScenarioClassDto";
+
 interface IFormalScenariosReadDto {
-	class1: {
-		id: string;
-		output: string;
-		input: string;
-		code: string;
-	};
-	class2: {
-		id: string;
-		output: string;
-		input: string;
-		code: string;
-	};
-	class3: {
-		id: string;
-		output: string;
-		input: string;
-		code: string;
-	};
-	class4: {
-		id: string;
-		output: string;
-		input: string;
-		code: string;
-	};
+	class1: IFormalScenarioClassDto;
+	class2: IFormalScenarioClassDto;
+	class3: IFormalScenarioClassDto;
+	class4: IFormalScenarioClassDto;
 }
 
 export type { IFormalScenariosReadDto };

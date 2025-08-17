@@ -1,8 +1,7 @@
-interface IHighLevelSolutionsInsertDto {
-	formalScenarioClassId: string;
+interface IHighLevelSolutionsUpdateDto {
 	processBehavior: string;
 	controllerBehavior: string;
 	otherSolutions: string;
 }
 
-export type { IHighLevelSolutionsInsertDto };
+export type { IHighLevelSolutionsUpdateDto };

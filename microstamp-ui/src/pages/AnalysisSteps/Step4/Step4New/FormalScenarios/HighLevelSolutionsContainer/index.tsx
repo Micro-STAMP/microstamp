@@ -1,9 +1,12 @@
 import Button from "@components/Button";
 import Container from "@components/Container";
+import { ModalHighLevelSolutions } from "@components/Modal/ModalEntity/ModalStep4New";
 import { getHighLevelSolutionsByUCA } from "@http/Step4New/HighLevelSolutions";
 import { IFormalScenariosReadDto } from "@interfaces/IStep4New/IFormalScenarios";
+import { IHighLevelSolutionsReadDto } from "@interfaces/IStep4New/IHighLevelSolutions";
 import ContainerClassLayout from "@pages/AnalysisSteps/Step4/Step4New/components/ContainerClassLayout";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import {
 	TbCircleDashedNumber1,
 	TbCircleDashedNumber2,
@@ -32,22 +35,34 @@ function HighLevelSolutionsContainer({ formalScenarios, ucaId }: HighLevelSoluti
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Edit High Level Solutions
 
-	const handleEditSolutions = (classNumber: number, classId?: string) => {
-		return {
-			classNumber,
-			classId
-		};
+	const [modalUpdateHighLevelSolutionsOpen, setModalUpdateHighLevelSolutionsOpen] =
+		useState(false);
+	const toggleModalUpdateHighLevelSolutions = () =>
+		setModalUpdateHighLevelSolutionsOpen(!modalUpdateHighLevelSolutionsOpen);
+
+	const [formalScenarioClassId, setFormalScenarioClassId] = useState<string | undefined>();
+	const [selectedSolution, setSelectedSolution] = useState<
+		IHighLevelSolutionsReadDto | undefined
+	>();
+
+	const handleEditSolutions = (solution?: IHighLevelSolutionsReadDto, classId?: string) => {
+		setFormalScenarioClassId(classId);
+		setSelectedSolution(solution);
+		if (solution) toggleModalUpdateHighLevelSolutions();
 	};
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle High Level Solutions Content By Class
 
-	const getSolutionByClassId = (classId: string | undefined) => {
-		if (!solutions || solutions.length === 0 || !classId) return null;
+	const getSolutionByClassId = (solutions: IHighLevelSolutionsReadDto[], classId: string) => {
 		return solutions.find(solution => solution.formalScenarioClassId === classId);
 	};
-	const renderClassContent = (classNumber: number, classId: string | undefined) => {
-		const solution = getSolutionByClassId(classId);
+	const renderClassContent = (
+		solutions: IHighLevelSolutionsReadDto[],
+		classNumber: number,
+		classId: string
+	) => {
+		const solution = getSolutionByClassId(solutions, classId);
 
 		return (
 			<div className={styles.solutions_class_content}>
@@ -82,10 +97,10 @@ function HighLevelSolutionsContainer({ formalScenarios, ucaId }: HighLevelSoluti
 						}
 						iconPosition="left"
 						variant="dark"
-						onClick={() => handleEditSolutions(classNumber, classId || "")}
+						onClick={() => handleEditSolutions(solution, classId)}
 						size="small"
 					>
-						Edit High-Level Solutions
+						Update High-Level Solutions
 					</Button>
 				</div>
 			</div>
@@ -95,20 +110,33 @@ function HighLevelSolutionsContainer({ formalScenarios, ucaId }: HighLevelSoluti
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	return (
-		<Container
-			title="4.2 Identify High-Level Solutions"
-			justTitle
-			collapsible
-			isLoading={isLoading}
-			isError={formalScenarios === undefined || isError || solutions === undefined}
-		>
-			<ContainerClassLayout
-				class1Content={renderClassContent(1, formalScenarios?.class1?.id)}
-				class2Content={renderClassContent(2, formalScenarios?.class2?.id)}
-				class3Content={renderClassContent(3, formalScenarios?.class3?.id)}
-				class4Content={renderClassContent(4, formalScenarios?.class4?.id)}
-			/>
-		</Container>
+		<>
+			<Container
+				title="4.2 Identify High-Level Solutions"
+				justTitle
+				collapsible
+				isLoading={isLoading}
+				isError={formalScenarios === undefined || isError || solutions === undefined}
+			>
+				{formalScenarios && solutions && (
+					<ContainerClassLayout
+						class1Content={renderClassContent(solutions, 1, formalScenarios.class1.id)}
+						class2Content={renderClassContent(solutions, 2, formalScenarios.class2.id)}
+						class3Content={renderClassContent(solutions, 3, formalScenarios.class3.id)}
+						class4Content={renderClassContent(solutions, 4, formalScenarios.class4.id)}
+					/>
+				)}
+			</Container>
+			{formalScenarios && formalScenarioClassId && selectedSolution && (
+				<ModalHighLevelSolutions
+					formalScenarioClassId={formalScenarioClassId}
+					formalScenarios={formalScenarios}
+					highLevelSolutions={selectedSolution}
+					open={modalUpdateHighLevelSolutionsOpen}
+					onClose={toggleModalUpdateHighLevelSolutions}
+				/>
+			)}
+		</>
 	);
 }
 

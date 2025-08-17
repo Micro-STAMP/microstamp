@@ -36,8 +36,18 @@
 
 @media (max-width: 720px) {
 	.modal_inputs_wrapper {
-		&.double {
+		&.double,
+		&.triple {
 			flex-direction: column;
+		}
+	}
+}
+@media (max-width: 1024px) {
+	.modal_inputs_wrapper {
+		&.triple {
+			label {
+				min-width: 48%;
+			}
 		}
 	}
 }
