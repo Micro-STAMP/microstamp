@@ -1,0 +1,34 @@
+.solutions_class_content {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+
+	.solution {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		border-left: 0.4rem solid var(--color-dark-yellow);
+		padding: 1.2rem;
+		border-radius: var(--radius1);
+		background-color: var(--color-gray25);
+
+		max-height: 20rem;
+		overflow-y: auto;
+
+		.solution_title {
+			font-size: 1.4rem;
+			font-weight: 600;
+		}
+		.solution_content {
+			font-size: 1.3rem;
+			color: var(--color-light-gray);
+			line-height: 1.7;
+			font-weight: 500;
+		}
+	}
+	.actions {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: 0.6rem;
+	}
+}

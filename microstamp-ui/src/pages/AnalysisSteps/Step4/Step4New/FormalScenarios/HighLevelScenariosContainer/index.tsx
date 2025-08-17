@@ -1,29 +1,19 @@
 import Container from "@components/Container";
 import { ListItem as Scenario } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
-import { getFormalScenariosByUCA } from "@http/Step4New/FormalScenarios";
-import { useQuery } from "@tanstack/react-query";
-import { BiSolidCircle } from "react-icons/bi";
-import styles from "./HighLevelScenariosContainer.module.css";
+import { IFormalScenariosReadDto } from "@interfaces/IStep4New/IFormalScenarios";
+import ContainerClassLayout from "@pages/AnalysisSteps/Step4/Step4New/components/ContainerClassLayout";
 
 interface HighLevelScenariosContainerProps {
-	ucaId: string;
+	formalScenarios?: IFormalScenariosReadDto;
+	isLoading?: boolean;
+	isError?: boolean;
 }
-function HighLevelScenariosContainer({ ucaId }: HighLevelScenariosContainerProps) {
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle List Four Tuples
-
-	const {
-		data: formalScenarios,
-		isLoading,
-		isError
-	} = useQuery({
-		queryKey: ["formal-scenarios", ucaId],
-		queryFn: () => getFormalScenariosByUCA(ucaId)
-	});
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-
+function HighLevelScenariosContainer({
+	formalScenarios,
+	isLoading = false,
+	isError = false
+}: HighLevelScenariosContainerProps) {
 	return (
 		<Container
 			title="4.1 Identify High-Level Scenarios"
@@ -33,24 +23,48 @@ function HighLevelScenariosContainer({ ucaId }: HighLevelScenariosContainerProps
 			isError={isError || formalScenarios === undefined}
 		>
 			{formalScenarios && (
-				<div className={styles.high_level_scenarios}>
-					{Object.entries(formalScenarios).map(([classKey, classData]) => (
-						<div key={classKey} className={styles.class_item}>
-							<span className={styles.title}>
-								<BiSolidCircle />
-								{classKey.replace("class", "Class ")}:
-							</span>
-							<ListWrapper>
-								<Scenario.Root>
-									<Scenario.Name code="Output" name={classData.output} />
-								</Scenario.Root>
-								<Scenario.Root>
-									<Scenario.Name code="Input" name={classData.input} />
-								</Scenario.Root>
-							</ListWrapper>
-						</div>
-					))}
-				</div>
+				<ContainerClassLayout
+					class1Content={
+						<ListWrapper>
+							<Scenario.Root>
+								<Scenario.Name code="Output" name={formalScenarios.class1.output} />
+							</Scenario.Root>
+							<Scenario.Root>
+								<Scenario.Name code="Input" name={formalScenarios.class1.input} />
+							</Scenario.Root>
+						</ListWrapper>
+					}
+					class2Content={
+						<ListWrapper>
+							<Scenario.Root>
+								<Scenario.Name code="Output" name={formalScenarios.class2.output} />
+							</Scenario.Root>
+							<Scenario.Root>
+								<Scenario.Name code="Input" name={formalScenarios.class2.input} />
+							</Scenario.Root>
+						</ListWrapper>
+					}
+					class3Content={
+						<ListWrapper>
+							<Scenario.Root>
+								<Scenario.Name code="Output" name={formalScenarios.class3.output} />
+							</Scenario.Root>
+							<Scenario.Root>
+								<Scenario.Name code="Input" name={formalScenarios.class3.input} />
+							</Scenario.Root>
+						</ListWrapper>
+					}
+					class4Content={
+						<ListWrapper>
+							<Scenario.Root>
+								<Scenario.Name code="Output" name={formalScenarios.class4.output} />
+							</Scenario.Root>
+							<Scenario.Root>
+								<Scenario.Name code="Input" name={formalScenarios.class4.input} />
+							</Scenario.Root>
+						</ListWrapper>
+					}
+				/>
 			)}
 		</Container>
 	);
