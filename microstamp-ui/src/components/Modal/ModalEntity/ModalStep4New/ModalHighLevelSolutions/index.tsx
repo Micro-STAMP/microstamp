@@ -18,7 +18,7 @@ import {
 	IHighLevelSolutionsUpdateDto
 } from "@interfaces/IStep4New/IHighLevelSolutions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiChevronUp, BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
 import { toast } from "sonner";
 import styles from "./ModalHighLevelSolutions.module.css";
@@ -47,6 +47,14 @@ function ModalHighLevelSolutions({
 			processBehavior: highLevelSolutions.processBehavior
 		});
 
+	useEffect(() => {
+		setHighLevelSolutionsData({
+			controllerBehavior: highLevelSolutions.controllerBehavior,
+			otherSolutions: highLevelSolutions.otherSolutions,
+			processBehavior: highLevelSolutions.processBehavior
+		});
+	}, [highLevelSolutions]);
+
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle High Level Solutions Update Request
 
@@ -54,7 +62,7 @@ function ModalHighLevelSolutions({
 		mutationFn: (solutions: IHighLevelSolutionsUpdateDto) =>
 			updateHighLevelSolutions(solutions, highLevelSolutions.id),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [""] });
+			queryClient.invalidateQueries({ queryKey: ["high-level-solutions"] });
 			toast.success("High Level Solutions updated successfully.");
 		},
 		onError: err => {
@@ -129,10 +137,10 @@ function ModalHighLevelSolutions({
 			<ModalInputs column="triple">
 				<Textarea
 					label="Controller Behavior"
-					value={highLevelSolutions.controllerBehavior}
+					value={highLevelSolutionsData.controllerBehavior}
 					onChange={(value: string) =>
 						setHighLevelSolutionsData({
-							...highLevelSolutions,
+							...highLevelSolutionsData,
 							controllerBehavior: value
 						})
 					}
@@ -141,11 +149,11 @@ function ModalHighLevelSolutions({
 				/>
 				<Textarea
 					label="Process Behavior"
-					value={highLevelSolutions.processBehavior}
+					value={highLevelSolutionsData.processBehavior}
 					onChange={(value: string) =>
 						setHighLevelSolutionsData({
-							...highLevelSolutions,
-							controllerBehavior: value
+							...highLevelSolutionsData,
+							processBehavior: value
 						})
 					}
 					rows={6}
@@ -153,9 +161,12 @@ function ModalHighLevelSolutions({
 				/>
 				<Textarea
 					label="Other Solutions"
-					value={highLevelSolutions.otherSolutions}
+					value={highLevelSolutionsData.otherSolutions}
 					onChange={(value: string) =>
-						setHighLevelSolutionsData({ ...highLevelSolutions, otherSolutions: value })
+						setHighLevelSolutionsData({
+							...highLevelSolutionsData,
+							otherSolutions: value
+						})
 					}
 					rows={6}
 					required
