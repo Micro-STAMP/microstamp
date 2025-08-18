@@ -26,12 +26,12 @@ public class HighLevelSolution {
     @JoinColumn(name = "formal_scenario_class_id", nullable = false, updatable = false, unique = true)
     private FormalScenarioClass formalScenarioClass;
 
-    @Column
+    @Column(length = 5000)
     private String processBehavior;
 
-    @Column
+    @Column(length = 5000)
     private String controllerBehavior;
 
-    @Column
+    @Column(length = 5000)
     private String otherSolutions;
 }
