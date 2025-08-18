@@ -27,6 +27,11 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>microstamp</groupId>
+            <artifactId>microstamp-step4-new-dto</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>
