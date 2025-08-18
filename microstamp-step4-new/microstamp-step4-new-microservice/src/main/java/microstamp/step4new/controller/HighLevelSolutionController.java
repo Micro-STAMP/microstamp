@@ -30,8 +30,8 @@ public class HighLevelSolutionController {
     }
 
     @GetMapping("/formal-scenario-class/{id}")
-    public ResponseEntity<HighLevelSolutionReadDto> findByFormalScenarioClassId(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(service.findByFormalScenarioClassId(id), HttpStatus.OK);
+    public ResponseEntity<HighLevelSolutionReadDto> getOrCreateByFormalScenarioClassId(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(service.getOrCreateByFormalScenarioClassId(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -52,7 +52,7 @@ public class HighLevelSolutionController {
     }
 
     @GetMapping("/unsafe-control-action/{id}")
-    public ResponseEntity<List<HighLevelSolutionReadDto>> findByUnsafeControlActionId(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(service.findByUnsafeControlActionId(id), HttpStatus.OK);
+    public ResponseEntity<List<HighLevelSolutionReadDto>> getOrCreateByUnsafeControlActionId(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(service.getOrCreateByUnsafeControlActionId(id), HttpStatus.OK);
     }
 }

@@ -2,6 +2,7 @@ package microstamp.step4new.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import microstamp.step4new.constants.FormalScenarioCodes;
 import microstamp.step4new.dto.highlevelsolution.HighLevelSolutionInsertDto;
 import microstamp.step4new.dto.highlevelsolution.HighLevelSolutionReadDto;
 import microstamp.step4new.dto.highlevelsolution.HighLevelSolutionUpdateDto;
@@ -15,8 +16,11 @@ import microstamp.step4new.repository.HighLevelSolutionRepository;
 import microstamp.step4new.service.HighLevelSolutionService;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.UUID;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -35,11 +39,11 @@ public class HighLevelSolutionServiceImpl implements HighLevelSolutionService {
     }
 
     @Override
-    public HighLevelSolutionReadDto findByFormalScenarioClassId(UUID formalScenarioClassId) {
-        log.info("Finding HighLevelSolution by FormalScenarioClass id: {}", formalScenarioClassId);
-        HighLevelSolution entity = repository.findByFormalScenarioClassId(formalScenarioClassId)
-                .orElseThrow(() -> new Step4NewNotFoundException("HighLevelSolution", formalScenarioClassId.toString()));
-        return HighLevelSolutionMapper.toDto(entity);
+    public HighLevelSolutionReadDto getOrCreateByFormalScenarioClassId(UUID formalScenarioClassId) {
+        log.info("Get or create HighLevelSolution by FormalScenarioClass id: {}", formalScenarioClassId);
+        return repository.findByFormalScenarioClassId(formalScenarioClassId)
+                .map(HighLevelSolutionMapper::toDto)
+                .orElseGet(() -> create(HighLevelSolutionMapper.toEmptyInsertDto(formalScenarioClassId)));
     }
 
     @Override
@@ -73,10 +77,35 @@ public class HighLevelSolutionServiceImpl implements HighLevelSolutionService {
     }
 
     @Override
-    public List<HighLevelSolutionReadDto> findByUnsafeControlActionId(UUID unsafeControlActionId) {
-        log.info("Finding HighLevelSolutions by UCA id: {}", unsafeControlActionId);
-        return repository.findByFormalScenarioClass_FormalScenario_UnsafeControlActionId(unsafeControlActionId).stream()
-                .map(HighLevelSolutionMapper::toDto)
+    public List<HighLevelSolutionReadDto> getOrCreateByUnsafeControlActionId(UUID unsafeControlActionId) {
+        log.info("Get or create HighLevelSolutions by UCA id: {}", unsafeControlActionId);
+
+        List<FormalScenarioClass> scenarioClasses = formalScenarioClassRepository
+                .findByFormalScenario_UnsafeControlActionId(unsafeControlActionId);
+
+        if (scenarioClasses.isEmpty())
+            return List.of();
+
+        Map<UUID, HighLevelSolution> existingByClassId = repository
+                .findByFormalScenarioClass_FormalScenario_UnsafeControlActionId(unsafeControlActionId)
+                .stream()
+                .collect(Collectors.toMap(h -> h.getFormalScenarioClass().getId(), h -> h));
+
+        Map<String, Integer> order = Map.of(
+                FormalScenarioCodes.CLASS1, 1,
+                FormalScenarioCodes.CLASS2, 2,
+                FormalScenarioCodes.CLASS3, 3,
+                FormalScenarioCodes.CLASS4, 4
+        );
+
+        return scenarioClasses.stream()
+                .sorted(Comparator.comparingInt(a -> order.getOrDefault(a.getCode(), 99)))
+                .map(cls -> {
+                    HighLevelSolution existing = existingByClassId.get(cls.getId());
+                    return (existing != null)
+                            ? HighLevelSolutionMapper.toDto(existing)
+                            : create(HighLevelSolutionMapper.toEmptyInsertDto(cls.getId()));
+                })
                 .toList();
     }
 }

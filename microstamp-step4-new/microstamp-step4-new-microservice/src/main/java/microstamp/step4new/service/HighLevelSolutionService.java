@@ -11,9 +11,9 @@ public interface HighLevelSolutionService {
 
     HighLevelSolutionReadDto findById(UUID id);
 
-    HighLevelSolutionReadDto findByFormalScenarioClassId(UUID formalScenarioClassId);
+    HighLevelSolutionReadDto getOrCreateByFormalScenarioClassId(UUID formalScenarioClassId);
 
-    List<HighLevelSolutionReadDto> findByUnsafeControlActionId(UUID unsafeControlActionId);
+    List<HighLevelSolutionReadDto> getOrCreateByUnsafeControlActionId(UUID unsafeControlActionId);
 
     HighLevelSolutionReadDto create(HighLevelSolutionInsertDto dto);
 

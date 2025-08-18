@@ -6,6 +6,8 @@ import microstamp.step4new.dto.highlevelsolution.HighLevelSolutionUpdateDto;
 import microstamp.step4new.entity.FormalScenarioClass;
 import microstamp.step4new.entity.HighLevelSolution;
 
+import java.util.UUID;
+
 public class HighLevelSolutionMapper {
 
     public static HighLevelSolution toEntity(HighLevelSolutionInsertDto dto, FormalScenarioClass formalScenarioClass) {
@@ -32,4 +34,13 @@ public class HighLevelSolutionMapper {
                 .otherSolutions(entity.getOtherSolutions())
                 .build();
     }
+
+	public static HighLevelSolutionInsertDto toEmptyInsertDto(UUID formalScenarioClassId) {
+		return HighLevelSolutionInsertDto.builder()
+				.formalScenarioClassId(formalScenarioClassId)
+				.processBehavior("")
+				.controllerBehavior("")
+				.otherSolutions("")
+				.build();
+	}
 }
