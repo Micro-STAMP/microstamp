@@ -25,12 +25,12 @@ public class RefinedScenarioController {
 
 	private final RefinedScenarioService service;
 
-	@GetMapping("/unsafe_control_action_id/{id}")
+	@GetMapping("/unsafe-control-action/{id}")
 	public ResponseEntity<List<RefinedScenarioReadDto>> findByUnsafeControlActionId(@PathVariable("id") UUID id) {
 		return new ResponseEntity<>(service.findByUnsafeControlActionId(id), HttpStatus.OK);
 	}
 
-	@GetMapping("/unsafe_control_action_id/{id}/common-causes")
+	@GetMapping("/unsafe-control-action/{id}/common-causes")
 	public ResponseEntity<List<RefinedScenarioCommonCauseGroupReadDto>> groupByCommonCause(@PathVariable("id") UUID id) {
 		return new ResponseEntity<>(service.groupByCommonCauseForUnsafeControlAction(id), HttpStatus.OK);
 	}
