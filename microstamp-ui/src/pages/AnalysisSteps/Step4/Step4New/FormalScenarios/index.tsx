@@ -57,9 +57,13 @@ function FormalScenarios() {
 				isLoading={isLoadingFormalScenarios}
 				isError={isErrorFormalScenarios}
 			/>
-			<HighLevelSolutionsContainer formalScenarios={formalScenarios} ucaId={ucaId} />
-			<RefinedScenariosContainer />
-			<RefinedSolutionsContainer />
+			{formalScenarios && (
+				<>
+					<HighLevelSolutionsContainer formalScenarios={formalScenarios} ucaId={ucaId} />
+					<RefinedScenariosContainer uca={uca} formalScenarios={formalScenarios} />
+					<RefinedSolutionsContainer />
+				</>
+			)}
 			<PageActions>
 				<Button variant="dark" icon={ExportIcon}>
 					Export New Step 4

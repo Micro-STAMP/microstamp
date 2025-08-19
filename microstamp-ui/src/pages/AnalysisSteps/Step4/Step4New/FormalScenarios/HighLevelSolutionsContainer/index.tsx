@@ -1,6 +1,6 @@
 import Button from "@components/Button";
 import Container from "@components/Container";
-import { ModalHighLevelSolutions } from "@components/Modal/ModalEntity/ModalStep4New";
+import { ModalHighLevelSolutions } from "@components/Modal/ModalEntity";
 import { getHighLevelSolutionsByUCA } from "@http/Step4New/HighLevelSolutions";
 import { IFormalScenariosReadDto } from "@interfaces/IStep4New/IFormalScenarios";
 import { IHighLevelSolutionsReadDto } from "@interfaces/IStep4New/IHighLevelSolutions";
