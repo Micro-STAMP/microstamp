@@ -43,4 +43,8 @@
 			flex-shrink: 0;
 		}
 	}
+
+	.no_results {
+		margin: auto;
+	}
 }

@@ -13,7 +13,7 @@ const REFINED_SCENARIOS_ENDPOINT = "step4new/refined-scenarios";
 const getRefinedScenariosByUCA = async (ucaId: string) => {
 	try {
 		const res = await http.get<IRefinedScenarioReadDto[]>(
-			`${REFINED_SCENARIOS_ENDPOINT}/unsafe_control_action_id/${ucaId}`
+			`${REFINED_SCENARIOS_ENDPOINT}/unsafe-control-action/${ucaId}`
 		);
 		return res.data;
 	} catch (err) {

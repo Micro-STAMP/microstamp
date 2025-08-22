@@ -9,7 +9,6 @@ import NoResultsMessage from "@components/NoResultsMessage";
 import {
 	createRefinedScenario,
 	deleteRefinedScenario,
-	getRefinedScenariosByUCA,
 	updateRefinedScenario
 } from "@http/Step4New/RefinedScenarios";
 import { IUnsafeControlActionReadDto } from "@interfaces/IStep3";
@@ -25,7 +24,7 @@ import {
 	IRefinedScenarioUpdateDto
 } from "@interfaces/IStep4New/IRefinedScenarios";
 import ContainerClassLayout from "@pages/AnalysisSteps/Step4/Step4New/components/ContainerClassLayout";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { BiPlusCircle } from "react-icons/bi";
 import { toast } from "sonner";
@@ -34,9 +33,17 @@ import styles from "./RefinedScenariosContainer.module.css";
 interface RefinedScenariosContainerProps {
 	uca: IUnsafeControlActionReadDto;
 	formalScenarios: IFormalScenariosReadDto;
+	refinedScenarios?: IRefinedScenarioReadDto[];
+	isLoading?: boolean;
+	isError?: boolean;
 }
-
-function RefinedScenariosContainer({ uca, formalScenarios }: RefinedScenariosContainerProps) {
+function RefinedScenariosContainer({
+	uca,
+	formalScenarios,
+	refinedScenarios,
+	isLoading = false,
+	isError = false
+}: RefinedScenariosContainerProps) {
 	const queryClient = useQueryClient();
 
 	const [selectedClass, setSelectedClass] = useState<IFormalScenarioClassDto | null>(null);
@@ -127,18 +134,6 @@ function RefinedScenariosContainer({ uca, formalScenarios }: RefinedScenariosCon
 	};
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle Get Refined Scenarios
-
-	const {
-		data: refinedScenarios,
-		isLoading,
-		isError
-	} = useQuery({
-		queryKey: ["refined-scenarios", uca.id],
-		queryFn: () => getRefinedScenariosByUCA(uca.id)
-	});
-
-	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Group Scenarios & Class Content
 
 	const groupedScenarios = groupRefinedScenariosByClass(refinedScenarios, formalScenarios);
@@ -157,7 +152,7 @@ function RefinedScenariosContainer({ uca, formalScenarios }: RefinedScenariosCon
 								{scenarios.map((scenario, index) => (
 									<Scenario.Root key={scenario.id}>
 										<Scenario.Name
-											code={"RS-" + (index + 1)}
+											code={"RSC-" + (index + 1)}
 											name={scenario.refinedScenario}
 										/>
 										<Scenario.Actions>

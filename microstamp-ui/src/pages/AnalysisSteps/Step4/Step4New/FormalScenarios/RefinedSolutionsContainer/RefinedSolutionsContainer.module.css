@@ -1,0 +1,35 @@
+.refined_solutions_class_content {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+
+	.title {
+		color: var(--color-light-gray);
+		font-size: 1.4rem;
+		font-weight: 500;
+	}
+
+	.refined_solutions_list {
+		max-height: 30rem;
+		overflow-y: auto;
+
+		&::-webkit-scrollbar {
+			width: 0.4rem;
+		}
+		&::-webkit-scrollbar-track {
+			background: var(--color-dark);
+			border-radius: 0.2rem;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: var(--color-gray);
+			border-radius: 0.4rem;
+		}
+	}
+
+	.actions {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: 0.6rem;
+	}
+}

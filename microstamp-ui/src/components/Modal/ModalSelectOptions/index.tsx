@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import { SelectOption } from "@components/FormField/Templates";
 import { ModalButtons, ModalContainer, ModalHeader, ModalProps } from "@components/Modal/Templates";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { BiCheck as CheckIcon, BiX as CloseIcon } from "react-icons/bi";
 import styles from "./ModalSelectOptions.module.css";
 
@@ -44,23 +45,29 @@ function ModalSelectOptions({
 			<ModalContainer open={open} size="big">
 				<ModalHeader title={title} onClose={onClose} />
 				<div className={styles.select_options}>
-					{options.map(option => {
-						const isSelected = selectedOptions.some(
-							selected => selected.value === option.value
-						);
-						return (
-							<div
-								key={option.value}
-								className={`${styles.option_item} ${
-									isSelected ? styles.selected : ""
-								}`}
-								onClick={() => handleSelectOption(option)}
-							>
-								<div className={styles.option_label}>{option.label}</div>
-								{isSelected && <CheckIcon className={styles.checkmark} />}
-							</div>
-						);
-					})}
+					{options.length > 0 ? (
+						options.map(option => {
+							const isSelected = selectedOptions.some(
+								selected => selected.value === option.value
+							);
+							return (
+								<div
+									key={option.value}
+									className={`${styles.option_item} ${
+										isSelected ? styles.selected : ""
+									}`}
+									onClick={() => handleSelectOption(option)}
+								>
+									<div className={styles.option_label}>{option.label}</div>
+									{isSelected && <CheckIcon className={styles.checkmark} />}
+								</div>
+							);
+						})
+					) : (
+						<div className={styles.no_results}>
+							<NoResultsMessage message="No options available." />
+						</div>
+					)}
 				</div>
 				<ModalButtons>
 					<Button variant="dark" onClick={onClose} size="small" icon={CloseIcon}>

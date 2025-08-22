@@ -5,6 +5,8 @@ import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
 import { getFormalScenariosByUCA } from "@http/Step4New/FormalScenarios";
+import { getRefinedScenariosByUCA } from "@http/Step4New/RefinedScenarios";
+import { groupRefinedScenariosByClass } from "@interfaces/IStep4New/IRefinedScenarios";
 import { useQuery } from "@tanstack/react-query";
 import { BiExport as ExportIcon } from "react-icons/bi";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
@@ -45,6 +47,18 @@ function FormalScenarios() {
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get Refined Scenarios
+
+	const {
+		data: refinedScenarios,
+		isLoading: isLoadingRefinedScenarios,
+		isError: isErrorRefinedScenarios
+	} = useQuery({
+		queryKey: ["refined-scenarios", ucaId],
+		queryFn: () => getRefinedScenariosByUCA(ucaId)
+	});
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	if (isLoadingUCA) return <Loader />;
 	if (isErrorUCA || uca === undefined)
@@ -60,8 +74,22 @@ function FormalScenarios() {
 			{formalScenarios && (
 				<>
 					<HighLevelSolutionsContainer formalScenarios={formalScenarios} ucaId={ucaId} />
-					<RefinedScenariosContainer uca={uca} formalScenarios={formalScenarios} />
-					<RefinedSolutionsContainer />
+					<RefinedScenariosContainer
+						uca={uca}
+						formalScenarios={formalScenarios}
+						refinedScenarios={refinedScenarios}
+						isLoading={isLoadingRefinedScenarios}
+						isError={isErrorRefinedScenarios}
+					/>
+					{refinedScenarios && (
+						<RefinedSolutionsContainer
+							refinedScenarios={groupRefinedScenariosByClass(
+								refinedScenarios,
+								formalScenarios
+							)}
+							ucaId={ucaId}
+						/>
+					)}
 				</>
 			)}
 			<PageActions>
