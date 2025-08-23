@@ -13,6 +13,7 @@
 	.header {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		gap: 0.4rem;
 		color: var(--color-yellow);
 		font-size: 1.5rem;
@@ -26,27 +27,40 @@
 		&:hover {
 			color: var(--color-white);
 			background-color: var(--color-gray25);
+		}
 
-			.circle_icon {
+		.buttons {
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.2rem;
+				aspect-ratio: 1 / 1;
+
+				background-color: var(--color-dark-gray);
+				border-radius: 50%;
 				color: var(--color-yellow);
-			}
-			.chevron_icon {
-				color: var(--color-white);
-			}
-		}
 
-		.circle_icon {
-			color: var(--color-dark-yellow);
-			font-size: 1.2rem;
-		}
-		.chevron_icon {
-			color: var(--color-yellow);
-			margin-left: auto;
-			font-size: 2rem;
-			transition: transform 0.2s ease;
+				&:hover {
+					color: var(--color-white);
+				}
 
-			&.collapsed {
-				transform: rotate(-180deg);
+				.chevron_icon {
+					font-size: 1.8rem;
+					transition: transform 0.2s ease;
+
+					&.collapsed {
+						transform: rotate(-180deg);
+					}
+				}
+				.image_icon {
+					font-size: 1.8rem;
+					padding: 0.25rem;
+				}
 			}
 		}
 	}

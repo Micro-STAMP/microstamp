@@ -1,3 +1,4 @@
+import ModalClassImages from "./ModalClassImage";
 import ModalConfirm from "./ModalConfirm";
 import ModalInteractions from "./ModalInteractions";
 import ModalLoading from "./ModalLoading";
@@ -8,6 +9,7 @@ import ModalSelectStep4 from "./ModalSelectStep4";
 import ModalUpdateCode from "./ModalUpdateCode";
 
 export {
+	ModalClassImages,
 	ModalConfirm,
 	ModalInteractions,
 	ModalLoading,
