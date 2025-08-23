@@ -1,11 +1,13 @@
+import Loader from "@components/Loader";
 import { ReactNode, useState } from "react";
 import {
 	BiErrorAlt,
+	BiExpand,
+	BiHide,
+	BiShowAlt,
 	BiDotsHorizontalRounded as OptionsIcon,
 	BiPlusMedical as PlusIcon
 } from "react-icons/bi";
-import { MdOutlineExpandCircleDown as ChevronDown } from "react-icons/md";
-import Loader from "../Loader";
 import styles from "./Container.module.css";
 
 interface ContainerProps {
@@ -47,7 +49,7 @@ function Container({
 					<div className={styles.header_options}>
 						{onOptions && (
 							<button type="button" className={styles.option} onClick={onOptions}>
-								<OptionsIcon className={styles.icon} />
+								<OptionsIcon />
 							</button>
 						)}
 						{collapsible && (
@@ -55,17 +57,9 @@ function Container({
 								type="button"
 								className={styles.option}
 								onClick={() => setCollapsed(!collapsed)}
+								title={collapsed ? "Expand content" : "Hide content"}
 							>
-								{collapsed ? (
-									<ChevronDown className={styles.icon} />
-								) : (
-									<ChevronDown
-										style={{
-											transform: "rotate(180deg)"
-										}}
-										className={styles.icon}
-									/>
-								)}
+								{collapsed ? <BiShowAlt /> : <BiHide />}
 							</button>
 						)}
 					</div>
@@ -80,12 +74,13 @@ function Container({
 						<span>An unexpected error occurred. Try refreshing the page.</span>
 					</div>
 				) : collapsible && collapsed ? (
-					<div className={styles.collapsed} onClick={() => setCollapsed(!collapsed)}>
-						<div className={styles.collapsed_dots}>
-							<span></span>
-							<span></span>
-							<span></span>
-						</div>
+					<div
+						className={styles.collapsed}
+						onClick={() => setCollapsed(!collapsed)}
+						title={"Expand content"}
+					>
+						<span>Content hidden. Click to expand.</span>
+						<BiExpand />
 					</div>
 				) : (
 					children

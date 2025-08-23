@@ -8,6 +8,8 @@
 
 	.header {
 		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
 		justify-content: space-between;
 
 		.header_container {
@@ -67,14 +69,15 @@
 				border-radius: 50%;
 				padding: 0 0.6rem;
 
-				.icon {
+				svg {
 					color: var(--color-yellow);
 					font-size: 2.2rem;
 					transition: all 0.2s;
-				}
-				.icon:hover {
-					color: var(--color-dark-yellow);
-					cursor: pointer;
+
+					&:hover {
+						color: var(--color-dark-yellow);
+						cursor: pointer;
+					}
 				}
 			}
 		}
@@ -107,30 +110,29 @@
 		}
 
 		.collapsed {
-			text-align: center;
-			padding: 0.6rem;
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 0.6rem;
+
+			padding: 0.8rem;
 			cursor: pointer;
-			margin: 0.6rem 0;
+			background-color: var(--color-gray25);
+			opacity: 0.9;
 
-			.collapsed_dots {
-				display: inline-flex;
-				gap: 0.6rem;
+			text-wrap: balance;
+			font-size: 1.2rem;
+			color: var(--color-dark-yellow);
 
-				span {
-					display: block;
-					width: 6px;
-					height: 6px;
-					border-radius: 50%;
-					background-color: var(--color-dark-yellow);
-					opacity: 0.8;
-					box-shadow: var(--shadow25);
-				}
+			svg {
+				font-size: 1.3rem;
 			}
 
-			&:hover .collapsed_dots span {
-				background-color: var(--color-yellow);
+			&:hover {
 				transition: all 0.2s;
 				opacity: 1;
+				color: var(--color-yellow);
 			}
 		}
 	}

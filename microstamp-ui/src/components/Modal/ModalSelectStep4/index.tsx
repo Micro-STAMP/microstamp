@@ -1,11 +1,11 @@
 import Button from "@components/Button";
 import { SelectSearch } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
+import { ModalUCAsOptions } from "@components/Modal/ModalSelectOptions/Entities";
 import { ModalButtons, ModalContainer, ModalHeader, ModalProps } from "@components/Modal/Templates";
 import { useState } from "react";
 import { BiCheck as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { ModalUCAsOptions } from "../ModalSelectOptions/Entities";
 import styles from "./ModalSelectStep4.module.css";
 
 interface ModalSelectStep4Props extends ModalProps {
