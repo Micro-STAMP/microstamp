@@ -1,5 +1,5 @@
 import { ModalClassImages } from "@components/Modal";
-import ClassSection from "@pages/AnalysisSteps/Step4/Step4New/components/ClassSection";
+import { ClassSection } from "@pages/AnalysisSteps/Step4/Step4New/FormalScenarios/components/activity";
 import { useState } from "react";
 import styles from "./ContainerClassLayout.module.css";
 

@@ -8,10 +8,7 @@ import {
 	ModalProps
 } from "@components/Modal/Templates";
 import { updateHighLevelSolutions } from "@http/Step4New/HighLevelSolutions";
-import {
-	IFormalScenarioClassDto,
-	IFormalScenariosReadDto
-} from "@interfaces/IStep4New/IFormalScenarios";
+import { IFormalScenarioClassDto } from "@interfaces/IStep4New/IFormalScenarios";
 import {
 	IHighLevelSolutionsFormData,
 	IHighLevelSolutionsReadDto,
@@ -24,13 +21,11 @@ import { toast } from "sonner";
 import styles from "./ModalHighLevelSolutions.module.css";
 
 interface ModalHighLevelSolutionsProps extends ModalProps {
-	formalScenarioClassId: string;
-	formalScenarios: IFormalScenariosReadDto;
+	formalScenario?: IFormalScenarioClassDto;
 	highLevelSolutions: IHighLevelSolutionsReadDto;
 }
 function ModalHighLevelSolutions({
-	formalScenarioClassId,
-	formalScenarios,
+	formalScenario,
 	highLevelSolutions,
 	open,
 	onClose
@@ -95,45 +90,44 @@ function ModalHighLevelSolutions({
 	// * Get Scenario Class
 
 	const [scenariosOpen, setScenariosOpen] = useState(true);
-	const scenarioClass: IFormalScenarioClassDto = Object.values(formalScenarios).find(
-		(cls: IFormalScenarioClassDto) => cls.id === formalScenarioClassId
-	);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	return (
 		<ModalContainer open={open} size="large">
 			<ModalHeader onClose={onClose} title={"Update High Level Solutions"} />
-			<div className={styles.formal_scenarios}>
-				<div
-					className={styles.header}
-					onClick={() => setScenariosOpen(open => !open)}
-					role="button"
-				>
-					<span className={styles.title}>High Level Scenarios</span>
-					<BiChevronUp
-						className={`${styles.chevron_icon} ${
-							!scenariosOpen ? styles.collapsed : ""
-						}`}
-					/>
-				</div>
-				{scenariosOpen && (
-					<div className={styles.content}>
-						<div className={styles.formal_scenarios_item}>
-							<span className={styles.formal_scenarios_label}>[Output]</span>
-							<span className={styles.formal_scenarios_value}>
-								{scenarioClass.output}
-							</span>
-						</div>
-						<div className={styles.formal_scenarios_item}>
-							<span className={styles.formal_scenarios_label}>[Input]</span>
-							<span className={styles.formal_scenarios_value}>
-								{scenarioClass.input}
-							</span>
-						</div>
+			{formalScenario && (
+				<div className={styles.formal_scenarios}>
+					<div
+						className={styles.header}
+						onClick={() => setScenariosOpen(open => !open)}
+						role="button"
+					>
+						<span className={styles.title}>High Level Scenarios</span>
+						<BiChevronUp
+							className={`${styles.chevron_icon} ${
+								!scenariosOpen ? styles.collapsed : ""
+							}`}
+						/>
 					</div>
-				)}
-			</div>
+					{scenariosOpen && (
+						<div className={styles.content}>
+							<div className={styles.formal_scenarios_item}>
+								<span className={styles.formal_scenarios_label}>[Output]</span>
+								<span className={styles.formal_scenarios_value}>
+									{formalScenario.output}
+								</span>
+							</div>
+							<div className={styles.formal_scenarios_item}>
+								<span className={styles.formal_scenarios_label}>[Input]</span>
+								<span className={styles.formal_scenarios_value}>
+									{formalScenario.input}
+								</span>
+							</div>
+						</div>
+					)}
+				</div>
+			)}
 			<ModalInputs column="triple">
 				<Textarea
 					label="Controller Behavior"

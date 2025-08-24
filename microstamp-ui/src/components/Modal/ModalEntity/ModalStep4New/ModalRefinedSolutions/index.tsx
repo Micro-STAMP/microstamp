@@ -19,7 +19,7 @@ import {
 	IRefinedSolutionReadDto
 } from "@interfaces/IStep4New/IRefinedSolutions";
 import { useState } from "react";
-import { BiCheckCircle, BiUndo } from "react-icons/bi";
+import { BiCheckDouble, BiUndo } from "react-icons/bi";
 import { toast } from "sonner";
 
 interface ModalRefinedSolutionsProps extends ModalProps {
@@ -111,7 +111,7 @@ function ModalRefinedSolutions({
 						onClick={handleSubmitRefinedSolution}
 						isLoading={isLoading}
 						size="small"
-						icon={BiCheckCircle}
+						icon={BiCheckDouble}
 					>
 						{refinedSolution ? "Update Refined Solution" : "Create Refined Solution"}
 					</Button>

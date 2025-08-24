@@ -4,23 +4,40 @@ import Loader from "@components/Loader";
 import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
-import { getFormalScenariosByUCA } from "@http/Step4New/FormalScenarios";
-import { getRefinedScenariosByUCA } from "@http/Step4New/RefinedScenarios";
-import { groupRefinedScenariosByClass } from "@interfaces/IStep4New/IRefinedScenarios";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { BiExport as ExportIcon } from "react-icons/bi";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
-import HighLevelScenariosContainer from "./HighLevelScenariosContainer";
-import HighLevelSolutionsContainer from "./HighLevelSolutionsContainer";
-import RefinedScenariosContainer from "./RefinedScenariosContainer";
-import RefinedSolutionsContainer from "./RefinedSolutionsContainer";
+import styles from "./FormalScenarios.module.css";
+import useHighLevelScenarios from "./hooks/useHighLevelScenarios";
+import useHighLevelSolutions from "./hooks/useHighLevelSolutions";
+import useRefinedScenarios from "./hooks/useRefinedScenarios";
+import useRefinedSolutions from "./hooks/useRefinedSolutions";
+import { FormalScenariosByActivity, FormalScenariosByClass } from "./views";
 
 function FormalScenarios() {
 	const { id } = useParams();
 	const [searchParams] = useSearchParams();
 	const ucaId = searchParams.get("uca");
+	const view = searchParams.get("view");
+
 	if (!id) return <Navigate to="/analyses" />;
 	if (!ucaId) return <Navigate to={`/analyses/${id}`} />;
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Formal Scenarios View
+
+	type FormalScenariosViewType = "class" | "activity";
+	const [currentView, setCurrentView] = useState<FormalScenariosViewType>(
+		view && (view === "class" || view === "activity") ? view : "class"
+	);
+
+	useEffect(() => {
+		const view = searchParams.get("view");
+		if (view && (view === "class" || view === "activity")) {
+			setCurrentView(view as FormalScenariosViewType);
+		}
+	}, [searchParams]);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Get UCA
@@ -35,28 +52,51 @@ function FormalScenarios() {
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle Get High Level Scenarios
+	// * Handle Get Formal Scenarios Entities
 
+	// 4.1 High Level Scenarios
 	const {
-		data: formalScenarios,
-		isLoading: isLoadingFormalScenarios,
-		isError: isErrorFormalScenarios
-	} = useQuery({
-		queryKey: ["formal-scenarios", ucaId],
-		queryFn: () => getFormalScenariosByUCA(ucaId)
-	});
+		formalScenarios,
+		isLoading: isLoadingHighLevelScenarios,
+		isError: isErrorHighLevelScenarios
+	} = useHighLevelScenarios(ucaId);
 
-	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle Get Refined Scenarios
-
+	// 4.2 High Level Solutions
 	const {
-		data: refinedScenarios,
+		highLevelSolutions,
+		isLoading: isLoadingHighLevelSolutions,
+		isError: isErrorHighLevelSolutions
+	} = useHighLevelSolutions(ucaId);
+
+	// 4.3 Refined Scenarios
+	const {
+		refinedScenarios,
 		isLoading: isLoadingRefinedScenarios,
 		isError: isErrorRefinedScenarios
-	} = useQuery({
-		queryKey: ["refined-scenarios", ucaId],
-		queryFn: () => getRefinedScenariosByUCA(ucaId)
-	});
+	} = useRefinedScenarios({ ucaId });
+
+	// 4.4 Refined Solutions
+	const {
+		refinedSolutions,
+		isLoading: isLoadingRefinedSolutions,
+		isError: isErrorRefinedSolutions
+	} = useRefinedSolutions({ ucaId });
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
+	const isLoadingView =
+		isLoadingHighLevelScenarios ||
+		isLoadingHighLevelSolutions ||
+		isLoadingRefinedScenarios ||
+		isLoadingRefinedSolutions;
+	const isErrorView =
+		isErrorHighLevelScenarios ||
+		isErrorHighLevelSolutions ||
+		isErrorRefinedScenarios ||
+		isErrorRefinedSolutions ||
+		formalScenarios === undefined ||
+		highLevelSolutions === undefined ||
+		refinedSolutions === undefined;
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -66,31 +106,47 @@ function FormalScenarios() {
 	return (
 		<>
 			<AnalysisHeader analysisId={id} uca={uca.name} icon="step4" />
-			<HighLevelScenariosContainer
-				formalScenarios={formalScenarios}
-				isLoading={isLoadingFormalScenarios}
-				isError={isErrorFormalScenarios}
-			/>
-			{formalScenarios && (
-				<>
-					<HighLevelSolutionsContainer formalScenarios={formalScenarios} ucaId={ucaId} />
-					<RefinedScenariosContainer
-						uca={uca}
-						formalScenarios={formalScenarios}
-						refinedScenarios={refinedScenarios}
-						isLoading={isLoadingRefinedScenarios}
-						isError={isErrorRefinedScenarios}
-					/>
-					{refinedScenarios && (
-						<RefinedSolutionsContainer
-							refinedScenarios={groupRefinedScenariosByClass(
-								refinedScenarios,
-								formalScenarios
-							)}
-							ucaId={ucaId}
-						/>
-					)}
-				</>
+			<div className={styles.subheader}>
+				<button
+					className={`${styles.toggle_button} ${
+						currentView === "class" ? styles.active : ""
+					}`}
+					onClick={() => setCurrentView("class")}
+					type="button"
+				>
+					Identify Formal Scenarios by Class
+				</button>
+				<button
+					className={`${styles.toggle_button} ${
+						currentView === "activity" ? styles.active : ""
+					}`}
+					onClick={() => setCurrentView("activity")}
+					type="button"
+				>
+					Identify Formal Scenarios by Activity
+				</button>
+			</div>
+			{currentView === "class" && (
+				<FormalScenariosByClass
+					uca={uca}
+					formalScenarios={formalScenarios}
+					highLevelSolutions={highLevelSolutions}
+					refinedScenarios={refinedScenarios}
+					refinedSolutions={refinedSolutions}
+					isLoading={isLoadingView}
+					isError={isErrorView}
+				/>
+			)}
+			{currentView === "activity" && (
+				<FormalScenariosByActivity
+					uca={uca}
+					formalScenarios={formalScenarios}
+					highLevelSolutions={highLevelSolutions}
+					refinedScenarios={refinedScenarios}
+					refinedSolutions={refinedSolutions}
+					isLoading={isLoadingView}
+					isError={isErrorView}
+				/>
 			)}
 			<PageActions>
 				<Button variant="dark" icon={ExportIcon}>

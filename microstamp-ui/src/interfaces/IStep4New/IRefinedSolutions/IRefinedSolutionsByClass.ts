@@ -17,17 +17,17 @@ export type { IRefinedSolutionsByClass };
 // * Handle Group Refined Solutionss by Class
 
 function groupRefinedSolutionsByClass(
-	refinedSolutions: IRefinedSolutionReadDto[] | undefined,
-	groupedRefinedScenarios: IRefinedScenarioByClass
+	refinedSolutions?: IRefinedSolutionReadDto[],
+	groupedRefinedScenarios?: IRefinedScenarioByClass
 ) {
+	if (!refinedSolutions || !groupedRefinedScenarios) return undefined;
+
 	const result: IRefinedSolutionsByClass = {
 		class1: [],
 		class2: [],
 		class3: [],
 		class4: []
 	};
-
-	if (!refinedSolutions) return result;
 
 	const scenarioIdToClass = new Map<string, keyof IRefinedSolutionsByClass>();
 	(["class1", "class2", "class3", "class4"] as const).forEach(classKey => {

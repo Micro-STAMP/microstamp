@@ -1,9 +1,9 @@
-.solutions_class_content {
+.hls_content {
 	display: flex;
 	flex-direction: column;
 	gap: 1.2rem;
 
-	.solution {
+	.hls_item {
 		display: flex;
 		flex-direction: column;
 		gap: 0.4rem;
@@ -15,11 +15,11 @@
 		max-height: 20rem;
 		overflow-y: auto;
 
-		.solution_title {
+		.hls_title {
 			font-size: 1.4rem;
 			font-weight: 600;
 		}
-		.solution_content {
+		.hls_value {
 			font-size: 1.3rem;
 			color: var(--color-light-gray);
 			line-height: 1.7;

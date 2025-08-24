@@ -1,0 +1,70 @@
+.activity_section {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	padding-bottom: 1.2rem;
+	border-bottom: 2px solid var(--color-gray);
+
+	&:last-child {
+		border-bottom-width: 0px;
+		padding-bottom: 0px;
+	}
+
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.4rem;
+		color: var(--color-yellow);
+		font-size: 1.5rem;
+		font-weight: 600;
+		cursor: pointer;
+		user-select: none;
+		transition: color 0.2s ease;
+		padding: 0.4rem 0;
+		border-radius: var(--radius1);
+
+		&:hover {
+			color: var(--color-white);
+			background-color: var(--color-gray25);
+		}
+
+		.buttons {
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.2rem;
+				aspect-ratio: 1 / 1;
+
+				background-color: var(--color-dark-gray);
+				border-radius: 50%;
+				color: var(--color-yellow);
+
+				&:hover {
+					color: var(--color-white);
+				}
+
+				.chevron_icon {
+					font-size: 1.8rem;
+					transition: transform 0.2s ease;
+
+					&.collapsed {
+						transform: rotate(-180deg);
+					}
+				}
+				.image_icon {
+					font-size: 1.8rem;
+					padding: 0.25rem;
+				}
+			}
+		}
+	}
+	.content {
+		margin: 0.8rem 0;
+	}
+}

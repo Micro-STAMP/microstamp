@@ -17,17 +17,17 @@ export type { IRefinedScenarioByClass };
 // * Handle Group Refined Scenarios by Class
 
 function groupRefinedScenariosByClass(
-	refinedScenarios: IRefinedScenarioReadDto[] | undefined,
-	formalScenarios: IFormalScenariosReadDto
+	refinedScenarios?: IRefinedScenarioReadDto[],
+	formalScenarios?: IFormalScenariosReadDto
 ) {
+	if (!refinedScenarios || !formalScenarios) return undefined;
+
 	const result: IRefinedScenarioByClass = {
 		class1: [],
 		class2: [],
 		class3: [],
 		class4: []
 	};
-
-	if (!refinedScenarios) return result;
 	refinedScenarios.forEach(scenario => {
 		if (scenario.formalScenarioClassId === formalScenarios.class1.id) {
 			result.class1.push(scenario);
