@@ -7,7 +7,7 @@ import { ModalRefinedScenarios } from "@components/Modal/ModalEntity";
 import NoResultsMessage from "@components/NoResultsMessage";
 import { IUnsafeControlActionReadDto } from "@interfaces/IStep3";
 import { IRefinedScenarioReadDto } from "@interfaces/IStep4New/IRefinedScenarios";
-import useRefinedScenarios from "@pages/AnalysisSteps/Step4/Step4New/FormalScenarios/hooks/useRefinedScenarios";
+import { useRefinedScenarios } from "@pages/AnalysisSteps/Step4/Step4New/FormalScenarios/hooks";
 import { useState } from "react";
 import { BiPlusCircle } from "react-icons/bi";
 import styles from "./RefinedScenarioContent.module.css";

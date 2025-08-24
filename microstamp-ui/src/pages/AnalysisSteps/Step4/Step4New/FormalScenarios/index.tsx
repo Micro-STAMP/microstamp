@@ -9,10 +9,12 @@ import { useEffect, useState } from "react";
 import { BiExport as ExportIcon } from "react-icons/bi";
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import styles from "./FormalScenarios.module.css";
-import useHighLevelScenarios from "./hooks/useHighLevelScenarios";
-import useHighLevelSolutions from "./hooks/useHighLevelSolutions";
-import useRefinedScenarios from "./hooks/useRefinedScenarios";
-import useRefinedSolutions from "./hooks/useRefinedSolutions";
+import {
+	useHighLevelScenarios,
+	useHighLevelSolutions,
+	useRefinedScenarios,
+	useRefinedSolutions
+} from "./hooks";
 import { FormalScenariosByActivity, FormalScenariosByClass } from "./views";
 
 function FormalScenarios() {
