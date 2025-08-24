@@ -21,6 +21,6 @@ RUN ./mvnw clean package -DskipTests
 FROM openjdk:21-jdk
 WORKDIR /app
 COPY --from=build /app/microstamp-step1-microservice/target/*.jar app.jar
-EXPOSE 8091
+EXPOSE 8101
 
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

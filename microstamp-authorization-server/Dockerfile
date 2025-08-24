@@ -15,6 +15,6 @@ RUN ./mvnw clean package -DskipTests
 FROM openjdk:21-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 9000
+EXPOSE 8001
 
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
