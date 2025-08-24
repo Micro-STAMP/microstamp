@@ -53,7 +53,7 @@ services:
             start_period: 3s
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
-            - ALLOWED_ORIGINS=http://127.0.0.1:5173
+            - ALLOWED_ORIGINS=http://127.0.0.1:3000
         networks:
             - main
 
@@ -73,7 +73,7 @@ services:
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/microstamp
-            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:5173
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
             - SECURITY_ISSUER-URI=http://authorization-server:8001
         networks:
             - main
@@ -95,7 +95,7 @@ services:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step1
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
-            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:5173
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
         networks:
             - main
 
@@ -116,7 +116,7 @@ services:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step2
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
-            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:5173
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
         networks:
             - main
 
@@ -137,7 +137,7 @@ services:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step3
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
-            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:5173
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
         networks:
             - main
 
@@ -158,7 +158,7 @@ services:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step4
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
-            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:5173
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
         networks:
             - main
 
@@ -179,7 +179,7 @@ services:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step4-new
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
-            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:5173
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
         networks:
             - main
 
@@ -187,14 +187,14 @@ services:
         build:
             context: ./microstamp-ui
             args:
-                - VITE_UI_URL=http://127.0.0.1:5173
+                - VITE_UI_URL=http://127.0.0.1:3000
                 - VITE_GATEWAY_URL=http://127.0.0.1:8000
                 - VITE_AUTH_URL=http://127.0.0.1:8001
                 - VITE_TOKEN_AUTH_URL=http://localhost:8001
                 - VITE_AUTH_CLIENT_ID=fbefbe1f-933d-4012-b730-16db007cd13e
                 - VITE_AUTH_CLIENT_SECRET=bdbdc73c-63c6-4aac-8634-bfbafa0417b0
         ports:
-            - "5173:80"
+            - "3000:80"
         networks:
             - main
 networks:
