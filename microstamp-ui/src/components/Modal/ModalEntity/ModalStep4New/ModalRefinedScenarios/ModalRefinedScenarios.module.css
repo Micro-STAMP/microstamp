@@ -1,7 +1,11 @@
 .common_cause_container {
 	display: flex;
 	flex-direction: column;
+	margin-top: -0.8rem;
 	margin-bottom: 1.2rem;
+
+	padding-top: 1.2rem;
+	border-top: 2px solid var(--color-gray);
 
 	.common_causes_select {
 		display: flex;
@@ -10,6 +14,78 @@
 
 		padding-bottom: 1.2rem;
 		border-bottom: 2px solid var(--color-gray);
+
+		.question {
+			font-size: 1.4rem;
+			font-weight: 500;
+			color: var(--color-yellow);
+
+			strong {
+				color: var(--color-yellow);
+				font-weight: 700;
+			}
+		}
+		.label {
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+			font-size: 1.4rem;
+			color: var(--color-light-gray);
+			margin-bottom: 0.4rem;
+
+			.image_popover_wrapper {
+				display: inline-flex;
+				align-items: center;
+				position: relative;
+
+				&:hover .image_popover,
+				&:focus-within .image_popover {
+					display: flex;
+					opacity: 1;
+				}
+
+				.image_popover_button {
+					display: flex;
+					background: none;
+					color: var(--color-yellow);
+
+					svg {
+						width: 1.6rem;
+						height: 1.6rem;
+						opacity: 0.8;
+						transition: opacity 0.2s;
+
+						&:hover {
+							opacity: 1;
+						}
+					}
+				}
+
+				.image_popover {
+					display: none;
+					position: absolute;
+
+					background-color: var(--color-dark-gray);
+					border: 2px solid var(--color-dark-gray);
+					border-radius: 0.7rem;
+
+					top: 2.4rem;
+					left: 0;
+					transform: translateX(-25rem);
+
+					z-index: 3;
+
+					width: clamp(18rem, 80dvw, 48rem);
+					box-shadow: var(--shadow25);
+					transition: opacity 0.2s;
+
+					img {
+						width: 100%;
+						height: auto;
+					}
+				}
+			}
+		}
 
 		.causes_list {
 			display: flex;
@@ -22,7 +98,7 @@
 				background-color: var(--color-dark-gray);
 				color: var(--color-light-gray);
 				transition: all 0.2s ease;
-				font-size: 1.1rem;
+				font-size: 1.2rem;
 
 				&:hover {
 					background-color: var(--color-dark);
@@ -40,6 +116,7 @@
 
 		.cause_description {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 0.6rem;
 			font-size: 1.3rem;
 			color: var(--color-light-gray);
@@ -60,7 +137,7 @@
 		border-bottom: 2px solid var(--color-gray);
 
 		.title {
-			font-size: 1.3rem;
+			font-size: 1.4rem;
 			font-weight: 600;
 			color: var(--color-yellow);
 		}
@@ -75,7 +152,7 @@
 			overflow-y: auto;
 
 			.template_item {
-				font-size: 1.1rem;
+				font-size: 1.2rem;
 				color: var(--color-light-gray);
 				cursor: pointer;
 

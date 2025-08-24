@@ -18,7 +18,7 @@ import {
 } from "@interfaces/IStep4New/IRefinedScenarios";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
+import { BiInfoCircle, BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
 import { toast } from "sonner";
 import styles from "./ModalRefinedScenarios.module.css";
 
@@ -38,6 +38,8 @@ function ModalRefinedScenarios({
 	formalScenarioClassId,
 	refinedScenario
 }: ModalRefinedScenariosProps) {
+	const imageSrc = `/assets/step4/generic_controller_model.png`;
+
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Refined Scenario Data
 
@@ -151,6 +153,22 @@ function ModalRefinedScenarios({
 		);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle UCA Controller Name
+
+	const getControllerName = (uca: IUnsafeControlActionReadDto) => {
+		if (!uca.name) return "";
+		const splitVerbs = ["provides", "does not provide", "stop providing"];
+		const lowerName = uca.name.toLowerCase();
+		for (const verb of splitVerbs) {
+			const index = lowerName.indexOf(verb);
+			if (index !== -1) {
+				return uca.name.slice(0, index).trim();
+			}
+		}
+		return "<controller>";
+	};
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 
 	const filteredTemplates =
 		selectedCause?.templates.filter(
@@ -158,82 +176,109 @@ function ModalRefinedScenarios({
 				!template.unsafeControlActionType || template.unsafeControlActionType === uca.type
 		) || [];
 	return (
-		<ModalContainer open={open} size="big">
-			<ModalHeader
-				onClose={onClose}
-				title={refinedScenario ? "Update Refined Scenario" : "Create Refined Scenario"}
-			/>
-			{selectedCause ? (
-				<>
-					<div className={styles.common_cause_container}>
-						<div className={styles.common_causes_select}>
-							<div className={styles.causes_list}>
-								{commonCauses.map(cause => (
-									<button
-										key={cause.id}
-										className={`${styles.cause_button} ${
-											selectedCause.id === cause.id ? styles.active : ""
-										}`}
-										onClick={() => handleCommonCauseSelect(cause)}
-									>
-										{cause.code}
-									</button>
-								))}
-							</div>
-							<div className={styles.cause_description}>
-								<span>Common Cause:</span> {selectedCause.cause}
-							</div>
-						</div>
-						<div className={styles.templates}>
-							<span className={styles.title}>Templates:</span>
-							<div className={styles.templates_list}>
-								{filteredTemplates.map(template => (
-									<div
-										key={template.id}
-										className={styles.template_item}
-										onClick={() => handleTemplateSelect(template.template)}
-										title="Apply Template"
-									>
-										{template.template}
+		<>
+			<ModalContainer open={open} size="big">
+				<ModalHeader
+					onClose={onClose}
+					title={refinedScenario ? "Update Refined Scenario" : "Create Refined Scenario"}
+				/>
+				{selectedCause ? (
+					<>
+						<div className={styles.common_cause_container}>
+							<div className={styles.common_causes_select}>
+								<span className={styles.question}>
+									Why would <strong>{getControllerName(uca)}</strong> make this
+									decision?
+								</span>
+								<span className={styles.label}>
+									Select one of the common causes:
+									<div className={styles.image_popover_wrapper}>
+										<button
+											type="button"
+											className={styles.image_popover_button}
+											aria-label="Show controller model reference"
+										>
+											<BiInfoCircle />
+										</button>
+										<div className={styles.image_popover}>
+											<img
+												src={imageSrc}
+												alt="Generic Controller Model"
+												className={styles.popover_image}
+												draggable={false}
+											/>
+										</div>
 									</div>
-								))}
+								</span>
+								<div className={styles.causes_list}>
+									{commonCauses.map(cause => (
+										<button
+											key={cause.id}
+											className={`${styles.cause_button} ${
+												selectedCause.id === cause.id ? styles.active : ""
+											}`}
+											onClick={() => handleCommonCauseSelect(cause)}
+										>
+											{cause.code}
+										</button>
+									))}
+								</div>
+								<div className={styles.cause_description}>
+									<span>Common Cause {selectedCause.code}:</span>{" "}
+									{selectedCause.cause}
+								</div>
+							</div>
+							<div className={styles.templates}>
+								<span className={styles.title}>Cause Templates:</span>
+								<div className={styles.templates_list}>
+									{filteredTemplates.map(template => (
+										<div
+											key={template.id}
+											className={styles.template_item}
+											onClick={() => handleTemplateSelect(template.template)}
+											title="Apply Template"
+										>
+											{template.template}
+										</div>
+									))}
+								</div>
 							</div>
 						</div>
-					</div>
-					<ModalInputs>
-						<Textarea
-							label="Refined Scenario"
-							value={refinedScenarioData.refinedScenario}
-							onChange={(value: string) =>
-								setRefinedScenarioData({
-									...refinedScenarioData,
-									refinedScenario: value
-								})
-							}
-							required
-							rows={6}
-						/>
-					</ModalInputs>
-					<ModalButtons>
-						<Button variant="dark" onClick={onClose} size="small" icon={ReturnIcon}>
-							Cancel
-						</Button>
-						<Button
-							onClick={handleSubmitRefinedScenario}
-							isLoading={isLoading}
-							size="small"
-							icon={CheckIcon}
-						>
-							{refinedScenario
-								? "Update Refined Scenario"
-								: "Create Refined Scenario"}
-						</Button>
-					</ModalButtons>
-				</>
-			) : (
-				<NoResultsMessage message="Error loading modal." />
-			)}
-		</ModalContainer>
+						<ModalInputs>
+							<Textarea
+								label="Refined Scenario"
+								value={refinedScenarioData.refinedScenario}
+								onChange={(value: string) =>
+									setRefinedScenarioData({
+										...refinedScenarioData,
+										refinedScenario: value
+									})
+								}
+								required
+								rows={6}
+							/>
+						</ModalInputs>
+						<ModalButtons>
+							<Button variant="dark" onClick={onClose} size="small" icon={ReturnIcon}>
+								Cancel
+							</Button>
+							<Button
+								onClick={handleSubmitRefinedScenario}
+								isLoading={isLoading}
+								size="small"
+								icon={CheckIcon}
+							>
+								{refinedScenario
+									? "Update Refined Scenario"
+									: "Create Refined Scenario"}
+							</Button>
+						</ModalButtons>
+					</>
+				) : (
+					<NoResultsMessage message="Error loading modal." />
+				)}
+			</ModalContainer>
+		</>
 	);
 }
 
