@@ -59,7 +59,8 @@
 		.header_options {
 			display: flex;
 			align-items: center;
-			margin: 0.6rem 1.2rem 0rem 0.8rem;
+			gap: 0.8rem;
+			margin: 0.6rem 1.6rem 0rem 0.8rem;
 
 			.option {
 				display: flex;
@@ -67,7 +68,6 @@
 				align-items: center;
 				background-color: transparent;
 				border-radius: 50%;
-				padding: 0 0.6rem;
 
 				svg {
 					color: var(--color-yellow);

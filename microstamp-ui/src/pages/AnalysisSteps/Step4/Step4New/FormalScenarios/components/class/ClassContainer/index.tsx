@@ -1,6 +1,11 @@
 import Container from "@components/Container";
+import { ModalClassImages } from "@components/Modal";
 import { IUnsafeControlActionReadDto } from "@interfaces/IStep3";
-import { getFormalClassTitle, IFormalScenariosClass } from "@interfaces/IStep4New/Enums";
+import {
+	getFormalClassKey,
+	getFormalClassTitle,
+	IFormalScenariosClass
+} from "@interfaces/IStep4New/Enums";
 import { IFormalScenarioClassDto } from "@interfaces/IStep4New/IFormalScenarios";
 import { IHighLevelSolutionsReadDto } from "@interfaces/IStep4New/IHighLevelSolutions";
 import { IRefinedScenarioReadDto } from "@interfaces/IStep4New/IRefinedScenarios";
@@ -12,6 +17,7 @@ import {
 	RefinedScenarioContent,
 	RefinedSolutionContent
 } from "@pages/AnalysisSteps/Step4/Step4New/FormalScenarios/components/contents";
+import { useState } from "react";
 
 interface ClassContainerProps {
 	uca: IUnsafeControlActionReadDto;
@@ -33,45 +39,61 @@ function ClassContainer({
 	isLoading,
 	isError
 }: ClassContainerProps) {
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle View Class Image Modal
+
+	const [modalClassImageOpen, setModalClassImageOpen] = useState(false);
+	const toggleModalClassImage = () => setModalClassImageOpen(!modalClassImageOpen);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
-		<Container
-			title={getFormalClassTitle(formalClass)}
-			collapsible
-			justTitle
-			isLoading={isLoading}
-			isError={isError}
-		>
-			{formalScenarioByClass &&
-				highLevelSolutionByClass &&
-				refinedScenariosByClass &&
-				refinedSolutionsByClass && (
-					<ContainerActivityLayout
-						activity1Content={
-							<HighLevelScenarioContent formalScenario={formalScenarioByClass} />
-						}
-						activity2Content={
-							<HighLevelSolutionContent
-								formalScenario={formalScenarioByClass}
-								solution={highLevelSolutionByClass}
-							/>
-						}
-						activity3Content={
-							<RefinedScenarioContent
-								uca={uca}
-								scenarios={refinedScenariosByClass}
-								formalScenarioClassId={formalScenarioByClass.id}
-							/>
-						}
-						activity4Content={
-							<RefinedSolutionContent
-								uca={uca}
-								refinedSolutionsByClass={refinedSolutionsByClass}
-								refinedScenariosByClass={refinedScenariosByClass}
-							/>
-						}
-					/>
-				)}
-		</Container>
+		<>
+			<Container
+				title={getFormalClassTitle(formalClass)}
+				collapsible
+				justTitle
+				isLoading={isLoading}
+				isError={isError}
+				onViewImage={toggleModalClassImage}
+			>
+				{formalScenarioByClass &&
+					highLevelSolutionByClass &&
+					refinedScenariosByClass &&
+					refinedSolutionsByClass && (
+						<ContainerActivityLayout
+							activity1Content={
+								<HighLevelScenarioContent formalScenario={formalScenarioByClass} />
+							}
+							activity2Content={
+								<HighLevelSolutionContent
+									formalScenario={formalScenarioByClass}
+									solution={highLevelSolutionByClass}
+								/>
+							}
+							activity3Content={
+								<RefinedScenarioContent
+									uca={uca}
+									scenarios={refinedScenariosByClass}
+									formalScenarioClassId={formalScenarioByClass.id}
+								/>
+							}
+							activity4Content={
+								<RefinedSolutionContent
+									uca={uca}
+									refinedSolutionsByClass={refinedSolutionsByClass}
+									refinedScenariosByClass={refinedScenariosByClass}
+								/>
+							}
+						/>
+					)}
+			</Container>
+			<ModalClassImages
+				open={modalClassImageOpen}
+				onClose={toggleModalClassImage}
+				formalClass={getFormalClassKey(formalClass)}
+			/>
+		</>
 	);
 }
 
