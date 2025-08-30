@@ -32,7 +32,7 @@ function Container({
 	children,
 	isLoading = false,
 	isError = false,
-	collapsible = false,
+	collapsible = true,
 	defaultCollapsed = false
 }: ContainerProps) {
 	const [collapsed, setCollapsed] = useState(defaultCollapsed);

@@ -1,74 +1,135 @@
-import { getAnalysis } from "@http/Analyses";
-import { useQuery } from "@tanstack/react-query";
-import { BiAnalyse as AnalysesIcon, BiSolidLeftArrowCircle as GoBackIcon } from "react-icons/bi";
-import { GoGoal as Step1Icon } from "react-icons/go";
-import { IoWarningOutline as Step3Icon } from "react-icons/io5";
-import { PiTreeStructure as Step2Icon } from "react-icons/pi";
-import { RiArrowGoBackLine as Step4Icon } from "react-icons/ri";
+import StepIcon from "@components/StepIcon";
+import { IAnalysisReadDto } from "@interfaces/IAnalysis";
+import { getStepLabel, ISteps } from "@interfaces/ISteps";
+import { BiRefresh, BiSolidChevronLeftCircle, BiSolidCog } from "react-icons/bi";
+import { BsFillInfoCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import styles from "./AnalysisHeader.module.css";
 
-type AnalysisIconType = "step1" | "step2" | "step3" | "step4" | "default";
-const Icon = ({ type }: { type: AnalysisIconType }) => {
-	if (type === "default") return <AnalysesIcon className={styles.analysis_icon} />;
-	if (type === "step1") return <Step1Icon className={styles.analysis_icon} />;
-	if (type === "step2") return <Step2Icon className={styles.analysis_icon} />;
-	if (type === "step3") return <Step3Icon className={styles.analysis_icon} />;
-	if (type === "step4") return <Step4Icon className={styles.analysis_icon} />;
-};
-
 interface AnalysisHeaderProps {
-	analysisId: string;
+	step: ISteps;
+	analysis: IAnalysisReadDto;
 	component?: string;
+	onChangeComponent?: () => void;
 	controlAction?: string;
+	onChangeControlAction?: () => void;
 	uca?: string;
-	icon?: AnalysisIconType;
+	onChangeUCA?: () => void;
+	formalScenarioView?: "class" | "activity";
+	onChangeView?: (view: "class" | "activity") => void;
 }
 function AnalysisHeader({
-	analysisId,
+	analysis,
+	step,
 	component,
 	controlAction,
 	uca,
-	icon = "default"
+	formalScenarioView,
+	onChangeComponent,
+	onChangeControlAction,
+	onChangeUCA,
+	onChangeView
 }: AnalysisHeaderProps) {
 	const navigate = useNavigate();
 
-	const { data: analysis, isLoading } = useQuery({
-		queryKey: ["analysis-header", analysisId],
-		queryFn: () => getAnalysis(analysisId)
-	});
-
 	return (
 		<header className={styles.analysis_header}>
-			<div className={styles.analysis}>
-				<Icon type={icon} />
-				<div className={styles.analysis_name}>
-					<strong>Analysis: </strong>
-					<span>{isLoading || analysis === undefined ? "Loading" : analysis.name}</span>
+			<div className={styles.step_wrapper}>
+				<div className={styles.step_section}>
+					<span className={styles.step_icon}>
+						<StepIcon step={step} />
+					</span>
+					<span className={styles.step_label}>{getStepLabel(step)}</span>
+				</div>
+				<button type="button" className={styles.back_button} onClick={() => navigate(-1)}>
+					<BiSolidChevronLeftCircle />
+					Go Back
+				</button>
+			</div>
+			<div className={styles.analysis_wrapper}>
+				<div className={styles.title}>
+					<BsFillInfoCircleFill />
+					<span>Analysis Details:</span>
+				</div>
+				<div className={styles.analysis_info}>
+					<span className={styles.label}>Analysis:</span>
+					<span className={styles.name}>{analysis.name}</span>
 				</div>
 				{component && (
-					<div className={styles.component_name}>
-						<strong>Component: </strong>
-						<span>{component}</span>
+					<div className={styles.analysis_info}>
+						<span className={styles.label}>Component:</span>
+						<span className={styles.name}>{component}</span>
+						{onChangeComponent && (
+							<button
+								type="button"
+								className={styles.change_button}
+								onClick={onChangeComponent}
+								title="Change component"
+							>
+								<BiRefresh />
+							</button>
+						)}
 					</div>
 				)}
 				{controlAction && (
-					<div className={styles.component_name}>
-						<strong>Control Action: </strong>
-						<span>{controlAction}</span>
+					<div className={styles.analysis_info}>
+						<span className={styles.label}>Control Action:</span>
+						<span className={styles.name}>{controlAction}</span>
+						{onChangeControlAction && (
+							<button
+								type="button"
+								className={styles.change_button}
+								onClick={onChangeControlAction}
+								title="Change control action"
+							>
+								<BiRefresh />
+							</button>
+						)}
 					</div>
 				)}
 				{uca && (
-					<div className={styles.component_name}>
-						<strong>UCA: </strong>
-						<span>{uca}</span>
+					<div className={styles.analysis_info}>
+						<span className={styles.label}>Unsafe Control Action:</span>
+						<span className={styles.name}>{uca}</span>
+						{onChangeUCA && (
+							<button
+								type="button"
+								className={styles.change_button}
+								onClick={onChangeUCA}
+								title="Change UCA"
+							>
+								<BiRefresh />
+							</button>
+						)}
 					</div>
 				)}
 			</div>
-			<button type="button" className={styles.back_button} onClick={() => navigate(-1)}>
-				<GoBackIcon className={styles.icon} />
-				<span>Go Back</span>
-			</button>
+			{formalScenarioView && onChangeView && (
+				<div className={styles.view_wrapper}>
+					<span className={styles.view_description}>
+						<BiSolidCog />
+						Choose how to organize the containers for your analysis:
+					</span>
+					<button
+						className={`${styles.toggle_button} ${
+							formalScenarioView === "class" ? styles.active : ""
+						}`}
+						onClick={() => onChangeView("class")}
+						type="button"
+					>
+						By Class
+					</button>
+					<button
+						className={`${styles.toggle_button} ${
+							formalScenarioView === "activity" ? styles.active : ""
+						}`}
+						onClick={() => onChangeView("activity")}
+						type="button"
+					>
+						By Activity
+					</button>
+				</div>
+			)}
 		</header>
 	);
 }

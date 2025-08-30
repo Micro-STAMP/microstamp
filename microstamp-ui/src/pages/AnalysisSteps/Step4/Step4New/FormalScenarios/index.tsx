@@ -4,11 +4,12 @@ import Loader from "@components/Loader";
 import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
+import { IAnalysisReadDto } from "@interfaces/IAnalysis";
+import { ISteps } from "@interfaces/ISteps";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BiExport as ExportIcon } from "react-icons/bi";
-import { Navigate, useParams, useSearchParams } from "react-router-dom";
-import styles from "./FormalScenarios.module.css";
+import { Navigate, useOutletContext, useSearchParams } from "react-router-dom";
 import {
 	useHighLevelScenarios,
 	useHighLevelSolutions,
@@ -18,28 +19,23 @@ import {
 import { FormalScenariosByActivity, FormalScenariosByClass } from "./views";
 
 function FormalScenarios() {
-	const { id } = useParams();
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get Analysis
+
+	const analysis: IAnalysisReadDto = useOutletContext();
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get UCA and View
+
 	const [searchParams] = useSearchParams();
 	const ucaId = searchParams.get("uca");
-	const view = searchParams.get("view");
-
-	if (!id) return <Navigate to="/analyses" />;
-	if (!ucaId) return <Navigate to={`/analyses/${id}`} />;
+	if (!ucaId) return <Navigate to={`/analyses/${analysis.id}`} />;
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Formal Scenarios View
 
 	type FormalScenariosViewType = "class" | "activity";
-	const [currentView, setCurrentView] = useState<FormalScenariosViewType>(
-		view && (view === "class" || view === "activity") ? view : "class"
-	);
-
-	useEffect(() => {
-		const view = searchParams.get("view");
-		if (view && (view === "class" || view === "activity")) {
-			setCurrentView(view as FormalScenariosViewType);
-		}
-	}, [searchParams]);
+	const [currentView, setCurrentView] = useState<FormalScenariosViewType>("class");
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Get UCA
@@ -107,27 +103,14 @@ function FormalScenarios() {
 		return <NoResultsMessage message="Error loading formal scenarios." />;
 	return (
 		<>
-			<AnalysisHeader analysisId={id} uca={uca.name} icon="step4" />
-			<div className={styles.subheader}>
-				<button
-					className={`${styles.toggle_button} ${
-						currentView === "class" ? styles.active : ""
-					}`}
-					onClick={() => setCurrentView("class")}
-					type="button"
-				>
-					Identify Formal Scenarios by Class
-				</button>
-				<button
-					className={`${styles.toggle_button} ${
-						currentView === "activity" ? styles.active : ""
-					}`}
-					onClick={() => setCurrentView("activity")}
-					type="button"
-				>
-					Identify Formal Scenarios by Activity
-				</button>
-			</div>
+			<AnalysisHeader
+				analysis={analysis}
+				uca={uca.name}
+				step={ISteps.STEP_4}
+				formalScenarioView={currentView}
+				onChangeView={setCurrentView}
+			/>
+
 			{currentView === "class" && (
 				<FormalScenariosByClass
 					uca={uca}
@@ -150,6 +133,7 @@ function FormalScenarios() {
 					isError={isErrorView}
 				/>
 			)}
+
 			<PageActions>
 				<Button variant="dark" icon={ExportIcon}>
 					Export New Step 4

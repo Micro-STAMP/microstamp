@@ -10,6 +10,7 @@ import Home from "@pages/Home";
 import Layout from "@pages/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { FormalScenarios } from "./pages/AnalysisSteps/Step4/Step4New";
+import AnalysisStepsLayout from "./pages/AnalysisSteps/layout";
 
 function AppRoutes() {
 	return (
@@ -29,34 +30,38 @@ function AppRoutes() {
 
 							<Route path=":id">
 								<Route index element={<Analysis />} />
-								{/* STEP 1 */}
-								<Route path="purpose" element={<AnalysisPurpose />} />
 
-								{/* STEP 2 */}
-								<Route path="control-structure">
-									<Route index element={<AnalysisControlStructure />} />
-									<Route
-										path="component/:componentId"
-										element={<ComponentDetails />}
-									/>
-								</Route>
-								{/* STEP 3 */}
-								<Route path="control-action/:controlActionId">
-									<Route index element={<ControlAction />} />
-									<Route
-										path="unsafe-control-actions"
-										element={<UnsafeControlActions />}
-									/>
-								</Route>
+								<Route element={<AnalysisStepsLayout />}>
+									{/* STEP 1 */}
+									<Route path="purpose" element={<AnalysisPurpose />} />
 
-								{/* STEP 4 HANDBOOK */}
-								<Route path="loss-scenarios">
-									<Route index element={<LossScenarios />} />
-								</Route>
+									{/* STEP 2 */}
+									<Route path="control-structure">
+										<Route index element={<AnalysisControlStructure />} />
+										<Route
+											path="component/:componentId"
+											element={<ComponentDetails />}
+										/>
+									</Route>
 
-								{/* STEP 4 NEW */}
-								<Route path="formal-scenarios">
-									<Route index element={<FormalScenarios />} />
+									{/* STEP 3 */}
+									<Route path="control-action/:controlActionId">
+										<Route index element={<ControlAction />} />
+										<Route
+											path="unsafe-control-actions"
+											element={<UnsafeControlActions />}
+										/>
+									</Route>
+
+									{/* STEP 4 HANDBOOK */}
+									<Route path="loss-scenarios">
+										<Route index element={<LossScenarios />} />
+									</Route>
+
+									{/* STEP 4 NEW */}
+									<Route path="formal-scenarios">
+										<Route index element={<FormalScenarios />} />
+									</Route>
 								</Route>
 							</Route>
 						</Route>
