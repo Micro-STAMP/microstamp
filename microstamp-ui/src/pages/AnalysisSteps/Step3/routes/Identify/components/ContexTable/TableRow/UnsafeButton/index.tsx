@@ -5,7 +5,7 @@ import {
 	IUCAType,
 	IUnsafeControlActionReadDto
 } from "@interfaces/IStep3";
-import styles from "@pages/AnalysisSteps/Step3/ControlAction/ContexTable/ContextTable.module.css";
+import styles from "@pages/AnalysisSteps/Step3/routes/Identify/components/ContexTable/ContextTable.module.css";
 import { memo, useCallback, useEffect, useState } from "react";
 
 interface UnsafeButtonProps {

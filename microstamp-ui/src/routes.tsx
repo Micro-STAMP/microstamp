@@ -3,7 +3,7 @@ import Analyses from "@pages/Analyses";
 import Analysis from "@pages/Analysis";
 import { AnalysisPurpose } from "@pages/AnalysisSteps/Step1";
 import { AnalysisControlStructure, ComponentDetails } from "@pages/AnalysisSteps/Step2";
-import { ControlAction, UnsafeControlActions } from "@pages/AnalysisSteps/Step3";
+import { IdentifyUCAs, ListUCAs, UCALayout } from "@pages/AnalysisSteps/Step3";
 import { LossScenarios } from "@pages/AnalysisSteps/Step4";
 import { Login, Logout } from "@pages/Auth";
 import Home from "@pages/Home";
@@ -45,12 +45,12 @@ function AppRoutes() {
 									</Route>
 
 									{/* STEP 3 */}
-									<Route path="control-action/:controlActionId">
-										<Route index element={<ControlAction />} />
-										<Route
-											path="unsafe-control-actions"
-											element={<UnsafeControlActions />}
-										/>
+									<Route
+										path="control-action/:caId/unsafe-control-actions"
+										element={<UCALayout />}
+									>
+										<Route index element={<ListUCAs />} />
+										<Route path="identify" element={<IdentifyUCAs />} />
 									</Route>
 
 									{/* STEP 4 HANDBOOK */}

@@ -35,7 +35,7 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 						variant="dark"
 						onClick={() => navigate("purpose")}
 					>
-						Define Purpose of the Analysis
+						Define the Purpose of the Analysis
 					</Button>
 					<Button
 						size="small"

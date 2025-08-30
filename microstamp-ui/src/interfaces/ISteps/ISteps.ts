@@ -9,7 +9,7 @@ export { ISteps };
 const getStepLabel = (step: ISteps) => {
 	switch (step) {
 		case ISteps.STEP_1:
-			return "Define Purpose of the Analysis";
+			return "Define the Purpose of the Analysis";
 		case ISteps.STEP_2:
 			return "Model the Control Structure";
 		case ISteps.STEP_3:

@@ -4,7 +4,7 @@ import {
 	IUnsafeControlActionReadDto
 } from "@interfaces/IStep3";
 import { IUCAType, ucaTypeSelectOptions } from "@interfaces/IStep3/IUnsafeControlAction/Enums";
-import styles from "@pages/AnalysisSteps/Step3/ControlAction/ContexTable/ContextTable.module.css";
+import styles from "@pages/AnalysisSteps/Step3/routes/Identify/components/ContexTable/ContextTable.module.css";
 import UnsafeButton from "./UnsafeButton";
 
 interface TableRowProps {

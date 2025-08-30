@@ -1,6 +1,6 @@
 import { IVariableReadDto } from "@interfaces/IStep2";
 import { IUCATypesArray } from "@interfaces/IStep3/IUnsafeControlAction/Enums";
-import styles from "@pages/AnalysisSteps/Step3/ControlAction/ContexTable/ContextTable.module.css";
+import styles from "@pages/AnalysisSteps/Step3/routes/Identify/components/ContexTable/ContextTable.module.css";
 
 interface TableHeaderProps {
 	variables: IVariableReadDto[];

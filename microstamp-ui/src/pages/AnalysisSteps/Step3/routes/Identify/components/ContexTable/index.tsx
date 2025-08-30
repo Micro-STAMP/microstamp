@@ -207,7 +207,11 @@ function ContextTable({ controlAction, analysisId }: ContextTableProps) {
 		contextTable === undefined ||
 		isError
 	)
-		return <NoResultsMessage message="Error loading context table." />;
+		return (
+			<div className={styles.error_message}>
+				<NoResultsMessage message={"Error loading context table."} />
+			</div>
+		);
 	return (
 		<>
 			<div className={styles.context_table_container}>

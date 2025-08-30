@@ -90,7 +90,7 @@ function ModalSelectControlAction({ open, onClose, analysisId }: ModalSelectCont
 	const navigate = useNavigate();
 	const handleSelectControlAction = async () => {
 		if (selectedCA) {
-			navigate(`control-action/${selectedCA.value}`);
+			navigate(`control-action/${selectedCA.value}/unsafe-control-actions/identify`);
 		}
 	};
 
