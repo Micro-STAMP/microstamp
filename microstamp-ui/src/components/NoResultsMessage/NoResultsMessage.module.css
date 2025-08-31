@@ -11,7 +11,7 @@
 	font-weight: 500;
 	font-size: 1.4rem;
 	color: var(--color-yellow);
-	margin: 2rem 0;
+	margin: 2rem auto;
 
 	svg {
 		font-size: 2.4rem;

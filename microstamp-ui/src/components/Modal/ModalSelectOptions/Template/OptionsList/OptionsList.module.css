@@ -1,4 +1,4 @@
-.select_options {
+.options_list {
 	display: flex;
 	flex-direction: column;
 	gap: 1.2rem;
@@ -12,17 +12,18 @@
 		gap: 1.2rem;
 
 		background-color: var(--color-dark-gray);
-		color: var(--color-light-gray);
+		color: var(--color-white);
 		border-radius: var(--radius1);
 
 		padding: 1.2rem;
 		cursor: pointer;
+		transition: all 0.2s;
 
 		&:hover {
 			color: var(--color-yellow);
-			transition: all 0.2s;
 		}
 		&.selected {
+			background-color: var(--color-dark);
 			color: var(--color-yellow);
 		}
 
@@ -33,18 +34,15 @@
 			font-weight: 500;
 			font-size: 1.3rem;
 		}
-		.checkmark {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: var(--radius1);
-			color: var(--color-yellow);
-			font-size: 1.6rem;
-			flex-shrink: 0;
-		}
-	}
 
-	.no_results {
-		margin: auto;
+		.check_icon {
+			font-size: 1.6rem;
+			color: var(--color-light-gray);
+			flex-shrink: 0;
+
+			&.filled {
+				color: var(--color-yellow);
+			}
+		}
 	}
 }

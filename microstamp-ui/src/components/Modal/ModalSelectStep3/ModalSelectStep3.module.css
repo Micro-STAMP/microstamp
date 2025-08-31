@@ -1,0 +1,42 @@
+.modal_select_step3 {
+	display: flex;
+	flex-direction: column;
+	gap: 1.8rem;
+
+	.explanation {
+		text-align: left;
+		font-size: 1.4rem;
+		font-weight: 300;
+		color: var(--color-white);
+		line-height: 1.5;
+
+		p:not(:last-child) {
+			margin-bottom: 1rem;
+		}
+		strong {
+			font-weight: 500;
+			color: var(--color-yellow);
+		}
+	}
+
+	.options_container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		.label {
+			font-size: 1.3rem;
+			font-weight: 400;
+			color: var(--color-white);
+		}
+		strong {
+			font-weight: 500;
+			color: var(--color-yellow);
+		}
+		.warning_message {
+			font-size: 1.3rem;
+			font-weight: 400;
+			color: var(--color-yellow);
+		}
+	}
+}

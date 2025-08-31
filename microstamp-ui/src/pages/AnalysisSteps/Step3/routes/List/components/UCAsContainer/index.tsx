@@ -14,6 +14,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import UCARow from "./UCARow";
 import styles from "./UCAsContainer.module.css";
+import UCAsHeader from "./UCAsHeader";
 
 interface UCAsContainerProps {
 	controlAction: IControlAction;
@@ -126,6 +127,7 @@ function UCAsContainer({ controlAction }: UCAsContainerProps) {
 
 	return (
 		<>
+			<UCAsHeader controlActionName={controlAction.name} ucaCount={ucas?.length ?? 0} />
 			{isLoading ? (
 				<Loader />
 			) : ucas && ucas.length > 0 ? (

@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import { SelectSearch, Textarea } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
-import ModalSelectOptions from "@components/Modal/ModalSelectOptions";
+import { ModalSelectRefinedScenarios } from "@components/Modal/ModalSelectOptions";
 import {
 	ModalButtons,
 	ModalContainer,
@@ -118,22 +118,22 @@ function ModalRefinedSolutions({
 				</ModalButtons>
 			</ModalContainer>
 			{!refinedSolution && (
-				<ModalSelectOptions
+				<ModalSelectRefinedScenarios
 					open={modalSearchRefinedScenariosOpen}
 					onClose={toggleModalSearchRefinedScenarios}
-					title={"Select the Refined Scenario"}
 					onChange={(value: SelectOption[]) =>
 						setRefinedSolutionData({
 							...refinedSolutionData,
 							refinedScenario: value[0]
 						})
 					}
-					selectedOptions={
+					refinedScenarios={
 						refinedSolutionData.refinedScenario
 							? [refinedSolutionData.refinedScenario]
 							: []
 					}
 					options={refinedScenariosToSelectOptions(scenarios)}
+					multiple
 				/>
 			)}
 		</>

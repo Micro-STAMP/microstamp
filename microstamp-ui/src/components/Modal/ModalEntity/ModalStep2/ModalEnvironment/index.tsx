@@ -38,9 +38,6 @@ function ModalEnvironment({ open, onClose, components, analysisId }: ModalEnviro
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Environment added to analysis.");
 		},
 		onError: err => {
@@ -54,9 +51,6 @@ function ModalEnvironment({ open, onClose, components, analysisId }: ModalEnviro
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Environment removed from analysis.");
 		},
 		onError: err => {

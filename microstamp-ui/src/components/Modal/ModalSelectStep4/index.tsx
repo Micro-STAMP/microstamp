@@ -1,10 +1,10 @@
 import Button from "@components/Button";
 import { SelectSearch } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
-import { ModalUCAsOptions } from "@components/Modal/ModalSelectOptions/Entities";
+import { ModalSelectUCAs } from "@components/Modal/ModalSelectOptions";
 import { ModalButtons, ModalContainer, ModalHeader, ModalProps } from "@components/Modal/Templates";
 import { useState } from "react";
-import { BiCheck as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
+import { BiCheckDouble as CheckIcon, BiUndo as ReturnIcon } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import styles from "./ModalSelectStep4.module.css";
 
@@ -23,8 +23,8 @@ function ModalSelectStep4({ open, onClose, analysisId }: ModalSelectStep4Props) 
 	// * Handle Modal UCAs Options
 
 	const [selectedUCA, setSelectedUCA] = useState<SelectOption | null>(null);
-	const [modalUCAsOptionsOpen, setModalUCAsOptionsOpen] = useState(false);
-	const toggleModalUCAsOptions = () => setModalUCAsOptionsOpen(!modalUCAsOptionsOpen);
+	const [modalSelectUCAsOpen, setModalSelectUCAsOpen] = useState(false);
+	const toggleModalSelectUCAs = () => setModalSelectUCAsOpen(!modalSelectUCAsOpen);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Proceed to Step 4 Analysis
@@ -95,7 +95,7 @@ function ModalSelectStep4({ open, onClose, analysisId }: ModalSelectStep4Props) 
 								For use of the <strong>formal scenarios approach</strong>, please
 								select a UCA to proceed:
 							</span>
-							<SelectSearch value={selectedUCA} onSearch={toggleModalUCAsOptions} />
+							<SelectSearch value={selectedUCA} onSearch={toggleModalSelectUCAs} />
 						</>
 					)}
 				</div>
@@ -115,9 +115,9 @@ function ModalSelectStep4({ open, onClose, analysisId }: ModalSelectStep4Props) 
 					</Button>
 				</ModalButtons>
 			</ModalContainer>
-			<ModalUCAsOptions
-				open={modalUCAsOptionsOpen}
-				onClose={toggleModalUCAsOptions}
+			<ModalSelectUCAs
+				open={modalSelectUCAsOpen}
+				onClose={toggleModalSelectUCAs}
 				analysisId={analysisId}
 				ucas={selectedUCA ? [selectedUCA] : []}
 				onChange={(ucas: SelectOption[]) => setSelectedUCA(ucas[0])}

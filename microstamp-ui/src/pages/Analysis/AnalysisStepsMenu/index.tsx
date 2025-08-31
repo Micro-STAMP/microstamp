@@ -1,5 +1,6 @@
 import Button from "@components/Button";
-import { ModalSelectControlAction, ModalSelectStep4 } from "@components/Modal";
+import { ModalSelectStep4 } from "@components/Modal";
+import ModalSelectStep3 from "@components/Modal/ModalSelectStep3";
 import { useState } from "react";
 import { GoGoal as Step1Icon } from "react-icons/go";
 import { IoWarningOutline as Step3Icon } from "react-icons/io5";
@@ -65,10 +66,15 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 					</Button>
 				</div>
 			</div>
-			<ModalSelectControlAction
+			{/* <ModalSelectControlAction
 				analysisId={analysisId}
 				open={modalSelectControlActionOpen}
 				onClose={toggleModalSelectControlAction}
+			/> */}
+			<ModalSelectStep3
+				open={modalSelectControlActionOpen}
+				onClose={toggleModalSelectControlAction}
+				analysisId={analysisId}
 			/>
 			<ModalSelectStep4
 				open={modalSelectStep4Open}

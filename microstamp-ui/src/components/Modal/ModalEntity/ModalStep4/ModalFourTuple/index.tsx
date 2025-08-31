@@ -2,7 +2,7 @@ import Button from "@components/Button";
 import { Input, MultiSelectSearch, Textarea } from "@components/FormField";
 import { ucasToSelectOptions } from "@components/FormField/MultiSelect/UCAsMultiSelect/util";
 import { SelectOption } from "@components/FormField/Templates";
-import { ModalUCAsOptions } from "@components/Modal/ModalSelectOptions/Entities";
+import { ModalSelectUCAs } from "@components/Modal/ModalSelectOptions";
 import {
 	ModalButtons,
 	ModalContainer,
@@ -34,10 +34,10 @@ function ModalFourTuple({
 	btnText = "Confirm"
 }: ModalFourTupleProps) {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Modal UCAs Options
+	// * Modal Select UCAs
 
-	const [modalUCAsOptionsOpen, setModalUCAsOptionsOpen] = useState(false);
-	const toggleModalUCAsOptions = () => setModalUCAsOptionsOpen(!modalUCAsOptionsOpen);
+	const [modalSelectUCAsOpen, setModalSelectUCAsOpen] = useState(false);
+	const toggleModalSelectUCAs = () => setModalSelectUCAsOpen(!modalSelectUCAsOpen);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Four Tuple Data
@@ -118,7 +118,7 @@ function ModalFourTuple({
 						<MultiSelectSearch
 							label="Unsafe Control Actions"
 							values={tupleData.unsafeControlActions}
-							onSearch={toggleModalUCAsOptions}
+							onSearch={toggleModalSelectUCAs}
 							onChange={(ucas: SelectOption[]) =>
 								setTupleData({ ...tupleData, unsafeControlActions: ucas })
 							}
@@ -176,9 +176,9 @@ function ModalFourTuple({
 					</Button>
 				</ModalButtons>
 			</ModalContainer>
-			<ModalUCAsOptions
-				open={modalUCAsOptionsOpen}
-				onClose={toggleModalUCAsOptions}
+			<ModalSelectUCAs
+				open={modalSelectUCAsOpen}
+				onClose={toggleModalSelectUCAs}
 				analysisId={analysisId}
 				ucas={tupleData.unsafeControlActions}
 				onChange={(ucas: SelectOption[]) =>
