@@ -10,7 +10,6 @@ interface AnalysisHeaderProps {
 	step: ISteps;
 	analysis: IAnalysisReadDto;
 	component?: string;
-	onChangeComponent?: () => void;
 	controlAction?: string;
 	onChangeControlAction?: () => void;
 	uca?: string;
@@ -25,7 +24,6 @@ function AnalysisHeader({
 	controlAction,
 	uca,
 	formalScenarioView,
-	onChangeComponent,
 	onChangeControlAction,
 	onChangeUCA,
 	onChangeView
@@ -59,16 +57,6 @@ function AnalysisHeader({
 					<div className={styles.analysis_info}>
 						<span className={styles.label}>Component:</span>
 						<span className={styles.name}>{component}</span>
-						{onChangeComponent && (
-							<button
-								type="button"
-								className={styles.change_button}
-								onClick={onChangeComponent}
-								title="Change component"
-							>
-								<BiRefresh />
-							</button>
-						)}
 					</div>
 				)}
 				{controlAction && (

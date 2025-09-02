@@ -1,6 +1,7 @@
 import AnalysisHeader from "@components/AnalysisHeader";
 import Button from "@components/Button";
 import Loader from "@components/Loader";
+import { ModalSelectStep4 } from "@components/Modal";
 import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
@@ -48,6 +49,12 @@ function FormalScenarios() {
 		queryKey: ["uca-page", ucaId],
 		queryFn: () => getUnsafeControlAction(ucaId)
 	});
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Change UCA Modal
+
+	const [modalSelectStep4Open, setModalSelectStep4Open] = useState(false);
+	const toggleModalSelectStep4 = () => setModalSelectStep4Open(!modalSelectStep4Open);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Get Formal Scenarios Entities
@@ -107,6 +114,7 @@ function FormalScenarios() {
 				analysis={analysis}
 				uca={uca.name}
 				step={ISteps.STEP_4}
+				onChangeUCA={toggleModalSelectStep4}
 				formalScenarioView={currentView}
 				onChangeView={setCurrentView}
 			/>
@@ -139,6 +147,13 @@ function FormalScenarios() {
 					Export New Step 4
 				</Button>
 			</PageActions>
+
+			<ModalSelectStep4
+				analysisId={analysis.id}
+				open={modalSelectStep4Open}
+				onClose={toggleModalSelectStep4}
+				isUpdate
+			/>
 		</>
 	);
 }

@@ -26,7 +26,7 @@ function StepIcon({ step, className, icon = "icon" }: StepIconProps) {
 				))}
 			{step === ISteps.STEP_2 &&
 				(icon === "icon" ? (
-					<Step2Icon className={className} />
+					<Step2Icon style={{ rotate: "90deg" }} className={className} />
 				) : (
 					<Number2Icon className={className} />
 				))}

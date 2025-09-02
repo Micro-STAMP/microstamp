@@ -24,8 +24,9 @@ import styles from "./ModalSelectStep3.module.css";
 
 interface ModalSelectStep3Props extends ModalProps {
 	analysisId: string;
+	isUpdate?: boolean;
 }
-function ModalSelectStep3({ open, onClose, analysisId }: ModalSelectStep3Props) {
+function ModalSelectStep3({ open, onClose, analysisId, isUpdate = false }: ModalSelectStep3Props) {
 	const navigate = useNavigate();
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
@@ -93,7 +94,10 @@ function ModalSelectStep3({ open, onClose, analysisId }: ModalSelectStep3Props) 
 
 	const handleProceed = () => {
 		if (selectedComponent && selectedCA) {
-			navigate(`control-action/${selectedCA.value}/unsafe-control-actions`);
+			navigate(
+				`/analyses/${analysisId}/control-action/${selectedCA.value}/unsafe-control-actions`,
+				{ replace: isUpdate }
+			);
 			onClose();
 		}
 	};
@@ -103,26 +107,46 @@ function ModalSelectStep3({ open, onClose, analysisId }: ModalSelectStep3Props) 
 	return (
 		<>
 			<ModalContainer open={open} size="big">
-				<ModalHeader title="Control Action for Step 3 Analysis" onClose={onClose} />
+				<ModalHeader
+					title={
+						isUpdate
+							? "Change Control Action Under Analysis"
+							: "Control Action for Step 3 Analysis"
+					}
+					onClose={onClose}
+				/>
 				<div className={styles.modal_select_step3}>
 					<div className={styles.explanation}>
-						<p>
-							To <strong>Identify Unsafe Control Actions</strong>, you need to select
-							a specific <strong>Control Action</strong> to analyze.
-						</p>
-						<p>
-							Our approach is based on generating <strong>context tables</strong>{" "}
-							(LEVESON, 2018; THOMAS, 2013) for each control action, which display all
-							possible contexts resulting from combinations of controller variable
-							states. This associates each control action with all possible contexts
-							where it can be applied. Additionally, you can define custom{" "}
-							<strong>rules</strong> (THOMAS, 2013) to automatically identify UCAs in
-							specific contexts.
-						</p>
+						{isUpdate ? (
+							<p>
+								Select another <strong>Control Action</strong> to analyze. This will
+								update the Unsafe Control Actions being displayed for the selected
+								Control Action.
+							</p>
+						) : (
+							<>
+								<p>
+									To <strong>Identify Unsafe Control Actions</strong>, you need to
+									select a specific <strong>Control Action</strong> to analyze.
+								</p>
+								<p>
+									Our approach is based on generating{" "}
+									<strong>context tables</strong> (LEVESON, 2018; THOMAS, 2013)
+									for each control action, which display all possible contexts
+									resulting from combinations of controller variable states. This
+									associates each control action with all possible contexts where
+									it can be applied. Additionally, you can define custom{" "}
+									<strong>rules</strong> (THOMAS, 2013) to automatically identify
+									UCAs in specific contexts.
+								</p>
+							</>
+						)}
 					</div>
 					<div className={styles.options_container}>
 						<span className={styles.label}>
-							Select the <strong>Control Action</strong> you want to analyze:
+							{isUpdate
+								? "Select the new Control Action to analyze:"
+								: "Select the Control Action you want to analyze:"}
 						</span>
 						<ModalInputs column="single">
 							<SelectSearch
@@ -164,7 +188,7 @@ function ModalSelectStep3({ open, onClose, analysisId }: ModalSelectStep3Props) 
 						onClick={handleProceed}
 						disabled={!selectedComponent || !selectedCA}
 					>
-						Continue
+						{isUpdate ? "Change Control Action" : "Continue"}
 					</Button>
 				</ModalButtons>
 			</ModalContainer>
