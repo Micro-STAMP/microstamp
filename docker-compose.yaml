@@ -177,7 +177,7 @@ services:
             start_period: 3s
         environment:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
-            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step4-new
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/step4new
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
             - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
         networks:
