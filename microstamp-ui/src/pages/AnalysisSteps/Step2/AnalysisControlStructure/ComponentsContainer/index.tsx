@@ -44,9 +44,6 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Component created.");
 		},
 		onError: err => {
@@ -78,9 +75,6 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Component updated.");
 		},
 		onError: err => {
@@ -116,9 +110,6 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Component deleted.");
 		},
 		onError: err => {

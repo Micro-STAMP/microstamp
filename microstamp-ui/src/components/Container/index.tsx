@@ -4,6 +4,7 @@ import {
 	BiErrorAlt,
 	BiExpand,
 	BiHide,
+	BiInfoCircle,
 	BiShowAlt,
 	BiDotsHorizontalRounded as OptionsIcon,
 	BiPlusMedical as PlusIcon
@@ -16,6 +17,7 @@ interface ContainerProps {
 	justTitle?: boolean;
 	onClick?: () => void;
 	onOptions?: () => void;
+	onViewImage?: () => void;
 	isLoading?: boolean;
 	isError?: boolean;
 	collapsible?: boolean;
@@ -26,10 +28,11 @@ function Container({
 	justTitle = false,
 	onClick,
 	onOptions,
+	onViewImage,
 	children,
 	isLoading = false,
 	isError = false,
-	collapsible = false,
+	collapsible = true,
 	defaultCollapsed = false
 }: ContainerProps) {
 	const [collapsed, setCollapsed] = useState(defaultCollapsed);
@@ -50,6 +53,11 @@ function Container({
 						{onOptions && (
 							<button type="button" className={styles.option} onClick={onOptions}>
 								<OptionsIcon />
+							</button>
+						)}
+						{onViewImage && (
+							<button type="button" className={styles.option} onClick={onViewImage}>
+								<BiInfoCircle size={18} strokeWidth={0.5} />
 							</button>
 						)}
 						{collapsible && (

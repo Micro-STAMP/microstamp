@@ -1,0 +1,48 @@
+.options_list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+	width: 100%;
+	min-height: 18rem;
+
+	.option_item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.2rem;
+
+		background-color: var(--color-dark-gray);
+		color: var(--color-white);
+		border-radius: var(--radius1);
+
+		padding: 1.2rem;
+		cursor: pointer;
+		transition: all 0.2s;
+
+		&:hover {
+			color: var(--color-yellow);
+		}
+		&.selected {
+			background-color: var(--color-dark);
+			color: var(--color-yellow);
+		}
+
+		.option_label {
+			display: flex;
+			align-items: center;
+			gap: 0.8rem;
+			font-weight: 500;
+			font-size: 1.3rem;
+		}
+
+		.check_icon {
+			font-size: 1.6rem;
+			color: var(--color-light-gray);
+			flex-shrink: 0;
+
+			&.filled {
+				color: var(--color-yellow);
+			}
+		}
+	}
+}

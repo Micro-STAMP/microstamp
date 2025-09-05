@@ -1,26 +1,42 @@
 import AnalysisHeader from "@components/AnalysisHeader";
 import Button from "@components/Button";
 import Loader from "@components/Loader";
+import { ModalSelectStep4 } from "@components/Modal";
 import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
-import { getFormalScenariosByUCA } from "@http/Step4New/FormalScenarios";
-import { getRefinedScenariosByUCA } from "@http/Step4New/RefinedScenarios";
-import { groupRefinedScenariosByClass } from "@interfaces/IStep4New/IRefinedScenarios";
+import { IAnalysisReadDto } from "@interfaces/IAnalysis";
+import { ISteps } from "@interfaces/ISteps";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { BiExport as ExportIcon } from "react-icons/bi";
-import { Navigate, useParams, useSearchParams } from "react-router-dom";
-import HighLevelScenariosContainer from "./HighLevelScenariosContainer";
-import HighLevelSolutionsContainer from "./HighLevelSolutionsContainer";
-import RefinedScenariosContainer from "./RefinedScenariosContainer";
-import RefinedSolutionsContainer from "./RefinedSolutionsContainer";
+import { Navigate, useOutletContext, useSearchParams } from "react-router-dom";
+import {
+	useHighLevelScenarios,
+	useHighLevelSolutions,
+	useRefinedScenarios,
+	useRefinedSolutions
+} from "./hooks";
+import { FormalScenariosByActivity, FormalScenariosByClass } from "./views";
 
 function FormalScenarios() {
-	const { id } = useParams();
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get Analysis
+
+	const analysis: IAnalysisReadDto = useOutletContext();
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get UCA and View
+
 	const [searchParams] = useSearchParams();
 	const ucaId = searchParams.get("uca");
-	if (!id) return <Navigate to="/analyses" />;
-	if (!ucaId) return <Navigate to={`/analyses/${id}`} />;
+	if (!ucaId) return <Navigate to={`/analyses/${analysis.id}`} />;
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Formal Scenarios View
+
+	type FormalScenariosViewType = "class" | "activity";
+	const [currentView, setCurrentView] = useState<FormalScenariosViewType>("class");
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Get UCA
@@ -35,28 +51,57 @@ function FormalScenarios() {
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle Get High Level Scenarios
+	// * Handle Change UCA Modal
 
-	const {
-		data: formalScenarios,
-		isLoading: isLoadingFormalScenarios,
-		isError: isErrorFormalScenarios
-	} = useQuery({
-		queryKey: ["formal-scenarios", ucaId],
-		queryFn: () => getFormalScenariosByUCA(ucaId)
-	});
+	const [modalSelectStep4Open, setModalSelectStep4Open] = useState(false);
+	const toggleModalSelectStep4 = () => setModalSelectStep4Open(!modalSelectStep4Open);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
-	// * Handle Get Refined Scenarios
+	// * Handle Get Formal Scenarios Entities
 
+	// 4.1 High Level Scenarios
 	const {
-		data: refinedScenarios,
+		formalScenarios,
+		isLoading: isLoadingHighLevelScenarios,
+		isError: isErrorHighLevelScenarios
+	} = useHighLevelScenarios(ucaId);
+
+	// 4.2 High Level Solutions
+	const {
+		highLevelSolutions,
+		isLoading: isLoadingHighLevelSolutions,
+		isError: isErrorHighLevelSolutions
+	} = useHighLevelSolutions(ucaId);
+
+	// 4.3 Refined Scenarios
+	const {
+		refinedScenarios,
 		isLoading: isLoadingRefinedScenarios,
 		isError: isErrorRefinedScenarios
-	} = useQuery({
-		queryKey: ["refined-scenarios", ucaId],
-		queryFn: () => getRefinedScenariosByUCA(ucaId)
-	});
+	} = useRefinedScenarios({ ucaId });
+
+	// 4.4 Refined Solutions
+	const {
+		refinedSolutions,
+		isLoading: isLoadingRefinedSolutions,
+		isError: isErrorRefinedSolutions
+	} = useRefinedSolutions({ ucaId });
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
+	const isLoadingView =
+		isLoadingHighLevelScenarios ||
+		isLoadingHighLevelSolutions ||
+		isLoadingRefinedScenarios ||
+		isLoadingRefinedSolutions;
+	const isErrorView =
+		isErrorHighLevelScenarios ||
+		isErrorHighLevelSolutions ||
+		isErrorRefinedScenarios ||
+		isErrorRefinedSolutions ||
+		formalScenarios === undefined ||
+		highLevelSolutions === undefined ||
+		refinedSolutions === undefined;
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -65,38 +110,50 @@ function FormalScenarios() {
 		return <NoResultsMessage message="Error loading formal scenarios." />;
 	return (
 		<>
-			<AnalysisHeader analysisId={id} uca={uca.name} icon="step4" />
-			<HighLevelScenariosContainer
-				formalScenarios={formalScenarios}
-				isLoading={isLoadingFormalScenarios}
-				isError={isErrorFormalScenarios}
+			<AnalysisHeader
+				analysis={analysis}
+				uca={uca.name}
+				step={ISteps.STEP_4}
+				onChangeUCA={toggleModalSelectStep4}
+				formalScenarioView={currentView}
+				onChangeView={setCurrentView}
 			/>
-			{formalScenarios && (
-				<>
-					<HighLevelSolutionsContainer formalScenarios={formalScenarios} ucaId={ucaId} />
-					<RefinedScenariosContainer
-						uca={uca}
-						formalScenarios={formalScenarios}
-						refinedScenarios={refinedScenarios}
-						isLoading={isLoadingRefinedScenarios}
-						isError={isErrorRefinedScenarios}
-					/>
-					{refinedScenarios && (
-						<RefinedSolutionsContainer
-							refinedScenarios={groupRefinedScenariosByClass(
-								refinedScenarios,
-								formalScenarios
-							)}
-							ucaId={ucaId}
-						/>
-					)}
-				</>
+
+			{currentView === "class" && (
+				<FormalScenariosByClass
+					uca={uca}
+					formalScenarios={formalScenarios}
+					highLevelSolutions={highLevelSolutions}
+					refinedScenarios={refinedScenarios}
+					refinedSolutions={refinedSolutions}
+					isLoading={isLoadingView}
+					isError={isErrorView}
+				/>
 			)}
+			{currentView === "activity" && (
+				<FormalScenariosByActivity
+					uca={uca}
+					formalScenarios={formalScenarios}
+					highLevelSolutions={highLevelSolutions}
+					refinedScenarios={refinedScenarios}
+					refinedSolutions={refinedSolutions}
+					isLoading={isLoadingView}
+					isError={isErrorView}
+				/>
+			)}
+
 			<PageActions>
 				<Button variant="dark" icon={ExportIcon}>
 					Export New Step 4
 				</Button>
 			</PageActions>
+
+			<ModalSelectStep4
+				analysisId={analysis.id}
+				open={modalSelectStep4Open}
+				onClose={toggleModalSelectStep4}
+				isUpdate
+			/>
 		</>
 	);
 }

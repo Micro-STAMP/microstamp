@@ -53,6 +53,7 @@ function Analyses() {
 				onClick={toggleModalCreateAnalysis}
 				isLoading={isLoading}
 				isError={isError || analyses === undefined}
+				collapsible={false}
 			>
 				{analyses && analyses.length > 0 ? (
 					<div className={styles.analyses_container}>

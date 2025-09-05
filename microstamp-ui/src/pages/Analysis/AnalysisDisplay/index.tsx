@@ -75,7 +75,13 @@ function AnalysisDisplay({
 
 	return (
 		<>
-			<Container title="Analysis" justTitle isLoading={isLoading} isError={isError}>
+			<Container
+				title="Analysis"
+				justTitle
+				isLoading={isLoading}
+				isError={isError}
+				collapsible={false}
+			>
 				{analysis && (
 					<div className={styles.analysis_display}>
 						<div className={styles.display}>

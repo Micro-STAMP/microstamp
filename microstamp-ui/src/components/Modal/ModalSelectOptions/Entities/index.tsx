@@ -1,3 +1,11 @@
-import ModalUCAsOptions from "./ModalUCAsOptions";
+import ModalSelectComponent from "./ModalSelectComponent";
+import ModalSelectControlAction from "./ModalSelectControlAction";
+import ModalSelectRefinedScenarios from "./ModalSelectRefinedScenarios";
+import ModalSelectUCAs from "./ModalSelectUCAs";
 
-export { ModalUCAsOptions };
+export {
+	ModalSelectComponent,
+	ModalSelectControlAction,
+	ModalSelectRefinedScenarios,
+	ModalSelectUCAs
+};

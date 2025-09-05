@@ -6,7 +6,7 @@ import { SelectSearch } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
 import Loader from "@components/Loader";
 import { ModalFourTupleDetails } from "@components/Modal/ModalEntity/ModalStep4";
-import { ModalUCAsOptions } from "@components/Modal/ModalSelectOptions/Entities";
+import { ModalSelectUCAs } from "@components/Modal/ModalSelectOptions";
 import NoResultsMessage from "@components/NoResultsMessage";
 import { getUnsafeControlActionsByAnalysis } from "@http/Step3/UnsafeControlActions";
 import { getFourTuplesByUCA } from "@http/Step4/FourTuple";
@@ -32,8 +32,8 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Modal UCAs Options
 
-	const [modalUCAsOptionsOpen, setModalUCAsOptionsOpen] = useState(false);
-	const toggleModalUCAsOptions = () => setModalUCAsOptionsOpen(!modalUCAsOptionsOpen);
+	const [modalSelectUCAsOpen, setModalSelectUCAsOpen] = useState(false);
+	const toggleModalSelectUCAs = () => setModalSelectUCAsOpen(!modalSelectUCAsOpen);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle UCAs Search
@@ -81,7 +81,7 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 					<div className={styles.four_tuples_list}>
 						<SelectSearch
 							value={selectedUCA}
-							onSearch={toggleModalUCAsOptions}
+							onSearch={toggleModalSelectUCAs}
 							disabled={isLoadingUcas || !ucasList}
 						/>
 						{isLoading ? (
@@ -127,9 +127,9 @@ function FourTupleByUCAsContainer({ analysisId }: FourTupleByUCAsContainerProps)
 				/>
 			)}
 			{selectedUCA && (
-				<ModalUCAsOptions
-					open={modalUCAsOptionsOpen}
-					onClose={toggleModalUCAsOptions}
+				<ModalSelectUCAs
+					open={modalSelectUCAsOpen}
+					onClose={toggleModalSelectUCAs}
 					analysisId={analysisId}
 					ucas={[selectedUCA]}
 					onChange={(ucas: SelectOption[]) => setSelectedUCA(ucas[0])}

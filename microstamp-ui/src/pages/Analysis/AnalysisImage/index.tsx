@@ -91,7 +91,13 @@ function AnalysisImage({ image, analysisId, isLoading, isError }: AnalysisImageP
 
 	return (
 		<>
-			<Container title="Analysis Image" justTitle isLoading={isLoading} isError={isError}>
+			<Container
+				title="Analysis Image"
+				justTitle
+				isLoading={isLoading}
+				isError={isError}
+				collapsible={false}
+			>
 				{image !== undefined && (
 					<div className={styles.image_container}>
 						{previewImage ? (
