@@ -3,15 +3,19 @@ import Button from "@components/Button";
 import { ModalPDFPreview } from "@components/Modal";
 import PageActions from "@components/PageActions";
 import { getStep4PDF } from "@http/Export";
+import { IAnalysisReadDto } from "@interfaces/IAnalysis";
+import { ISteps } from "@interfaces/ISteps";
 import { useState } from "react";
 import { BiExport as PdfIcon } from "react-icons/bi";
-import { Navigate, useParams } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import FourTupleByUCAsContainer from "./FourTupleByUCAsContainer";
 import FourTupleContainer from "./FourTupleContainer";
 
 function LossScenarios() {
-	const { id } = useParams();
-	if (!id) return <Navigate to="/analyses" />;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get Analysis
+
+	const analysis: IAnalysisReadDto = useOutletContext();
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Get Step 4 PDF
@@ -22,9 +26,11 @@ function LossScenarios() {
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 	return (
 		<>
-			<AnalysisHeader analysisId={id} icon="step4" />
-			<FourTupleContainer analysisId={id} />
-			<FourTupleByUCAsContainer analysisId={id} />
+			<AnalysisHeader analysis={analysis} step={ISteps.STEP_4} />
+
+			<FourTupleContainer analysisId={analysis.id} />
+			<FourTupleByUCAsContainer analysisId={analysis.id} />
+
 			<PageActions>
 				<Button variant="dark" icon={PdfIcon} onClick={toggleModalStep4Pdf}>
 					Export Step 4
@@ -33,7 +39,7 @@ function LossScenarios() {
 					open={modalStep4PdfOpen}
 					onClose={toggleModalStep4Pdf}
 					fetchPDF={getStep4PDF}
-					analysisId={id}
+					analysisId={analysis.id}
 					title={"Export Step 4"}
 				/>
 			</PageActions>

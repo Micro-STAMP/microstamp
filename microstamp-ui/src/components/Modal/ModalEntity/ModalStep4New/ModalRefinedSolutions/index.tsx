@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import { SelectSearch, Textarea } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
-import ModalSelectOptions from "@components/Modal/ModalSelectOptions";
+import { ModalSelectRefinedScenarios } from "@components/Modal/ModalSelectOptions";
 import {
 	ModalButtons,
 	ModalContainer,
@@ -19,7 +19,7 @@ import {
 	IRefinedSolutionReadDto
 } from "@interfaces/IStep4New/IRefinedSolutions";
 import { useState } from "react";
-import { BiCheckCircle, BiUndo } from "react-icons/bi";
+import { BiCheckDouble, BiUndo } from "react-icons/bi";
 import { toast } from "sonner";
 
 interface ModalRefinedSolutionsProps extends ModalProps {
@@ -111,29 +111,29 @@ function ModalRefinedSolutions({
 						onClick={handleSubmitRefinedSolution}
 						isLoading={isLoading}
 						size="small"
-						icon={BiCheckCircle}
+						icon={BiCheckDouble}
 					>
 						{refinedSolution ? "Update Refined Solution" : "Create Refined Solution"}
 					</Button>
 				</ModalButtons>
 			</ModalContainer>
 			{!refinedSolution && (
-				<ModalSelectOptions
+				<ModalSelectRefinedScenarios
 					open={modalSearchRefinedScenariosOpen}
 					onClose={toggleModalSearchRefinedScenarios}
-					title={"Select the Refined Scenario"}
 					onChange={(value: SelectOption[]) =>
 						setRefinedSolutionData({
 							...refinedSolutionData,
 							refinedScenario: value[0]
 						})
 					}
-					selectedOptions={
+					refinedScenarios={
 						refinedSolutionData.refinedScenario
 							? [refinedSolutionData.refinedScenario]
 							: []
 					}
 					options={refinedScenariosToSelectOptions(scenarios)}
+					multiple
 				/>
 			)}
 		</>
