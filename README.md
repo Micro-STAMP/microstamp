@@ -27,17 +27,19 @@ This repository contains the source code for MicroSTAMP, a web application based
 ### Ports
 
 | Microservice                    | Port |
-| ------------------------------- | ---- |
-| microstamp-step1                | 8091 |
-| microstamp-step2                | 8090 |
-| microstamp-step3                | 8080 |
-| microstamp-service-registry     | 8761 |
-| microstamp-authorization-server | 9000 |
-| microstamp-api-gateway          | 9191 |
+|---------------------------------|------|
+| microstamp-step1                | 8101 |
+| microstamp-step2                | 8102 |
+| microstamp-step3                | 8103 |
+| microstamp-step4                | 8104 |
+| microstamp-step4-new            | 8105 |
+| microstamp-api-gateway          | 8000 |
+| microstamp-authorization-server | 8001 |
+| microstamp-service-registry     | 8002 |
 
 | User Interface | Port |
-| -------------- | ---- |
-| microstamp-ui  | 5173 |
+| -------------- |------|
+| microstamp-ui  | 3000 |
 
 ### Technologies
 
