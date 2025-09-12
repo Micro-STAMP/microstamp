@@ -1,8 +1,6 @@
-# <img src="assets/images/microstamp-logo.png?raw=true" alt="MicroSTAMP Logo"  width="65%" style="min-width: 272px;">
+# <img src="assets/images/microstamp-logo.png?raw=true" alt="MicroSTAMP Logo"  width="55%" style="min-width: 272px;">
 
 **_Microservices for STPA (System-Theoretic Process Analysis)_**
-
----
 
 <br>
 
