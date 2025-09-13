@@ -1,33 +1,61 @@
-# <img src="assets/images/microstamp-logo.png?raw=true" alt="MicroSTAMP Logo"  width="65%" style="min-width: 272px;">
+# <img src="assets/images/microstamp-logo.png?raw=true" alt="MicroSTAMP Logo"  width="55%" style="min-width: 272px;">
 
-Microservices for STPA (System-Theoretic Process Analysis)
+**_Microservices for STPA (System-Theoretic Process Analysis)_**
+
+<br>
+
+[![GitHub Stars](https://img.shields.io/github/stars/Micro-STAMP/microstamp?style=flat-square&color=f8efd4&label=Stars&labelColor=555555)](https://github.com/Micro-STAMP/microstamp/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/Micro-STAMP/microstamp?style=flat-square&color=f8efd4&label=Forks&labelColor=555555)](https://github.com/Micro-STAMP/microstamp/fork)
+[![GitHub Issues](https://img.shields.io/github/issues/Micro-STAMP/microstamp?style=flat-square&color=f8efd4&label=Issues&labelColor=555555)](https://github.com/Micro-STAMP/microstamp/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-f8efd4?style=flat-square&labelColor=555555)](https://opensource.org/licenses/MIT)
 
 ## Description
 
-This repository contains the source code for MicroSTAMP, a web application based on microservices architecture to support STPA. Out of the 4 steps of STPA, MicroSTAMP supports steps 1, 2, and 3. We estimate to release the microservice implementation for Step 4 by **September, 2025**.
+This repository contains the source code for **MicroSTAMP**, a free and open-source **STPA** compliant tool based on a **microservices architecture**.
+
+**MicroSTAMP** currently supports all four steps of STPA, including two different approaches for Step 4: the Handbook Approach, which follows the standard definition from the [STPA Handbook](https://psas.scripts.mit.edu/home/get_file.php?name=STPA_Handbook.pdf), and the Formal Approach, based on [Formally Developing Loss Scenarios](https://youtu.be/hp-KBjIBmrI?si=anK9-GYa8eFk1_2C), which introduces a formalized method for identifying loss scenarios.
+
+Beyond step support, MicroSTAMP integrates a unified front-end to access all services, offers preloaded example analyses, and enables PDF export for each step with embedded navigation hyperlinks. Its microservices-based architecture also provides scalability, service discovery, and secure access through OAuth2 and OpenID.
 
 ## Table of Contents
 
 -   [Architecture Overview](#architecture-overview)
--   [How to Run MicroSTAMP](#how-to-run-microstamp)
 -   [MicroSTAMP Microservices](#microstamp-microservices)
--   [Contributing Guidelines](#contributing-guidelines)
--   [Lead developers](#lead-developers)
+-   [How to Run MicroSTAMP](#how-to-run-microstamp)
+-   [Developers Team](#developers-team)
 -   [Publications](#publications)
 -   [Talks](#talks)
+-   [Supporters](#supporters)
+-   [Contributing Guidelines](#contributing-guidelines)
+-   [Partnership Opportunities](#partnership-opportunities)
 -   [Contact Information](#contact-information)
 
 ## Architecture Overview
 
 <figure>
-    <img src="assets/images/microstamp-architecture.png?raw=true" alt="MicroSTAMP Architecture">
+    <img src="assets/images/microstamp_architecture.png?raw=true" alt="MicroSTAMP Architecture">
     <figcaption><strong>Figure: MicroSTAMP architecture.</strong></figcaption>
 </figure>
+
+The MicroSTAMP architecture is based on independent **microservices**, each responsible for a specific part of the STPA technique or for supporting the system infrastructure. This design promotes scalability, reusability and easy integration with other STPA tools. Microservices communicate via REST through the API Gateway; each STPA step service manages its own data store to keep bounded contexts and improve modularity and traceability.
+
+**Key components**
+
+-   **MicroSTAMP UI**: unified front-end that consumes the microservice APIs.
+-   **API Gateway**: single entry point that routes requests to services.
+-   **Authorization Server**: handles authentication/authorization (OAuth2/OpenID).
+-   **Service Registry**: service discovery (registers service instances for inter-service communication).
+-   **STPA Step Microservices**: microservice for the STPA steps; each has its own database:
+    -   Step 1 — Define Purpose of the Analysis
+    -   Step 2 — Model the Control Structure
+    -   Step 3 — Identify Unsafe Control Actions (Context Table + Rule-based approach)
+    -   Step 4 — Identify Loss Scenarios (Handbook)
+    -   Step 4 — Identify Loss Scenarios (Formal Approach)
 
 ### Ports
 
 | Microservice                    | Port |
-|---------------------------------|------|
+| ------------------------------- | ---- |
 | microstamp-step1                | 8101 |
 | microstamp-step2                | 8102 |
 | microstamp-step3                | 8103 |
@@ -38,7 +66,7 @@ This repository contains the source code for MicroSTAMP, a web application based
 | microstamp-service-registry     | 8002 |
 
 | User Interface | Port |
-| -------------- |------|
+| -------------- | ---- |
 | microstamp-ui  | 3000 |
 
 ### Technologies
@@ -59,15 +87,37 @@ This repository contains the source code for MicroSTAMP, a web application based
 <div style="display: flex; gap: 7px; flex-wrap: wrap;">
     <img src="https://img.shields.io/badge/React-0175AA?style=for-the-badge&logo=react&logoColor=0175AA&labelColor=070707" alt="React">
     <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=007ACC&labelColor=070707" alt="TypeScript">
+    <img src="https://img.shields.io/badge/CSS-1572b6?style=for-the-badge&logo=css&logoColor=1572b6&labelColor=070707" alt="CSS">
     <img src="https://img.shields.io/badge/Node-43853D?style=for-the-badge&logo=node.js&logoColor=43853D&labelColor=070707" alt="Node">
 </div>
 <br>
 
 [⬆️ Back to Top](#table-of-contents)
 
+## MicroSTAMP Microservices
+
+MicroSTAMP is composed of 8 core microservices: 3 services that handle the underlying architecture, and 5 STPA step services that each implement a specific step of the STPA technique (including one for each step 4 approach).
+
+For all microservices, you can access the specific source code by visiting each service's dedicated directory.
+
+| Microservice                                 | Description                                                                                                                    | Link                                                                                                        |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| **MicroSTAMP Service Registry**              | Registers instances of the microservices for discovery and communication.                                                      | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry)         |
+| **MicroSTAMP API Gateway**                   | The main entry point, delegating requests to the corresponding microservices.                                                  | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)                   |
+| **MicroSTAMP Authorization Server**          | Controls authorization with OAuth2 and authentication with OpenID.                                                             | [Authorization Server](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-authorization-server) |
+| **MicroSTAMP STPA Step 1**                   | Implements the **Define Purpose of the Analysis** step.                                                                        | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                         |
+| **MicroSTAMP STPA Step 2**                   | Implements the **Model the Control Structure** step.                                                                           | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                         |
+| **MicroSTAMP STPA Step 3**                   | Implements the **Identify Unsafe Control Actions** step, using context tables and rules.                                       | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                         |
+| **MicroSTAMP STPA Step 4 (Handbook)**        | Implements the **Identify Loss Scenarios** step using the standard STPA Handbook Approach.                                     | [STPA Step 4 (Handbook)](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step4)              |
+| **MicroSTAMP STPA Step 4 (Formal Approach)** | Implements the **Identify Loss Scenarios** step using the [Formal Approach](https://youtu.be/hp-KBjIBmrI?si=AqTFvtEHjV3ZX-Ra). | [STPA Step 4 (Formal Approach)](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step4-new)   |
+
+Additionally, you can find the directory for the MicroSTAMP User Interface here: [MicroSTAMP UI](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-ui).
+
+[⬆️ Back to Top](#table-of-contents)
+
 ## How to Run MicroSTAMP
 
-This section provides two options for running MicroSTAMP: Option 1 uses Maven and runs the services locally, while Option 2 uses Docker for a containerized setup.
+This section provides instructions for running MicroSTAMP using Docker, which is the recommended approach for most users.
 
 Before proceeding, clone the project repository to your local machine:
 
@@ -84,102 +134,15 @@ Before proceeding, clone the project repository to your local machine:
 
 </details>
 
-Once the repository is cloned, you can choose one of the two options below to run MicroSTAMP.
+<p></p>
 
-<details>
-<summary><strong>Option 1: Run MicroSTAMP with Maven (Local Setup)</strong></summary>
-This option runs the microservices and UI locally using Maven and Node.js.
-
-#### Prerequisites
-
-To build and run the application, you'll need the following:
-
--   [JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
--   [MySQL 8.0](https://dev.mysql.com/downloads/mysql) or higher
--   [Apache Maven](https://maven.apache.org/)
--   [Node.js and NPM](https://nodejs.org/pt/download/package-manager)
-
-#### Command-line setup
-
-<details> 
-<summary><strong>1. Set up MySQL Databases</strong></summary>
-<br>
-  Ensure that MySQL is installed and running on your machine. The default port for MySQL is <code>3306</code>. If MySQL is not installed, you can download it from the official MySQL website:
-
--   [Download MySQL](https://dev.mysql.com/downloads/mysql/)
-
-**Creating the Databases**
-
-Once MySQL is installed and running, follow the steps below to create the necessary databases for the project.
-
-1. Open a terminal or command prompt.
-2. Log in to MySQL using the following command:
-
-    ```
-      mysql -u root -p
-    ```
-
-3. Create the required databases by running the following SQL commands:
-
-    ```
-    CREATE DATABASE microstamp;
-    CREATE DATABASE step1;
-    CREATE DATABASE step2;
-    CREATE DATABASE step3;
-    ```
-
-That's it! Your MySQL databases are now set up and ready to use.
-
-</details>
-
-<details>
-<summary><strong>2. Run the Microservices</strong></summary>
-
-##### 1. Run the **microstamp-service-registry** microservice
-
-We recommend running this microservice before all others, to ensures that each microservice can register itself properly, making communication between them more reliable.
-
-To run this microservice, open a terminal or command prompt, navigate to its directory, and execute the following command:
-
-```
-mvn spring-boot:run
-```
-
-<figure>
-<img src="assets/images/running-service-registry-mvn-command-line.png" alt="Running the service registry with Apache Maven at command-line">
-  <figcaption><strong>Figure: Running the service registry in the command-line.</strong></figcaption>
-</figure>
-
-<p></p><br>
-
-Alternatively, you can also run the microservices directly within an IDE. We use IntelliJ IDEA 2023.3.5 Ultimate Edition, but feel free to use any IDE of your choice that supports Spring Boot.
-
-##### 2. Run the Remaining Microservices
-
-Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
-
-##### 3. Run the User Interface microstamp-ui
-
-With the microservices running, open a new terminal window to execute the microstamp-ui. Navigate to its directory and run:
-
-```
-   npm i
-
-   npm run dev
-```
-
--   `npm i` is needed only when first running the UI.
--   The user interface will open at the URL http://127.0.0.1:5173.
--   You can now access the MicroSTAMP frontend!
-
-</details>
-</details>
+Once the repository is cloned, follow the Docker setup instructions below.
 
 <p></p>
 
 <details>
-<summary><strong>Option 2: Run MicroSTAMP with Docker (Containerized Setup)</strong></summary>
-This option runs MicroSTAMP using Docker, which simplifies the setup process by containerizing all services. 
+<summary><strong>Run MicroSTAMP with Docker</strong></summary>
+This option runs MicroSTAMP using Docker, which simplifies the setup process by containerizing all services.
 
 #### Set up Docker
 
@@ -189,6 +152,7 @@ Ensure Docker and Docker Compose are installed and running on your machine. If n
 -   [Download Docker Compose](https://docs.docker.com/compose/install/)
 
 #### Run the Docker Compose file
+
 1.  Open a terminal or command prompt.
 2.  Navigate to the root directory of the cloned project.
 3.  Run the following command to start all services:
@@ -199,13 +163,21 @@ Ensure Docker and Docker Compose are installed and running on your machine. If n
 This command will build and start all the microservices, the MySQL databases, and the UI.
 
 #### Access the Application
-- The user interface will be available at: http://127.0.0.1:5173.
-- The microservices will be running on their respective ports as defined in the [Architecture Overview](#architecture-overview).
-<br>
+
+-   The user interface will be available at: `http://127.0.0.1:3000`.
+-   The microservices will be running on their respective ports as defined in the [Architecture Overview](#architecture-overview).
+    <br>
+
+> Note for Development:
+> If you prefer to run MicroSTAMP locally for development purposes, you can set up the environment using Maven and MySQL. The project > requires JDK 21, MySQL 8.0+, Apache Maven, and Node.js. For detailed local setup instructions or if you encounter any issues running the application, please contact our development team.
 
 </details>
 
-Once MicroSTAMP is running (via either Option 1 or Option 2), you can explore the application using a pre-configured guest account.
+<p></p>
+
+Once MicroSTAMP is running, you can explore the application using a pre-configured guest account.
+
+<p></p>
 
 <details>
 <summary><strong>Exploring MicroSTAMP with the Guest User</strong></summary>
@@ -231,44 +203,30 @@ The user **guest** has some pre-stored STPA analyses and control structure from 
 
 [⬆️ Back to Top](#table-of-contents)
 
-## MicroSTAMP Microservices
+## Developers Team
 
-If you wish to understand more in-depth details about any specific microservice, you can refer to its respective directory.
-Each directory contains a comprehensive description of its role and implementation within the MicroSTAMP system. Below is a table with links to the corresponding folders for each microservice:
-
-| Microservice                        | Description                                                                   | Link                                                                                                        |
-| ----------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **MicroSTAMP Service Registry**     | Registers instances of the microservices for discovery and communication.     | [Service Registry](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-service-registry)         |
-| **MicroSTAMP API Gateway**          | The main entry point, delegating requests to the corresponding microservices. | [API Gateway](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-api-gateway)                   |
-| **MicroSTAMP Authorization Server** | Controls authorization with OAuth2 and authentication with OpenID.            | [Authorization Server](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-authorization-server) |
-| **MicroSTAMP STPA Step 1**          | Handles the **Define Purpose of the Analysis** step.                          | [STPA Step 1](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step1)                         |
-| **MicroSTAMP STPA Step 2**          | Handles the **Model the Control Structure** step.                             | [STPA Step 2](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step2)                         |
-| **MicroSTAMP STPA Step 3**          | Handles the **Identify Unsafe Control Actions** step.                         | [STPA Step 3](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-step3)                         |
-
-Each microservice is detailed in its respective repository directory, outlining its purpose, key functionalities, and implementation.
-
-Additionally, you can find the repository for the MicroSTAMP User Interface here: [MicroSTAMP UI](https://github.com/Micro-STAMP/microstamp/tree/main/microstamp-ui).
-
-_Note: Some of the specific READMEs are still under development. If you find that a README does not yet exist, it will be added shortly._
-
-[⬆️ Back to Top](#table-of-contents)
-
-## Contributing Guidelines
-
-You're welcome to contribute to the MicroSTAMP project! If you find any bugs or have suggestions for new features, please feel free to submit them via pull requests or contact us via email.
-
-[⬆️ Back to Top](#table-of-contents)
-
-## Lead Developers
-
-<div style="display: flex; gap: 8px; flex-wrap: wrap">
-    <a href="https://github.com/JoaoHugo" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Joao Maimone&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-    <a href="https://github.com/gabriel-francelino" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Francelino&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-    <a href="https://github.com/gabriel-piva" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Piva&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-    <a href="https://github.com/pagliares" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Rodrigo Martins Pagliares&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-    <a href="https://github.com/felliperey" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=fellipe rey&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-    <a href="https://github.com/gabriel-nadalin" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Gabriel Nadalin&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
-   <a href="https://github.com/ThiagoFranco0202" target="_blank"><img src="https://img.shields.io/static/v1?label=Github&message=Thiago Franco&color=f8efd4&style=for-the-badge&logo=GitHub"></a>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+    <a href="https://github.com/JoaoHugo" target="_blank">
+        <img src="https://img.shields.io/badge/João Hugo-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="João Hugo">
+    </a>
+    <a href="https://github.com/gabriel-piva" target="_blank">
+        <img src="https://img.shields.io/badge/Gabriel Piva-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="Gabriel Piva">
+    </a>
+    <a href="https://github.com/gabriel-francelino" target="_blank">
+        <img src="https://img.shields.io/badge/Gabriel Francelino-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="Gabriel Francelino">
+    </a>
+    <a href="https://github.com/pagliares" target="_blank">
+        <img src="https://img.shields.io/badge/Rodrigo Martins Pagliares-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="Rodrigo Martins Pagliares">
+    </a>
+    <a href="https://github.com/felliperey" target="_blank">
+        <img src="https://img.shields.io/badge/Fellipe Rey-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="Fellipe Rey">
+    </a>
+    <a href="https://github.com/gabriel-nadalin" target="_blank">
+        <img src="https://img.shields.io/badge/Gabriel Nadalin-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="Gabriel Nadalin">
+    </a>
+    <a href="https://github.com/ThiagoFranco0202" target="_blank">
+        <img src="https://img.shields.io/badge/Thiago Franco-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="Thiago Franco">
+    </a>
 </div>
 <br>
 
@@ -302,8 +260,60 @@ In _International Conference on Information Technology-New Generations_, pp. 469
 2. "**MicroSTAMP: Towards a Free and Open-Source STPA Compliant Web Tool Based on Microservices Architecture**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2024.
 
  <a href="https://psas.scripts.mit.edu/home/2024-stamp-workshop-program-virtual/">
-     <img src="assets/images/mit_presentation_schedule.png" width=249 height=278 alt="MIT presentation">
+     <img src="assets/images/mit_presentation_2024.png" width=420  alt="MIT Presentation 2024">
  </a>
+
+ <br>
+
+Watch our presentation at MIT STAMP Workshop 2024:
+<a href="https://youtu.be/G0o1CJsMk-U?si=U1P8XGSKYSLd5Uc7" target="_blank"><strong>Presentation Link</strong></a>
+
+ <p></p><br>
+
+3. "**MicroSTAMP: A Free and Open-Source Compliant Tool for STPA Using Microservices Architecture**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2025.
+
+ <a href="https://psas.scripts.mit.edu/home/2025-stamp-workshop-program/">
+     <img src="assets/images/mit_presentation_2025.png" width=420  alt="MIT Presentation 2025">
+ </a>
+
+[⬆️ Back to Top](#table-of-contents)
+
+## Supporters
+
+We gratefully acknowledge the support of these organizations that have contributed to the development of MicroSTAMP:
+
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+    <a href="https://www.unifal-mg.edu.br/" target="_blank">
+       <img src="https://img.shields.io/badge/UNIFAL_MG-00629B?style=for-the-badge&logo=university&logoColor=white" alt="UNIFAL MG">
+    </a>
+    <a href="https://www.unifal-mg.edu.br/nti/" target="_blank">
+        <img src="https://img.shields.io/badge/NTI_UNIFAL-008037?style=for-the-badge&logo=computer&logoColor=white" alt="NTI UNIFAL">
+    </a>
+</div>
+
+<br>
+
+[⬆️ Back to Top](#table-of-contents)
+
+## Contributing Guidelines
+
+Feel free to contribute to the MicroSTAMP project!  
+If you find any bugs, have suggestions for improvements, or would like to add new features, please open an issue or submit a pull request.  
+You can also contact us directly via email — contributions of any kind are appreciated.
+
+[⬆️ Back to Top](#table-of-contents)
+
+## Partnership Opportunities
+
+We **welcome partnerships** with organizations interested in advancing open-source safety analysis tools.  
+Possible contributions include:
+
+-   Funding to support ongoing development
+-   Technical expertise to enhance the project
+-   Collaborative research using MicroSTAMP
+-   Sponsorship of new features or improvements
+
+If your organization is interested in exploring any form of collaboration, please reach out to us directly through the [Contact Information](#contact-information).
 
 [⬆️ Back to Top](#table-of-contents)
 
@@ -313,8 +323,5 @@ Rodrigo Martins Pagliares<br>
 rodrigo.pagliares@unifal-mg.edu.br<br>
 Universidade Federal de Alfenas - UNIFAL<br>
 Computer Science Department<br>
-Av. Jovino Fernandes Sales, 2600 – Santa Clara, Alfenas/MG - Brazil<br>
-CEP: 37133-840<br>
-Prédio C – 3º andar (Building C, Third Floor)<br>
 
 [⬆️ Back to Top](#table-of-contents)
