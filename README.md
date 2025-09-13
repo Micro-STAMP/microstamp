@@ -22,11 +22,11 @@ Beyond step support, MicroSTAMP integrates a unified front-end to access all ser
 -   [Architecture Overview](#architecture-overview)
 -   [MicroSTAMP Microservices](#microstamp-microservices)
 -   [How to Run MicroSTAMP](#how-to-run-microstamp)
--   [Contributing Guidelines](#contributing-guidelines)
--   [Lead developers](#lead-developers)
+-   [Developers Team](#developers-team)
 -   [Publications](#publications)
 -   [Talks](#talks)
 -   [Supporters](#supporters)
+-   [Contributing Guidelines](#contributing-guidelines)
 -   [Partnership Opportunities](#partnership-opportunities)
 -   [Contact Information](#contact-information)
 
@@ -203,14 +203,6 @@ The user **guest** has some pre-stored STPA analyses and control structure from 
 
 [⬆️ Back to Top](#table-of-contents)
 
-## Contributing Guidelines
-
-We welcome **contributions** to the MicroSTAMP project!  
-If you find any bugs, have suggestions for improvements, or would like to add new features, please open an issue or submit a pull request.  
-You can also contact us directly via email — contributions of any kind are appreciated.
-
-[⬆️ Back to Top](#table-of-contents)
-
 ## Developers Team
 
 <div style="display: flex; gap: 12px; flex-wrap: wrap">
@@ -299,16 +291,29 @@ We gratefully acknowledge the support of these organizations that have contribut
     </a>
 </div>
 
+<br>
+
+[⬆️ Back to Top](#table-of-contents)
+
+## Contributing Guidelines
+
+Feel free to contribute to the MicroSTAMP project!  
+If you find any bugs, have suggestions for improvements, or would like to add new features, please open an issue or submit a pull request.  
+You can also contact us directly via email — contributions of any kind are appreciated.
+
+[⬆️ Back to Top](#table-of-contents)
+
 ## Partnership Opportunities
 
-We are actively **seeking partnerships** with companies and organizations interested in supporting open-source safety tools. If your organization would like to:
+We **welcome partnerships** with organizations interested in advancing open-source safety analysis tools.  
+Possible contributions include:
 
--   Provide financial support for ongoing development
--   Contribute technical expertise to the project
--   Collaborate on research using MicroSTAMP
--   Sponsor new features or improvements
+-   Funding to support ongoing development
+-   Technical expertise to enhance the project
+-   Collaborative research using MicroSTAMP
+-   Sponsorship of new features or improvements
 
-Please reach out to us! We're open to various forms of collaboration that can help advance the state of **MicroSTAMP**.
+If your organization is interested in exploring any form of collaboration, please reach out to us directly through the [Contact Information](#contact-information).
 
 [⬆️ Back to Top](#table-of-contents)
 
