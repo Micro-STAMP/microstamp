@@ -26,6 +26,8 @@ Beyond step support, MicroSTAMP integrates a unified front-end to access all ser
 -   [Lead developers](#lead-developers)
 -   [Publications](#publications)
 -   [Talks](#talks)
+-   [Supporters](#supporters)
+-   [Partnership Opportunities](#partnership-opportunities)
 -   [Contact Information](#contact-information)
 
 ## Architecture Overview
@@ -115,7 +117,7 @@ Additionally, you can find the directory for the MicroSTAMP User Interface here:
 
 ## How to Run MicroSTAMP
 
-This section provides two options for running MicroSTAMP: Option 1 uses Maven and runs the services locally, while Option 2 uses Docker for a containerized setup.
+This section provides instructions for running MicroSTAMP using Docker, which is the recommended approach for most users.
 
 Before proceeding, clone the project repository to your local machine:
 
@@ -132,97 +134,14 @@ Before proceeding, clone the project repository to your local machine:
 
 </details>
 
-Once the repository is cloned, you can choose one of the two options below to run MicroSTAMP.
+<p></p>
 
-<details>
-<summary><strong>Option 1: Run MicroSTAMP with Maven (Local Setup)</strong></summary>
-This option runs the microservices and UI locally using Maven and Node.js.
-
-#### Prerequisites
-
-To build and run the application, you'll need the following:
-
--   [JDK 21](https://www.oracle.com/java/technologies/downloads/#java21)
--   [MySQL 8.0](https://dev.mysql.com/downloads/mysql) or higher
--   [Apache Maven](https://maven.apache.org/)
--   [Node.js and NPM](https://nodejs.org/pt/download/package-manager)
-
-#### Command-line setup
-
-<details> 
-<summary><strong>1. Set up MySQL Databases</strong></summary>
-<br>
-  Ensure that MySQL is installed and running on your machine. The default port for MySQL is <code>3306</code>. If MySQL is not installed, you can download it from the official MySQL website:
-
--   [Download MySQL](https://dev.mysql.com/downloads/mysql/)
-
-**Creating the Databases**
-
-Once MySQL is installed and running, follow the steps below to create the necessary databases for the project.
-
-1. Open a terminal or command prompt.
-2. Log in to MySQL using the following command:
-
-    ```
-      mysql -u root -p
-    ```
-
-3. Create the required databases by running the following SQL commands:
-
-    ```
-    CREATE DATABASE microstamp;
-    CREATE DATABASE step1;
-    CREATE DATABASE step2;
-    CREATE DATABASE step3;
-    CREATE DATABASE step4;
-    CREATE DATABASE step4new;
-    ```
-
-That's it! Your MySQL databases are now set up and ready to use.
-
-</details>
-
-<details>
-<summary><strong>2. Run the Microservices</strong></summary>
-
-##### 1. Run the **microstamp-service-registry** microservice
-
-We recommend running this microservice before all others, to ensures that each microservice can register itself properly, making communication between them more reliable.
-
-To run this microservice, open a terminal or command prompt, navigate to its directory, and execute the following command:
-
-```
-mvn spring-boot:run
-```
-
-<p></p><br>
-
-Alternatively, you can also run the microservices directly within an IDE. We use IntelliJ IDEA Ultimate Edition, but feel free to use any IDE of your choice that supports Spring Boot.
-
-##### 2. Run the Remaining Microservices
-
-Follow the same steps to run the remaining microservices. For each one, navigate to its respective directory and execute <code>mvn spring-boot:run</code> or use your IDE.
-
-##### 3. Run the User Interface microstamp-ui
-
-With the microservices running, open a new terminal window to execute the microstamp-ui. Navigate to its directory and run:
-
-```
-npm i
-npm run dev
-```
-
--   `npm i` is needed only when first running the UI.
--   The user interface will open at the URL `http://127.0.0.1:3000`.
--   You can now access the MicroSTAMP frontend!
-
-</details>
-</details>
+Once the repository is cloned, follow the Docker setup instructions below.
 
 <p></p>
 
 <details>
-<summary><strong>Option 2: Run MicroSTAMP with Docker (Containerized Setup)</strong></summary>
+<summary><strong>Run MicroSTAMP with Docker</strong></summary>
 This option runs MicroSTAMP using Docker, which simplifies the setup process by containerizing all services.
 
 #### Set up Docker
@@ -249,9 +168,16 @@ This command will build and start all the microservices, the MySQL databases, an
 -   The microservices will be running on their respective ports as defined in the [Architecture Overview](#architecture-overview).
     <br>
 
+> Note for Development:
+> If you prefer to run MicroSTAMP locally for development purposes, you can set up the environment using Maven and MySQL. The project > requires JDK 21, MySQL 8.0+, Apache Maven, and Node.js. For detailed local setup instructions or if you encounter any issues running the application, please contact our development team.
+
 </details>
 
-Once MicroSTAMP is running (via either Option 1 or Option 2), you can explore the application using a pre-configured guest account.
+<p></p>
+
+Once MicroSTAMP is running, you can explore the application using a pre-configured guest account.
+
+<p></p>
 
 <details>
 <summary><strong>Exploring MicroSTAMP with the Guest User</strong></summary>
@@ -287,7 +213,7 @@ You can also contact us directly via email — contributions of any kind are app
 
 ## Developers Team
 
-<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
     <a href="https://github.com/JoaoHugo" target="_blank">
         <img src="https://img.shields.io/badge/João Hugo-f8efd4?style=for-the-badge&logo=Github&logoColor=f8efd4&labelColor=555555" alt="João Hugo">
     </a>
@@ -345,6 +271,11 @@ In _International Conference on Information Technology-New Generations_, pp. 469
      <img src="assets/images/mit_presentation_2024.png" width=420  alt="MIT Presentation 2024">
  </a>
 
+ <br>
+
+Watch our presentation at MIT STAMP Workshop 2024:
+<a href="https://youtu.be/G0o1CJsMk-U?si=U1P8XGSKYSLd5Uc7" target="_blank"><strong>Presentation Link</strong></a>
+
  <p></p><br>
 
 3. "**MicroSTAMP: A Free and Open-Source Compliant Tool for STPA Using Microservices Architecture**", STAMP Workshop, MIT Partnership for Systems Approaches to Safety and Security (PSASS), September, 2025.
@@ -352,6 +283,32 @@ In _International Conference on Information Technology-New Generations_, pp. 469
  <a href="https://psas.scripts.mit.edu/home/2025-stamp-workshop-program/">
      <img src="assets/images/mit_presentation_2025.png" width=420  alt="MIT Presentation 2025">
  </a>
+
+[⬆️ Back to Top](#table-of-contents)
+
+## Supporters
+
+We gratefully acknowledge the support of these organizations that have contributed to the development of MicroSTAMP:
+
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+    <a href="https://www.unifal-mg.edu.br/" target="_blank">
+       <img src="https://img.shields.io/badge/UNIFAL_MG-00629B?style=for-the-badge&logo=university&logoColor=white" alt="UNIFAL MG">
+    </a>
+    <a href="https://www.unifal-mg.edu.br/nti/" target="_blank">
+        <img src="https://img.shields.io/badge/NTI_UNIFAL-008037?style=for-the-badge&logo=computer&logoColor=white" alt="NTI UNIFAL">
+    </a>
+</div>
+
+## Partnership Opportunities
+
+We are actively **seeking partnerships** with companies and organizations interested in supporting open-source safety tools. If your organization would like to:
+
+-   Provide financial support for ongoing development
+-   Contribute technical expertise to the project
+-   Collaborate on research using MicroSTAMP
+-   Sponsor new features or improvements
+
+Please reach out to us! We're open to various forms of collaboration that can help advance the state of **MicroSTAMP**.
 
 [⬆️ Back to Top](#table-of-contents)
 
