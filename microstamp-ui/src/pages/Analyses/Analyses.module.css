@@ -1,13 +1,10 @@
 .analyses_container {
-	display: flex;
-	padding: 1.2rem 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
 	gap: 2.4rem;
+	padding: 1.2rem 0;
 
-	flex-wrap: wrap;
-}
-
-@media (max-width: 743px) {
-	.projects_container {
-		justify-content: center;
+	@media (max-width: 600px) {
+		grid-template-columns: 1fr;
 	}
 }

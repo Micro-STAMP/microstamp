@@ -57,7 +57,7 @@ function Analyses() {
 			>
 				{analyses && analyses.length > 0 ? (
 					<div className={styles.analyses_container}>
-						{analyses!.map(analysis => (
+						{analyses.map(analysis => (
 							<AnalysisCard key={analysis.id} analysis={analysis} />
 						))}
 					</div>
