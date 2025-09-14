@@ -1,11 +1,7 @@
 import Container from "@components/Container";
-import { ModalClassImages } from "@components/Modal";
+import { ModalFormalClassImages } from "@components/Modal";
 import { IUnsafeControlActionReadDto } from "@interfaces/IStep3";
-import {
-	getFormalClassKey,
-	getFormalClassTitle,
-	IFormalScenariosClass
-} from "@interfaces/IStep4New/Enums";
+import { getFormalClassTitle, IFormalScenariosClass } from "@interfaces/IStep4New/Enums";
 import { IFormalScenarioClassDto } from "@interfaces/IStep4New/IFormalScenarios";
 import { IHighLevelSolutionsReadDto } from "@interfaces/IStep4New/IHighLevelSolutions";
 import { IRefinedScenarioReadDto } from "@interfaces/IStep4New/IRefinedScenarios";
@@ -88,10 +84,10 @@ function ClassContainer({
 						/>
 					)}
 			</Container>
-			<ModalClassImages
+			<ModalFormalClassImages
 				open={modalClassImageOpen}
 				onClose={toggleModalClassImage}
-				formalClass={getFormalClassKey(formalClass)}
+				formalClass={formalClass}
 			/>
 		</>
 	);

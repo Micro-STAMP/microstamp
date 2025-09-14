@@ -1,33 +1,48 @@
 import Button from "@components/Button";
 import { ModalButtons, ModalContainer, ModalHeader, ModalProps } from "@components/Modal/Templates";
-import { useMemo, useState } from "react";
+import {
+	getFormalClassKey,
+	getFormalClassTitle,
+	IFormalScenariosClass
+} from "@interfaces/IStep4New/Enums";
+import { useEffect, useMemo, useState } from "react";
 import { BiChevronLeft, BiChevronRight, BiX as CloseIcon } from "react-icons/bi";
-import styles from "./ModalClassImages.module.css";
+import styles from "./ModalFormalClassImages.module.css";
 
-interface ModalClassImagesProps extends ModalProps {
-	formalClass: "class1" | "class2" | "class3" | "class4";
+const classOrder = [
+	IFormalScenariosClass.CLASS_1,
+	IFormalScenariosClass.CLASS_2,
+	IFormalScenariosClass.CLASS_3,
+	IFormalScenariosClass.CLASS_4
+] as const;
+
+interface ModalFormalClassImagesProps extends ModalProps {
+	formalClass: IFormalScenariosClass;
 }
-const classOrder = ["class1", "class2", "class3", "class4"] as const;
-function ModalClassImages({ open, onClose, formalClass }: ModalClassImagesProps) {
+function ModalFormalClassImages({ open, onClose, formalClass }: ModalFormalClassImagesProps) {
+	const [currentClass, setCurrentClass] = useState<IFormalScenariosClass>(formalClass);
 	const initialIndex = useMemo(() => classOrder.indexOf(formalClass), [formalClass]);
 	const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
-	useMemo(() => setCurrentIndex(initialIndex), [open, initialIndex]);
+	useMemo(() => setCurrentIndex(initialIndex), [open, initialIndex, formalClass]);
+	useEffect(() => {
+		setCurrentClass(formalClass);
+	}, [formalClass]);
 
 	const handlePrev = () => {
 		setCurrentIndex(prev => (prev === 0 ? classOrder.length - 1 : prev - 1));
+		setCurrentClass(classOrder[currentIndex === 0 ? classOrder.length - 1 : currentIndex - 1]);
 	};
 	const handleNext = () => {
 		setCurrentIndex(prev => (prev === classOrder.length - 1 ? 0 : prev + 1));
+		setCurrentClass(classOrder[currentIndex === classOrder.length - 1 ? 0 : currentIndex + 1]);
 	};
 
-	const currentClass = classOrder[currentIndex];
-	const imageSrc = `/assets/step4/classes/${currentClass}.png`;
-	const imageAlt = `Image of ${currentClass}`;
-
+	const imageSrc = `/assets/step4/classes/${getFormalClassKey(currentClass)}.png`;
+	const imageAlt = `Image of ${getFormalClassTitle(currentClass)}`;
 	return (
 		<ModalContainer open={open} size="normal">
-			<ModalHeader title="Classes of Formal Scenarios" onClose={onClose} />
+			<ModalHeader title={getFormalClassTitle(currentClass)} onClose={onClose} />
 			<div className={styles.slider_container}>
 				<button
 					className={styles.nav_button}
@@ -73,4 +88,4 @@ function ModalClassImages({ open, onClose, formalClass }: ModalClassImagesProps)
 	);
 }
 
-export default ModalClassImages;
+export default ModalFormalClassImages;
