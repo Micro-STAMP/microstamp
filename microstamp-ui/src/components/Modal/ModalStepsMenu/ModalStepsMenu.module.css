@@ -1,0 +1,47 @@
+.steps_menu {
+	display: flex;
+	flex-direction: column;
+
+	.step_button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		gap: 0.8rem;
+		width: 100%;
+		padding: 1.8rem 0.4rem;
+
+		background: none;
+		color: var(--color-yellow);
+		font-size: 1.4rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		text-align: center;
+
+		border-top: 2px solid var(--color-gray);
+
+		&:last-child {
+			border-bottom: 2px solid var(--color-gray);
+		}
+		&:hover {
+			border-color: var(--color-yellow);
+			background-color: var(--color-dark-gray);
+			color: var(--color-yellow);
+
+			& + .step_button {
+				border-top-color: var(--color-yellow);
+			}
+		}
+
+		.step_icon {
+			display: flex;
+			align-items: center;
+			font-size: 1.8rem;
+			color: var(--color-yellow);
+		}
+		.step_label {
+			color: var(--color-light-gray);
+		}
+	}
+}

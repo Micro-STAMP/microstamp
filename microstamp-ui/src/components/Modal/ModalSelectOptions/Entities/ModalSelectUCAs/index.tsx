@@ -32,7 +32,7 @@ function ModalSelectUCAs({
 	const { data: ucasList, isLoading } = useQuery({
 		queryKey: ["ucas-select", analysisId],
 		queryFn: () => getUnsafeControlActionsByAnalysis(analysisId),
-		enabled: !options || options.length === 0
+		enabled: (!options || options.length === 0) && open
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */

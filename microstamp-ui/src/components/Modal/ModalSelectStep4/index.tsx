@@ -11,8 +11,15 @@ import styles from "./ModalSelectStep4.module.css";
 interface ModalSelectStep4Props extends ModalProps {
 	analysisId: string;
 	isUpdate?: boolean;
+	onSelect?: () => void;
 }
-function ModalSelectStep4({ open, onClose, analysisId, isUpdate = false }: ModalSelectStep4Props) {
+function ModalSelectStep4({
+	open,
+	onClose,
+	onSelect,
+	analysisId,
+	isUpdate = false
+}: ModalSelectStep4Props) {
 	const navigate = useNavigate();
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
@@ -36,12 +43,15 @@ function ModalSelectStep4({ open, onClose, analysisId, isUpdate = false }: Modal
 				replace: true
 			});
 			onClose();
+			if (onSelect) onSelect();
 		} else if (selectedApproach === "handbook") {
-			navigate("loss-scenarios");
+			navigate(`/analyses/${analysisId}/loss-scenarios`);
 			onClose();
+			if (onSelect) onSelect();
 		} else if (selectedApproach === "formal" && selectedUCA) {
-			navigate(`formal-scenarios?uca=${selectedUCA.value}`);
+			navigate(`/analyses/${analysisId}/formal-scenarios?uca=${selectedUCA.value}`);
 			onClose();
+			if (onSelect) onSelect();
 		}
 	};
 

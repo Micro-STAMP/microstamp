@@ -5,6 +5,7 @@ import ModalLoading from "./ModalLoading";
 import ModalPDFPreview from "./ModalPDFPreview";
 import ModalSelectStep3 from "./ModalSelectStep3";
 import ModalSelectStep4 from "./ModalSelectStep4";
+import ModalStepsMenu from "./ModalStepsMenu";
 import ModalUpdateCode from "./ModalUpdateCode";
 
 export {
@@ -15,5 +16,6 @@ export {
 	ModalPDFPreview,
 	ModalSelectStep3,
 	ModalSelectStep4,
+	ModalStepsMenu,
 	ModalUpdateCode
 };
