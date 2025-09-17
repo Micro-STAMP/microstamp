@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import { SelectSearch } from "@components/FormField";
 import { SelectOption } from "@components/FormField/Templates";
+import Loader from "@components/Loader";
 import {
 	ModalSelectComponent,
 	ModalSelectControlAction
@@ -25,8 +26,15 @@ import styles from "./ModalSelectStep3.module.css";
 interface ModalSelectStep3Props extends ModalProps {
 	analysisId: string;
 	isUpdate?: boolean;
+	onSelect?: () => void;
 }
-function ModalSelectStep3({ open, onClose, analysisId, isUpdate = false }: ModalSelectStep3Props) {
+function ModalSelectStep3({
+	open,
+	onClose,
+	onSelect,
+	analysisId,
+	isUpdate = false
+}: ModalSelectStep3Props) {
 	const navigate = useNavigate();
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
@@ -36,7 +44,8 @@ function ModalSelectStep3({ open, onClose, analysisId, isUpdate = false }: Modal
 	const [componentsOptions, setComponentsOptions] = useState<SelectOption[]>([]);
 	const { data: components, isLoading: isLoadingComponents } = useQuery({
 		queryKey: ["components-select-options", analysisId],
-		queryFn: () => getComponents(analysisId)
+		queryFn: () => getComponents(analysisId),
+		enabled: open
 	});
 	useEffect(() => {
 		if (components) {
@@ -63,7 +72,8 @@ function ModalSelectStep3({ open, onClose, analysisId, isUpdate = false }: Modal
 	const [controlActionsOptions, setControlActionsOptions] = useState<SelectOption[]>([]);
 	const { data: controlActions, isLoading: isLoadingControlActions } = useQuery({
 		queryKey: ["control-actions-select-options", analysisId],
-		queryFn: () => getControlActions(analysisId)
+		queryFn: () => getControlActions(analysisId),
+		enabled: open
 	});
 
 	useEffect(() => {
@@ -99,6 +109,7 @@ function ModalSelectStep3({ open, onClose, analysisId, isUpdate = false }: Modal
 				{ replace: isUpdate }
 			);
 			onClose();
+			onSelect && onSelect();
 		}
 	};
 
@@ -148,34 +159,38 @@ function ModalSelectStep3({ open, onClose, analysisId, isUpdate = false }: Modal
 								? "Select the new Control Action to analyze:"
 								: "Select the Control Action you want to analyze:"}
 						</span>
-						<ModalInputs column="single">
-							<SelectSearch
-								label="Source Component"
-								value={selectedComponent}
-								onSearch={toggleModalSelectComponents}
-								disabled={componentsOptions.length === 0 || isLoadingComponents}
-							/>
-							{componentsOptions.length === 0 && !isLoadingComponents && (
-								<div className={styles.warning_message}>
-									No components available.
-								</div>
-							)}
-							<SelectSearch
-								label="Control Action"
-								value={selectedCA}
-								onSearch={toggleModalSelectCA}
-								disabled={
-									!selectedComponent ||
-									controlActionsOptions.length === 0 ||
-									isLoadingControlActions
-								}
-							/>
-							{controlActionsOptions.length === 0 && selectedComponent && (
-								<div className={styles.warning_message}>
-									No control actions available for the selected component.
-								</div>
-							)}
-						</ModalInputs>
+						{isLoadingComponents || isLoadingControlActions ? (
+							<Loader />
+						) : (
+							<ModalInputs column="single">
+								<SelectSearch
+									label="Source Component"
+									value={selectedComponent}
+									onSearch={toggleModalSelectComponents}
+									disabled={componentsOptions.length === 0 || isLoadingComponents}
+								/>
+								{componentsOptions.length === 0 && !isLoadingComponents && (
+									<div className={styles.warning_message}>
+										No components available.
+									</div>
+								)}
+								<SelectSearch
+									label="Control Action"
+									value={selectedCA}
+									onSearch={toggleModalSelectCA}
+									disabled={
+										!selectedComponent ||
+										controlActionsOptions.length === 0 ||
+										isLoadingControlActions
+									}
+								/>
+								{controlActionsOptions.length === 0 && selectedComponent && (
+									<div className={styles.warning_message}>
+										No control actions available for the selected component.
+									</div>
+								)}
+							</ModalInputs>
+						)}
 					</div>
 				</div>
 				<ModalButtons>

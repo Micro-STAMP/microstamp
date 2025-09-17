@@ -8,13 +8,13 @@ enum IFormalScenariosClass {
 const getFormalClassTitle = (classEnum: IFormalScenariosClass) => {
 	switch (classEnum) {
 		case IFormalScenariosClass.CLASS_1:
-			return "Class 1";
+			return "Class 1 - Unsafe Controller Behavior";
 		case IFormalScenariosClass.CLASS_2:
-			return "Class 2";
+			return "Class 2 - Unsafe Feedback Path";
 		case IFormalScenariosClass.CLASS_3:
-			return "Class 3";
+			return "Class 3 - Unsafe Control Path";
 		case IFormalScenariosClass.CLASS_4:
-			return "Class 4";
+			return "Class 4 - Unsafe Controlled Process Behavior";
 	}
 };
 const getFormalClassKey = (classEnum: IFormalScenariosClass) => {

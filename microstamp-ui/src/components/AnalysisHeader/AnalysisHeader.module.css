@@ -42,25 +42,54 @@
 			}
 		}
 
-		.back_button {
+		.buttons {
 			display: flex;
 			align-items: center;
+			flex-wrap: wrap;
 			gap: 0.6rem;
-			background-color: var(--color-dark-gray);
-			color: var(--color-white);
-			border-radius: var(--radius3);
-			font-weight: 500;
-			padding: 0.6rem 1.2rem 0.6rem 0.8rem;
-			font-size: 1.4rem;
-			flex-shrink: 0;
-			transition: all 0.2s;
 
-			svg {
+			.back_button {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				background-color: var(--color-dark-gray);
+				color: var(--color-white);
+				border-radius: var(--radius3);
+				font-weight: 500;
+				padding: 0.6rem 1.2rem 0.6rem 0.8rem;
 				font-size: 1.4rem;
+				flex-shrink: 0;
+				transition: all 0.2s;
+
+				svg {
+					font-size: 1.4rem;
+				}
+
+				&:hover {
+					color: var(--color-yellow);
+				}
 			}
 
-			&:hover {
-				color: var(--color-yellow);
+			.step_button {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				background-color: var(--color-dark-gray);
+				color: var(--color-white);
+				border-radius: var(--radius3);
+				font-weight: 500;
+				padding: 0.6rem 1.2rem 0.6rem 0.8rem;
+				font-size: 1.4rem;
+				flex-shrink: 0;
+				transition: all 0.2s;
+
+				svg {
+					font-size: 1.4rem;
+				}
+
+				&:hover {
+					color: var(--color-yellow);
+				}
 			}
 		}
 	}

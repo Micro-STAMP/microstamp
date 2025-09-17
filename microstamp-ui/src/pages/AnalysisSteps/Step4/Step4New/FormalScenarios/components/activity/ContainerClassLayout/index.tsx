@@ -1,4 +1,5 @@
-import { ModalClassImages } from "@components/Modal";
+import { ModalFormalClassImages } from "@components/Modal";
+import { getFormalClassTitle, IFormalScenariosClass } from "@interfaces/IStep4New/Enums";
 import { ClassSection } from "@pages/AnalysisSteps/Step4/Step4New/FormalScenarios/components/activity";
 import { useState } from "react";
 import styles from "./ContainerClassLayout.module.css";
@@ -21,10 +22,10 @@ function ContainerClassLayout({
 	const [modalClassImageOpen, setModalClassImageOpen] = useState(false);
 	const toggleModalClassImage = () => setModalClassImageOpen(!modalClassImageOpen);
 
-	const [formalClass, setFormalClass] = useState<"class1" | "class2" | "class3" | "class4">(
-		"class1"
+	const [formalClass, setFormalClass] = useState<IFormalScenariosClass>(
+		IFormalScenariosClass.CLASS_1
 	);
-	const handleViewClassImage = (className: typeof formalClass) => {
+	const handleViewClassImage = (className: IFormalScenariosClass) => {
 		setFormalClass(className);
 		toggleModalClassImage();
 	};
@@ -35,31 +36,31 @@ function ContainerClassLayout({
 		<>
 			<div className={styles.class_layout}>
 				<ClassSection
-					onViewClassImage={() => handleViewClassImage("class1")}
-					title="Class 1"
+					onViewClassImage={() => handleViewClassImage(IFormalScenariosClass.CLASS_1)}
+					title={getFormalClassTitle(IFormalScenariosClass.CLASS_1)}
 				>
 					{class1Content}
 				</ClassSection>
 				<ClassSection
-					onViewClassImage={() => handleViewClassImage("class2")}
-					title="Class 2"
+					onViewClassImage={() => handleViewClassImage(IFormalScenariosClass.CLASS_2)}
+					title={getFormalClassTitle(IFormalScenariosClass.CLASS_2)}
 				>
 					{class2Content}
 				</ClassSection>
 				<ClassSection
-					onViewClassImage={() => handleViewClassImage("class3")}
-					title="Class 3"
+					onViewClassImage={() => handleViewClassImage(IFormalScenariosClass.CLASS_3)}
+					title={getFormalClassTitle(IFormalScenariosClass.CLASS_3)}
 				>
 					{class3Content}
 				</ClassSection>
 				<ClassSection
-					onViewClassImage={() => handleViewClassImage("class4")}
-					title="Class 4"
+					onViewClassImage={() => handleViewClassImage(IFormalScenariosClass.CLASS_4)}
+					title={getFormalClassTitle(IFormalScenariosClass.CLASS_4)}
 				>
 					{class4Content}
 				</ClassSection>
 			</div>
-			<ModalClassImages
+			<ModalFormalClassImages
 				open={modalClassImageOpen}
 				onClose={toggleModalClassImage}
 				formalClass={formalClass}
