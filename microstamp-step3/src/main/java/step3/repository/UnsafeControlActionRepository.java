@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import step3.entity.UnsafeControlAction;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UnsafeControlActionRepository extends JpaRepository<UnsafeControlAction, UUID> {
@@ -11,4 +12,6 @@ public interface UnsafeControlActionRepository extends JpaRepository<UnsafeContr
     List<UnsafeControlAction> findByRuleCodeAndAnalysisId(String code, UUID analysisId);
     List<UnsafeControlAction> findByAnalysisId(UUID id);
     void deleteByControlActionId(UUID id);
+    long countByAnalysisId(UUID analysisId);
+    Optional<UnsafeControlAction> findByUcaCode(String ucaCode);
 }

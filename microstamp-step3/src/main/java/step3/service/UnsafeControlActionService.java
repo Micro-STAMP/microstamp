@@ -44,6 +44,7 @@ public class UnsafeControlActionService {
         authServerProxy.getAnalysisById(ucaCreateDto.analysis_id());
         step1Proxy.getHazardById(ucaCreateDto.hazard_id());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.control_action_id());
+        long newUcaCode = unsafeControlActionRepository.countByAnalysisId(ucaCreateDto.analysis_id()) + 1;
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())
@@ -51,12 +52,12 @@ public class UnsafeControlActionService {
                 .type(ucaCreateDto.type())
                 .analysisId(ucaCreateDto.analysis_id())
                 .ruleCode(ucaCreateDto.rule_code() == null ? "" : ucaCreateDto.rule_code())
-                .ucaCode("UCA-" + (unsafeControlActionRepository.count()+1))
+                .ucaCode("UCA-" + newUcaCode)
                 .build();
 
         SafetyConstraint constraint = SafetyConstraint.builder()
                 .unsafeControlAction(uca)
-                .safetyConstraintCode("SC-" + (unsafeControlActionRepository.count() + 1))
+                .safetyConstraintCode("SC-" + newUcaCode)
                 .build();
 
         uca.setConstraint(constraint);
@@ -168,6 +169,10 @@ public class UnsafeControlActionService {
 
         if (StringUtils.isBlank(newCode)) {
             throw new IllegalArgumentException("New code cannot be blank");
+        }
+
+        if (unsafeControlActionRepository.findByUcaCode(newCode).isPresent()) {
+            throw new OperationNotAllowedException("UCA code " + newCode + " is already in use in this analysis");
         }
 
         uca.setUcaCode(newCode);
