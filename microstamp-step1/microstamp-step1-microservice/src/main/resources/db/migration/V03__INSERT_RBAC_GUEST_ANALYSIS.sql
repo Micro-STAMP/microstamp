@@ -8,11 +8,13 @@ INSERT INTO step1.system_goals (id,analysis_id,code,name) VALUES
 	 ('ca57d668-2402-49d4-bde1-968caee4d085','3560faf9-eed1-4708-a22d-d50eebfe6b26','SG-2','Enforce Authorization');
 
 INSERT INTO step1.system_safety_constraints (id,analysis_id,code,name) VALUES
-	 ('0136fdae-7aa7-432e-a6f3-0fb158da4c9c','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-5','The repository must have protection'),
-	 ('26f40caa-e8f2-4259-9a70-724829fa6f58','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-6','Users must lose access after permissions are revoked'),
-	 ('e3ca6ccc-1f22-4258-b0f1-d593fc147595','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-7','Only authenticated users are able to access the system'),
-	 ('f4c33b63-74d6-4541-85c8-abb9e750d849','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-2','Password security policy must be in place'),
-	 ('fda3d662-56c6-4486-b003-f2711a6fddf7','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-3','The Authenticator must associate a role with an authenticated user');
+    ('0136fdae-7aa7-432e-a6f3-0fb158da4c9c','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-5','The repository must have protection'),
+    ('26f40caa-e8f2-4259-9a70-724829fa6f58','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-1','The system must not be overloaded'),
+    ('3d4af182-3e57-4774-8ccc-24ad9ab3cb02','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-4','Credentials must be validated before authorization'),
+    ('4c7cc801-3cfa-4853-aabb-77c6c9482b6d','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-6','Users must lose access after permissions are revoked'),
+    ('e3ca6ccc-1f22-4258-b0f1-d593fc147595','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-7','Only authenticated users are able to access the system'),
+    ('f4c33b63-74d6-4541-85c8-abb9e750d849','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-2','Password security policy must be in place'),
+    ('fda3d662-56c6-4486-b003-f2711a6fddf7','3560faf9-eed1-4708-a22d-d50eebfe6b26','SSC-3','The Authenticator must associate a role with an authenticated user');
 
 INSERT INTO step1.assumptions (id,analysis_id,code,name) VALUES
 	 ('1baf483d-1418-42ef-8c05-e40ce96022fa','3560faf9-eed1-4708-a22d-d50eebfe6b26','AS-6','Scalability and Performance'),
