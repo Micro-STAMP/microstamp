@@ -91,7 +91,7 @@ function ModalRefinedSolutions({
 						label={refinedSolution ? "Refined Scenario" : "Select Refined Scenario"}
 					/>
 					<Textarea
-						label="Mitigation"
+						label="Refined Solution"
 						value={refinedSolutionData.mitigation}
 						onChange={(value: string) =>
 							setRefinedSolutionData({

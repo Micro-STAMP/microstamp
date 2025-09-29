@@ -93,18 +93,12 @@ function RefinedSolutionContent({
 						<span className={styles.title}>Refined Solutions:</span>
 						<div className={styles.refined_solutions_list}>
 							<ListWrapper>
-								{refinedSolutionsByClass.map((solution, index) => (
+								{refinedSolutionsByClass.map(solution => (
 									<Solution.Root key={solution.id}>
 										<Solution.Name
-											code={"RSO-" + (index + 1)}
+											code={solution.code}
 											name={solution.mitigation}
-											dependencies={[
-												"RSC-" +
-													(refinedScenariosByClass
-														.map(s => s.id)
-														.indexOf(solution.refinedScenarioId) +
-														1)
-											]}
+											dependencies={[solution.refinedScenarioCode]}
 										/>
 										<Solution.Actions>
 											<DualButton
