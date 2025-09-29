@@ -17,18 +17,21 @@ import microstamp.authorization.client.MicroStampStep1Client;
 import microstamp.authorization.client.MicroStampStep2Client;
 import microstamp.authorization.client.MicroStampStep3Client;
 import microstamp.authorization.client.MicroStampStep4Client;
+import microstamp.authorization.client.MicroStampStep4NewClient;
 import microstamp.authorization.dto.AnalysisReadDto;
 import microstamp.authorization.dto.ExportReadDto;
 import microstamp.authorization.dto.step1.*;
 import microstamp.authorization.dto.step2.Step2ExportReadDto;
 import microstamp.authorization.dto.step3.Step3ExportReadDto;
 import microstamp.authorization.dto.step4.Step4ExportReadDto;
+import microstamp.authorization.dto.step4new.Step4NewExportReadDto;
 import microstamp.authorization.service.AnalysisService;
 import microstamp.authorization.service.ExportService;
 import microstamp.authorization.util.pdf.Step1PdfHelper;
 import microstamp.authorization.util.pdf.Step2PdfHelper;
 import microstamp.authorization.util.pdf.Step3PdfHelper;
 import microstamp.authorization.util.pdf.Step4PdfHelper;
+import microstamp.authorization.util.pdf.Step4NewPdfHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -50,6 +53,8 @@ public class ExportServiceImpl implements ExportService {
     private final MicroStampStep3Client step3Client;
 
     private final MicroStampStep4Client step4Client;
+
+    private final MicroStampStep4NewClient step4NewClient;
 
     public ExportReadDto exportToJson(UUID analysisId, String guestJwt) {
         log.info("Exporting (JSON) content of an analysis by its UUID: {}", analysisId);
@@ -85,6 +90,7 @@ public class ExportServiceImpl implements ExportService {
                 .step2(step2Client.exportStep2ByAnalysisId(analysisId))
                 .step3(step3Client.exportStep3ByAnalysisId(analysisId))
                 .step4(step4Client.exportStep4ByAnalysisId(analysisId))
+                .step4new(step4NewClient.exportStep4NewByAnalysisId(analysisId))
                 .build();
     }
 
@@ -95,6 +101,7 @@ public class ExportServiceImpl implements ExportService {
                 .step2(step2Client.exportStep2ByAnalysisId(guestJwt, analysisId))
                 .step3(step3Client.exportStep3ByAnalysisId(guestJwt, analysisId))
                 .step4(step4Client.exportStep4ByAnalysisId(guestJwt, analysisId))
+                .step4new(step4NewClient.exportStep4NewByAnalysisId(guestJwt, analysisId))
                 .build();
     }
 
@@ -105,6 +112,7 @@ public class ExportServiceImpl implements ExportService {
         setStep2Section(document, exportReadDto.getStep2());
         setStep3Section(document, exportReadDto.getStep3());
         setStep4Section(document, exportReadDto.getStep4());
+        setStep4NewSection(document, exportReadDto.getStep4new());
     }
 
     private void setTitle(Document document, AnalysisReadDto analysis) throws IOException {
@@ -122,7 +130,6 @@ public class ExportServiceImpl implements ExportService {
     private void setAnalysisSection(Document document, AnalysisReadDto analysis) {
         com.itextpdf.layout.element.List analysisDetails = new com.itextpdf.layout.element.List();
 
-        analysisDetails.add("ID: " + analysis.getId());
         analysisDetails.add("Name: " + analysis.getName());
         analysisDetails.add("Description: " + analysis.getDescription());
 
@@ -166,10 +173,16 @@ public class ExportServiceImpl implements ExportService {
     }
 
     private void setStep4Section(Document document, Step4ExportReadDto step4Dto) throws IOException {
-        setSectionTitle(document, "4 - Identify Loss Scenarios");
+        setSectionTitle(document, "4 - Identify Loss Scenarios (Handbook approach)");
 
         Step4PdfHelper.setFourTuplesSection(document, step4Dto.getFourTuples());
         Step4PdfHelper.setUnsafeControlActionsSection(document, step4Dto.getUnsafeControlActions());
+    }
+
+    private void setStep4NewSection(Document document, Step4NewExportReadDto step4NewDto) throws IOException {
+        setSectionTitle(document, "4 - Identify Loss Scenarios (Formal approach)");
+
+        Step4NewPdfHelper.setStep4NewContent(document, step4NewDto, step3Client);
     }
 
     private void setSectionTitle(Document document, String title) throws IOException {
