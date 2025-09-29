@@ -13,6 +13,8 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import microstamp.step4.client.MicroStampAuthClient;
+import microstamp.auth.dto.analysis.AnalysisReadDto;
 import microstamp.step4.dto.export.ExportReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleReadDto;
@@ -32,6 +34,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ExportServiceImpl implements ExportService {
 
+    private final MicroStampAuthClient microStampAuthClient;
+    
     private final FourTupleService fourTupleService;
 
     private static final float[] FOUR_TUPLE_COLUMN_WIDTHS = new float[]{8f, 71f, 21f};
@@ -84,8 +88,19 @@ public class ExportServiceImpl implements ExportService {
     }
 
     private void setAnalysisSection(Document document, UUID analysisId) {
+        AnalysisReadDto analysis = microStampAuthClient.getAnalysisById(analysisId);
+        
+        com.itextpdf.layout.element.List analysisDetails = new com.itextpdf.layout.element.List();
+        
+        analysisDetails.add("Name: " + analysis.getName());
+        analysisDetails.add("Description: " + analysis.getDescription());
+        
         document.add(new Paragraph("\n"));
-        document.add(new Paragraph("Analysis id: " + analysisId.toString()));
+        document.add(new Paragraph("Analysis")
+                .setBold()
+                .setUnderline());
+        document.add(analysisDetails);
+        document.add(new Paragraph("\n"));
     }
 
     private void setFourTuplesSection(Document document, List<FourTupleFullReadDto> fourTuples) {

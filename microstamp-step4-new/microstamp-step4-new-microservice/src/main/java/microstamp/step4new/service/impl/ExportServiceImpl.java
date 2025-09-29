@@ -14,7 +14,9 @@ import com.itextpdf.layout.properties.TextAlignment;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.step3.dto.UnsafeControlActionFullReadDto;
+import microstamp.step4new.client.MicroStampAuthClient;
 import microstamp.step4new.client.MicroStampStep3Client;
+import microstamp.step4new.dto.analysis.AnalysisReadDto;
 import microstamp.step4new.dto.export.ExportReadDto;
 import microstamp.step4new.dto.formalscenario.FormalScenarioReadDto;
 import microstamp.step4new.dto.formalscenarioclass.FormalScenarioClassReadDto;
@@ -41,6 +43,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ExportServiceImpl implements ExportService {
 
+    private final MicroStampAuthClient authClient;
     private final MicroStampStep3Client step3Client;
     private final FormalScenarioService formalScenarioService;
     private final HighLevelSolutionService highLevelSolutionService;
@@ -144,8 +147,19 @@ public class ExportServiceImpl implements ExportService {
     }
 
     private void setAnalysisSection(Document document, UUID analysisId) {
+        AnalysisReadDto analysis = authClient.getAnalysisById(analysisId);
+        
+        com.itextpdf.layout.element.List analysisDetails = new com.itextpdf.layout.element.List();
+        
+        analysisDetails.add("Name: " + analysis.getName());
+        analysisDetails.add("Description: " + analysis.getDescription());
+        
         document.add(new Paragraph("\n"));
-        document.add(new Paragraph("Analysis id: " + analysisId.toString()));
+        document.add(new Paragraph("Analysis")
+                .setBold()
+                .setUnderline());
+        document.add(analysisDetails);
+        document.add(new Paragraph("\n"));
     }
 
     private void setUcaSection(Document document, UnsafeControlActionFullReadDto uca) {
