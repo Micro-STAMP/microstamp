@@ -21,6 +21,8 @@ public class MitigationReadDto implements Serializable {
 	private UUID refinedScenarioId;
 
 	private String mitigation;
+
+	private String code;
 }
 
 

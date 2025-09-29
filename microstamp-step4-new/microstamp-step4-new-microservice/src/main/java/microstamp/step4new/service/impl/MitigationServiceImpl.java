@@ -56,7 +56,14 @@ public class MitigationServiceImpl implements MitigationService {
 				.orElseThrow(() -> new Step4NewNotFoundException("RefinedScenario", dto.getRefinedScenarioId().toString()));
 		mitigationRepository.findByRefinedScenarioId(dto.getRefinedScenarioId())
 				.ifPresent(existing -> { throw new microstamp.step4new.exception.Step4NewIllegalArgumentException("Mitigation already exists for RefinedScenario: " + dto.getRefinedScenarioId()); });
+
+		UUID analysisId = refinedScenario.getFormalScenarioClass().getFormalScenario().getAnalysisId();
+		Integer maxCodeNumber = mitigationRepository.findMaxCodeNumberByAnalysisId(analysisId);
+		int nextCodeNumber = (maxCodeNumber != null ? maxCodeNumber : 0) + 1;
+		String code = "RSOL-" + nextCodeNumber;
+		
 		Mitigation entity = MitigationMapper.toEntity(dto, refinedScenario);
+		entity.setCode(code);
 		Mitigation saved = mitigationRepository.save(entity);
 		return MitigationMapper.toDto(saved);
 	}
