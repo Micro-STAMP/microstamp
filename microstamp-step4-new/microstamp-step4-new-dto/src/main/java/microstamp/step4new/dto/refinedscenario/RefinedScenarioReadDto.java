@@ -17,4 +17,5 @@ public class RefinedScenarioReadDto implements Serializable {
 	private String refinedScenario;
 	private UUID formalScenarioClassId;
 	private UUID unsafeControlActionId;
+	private String code;
 }

@@ -28,6 +28,9 @@ public class Mitigation {
 
 	@Column(name = "mitigation", length = 5000)
 	private String mitigation;
+
+	@Column(name = "code", nullable = false, length = 20)
+	private String code;
 }
 
 
