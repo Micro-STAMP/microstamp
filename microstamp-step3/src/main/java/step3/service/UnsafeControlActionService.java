@@ -163,6 +163,19 @@ public class UnsafeControlActionService {
         return mapper.toUcaReadDtoList(unsafeControlActions);
     }
 
+    public List<UnsafeControlActionFullReadDto> readAllFullUCAByAnalysisId(UUID analysisId) {
+        authServerProxy.getAnalysisById(analysisId);
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository
+                .findByAnalysisId(analysisId)
+                .stream()
+                .peek(this::verifyChanges)
+                .toList();
+
+        return unsafeControlActions.stream()
+                .map(mapper::toUcaFullReadDto)
+                .toList();
+    }
+
     public UnsafeControlActionReadDto updateUcaCode(UUID ucaId, String newCode) {
         UnsafeControlAction uca = unsafeControlActionRepository
                 .findById(ucaId)
