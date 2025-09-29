@@ -1,5 +1,6 @@
 package microstamp.step4new.dto.mitigation;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -19,6 +20,9 @@ public class MitigationReadDto implements Serializable {
 
 	@NotNull
 	private UUID refinedScenarioId;
+
+	@NotBlank
+	private String refinedScenarioCode;
 
 	private String mitigation;
 
