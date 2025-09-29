@@ -222,7 +222,7 @@ public class ExportServiceImpl implements ExportService {
     private void setStep4Section(Document document, Step4ExportReadDto step4Dto) throws IOException {
         setSectionTitle(document, "4 - Identify Loss Scenarios (Handbook approach)", "Step4");
 
-        Step4PdfHelper.setFourTuplesSection(document, step4Dto.getFourTuples());
+        //Step4PdfHelper.setFourTuplesSection(document, step4Dto.getFourTuples());
         Step4PdfHelper.setUnsafeControlActionsSection(document, step4Dto.getUnsafeControlActions());
     }
 
