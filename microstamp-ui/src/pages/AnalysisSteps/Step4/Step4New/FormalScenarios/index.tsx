@@ -71,7 +71,7 @@ function FormalScenarios() {
 		highLevelSolutions,
 		isLoading: isLoadingHighLevelSolutions,
 		isError: isErrorHighLevelSolutions
-	} = useHighLevelSolutions(ucaId);
+	} = useHighLevelSolutions(ucaId, formalScenarios);
 
 	// 4.3 Refined Scenarios
 	const {
