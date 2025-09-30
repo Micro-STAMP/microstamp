@@ -1,0 +1,3 @@
+UPDATE microstamp.analyses
+SET description='People with diabetes may take 1-2 insulin injections of a long-acting insulin every day and three or more injections of rapid-acting insulin for meals and snacks. The typical person with Type 1 diabetes can take 4-7 injections a day. Many people currently receive insulin through an insulin pen or a syringe. Source: https://www.matec-conferences.org/articles/matecconf/pdf/2019/22/matecconf_icsc_eswc2018_02010.pdf'
+WHERE id='6cf687f7-0f2d-4f0f-8df4-d3668bdf1a45';
