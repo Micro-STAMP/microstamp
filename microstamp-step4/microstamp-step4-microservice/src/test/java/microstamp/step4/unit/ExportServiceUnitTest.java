@@ -1,7 +1,9 @@
 package microstamp.step4.unit;
 
 import lombok.SneakyThrows;
+import microstamp.auth.dto.analysis.AnalysisReadDto;
 import microstamp.step3.dto.unsafecontrolaction.UnsafeControlActionReadDto;
+import microstamp.step4.client.MicroStampAuthClient;
 import microstamp.step4.dto.export.ExportReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleFullReadDto;
 import microstamp.step4.dto.fourtuple.FourTupleReadDto;
@@ -31,6 +33,9 @@ public class ExportServiceUnitTest {
 
     @Mock
     private FourTupleService fourTupleService;
+
+    @Mock
+    private MicroStampAuthClient microStampAuthClient;
 
     @Test
     @DisplayName("#exportToJson > When nothing is found > Return empty sections")
@@ -87,6 +92,14 @@ public class ExportServiceUnitTest {
     @DisplayName("#exportToPdf > When exporting PDF > Returns binary content with PDF signature")
     void exportToPdfReturnsPdfBytes() {
         UUID analysisId = UUID.randomUUID();
+
+        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder()
+                .id(analysisId)
+                .name("Test Analysis")
+                .description("Test Description")
+                .userId(UUID.randomUUID())
+                .build();
+        when(microStampAuthClient.getAnalysisById(analysisId)).thenReturn(mockAnalysis);
         when(fourTupleService.findByAnalysisId(analysisId)).thenReturn(List.of());
         when(fourTupleService.findByAnalysisIdSortedByUnsafeControlActions(analysisId)).thenReturn(List.of());
 

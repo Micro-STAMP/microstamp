@@ -7,10 +7,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import step3.dto.auth.AnalysisReadDto;
 import step3.dto.export.ExportReadDto;
 import step3.dto.rule.RuleReadListDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.entity.UCAType;
+import step3.proxy.AuthServerProxy;
 import step3.service.ExportService;
 import step3.service.RuleService;
 import step3.service.UnsafeControlActionService;
@@ -35,6 +37,9 @@ public class ExportServiceUnitTest {
 
     @Mock
     private RuleService ruleService;
+
+    @Mock
+    private AuthServerProxy authServerProxy;
 
     @Test
     @DisplayName("#exportToJson > When no uca list is found > When no rules are found > Return the export read")
@@ -119,14 +124,26 @@ public class ExportServiceUnitTest {
     @DisplayName("#exportToPdf > When an pdf analysis is required to export > Export the analysis for step 3")
     void exportToPdfWhenAnPdfAnalysisIsRequiredToExportExportTheAnalysisForStep3() {
         UUID mockAnalysisId = UUID.randomUUID();
-        byte[] expected = new byte[] {37, 80, 68, 70, 45, 49, 46, 55, 10, 37, -30, -29, -49, -45, 10, 53, 32, 48, 32, 111, 98, 106, 10, 60, 60, 47, 70, 105, 108, 116, 101, 114, 47, 70, 108, 97, 116, 101, 68, 101, 99, 111, 100, 101, 47, 76, 101, 110, 103, 116, 104, 32, 49, 55, 54, 62, 62, 115, 116, 114, 101, 97, 109, 10, 120, -100, 125, -114, -71, 10, -62, 64, 24, -124, -5, -1, 41, -90, -116, -123, -21, 30, 110, 54, 41, -93, -88, 4, -116, -41, 110, 99, 25, 114, -120, 34, 89, 76, 12, -66};
+
+        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder()
+                .id(mockAnalysisId)
+                .name("Test Analysis")
+                .description("Test Description")
+                .userId(UUID.randomUUID())
+                .build();
+        when(authServerProxy.getAnalysisById(mockAnalysisId)).thenReturn(mockAnalysis);
+        when(ucaService.readAllUCAByAnalysisId(mockAnalysisId)).thenReturn(List.of());
+        when(ruleService.readRulesByAnalysisId(mockAnalysisId)).thenReturn(List.of());
 
         byte[] response = service.exportToPdf(mockAnalysisId);
 
         assertAll(
                 () -> verify(ucaService, times(1)).readAllUCAByAnalysisId(mockAnalysisId),
                 () -> verify(ruleService, times(1)).readRulesByAnalysisId(mockAnalysisId),
-                () -> assertArrayEquals(expected, Arrays.copyOfRange(response, 0, 100))
+                () -> verify(authServerProxy, times(1)).getAnalysisById(mockAnalysisId),
+                () -> assertNotNull(response),
+                () -> assertTrue(response.length > 0),
+                () -> assertArrayEquals(new byte[]{37, 80, 68, 70}, Arrays.copyOfRange(response, 0, 4))
         );
     }
 
