@@ -2,6 +2,7 @@ import {
 	getHighLevelSolutionsByUCA,
 	updateHighLevelSolutions
 } from "@http/Step4New/HighLevelSolutions";
+import { IFormalScenariosReadDto } from "@interfaces/IStep4New/IFormalScenarios";
 import {
 	IHighLevelSolutionsFormData,
 	IHighLevelSolutionsUpdateDto
@@ -9,7 +10,10 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-function useHighLevelSolutions(ucaId: string) {
+function useHighLevelSolutions(
+	ucaId: string,
+	formalScenarios: IFormalScenariosReadDto | undefined
+) {
 	const queryClient = useQueryClient();
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
@@ -20,8 +24,9 @@ function useHighLevelSolutions(ucaId: string) {
 		isLoading,
 		isError
 	} = useQuery({
-		queryKey: ["high-level-solutions", ucaId],
-		queryFn: () => getHighLevelSolutionsByUCA(ucaId)
+		queryKey: ["high-level-solutions", ucaId, formalScenarios],
+		queryFn: () => getHighLevelSolutionsByUCA(ucaId),
+		enabled: !!formalScenarios
 	});
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */

@@ -13,6 +13,7 @@ public class RefinedScenarioMapper {
 				.refinedScenario(entity.getRefinedScenario())
 				.formalScenarioClassId(entity.getFormalScenarioClass().getId())
 				.unsafeControlActionId(entity.getUnsafeControlActionId())
+				.code(entity.getCode())
 				.build();
 	}
 

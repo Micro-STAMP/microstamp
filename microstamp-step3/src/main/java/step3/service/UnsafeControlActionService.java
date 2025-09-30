@@ -44,7 +44,8 @@ public class UnsafeControlActionService {
         authServerProxy.getAnalysisById(ucaCreateDto.analysis_id());
         step1Proxy.getHazardById(ucaCreateDto.hazard_id());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.control_action_id());
-        long newUcaCode = unsafeControlActionRepository.countByAnalysisId(ucaCreateDto.analysis_id()) + 1;
+        Integer maxUcaCodeNumber = unsafeControlActionRepository.findMaxUcaCodeNumberByAnalysisId(ucaCreateDto.analysis_id());
+        int newUcaCode = (maxUcaCodeNumber != null ? maxUcaCodeNumber : 0) + 1;
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())
@@ -160,6 +161,19 @@ public class UnsafeControlActionService {
                 .toList();
 
         return mapper.toUcaReadDtoList(unsafeControlActions);
+    }
+
+    public List<UnsafeControlActionFullReadDto> readAllFullUCAByAnalysisId(UUID analysisId) {
+        authServerProxy.getAnalysisById(analysisId);
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository
+                .findByAnalysisId(analysisId)
+                .stream()
+                .peek(this::verifyChanges)
+                .toList();
+
+        return unsafeControlActions.stream()
+                .map(mapper::toUcaFullReadDto)
+                .toList();
     }
 
     public UnsafeControlActionReadDto updateUcaCode(UUID ucaId, String newCode) {

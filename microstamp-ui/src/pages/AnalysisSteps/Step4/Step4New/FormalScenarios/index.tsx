@@ -1,15 +1,16 @@
 import AnalysisHeader from "@components/AnalysisHeader";
 import Button from "@components/Button";
 import Loader from "@components/Loader";
-import { ModalSelectStep4 } from "@components/Modal";
+import { ModalPDFPreview, ModalSelectStep4 } from "@components/Modal";
 import NoResultsMessage from "@components/NoResultsMessage";
 import PageActions from "@components/PageActions";
+import { getStep4NewPDF } from "@http/Export";
 import { getUnsafeControlAction } from "@http/Step3/UnsafeControlActions";
 import { IAnalysisReadDto } from "@interfaces/IAnalysis";
 import { ISteps } from "@interfaces/ISteps";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { BiExport as ExportIcon } from "react-icons/bi";
+import { BiExport as PdfIcon } from "react-icons/bi";
 import { Navigate, useOutletContext, useSearchParams } from "react-router-dom";
 import {
 	useHighLevelScenarios,
@@ -57,6 +58,12 @@ function FormalScenarios() {
 	const toggleModalSelectStep4 = () => setModalSelectStep4Open(!modalSelectStep4Open);
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get New Step 4 PDF
+
+	const [modalNewStep4PdfOpen, setModalNewStep4PdfOpen] = useState(false);
+	const toggleModalNewStep4Pdf = () => setModalNewStep4PdfOpen(!modalNewStep4PdfOpen);
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
 	// * Handle Get Formal Scenarios Entities
 
 	// 4.1 High Level Scenarios
@@ -71,7 +78,7 @@ function FormalScenarios() {
 		highLevelSolutions,
 		isLoading: isLoadingHighLevelSolutions,
 		isError: isErrorHighLevelSolutions
-	} = useHighLevelSolutions(ucaId);
+	} = useHighLevelSolutions(ucaId, formalScenarios);
 
 	// 4.3 Refined Scenarios
 	const {
@@ -143,9 +150,16 @@ function FormalScenarios() {
 			)}
 
 			<PageActions>
-				<Button variant="dark" icon={ExportIcon}>
-					Export New Step 4
+				<Button variant="dark" icon={PdfIcon} onClick={toggleModalNewStep4Pdf}>
+					Export Formal Step 4
 				</Button>
+				<ModalPDFPreview
+					open={modalNewStep4PdfOpen}
+					onClose={toggleModalNewStep4Pdf}
+					fetchPDF={getStep4NewPDF}
+					analysisId={analysis.id}
+					title={"Export Formal Step 4"}
+				/>
 			</PageActions>
 
 			<ModalSelectStep4

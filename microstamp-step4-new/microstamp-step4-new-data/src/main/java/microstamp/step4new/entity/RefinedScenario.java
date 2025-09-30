@@ -36,4 +36,7 @@ public class RefinedScenario {
 	@JdbcTypeCode(Types.VARCHAR)
 	@Column(name = "unsafe_control_action_id", nullable = false)
 	private UUID unsafeControlActionId;
+
+	@Column(name = "code", nullable = false, length = 20)
+	private String code;
 }

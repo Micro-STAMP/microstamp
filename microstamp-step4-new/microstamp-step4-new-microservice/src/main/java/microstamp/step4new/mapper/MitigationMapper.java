@@ -23,7 +23,9 @@ public class MitigationMapper {
 		return MitigationReadDto.builder()
 				.id(entity.getId())
 				.refinedScenarioId(entity.getRefinedScenario().getId())
+				.refinedScenarioCode(entity.getRefinedScenario().getCode())
 				.mitigation(entity.getMitigation())
+				.code(entity.getCode())
 				.build();
 	}
 }

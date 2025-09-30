@@ -65,8 +65,15 @@ public class RefinedScenarioServiceImpl implements RefinedScenarioService {
 				.orElseThrow(() -> new Step4NewNotFoundException("RefinedScenarioCommonCause", dto.getCommonCauseId().toString()));
 		var formalClass = formalScenarioClassRepository.findById(dto.getFormalScenarioClassId())
 				.orElseThrow(() -> new Step4NewNotFoundException("FormalScenarioClass", dto.getFormalScenarioClassId().toString()));
+
+		UUID analysisId = formalClass.getFormalScenario().getAnalysisId();
+		Integer maxCodeNumber = refinedScenarioRepository.findMaxCodeNumberByAnalysisId(analysisId);
+		int nextCodeNumber = (maxCodeNumber != null ? maxCodeNumber : 0) + 1;
+		String code = "RSC-" + nextCodeNumber;
+		
 		RefinedScenario entity = RefinedScenarioMapper.toEntity(dto, cc);
 		entity.setFormalScenarioClass(formalClass);
+		entity.setCode(code);
 		RefinedScenario saved = refinedScenarioRepository.save(entity);
 		return RefinedScenarioMapper.toDto(saved);
 	}

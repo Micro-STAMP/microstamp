@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.UUID;
 
 @FeignClient(name = "MICROSTAMP-STEP3", configuration = FeignClientConfiguration.class)
@@ -13,4 +14,7 @@ public interface MicroStampStep3Client {
 
     @GetMapping("unsafe-control-action/full/{id}")
     UnsafeControlActionFullReadDto readUnsafeControlAction(@PathVariable("id") UUID id);
+
+    @GetMapping("unsafe-control-action/full/analysis/{analysisId}")
+    List<UnsafeControlActionFullReadDto> readAllUCAByAnalysisId(@PathVariable("analysisId") UUID analysisId);
 }

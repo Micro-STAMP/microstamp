@@ -78,10 +78,10 @@ function RefinedScenarioContent({
 						<span className={styles.title}>Refined Scenarios:</span>
 						<div className={styles.refined_scenarios_list}>
 							<ListWrapper>
-								{scenarios.map((scenario, index) => (
+								{scenarios.map(scenario => (
 									<Scenario.Root key={scenario.id}>
 										<Scenario.Name
-											code={"RSC-" + (index + 1)}
+											code={scenario.code}
 											name={scenario.refinedScenario}
 										/>
 										<Scenario.Actions>
