@@ -78,13 +78,13 @@ public class UnsafeControlAction {
         }
 
         return switch (this.type) {
-            case PROVIDED -> "provide " + controlActionName;
-            case NOT_PROVIDED -> "not provide " + controlActionName;
-            case TOO_EARLY -> "provide " + controlActionName + " too early";
-            case TOO_LATE -> "provide " + controlActionName + " too late";
-            case OUT_OF_ORDER -> "provide " + controlActionName + " out of order";
+            case PROVIDED -> "provides " + controlActionName;
+            case NOT_PROVIDED -> "does not provide " + controlActionName;
+            case TOO_EARLY -> "provides " + controlActionName + " too early";
+            case TOO_LATE -> "provides " + controlActionName + " too late";
+            case OUT_OF_ORDER -> "provides " + controlActionName + " out of order";
             case STOPPED_TOO_SOON -> "stop providing " + controlActionName + " too soon";
-            case APPLIED_TOO_LONG -> "provide " + controlActionName + " too long";
+            case APPLIED_TOO_LONG -> "provides " + controlActionName + " too long";
         };
     }
 

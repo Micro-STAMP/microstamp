@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { Input } from "@components/FormField";
+import { Input, Textarea } from "@components/FormField";
 import {
 	ModalButtons,
 	ModalContainer,
@@ -56,7 +56,7 @@ function ModalAnalysis({
 					onChange={(value: string) => setAnalysisData({ ...analysisData, name: value })}
 					required
 				/>
-				<Input
+				<Textarea
 					label="Description"
 					value={analysisData.description}
 					onChange={(value: string) =>

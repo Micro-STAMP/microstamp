@@ -1,10 +1,10 @@
 import Button from "@components/Button";
-import { ModalSelectControlAction } from "@components/Modal";
+import { ModalSelectStep4 } from "@components/Modal";
+import ModalSelectStep3 from "@components/Modal/ModalSelectStep3";
+import StepIcon from "@components/StepIcon";
+import { ISteps } from "@interfaces/ISteps";
 import { useState } from "react";
-import { GoGoal as Step1Icon } from "react-icons/go";
-import { IoWarningOutline as Step3Icon } from "react-icons/io5";
-import { PiTreeStructure as Step2Icon, PiCirclesFour as StepsIcon } from "react-icons/pi";
-import { RiArrowGoBackLine as Step4Icon } from "react-icons/ri";
+import { PiCirclesFour as StepsIcon } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import styles from "./AnalysisStepsMenu.module.css";
 
@@ -14,9 +14,16 @@ interface AnalysisStepsMenuProps {
 function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 	const navigate = useNavigate();
 
-	const [modalSelectControlActionOpen, setModalSelectControlActionOpen] = useState(false);
-	const toggleModalSelectControlAction = () =>
-		setModalSelectControlActionOpen(!modalSelectControlActionOpen);
+	const [modalSelectStep3Open, setModalSelectStep3Open] = useState(false);
+	const toggleModalSelectStep3 = () => setModalSelectStep3Open(!modalSelectStep3Open);
+
+	const [modalSelectStep4Open, setModalSelectStep4Open] = useState(false);
+	const toggleModalSelectStep4 = () => setModalSelectStep4Open(!modalSelectStep4Open);
+
+	const Step1Icon = () => <StepIcon step={ISteps.STEP_1} />;
+	const Step2Icon = () => <StepIcon step={ISteps.STEP_2} />;
+	const Step3Icon = () => <StepIcon step={ISteps.STEP_3} />;
+	const Step4Icon = () => <StepIcon step={ISteps.STEP_4} />;
 
 	return (
 		<>
@@ -32,7 +39,7 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 						variant="dark"
 						onClick={() => navigate("purpose")}
 					>
-						Define Purpose of the Analysis
+						Define the Purpose of the Analysis
 					</Button>
 					<Button
 						size="small"
@@ -46,7 +53,7 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 						size="small"
 						icon={Step3Icon}
 						variant="dark"
-						onClick={toggleModalSelectControlAction}
+						onClick={toggleModalSelectStep3}
 					>
 						Identify Unsafe Control Actions
 					</Button>
@@ -55,17 +62,22 @@ function AnalysisStepsMenu({ analysisId }: AnalysisStepsMenuProps) {
 						icon={Step4Icon}
 						variant="dark"
 						onClick={() => {
-							navigate("loss-scenarios");
+							toggleModalSelectStep4();
 						}}
 					>
 						Identify Loss Scenarios
 					</Button>
 				</div>
 			</div>
-			<ModalSelectControlAction
+			<ModalSelectStep3
+				open={modalSelectStep3Open}
+				onClose={toggleModalSelectStep3}
 				analysisId={analysisId}
-				open={modalSelectControlActionOpen}
-				onClose={toggleModalSelectControlAction}
+			/>
+			<ModalSelectStep4
+				open={modalSelectStep4Open}
+				onClose={toggleModalSelectStep4}
+				analysisId={analysisId}
 			/>
 		</>
 	);

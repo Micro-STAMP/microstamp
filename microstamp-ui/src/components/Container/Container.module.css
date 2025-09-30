@@ -4,10 +4,12 @@
 	border: var(--border3);
 	border-radius: var(--radius2);
 	width: 100%;
-	min-height: 12rem;
+	min-height: 10rem;
 
 	.header {
 		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
 		justify-content: space-between;
 
 		.header_container {
@@ -30,6 +32,11 @@
 				padding: 0.8rem 2.4rem;
 				box-shadow: var(--shadow25);
 				font-weight: 600;
+
+				text-overflow: ellipsis;
+				overflow-x: hidden;
+				max-width: 85dvw;
+				text-wrap: nowrap;
 			}
 
 			.button {
@@ -51,21 +58,82 @@
 
 		.header_options {
 			display: flex;
-			justify-content: flex-start;
 			align-items: center;
-			background-color: transparent;
-			margin: 0.6rem 1.2rem 0rem 0.8rem;
-			border-radius: 50%;
-			padding: 0 0.6rem;
+			gap: 0.8rem;
+			margin: 0.6rem 1.6rem 0rem 0.8rem;
 
-			.icon {
-				color: var(--color-yellow);
-				font-size: 2.2rem;
+			.option {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+				background-color: transparent;
+				border-radius: 50%;
+
+				svg {
+					color: var(--color-yellow);
+					font-size: 2.2rem;
+					transition: all 0.2s;
+
+					&:hover {
+						color: var(--color-dark-yellow);
+						cursor: pointer;
+					}
+				}
 			}
 		}
 	}
 
 	.content {
 		padding: 1.8rem 2.4rem;
+
+		.error {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 0.8rem;
+			align-items: center;
+			color: var(--color-yellow);
+			font-size: 1.4rem;
+			width: fit-content;
+			margin: auto;
+
+			span {
+				font-size: 1.4rem;
+				font-weight: 500;
+				text-align: center;
+				text-wrap: balance;
+			}
+
+			svg {
+				font-size: 2rem;
+			}
+		}
+
+		.collapsed {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 0.6rem;
+
+			padding: 0.8rem;
+			cursor: pointer;
+			background-color: var(--color-gray25);
+			opacity: 0.9;
+
+			text-wrap: balance;
+			font-size: 1.2rem;
+			color: var(--color-dark-yellow);
+
+			svg {
+				font-size: 1.3rem;
+			}
+
+			&:hover {
+				transition: all 0.2s;
+				opacity: 1;
+				color: var(--color-yellow);
+			}
+		}
 	}
 }

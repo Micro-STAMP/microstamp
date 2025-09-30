@@ -2,7 +2,6 @@ import DualButton from "@components/Button/DualButton";
 import Container from "@components/Container";
 import { ListItem as SystemGoal } from "@components/Container/ListItem";
 import ListWrapper from "@components/Container/ListWrapper";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalSystemGoal } from "@components/Modal/ModalEntity";
 import {
@@ -116,29 +115,35 @@ function SystemGoalsContainer({ analysisId }: SystemGoalsContainerProps) {
 		queryFn: () => getSystemGoals(analysisId)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || systemGoals === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
-			<Container title="System Goals" onClick={toggleModalCreateSystemGoal}>
+			<Container
+				title="System Goals"
+				onClick={toggleModalCreateSystemGoal}
+				isLoading={isLoading}
+				isError={isError || systemGoals === undefined}
+			>
 				<ListWrapper>
-					{systemGoals.map(sg => (
-						<SystemGoal.Root key={sg.id}>
-							<SystemGoal.Name code={sg.code} name={sg.name} />
-							<SystemGoal.Actions>
-								<DualButton
-									onEdit={() => {
-										setSelectedSystemGoal(sg);
-										toggleModalUpdateSystemGoal();
-									}}
-									onDelete={() => {
-										setSelectedSystemGoal(sg);
-										toggleModalDeleteSystemGoal();
-									}}
-								/>
-							</SystemGoal.Actions>
-						</SystemGoal.Root>
-					))}
+					{systemGoals &&
+						systemGoals.map(sg => (
+							<SystemGoal.Root key={sg.id}>
+								<SystemGoal.Name code={sg.code} name={sg.name} />
+								<SystemGoal.Actions>
+									<DualButton
+										onEdit={() => {
+											setSelectedSystemGoal(sg);
+											toggleModalUpdateSystemGoal();
+										}}
+										onDelete={() => {
+											setSelectedSystemGoal(sg);
+											toggleModalDeleteSystemGoal();
+										}}
+									/>
+								</SystemGoal.Actions>
+							</SystemGoal.Root>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalSystemGoal

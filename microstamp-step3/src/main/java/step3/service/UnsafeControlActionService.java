@@ -8,6 +8,7 @@ import step3.dto.mapper.UnsafeControlActionMapper;
 import step3.dto.step2.ControlActionReadDto;
 import step3.dto.step2.StateReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionCreateDto;
+import step3.dto.unsafe_control_action.UnsafeControlActionFullReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.entity.Rule;
 import step3.entity.SafetyConstraint;
@@ -43,6 +44,8 @@ public class UnsafeControlActionService {
         authServerProxy.getAnalysisById(ucaCreateDto.analysis_id());
         step1Proxy.getHazardById(ucaCreateDto.hazard_id());
         ControlActionReadDto controlAction = step2Proxy.getControlActionById(ucaCreateDto.control_action_id());
+        Integer maxUcaCodeNumber = unsafeControlActionRepository.findMaxUcaCodeNumberByAnalysisId(ucaCreateDto.analysis_id());
+        int newUcaCode = (maxUcaCodeNumber != null ? maxUcaCodeNumber : 0) + 1;
 
         UnsafeControlAction uca = UnsafeControlAction.builder()
                 .controlActionId(controlAction.id())
@@ -50,12 +53,12 @@ public class UnsafeControlActionService {
                 .type(ucaCreateDto.type())
                 .analysisId(ucaCreateDto.analysis_id())
                 .ruleCode(ucaCreateDto.rule_code() == null ? "" : ucaCreateDto.rule_code())
-                .ucaCode("UCA-" + (unsafeControlActionRepository.count()+1))
+                .ucaCode("UCA-" + newUcaCode)
                 .build();
 
         SafetyConstraint constraint = SafetyConstraint.builder()
                 .unsafeControlAction(uca)
-                .safetyConstraintCode("SC-" + (unsafeControlActionRepository.count() + 1))
+                .safetyConstraintCode("SC-" + newUcaCode)
                 .build();
 
         uca.setConstraint(constraint);
@@ -118,6 +121,16 @@ public class UnsafeControlActionService {
         return mapper.toUcaReadDto(uca);
     }
 
+    public UnsafeControlActionFullReadDto readFullUnsafeControlAction(UUID id) {
+        UnsafeControlAction uca = unsafeControlActionRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Unsafe control action not found with id " + id));
+
+        this.verifyChanges(uca);
+
+        return mapper.toUcaFullReadDto(uca);
+    }
+
     public List<UnsafeControlActionReadDto> readAllUnsafeControlActions() {
         List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository
                 .findAll()
@@ -150,6 +163,19 @@ public class UnsafeControlActionService {
         return mapper.toUcaReadDtoList(unsafeControlActions);
     }
 
+    public List<UnsafeControlActionFullReadDto> readAllFullUCAByAnalysisId(UUID analysisId) {
+        authServerProxy.getAnalysisById(analysisId);
+        List<UnsafeControlAction> unsafeControlActions = unsafeControlActionRepository
+                .findByAnalysisId(analysisId)
+                .stream()
+                .peek(this::verifyChanges)
+                .toList();
+
+        return unsafeControlActions.stream()
+                .map(mapper::toUcaFullReadDto)
+                .toList();
+    }
+
     public UnsafeControlActionReadDto updateUcaCode(UUID ucaId, String newCode) {
         UnsafeControlAction uca = unsafeControlActionRepository
                 .findById(ucaId)
@@ -157,6 +183,10 @@ public class UnsafeControlActionService {
 
         if (StringUtils.isBlank(newCode)) {
             throw new IllegalArgumentException("New code cannot be blank");
+        }
+
+        if (unsafeControlActionRepository.findByUcaCode(newCode).isPresent()) {
+            throw new OperationNotAllowedException("UCA code " + newCode + " is already in use in this analysis");
         }
 
         uca.setUcaCode(newCode);

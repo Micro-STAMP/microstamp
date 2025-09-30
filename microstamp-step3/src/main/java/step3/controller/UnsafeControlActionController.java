@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import step3.dto.unsafe_control_action.UcaCodeUpdateDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionCreateDto;
+import step3.dto.unsafe_control_action.UnsafeControlActionFullReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
 import step3.service.UnsafeControlActionService;
 
@@ -45,6 +46,11 @@ public class UnsafeControlActionController {
         return  ResponseEntity.ok(unsafeControlActionService.readUnsafeControlAction(id));
     }
 
+    @GetMapping("/full/{id}")
+    public ResponseEntity<UnsafeControlActionFullReadDto> readFullUnsafeControlAction(@PathVariable UUID id) {
+        return  ResponseEntity.ok(unsafeControlActionService.readFullUnsafeControlAction(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<UnsafeControlActionReadDto>> readAllUnsafeControlAction() {
         return ResponseEntity.ok(unsafeControlActionService.readAllUnsafeControlActions());
@@ -53,6 +59,11 @@ public class UnsafeControlActionController {
     @GetMapping("/analysis/{analysisId}")
     public ResponseEntity<List<UnsafeControlActionReadDto>> readAllUCAByAnalysisId(@PathVariable UUID analysisId) {
         return ResponseEntity.ok(unsafeControlActionService.readAllUCAByAnalysisId(analysisId));
+    }
+
+    @GetMapping("/full/analysis/{analysisId}")
+    public ResponseEntity<List<UnsafeControlActionFullReadDto>> readAllFullUCAByAnalysisId(@PathVariable UUID analysisId) {
+        return ResponseEntity.ok(unsafeControlActionService.readAllFullUCAByAnalysisId(analysisId));
     }
 
     @GetMapping("/control-action/{controlActionId}")

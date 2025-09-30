@@ -13,7 +13,9 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import step3.dto.auth.AnalysisReadDto;
 import step3.dto.export.ExportReadDto;
+import step3.proxy.AuthServerProxy;
 import step3.dto.rule.RuleReadListDto;
 import step3.dto.step2.StateReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
@@ -26,6 +28,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ExportService {
+    private final AuthServerProxy authServerProxy;
     private final UnsafeControlActionService ucaService;
     private final RuleService ruleService;
 
@@ -47,6 +50,7 @@ public class ExportService {
         Document document = new Document(pdfDocument);
 
         setTitle(document);
+        setAnalysisSection(document, analysisId);
         setUcaAndConstraintSection(document, analysisId);
         setRuleSection(document, analysisId);
 
@@ -65,6 +69,22 @@ public class ExportService {
                 .setFontColor(WebColors.getRGBColor("#b4894d"))
                 .setTextAlignment(TextAlignment.CENTER)
                 .addStyle(style));
+    }
+
+    private void setAnalysisSection(Document document, UUID analysisId) {
+        AnalysisReadDto analysis = authServerProxy.getAnalysisById(analysisId);
+        
+        com.itextpdf.layout.element.List analysisDetails = new com.itextpdf.layout.element.List();
+        
+        analysisDetails.add("Name: " + analysis.name());
+        analysisDetails.add("Description: " + analysis.description());
+        
+        document.add(new Paragraph("\n"));
+        document.add(new Paragraph("Analysis")
+                .setBold()
+                .setUnderline());
+        document.add(analysisDetails);
+        document.add(new Paragraph("\n"));
     }
 
     private void setUcaAndConstraintSection(Document document, UUID analysisId) throws IOException {

@@ -51,3 +51,13 @@ import { ModalFourTuple } from "./ModalStep4";
 export { ModalFourTuple };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */
+// * Step 4 New Entities
+
+import {
+	ModalHighLevelSolutions,
+	ModalRefinedScenarios,
+	ModalRefinedSolutions
+} from "./ModalStep4New";
+export { ModalHighLevelSolutions, ModalRefinedScenarios, ModalRefinedSolutions };
+
+/* - - - - - - - - - - - - - - - - - - - - - - */

@@ -19,12 +19,35 @@
 			min-width: 48%;
 		}
 	}
+
+	&.triple {
+		justify-content: center;
+		flex-wrap: wrap;
+		flex-basis: 0;
+		gap: 1rem;
+
+		label {
+			flex-grow: 1;
+			flex-basis: 0;
+			min-width: 28%;
+		}
+	}
 }
 
 @media (max-width: 720px) {
 	.modal_inputs_wrapper {
-		&.double {
+		&.double,
+		&.triple {
 			flex-direction: column;
+		}
+	}
+}
+@media (max-width: 1024px) {
+	.modal_inputs_wrapper {
+		&.triple {
+			label {
+				min-width: 48%;
+			}
 		}
 	}
 }

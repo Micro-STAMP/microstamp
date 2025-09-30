@@ -12,6 +12,8 @@ import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import microstamp.step1.client.MicroStampClient;
+import microstamp.step1.dto.analysis.AnalysisReadDto;
 import microstamp.step1.dto.assumption.AssumptionReadDto;
 import microstamp.step1.dto.export.ExportReadDto;
 import microstamp.step1.dto.hazard.HazardReadDto;
@@ -30,6 +32,8 @@ import java.util.UUID;
 @Component
 @AllArgsConstructor
 public class ExportServiceImpl implements ExportService {
+
+    private final MicroStampClient microStampClient;
 
     private final SystemGoalService systemGoalService;
 
@@ -57,7 +61,7 @@ public class ExportServiceImpl implements ExportService {
         ExportReadDto exportReadDto = getExportDto(analysisId);
 
         setTitle(document);
-        setAnalysisSection(document, exportReadDto.getAnalysisId());
+        setAnalysisSection(document, analysisId);
         setSystemGoalSection(document, exportReadDto.getSystemGoals());
         setAssumptionSection(document, exportReadDto.getAssumptions());
         setLossesSection(document, exportReadDto.getLosses());
@@ -93,8 +97,19 @@ public class ExportServiceImpl implements ExportService {
     }
 
     private void setAnalysisSection(Document document, UUID analysisId) {
+        AnalysisReadDto analysis = microStampClient.getAnalysisById(analysisId);
+        
+        com.itextpdf.layout.element.List analysisDetails = new com.itextpdf.layout.element.List();
+        
+        analysisDetails.add("Name: " + analysis.getName());
+        analysisDetails.add("Description: " + analysis.getDescription());
+        
         document.add(new Paragraph("\n"));
-        document.add(new Paragraph("Analysis id: " + analysisId.toString()));
+        document.add(new Paragraph("Analysis")
+                .setBold()
+                .setUnderline());
+        document.add(analysisDetails);
+        document.add(new Paragraph("\n"));
     }
 
     private void setSystemGoalSection(Document document, List<SystemGoalReadDto> systemGoals) throws JsonProcessingException {

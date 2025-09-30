@@ -1,170 +1,594 @@
-/* - - - - - - - - - - - - - - - - - - - - - - */
-
-/* Home Section */
-.home_section {
+.home_layout {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+	gap: 4.8rem;
 	width: 90%;
-	gap: 2.4rem;
-}
+	margin: 0 auto;
+	min-height: 100vh;
 
-/* - - - - - - - - - - - - - - - - - - - - - - */
-
-/* Description and Image */
-.description {
-	align-items: center;
-
-	.section_text {
-		display: flex;
-		flex-direction: column;
-		gap: 0.8rem;
-		width: clamp(252px, 48%, 712px);
-		font-size: 1.8rem;
-		text-align: justify;
-		color: var(--color-light-gray);
-
-		.title {
-			display: flex;
-			align-items: center;
-			gap: 0.6rem;
-			font-weight: 600;
-			font-size: 2.4rem;
-			color: var(--color-yellow);
-			.icon {
-				font-size: 2.8rem;
-			}
-		}
-	}
-	.image {
-		width: clamp(252px, 49%, 612px);
-		height: 24rem;
-		background: url("/assets/logo-main.svg") no-repeat center;
-		background-size: contain;
-		border-radius: 8px;
-		border: var(--border3);
-	}
-}
-@media (max-width: 768px) {
-	.description {
-		flex-direction: column;
-		.section_text {
-			width: 100%;
-			.title {
-				text-align: center;
-			}
-		}
-		.image {
-			width: 100%;
-			margin-top: 1rem;
-		}
-	}
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - */
-
-/* GitHub and Contact Section */
-.github_contact {
-	font-size: 1.6rem;
-	color: var(--color-light-gray);
-
-	.github_section,
-	.contact_section {
-		display: flex;
-		flex-direction: column;
-		padding: 2.4rem;
+	/* Section Titles */
+	.section_title {
+		font-size: 2.4rem;
+		color: var(--color-yellow);
 		text-align: center;
-		border-radius: 8px;
-		box-shadow: var(--shadow25);
-		text-wrap: balance;
-		flex: 1;
+		margin-bottom: 2.4rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.8rem;
+
+		.section_title_icon {
+			font-size: 2.8rem;
+		}
 	}
-	.title {
+	.subsection_title {
+		font-size: 2rem;
+		color: var(--color-yellow);
+		margin-bottom: 1.2rem;
 		display: flex;
 		align-items: center;
 		gap: 0.6rem;
-		justify-content: center;
-		font-weight: 600;
-		font-size: 2rem;
-		color: var(--color-yellow);
-		margin-bottom: 1rem;
-		.icon {
+
+		.subsection_icon {
 			font-size: 2.4rem;
 		}
 	}
-	.github_section {
-		background-color: var(--color-dark);
-	}
-	.contact_section {
-		background-color: var(--color-dark-gray);
-	}
 
-	a {
-		color: var(--color-yellow);
-		text-decoration: underline;
-		font-weight: 400;
+	/* Call to Action Buttons */
+	.cta_button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		background-color: var(--color-yellow);
+		color: var(--color-dark);
+		padding: 0.8rem 1.6rem;
+		font-size: 1.3rem;
+		border-radius: 0.4rem;
+		font-weight: 600;
+		transition: all 0.3s ease;
 
 		&:hover {
-			color: var(--color-dark-yellow);
-			transition: all 0.2s;
+			transform: translateY(-0.2rem);
+			background-color: var(--color-dark-yellow);
+		}
+		svg {
+			font-size: 1.6rem;
 		}
 	}
-}
-@media (max-width: 768px) {
-	.github_contact {
+	.cta_button_outline {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		background-color: transparent;
+		color: var(--color-yellow);
+		border: 2px solid var(--color-yellow);
+		padding: 0.8rem 1.6rem;
+		font-size: 1.3rem;
+		border-radius: 0.4rem;
+		font-weight: 600;
+		transition: all 0.3s ease;
+
+		&:hover {
+			transform: translateY(-2px);
+			background-color: var(--color-yellow);
+			color: var(--color-dark);
+		}
+		svg {
+			font-size: 1.6rem;
+		}
+	}
+
+	/* Sections */
+	/* Hero Section */
+	.hero {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 3.6rem;
+
+		.hero_text {
+			flex: 1;
+
+			.hero_title {
+				display: flex;
+				align-items: center;
+				gap: 0.8rem;
+				font-size: clamp(2.8rem, 5vw, 3.6rem);
+				color: var(--color-yellow);
+				margin-bottom: 1.2rem;
+
+				.hero_icon {
+					font-size: clamp(3rem, 5vw, 4rem);
+				}
+			}
+			.hero_subtitle {
+				font-size: clamp(1.6rem, 3vw, 2rem);
+				color: var(--color-light-gray);
+				margin-bottom: 1.6rem;
+				font-weight: 500;
+				font-style: italic;
+			}
+			.hero_description {
+				font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+				color: var(--color-light-gray);
+				line-height: 1.6;
+				margin-bottom: 2.4rem;
+				text-align: justify;
+				text-wrap: pretty;
+
+				strong {
+					font-weight: 500;
+					color: var(--color-yellow);
+				}
+			}
+
+			.hero_buttons {
+				display: flex;
+				gap: 1.2rem;
+				flex-wrap: wrap;
+			}
+		}
+
+		.hero_image {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 0.8rem;
+			border: var(--border3);
+			box-shadow: var(--shadow25);
+			padding: 2rem;
+			background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-gray25) 100%);
+
+			img {
+				max-width: 100%;
+				height: auto;
+				transition: transform 0.3s ease;
+			}
+
+			&:hover img {
+				transform: scale(1.05);
+			}
+		}
+	}
+
+	/* Features Section */
+	.features {
+		display: flex;
 		flex-direction: column;
+
+		.features_grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+			gap: 2.4rem;
+
+			.feature_card {
+				background: var(--color-gray25);
+
+				padding: 2.4rem;
+				border-radius: 0.8rem;
+				text-align: center;
+				box-shadow: var(--shadow25);
+				transition: all 0.3s ease;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				position: relative;
+				overflow: hidden;
+
+				&::before {
+					content: "";
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 0.4rem;
+					background: var(--color-yellow);
+				}
+
+				&:hover {
+					transform: translateY(-0.4rem);
+				}
+
+				.feature_icon {
+					font-size: 3.6rem;
+					color: var(--color-yellow);
+					margin-bottom: 1.2rem;
+					background: var(--color-dark-gray);
+					padding: 0.6rem;
+					border-radius: 50%;
+					border: 2px solid var(--color-yellow);
+				}
+				h3 {
+					font-size: 2rem;
+					color: var(--color-yellow);
+					margin-bottom: 1.2rem;
+				}
+				p {
+					font-size: 1.6rem;
+					color: var(--color-light-gray);
+					line-height: 1.5;
+					text-align: center;
+				}
+			}
+		}
+	}
+
+	/* Architecture Section */
+	.architecture {
+		background: var(--color-dark-gray);
+		border-radius: 1.2rem;
+		padding: 4rem;
+		box-shadow: var(--shadow25);
+
+		.arch_content {
+			display: flex;
+			align-items: center;
+			gap: 4.8rem;
+			margin-top: 1.8rem;
+
+			.arch_text {
+				flex: 1;
+
+				p {
+					font-size: 1.8rem;
+					color: var(--color-light-gray);
+					line-height: 1.6;
+					margin-bottom: 1.6rem;
+					text-align: justify;
+					text-wrap: pretty;
+
+					strong {
+						font-weight: 500;
+						color: var(--color-yellow);
+					}
+				}
+			}
+
+			.arch_image {
+				flex: 1;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				img {
+					width: 100%;
+					max-width: 54rem;
+					border-radius: 0.8rem;
+					box-shadow: var(--shadow25);
+					border: 2px solid var(--color-gray);
+					transition: transform 0.3s ease;
+				}
+
+				&:hover img {
+					transform: scale(1.02);
+				}
+			}
+		}
+	}
+
+	/* GitHub and Contact Section */
+	.github_contact {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+		gap: 2.4rem;
 
 		.github_section,
 		.contact_section {
-			width: 100%;
-		}
-	}
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - */
-
-/* Footer */
-.footer {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: center;
-	width: 90%;
-
-	padding-top: 2.4rem;
-	margin-top: 2.4rem;
-	border-top: 2px solid var(--color-gray);
-
-	.title {
-		color: var(--color-light-gray);
-		font-size: 1.6rem;
-		font-weight: 500;
-	}
-
-	.contributors {
-		width: clamp(252px, 100%, 1180px);
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 1.8rem;
-		margin-top: 2.4rem;
-		font-size: 1.4rem;
-
-		a {
-			display: inline-flex;
+			display: flex;
+			flex-direction: column;
 			align-items: center;
-			gap: 0.4rem;
-			background-color: var(--color-gray25);
-			color: var(--color-light-gray);
-			text-decoration: none;
-			padding: 0.2rem 0.6rem;
-			border-radius: 0.4rem;
-			transition: color 0.3s ease, background-color 0.3s ease;
+			background: var(--color-gray25);
+			padding: 2.4rem 3.6rem;
+			border-radius: 0.8rem;
+			box-shadow: var(--shadow25);
+			transition: transform 0.3s ease;
+			position: relative;
+			overflow: hidden;
+
+			&::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 0.4rem;
+				background: var(--color-yellow);
+			}
 
 			&:hover {
-				color: var(--color-yellow);
+				transform: translateY(-0.4rem);
+			}
+
+			p {
+				font-size: 1.6rem;
+				color: var(--color-light-gray);
+				margin-bottom: 1.6rem;
+				line-height: 1.5;
+				text-align: center;
+				text-wrap: pretty;
+			}
+		}
+	}
+
+	/* Supporters Section */
+	.supporters {
+		text-align: center;
+
+		.supporter_logos {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+			gap: 2.4rem;
+			margin-top: 2.4rem;
+			max-width: 64rem;
+			margin: 0 auto;
+
+			.supporter_card {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 1.2rem;
+				background: var(--color-white);
+				padding: 2.4rem;
+				border-radius: 0.8rem;
+				transition: all 0.3s ease;
+				height: 100%;
+				box-shadow: var(--shadow25);
+
+				&:hover {
+					transform: translateY(-0.4rem);
+				}
+
+				img {
+					height: 10rem;
+					width: auto;
+					object-fit: contain;
+				}
+
+				span {
+					font-size: 1.4rem;
+					color: var(--color-dark);
+					font-weight: 600;
+					text-align: center;
+				}
+			}
+		}
+	}
+
+	/* Partnership Section */
+	.partnership {
+		padding: 4rem;
+		text-align: center;
+		background: var(--color-dark);
+		border-radius: 1.2rem;
+		box-shadow: var(--shadow25);
+
+		p {
+			font-size: 1.8rem;
+			color: var(--color-light-gray);
+			line-height: 1.6;
+			max-width: 800px;
+			margin: 0 auto 2.4rem;
+			text-wrap: pretty;
+			text-align: center;
+		}
+	}
+
+	/* Footer */
+	.footer {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		align-items: center;
+		padding-top: 2.4rem;
+		border-top: 2px solid var(--color-gray);
+		margin-top: 2rem;
+
+		.contributors {
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 1.2rem;
+			font-size: 1.4rem;
+
+			a {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				background: var(--color-dark-gray);
+				color: var(--color-light-gray);
+				text-decoration: none;
+				padding: 0.8rem 1.4rem;
+				border-radius: 0.8rem;
+				transition: all 0.3s ease;
+
+				&:hover {
+					color: var(--color-yellow);
+					transform: translateY(-2px);
+					background: var(--color-dark);
+				}
+
+				svg {
+					font-size: 1.6rem;
+				}
 			}
 		}
 	}
 }
 
-/* - - - - - - - - - - - - - - - - - - - - - - */
+/* Responsive Design - Improved */
+@media (max-width: 1024px) {
+	.home_layout {
+		width: 95%;
+		gap: 3.6rem;
+
+		.hero {
+			gap: 3rem;
+			min-height: 50vh;
+
+			.hero_buttons {
+				justify-content: flex-start;
+			}
+		}
+
+		.architecture .arch_content {
+			gap: 3rem;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.home_layout {
+		width: 92%;
+		gap: 3rem;
+		padding: 1.5rem 0;
+
+		.section_title {
+			font-size: 2.2rem;
+			margin-bottom: 2rem;
+		}
+
+		.hero {
+			flex-direction: column;
+			text-align: center;
+			gap: 2.5rem;
+			min-height: auto;
+
+			.hero_title {
+				justify-content: center;
+			}
+
+			.hero_buttons {
+				justify-content: center;
+				gap: 1rem;
+			}
+
+			.hero_image {
+				padding: 1.5rem;
+				max-width: 400px;
+				margin: 0 auto;
+			}
+		}
+
+		.features .features_grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+
+			.feature_card {
+				padding: 2rem;
+			}
+		}
+
+		.architecture {
+			padding: 2.5rem;
+
+			.arch_content {
+				flex-direction: column;
+				gap: 2.5rem;
+			}
+		}
+
+		.github_contact {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+
+			.github_section,
+			.contact_section {
+				padding: 2.5rem;
+			}
+		}
+
+		.supporters .supporter_logos {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+
+			.supporter_card {
+				padding: 2rem;
+			}
+		}
+
+		.partnership {
+			padding: 2.5rem;
+
+			p {
+				font-size: 1.6rem;
+			}
+		}
+
+		.footer .contributors {
+			gap: 1rem;
+
+			a {
+				padding: 0.6rem 1.2rem;
+				font-size: 1.3rem;
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.home_layout {
+		width: 90%;
+		gap: 2.5rem;
+
+		.hero {
+			gap: 2rem;
+
+			.hero_text {
+				.hero_title {
+					font-size: 2.4rem;
+
+					.hero_icon {
+						font-size: 2.8rem;
+					}
+				}
+
+				.hero_subtitle {
+					font-size: 1.6rem;
+				}
+
+				.hero_description {
+					font-size: 1.4rem;
+				}
+			}
+
+			.hero_buttons {
+				flex-direction: column;
+				align-items: center;
+			}
+		}
+
+		.architecture {
+			padding: 2rem;
+		}
+
+		.github_contact {
+			.github_section,
+			.contact_section {
+				padding: 2rem;
+			}
+		}
+
+		.partnership {
+			padding: 2rem;
+
+			p {
+				font-size: 1.5rem;
+			}
+		}
+
+		.footer .contributors {
+			flex-direction: column;
+			align-items: center;
+
+			a {
+				width: 100%;
+				justify-content: center;
+				text-align: center;
+			}
+		}
+	}
+}

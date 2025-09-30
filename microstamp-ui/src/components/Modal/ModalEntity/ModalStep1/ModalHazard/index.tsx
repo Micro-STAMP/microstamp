@@ -14,6 +14,7 @@ import {
 	ModalInputs,
 	ModalProps
 } from "@components/Modal/Templates";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { getHazards } from "@http/Step1/Hazards";
 import { IHazardFormData, IHazardReadDto } from "@interfaces/IStep1";
 import { useQuery } from "@tanstack/react-query";
@@ -128,8 +129,19 @@ function ModalHazard({
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoadingHazards) return <Loader />;
-	if (isError || hazards === undefined) return <h1>Error</h1>;
+	if (isLoadingHazards)
+		return (
+			<ModalContainer open={open} size="small">
+				<Loader />;
+			</ModalContainer>
+		);
+	if (isError || hazards === undefined)
+		return (
+			<ModalContainer open={open} size="small">
+				<ModalHeader onClose={onClose} title="Error" />
+				<NoResultsMessage message="Error loading modal." />
+			</ModalContainer>
+		);
 	return (
 		<ModalContainer open={open}>
 			<ModalHeader onClose={onClose} title={title} />

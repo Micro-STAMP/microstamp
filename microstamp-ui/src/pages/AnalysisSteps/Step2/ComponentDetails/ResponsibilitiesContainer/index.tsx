@@ -129,37 +129,43 @@ function ResponsibilitiesContainer({ analysisId, componentId }: Responsibilities
 		queryFn: () => getResponsibilities(componentId)
 	});
 
-	if (isLoading) return;
-	if (isError || responsibilities === undefined) return <h1>Error</h1>;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	return (
 		<>
-			<Container title="Responsibilities" onClick={toggleModalCreateResponsibility}>
+			<Container
+				title="Responsibilities"
+				onClick={toggleModalCreateResponsibility}
+				isLoading={isLoading}
+				isError={isError || responsibilities === undefined}
+			>
 				<ListWrapper>
-					{responsibilities.map(responsibility => (
-						<Responsibility.Root key={responsibility.id}>
-							<Responsibility.Name
-								code={responsibility.code}
-								name={responsibility.responsibility}
-								dependencies={
-									responsibility.systemSafetyConstraint
-										? [responsibility.systemSafetyConstraint.code]
-										: []
-								}
-							/>
-							<Responsibility.Actions>
-								<DualButton
-									onEdit={() => {
-										setSelectedResponsibility(responsibility);
-										toggleModalUpdateResponsibility();
-									}}
-									onDelete={() => {
-										setSelectedResponsibility(responsibility);
-										toggleModalDeleteResponsibility();
-									}}
+					{responsibilities &&
+						responsibilities.map(responsibility => (
+							<Responsibility.Root key={responsibility.id}>
+								<Responsibility.Name
+									code={responsibility.code}
+									name={responsibility.responsibility}
+									dependencies={
+										responsibility.systemSafetyConstraint
+											? [responsibility.systemSafetyConstraint.code]
+											: []
+									}
 								/>
-							</Responsibility.Actions>
-						</Responsibility.Root>
-					))}
+								<Responsibility.Actions>
+									<DualButton
+										onEdit={() => {
+											setSelectedResponsibility(responsibility);
+											toggleModalUpdateResponsibility();
+										}}
+										onDelete={() => {
+											setSelectedResponsibility(responsibility);
+											toggleModalDeleteResponsibility();
+										}}
+									/>
+								</Responsibility.Actions>
+							</Responsibility.Root>
+						))}
 				</ListWrapper>
 			</Container>
 			<ModalResponsibility

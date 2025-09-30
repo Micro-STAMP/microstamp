@@ -1,0 +1,66 @@
+.formal_scenarios {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+	margin-bottom: 1.8rem;
+	padding: 1.2rem;
+	background: var(--color-gray25);
+	border-radius: var(--radius1);
+
+	.header {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+
+		cursor: pointer;
+		user-select: none;
+		transition: color 0.2s ease;
+		border-radius: var(--radius1);
+
+		:hover {
+			color: var(--color-white);
+			background-color: var(--color-gray25);
+		}
+
+		.title {
+			font-size: 1.3rem;
+			color: var(--color-yellow);
+			font-weight: 600;
+		}
+		.chevron_icon {
+			color: var(--color-yellow);
+			margin-left: auto;
+			font-size: 2rem;
+			transition: transform 0.2s ease;
+
+			&.collapsed {
+				transform: rotate(-180deg);
+			}
+		}
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+
+		.formal_scenarios_item {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 0.6rem;
+
+			.formal_scenarios_label {
+				font-weight: 500;
+				color: var(--color-light-gray);
+				font-size: 1.3rem;
+			}
+
+			.formal_scenarios_value {
+				font-weight: 400;
+				color: var(--color-light-gray);
+				font-size: 1.3rem;
+			}
+		}
+	}
+}

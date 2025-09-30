@@ -5,12 +5,14 @@ import microstamp.authorization.client.MicroStampStep1Client;
 import microstamp.authorization.client.MicroStampStep2Client;
 import microstamp.authorization.client.MicroStampStep3Client;
 import microstamp.authorization.client.MicroStampStep4Client;
+import microstamp.authorization.client.MicroStampStep4NewClient;
 import microstamp.authorization.dto.AnalysisReadDto;
 import microstamp.authorization.dto.ExportReadDto;
 import microstamp.authorization.dto.step1.Step1ExportReadDto;
 import microstamp.authorization.dto.step2.Step2ExportReadDto;
 import microstamp.authorization.dto.step3.Step3ExportReadDto;
 import microstamp.authorization.dto.step4.Step4ExportReadDto;
+import microstamp.authorization.dto.step4new.Step4NewExportReadDto;
 import microstamp.authorization.service.AnalysisService;
 import microstamp.authorization.service.impl.ExportServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -49,11 +51,19 @@ public class ExportServiceImplUnitTest {
     @Mock
     private MicroStampStep4Client step4Client;
 
+    @Mock
+    private MicroStampStep4NewClient step4NewClient;
+
     @Test
     @DisplayName("#exportToJson > When it is a guest > Generate the Json")
     void exportToJsonWhenItIsAGuestGenerateTheJson() {
         UUID mockAnalysisId = UUID.randomUUID();
-        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder().id(mockAnalysisId).build();
+        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder()
+                .id(mockAnalysisId)
+                .name("Test Analysis")
+                .description("Test Description")
+                .userId(UUID.randomUUID())
+                .build();
         Step1ExportReadDto mockStep1ExportRead = assembleStep1Export.get();
         Step2ExportReadDto mockStep2ExportRead = assembleStep2Export.get();
         Step3ExportReadDto mockStep3ExportRead = assembleStep3Export.apply(mockAnalysisId);
@@ -64,6 +74,7 @@ public class ExportServiceImplUnitTest {
         when(step2Client.exportStep2ByAnalysisId(mockAnalysisId)).thenReturn(mockStep2ExportRead);
         when(step3Client.exportStep3ByAnalysisId(mockAnalysisId)).thenReturn(mockStep3ExportRead);
         when(step4Client.exportStep4ByAnalysisId(mockAnalysisId)).thenReturn(mockStep4ExportRead);
+        when(step4NewClient.exportStep4NewByAnalysisId(mockAnalysisId)).thenReturn(Step4NewExportReadDto.builder().build());
 
         ExportReadDto response = service.exportToJson(mockAnalysisId, "");
 
@@ -82,7 +93,12 @@ public class ExportServiceImplUnitTest {
         UUID mockAnalysisId = UUID.randomUUID();
         String mockJwt = "guestJwt";
 
-        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder().id(mockAnalysisId).build();
+        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder()
+                .id(mockAnalysisId)
+                .name("Test Analysis")
+                .description("Test Description")
+                .userId(UUID.randomUUID())
+                .build();
         Step1ExportReadDto mockStep1ExportRead = assembleStep1Export.get();
         Step2ExportReadDto mockStep2ExportRead = assembleStep2Export.get();
         Step3ExportReadDto mockStep3ExportRead = assembleStep3Export.apply(mockAnalysisId);
@@ -93,6 +109,7 @@ public class ExportServiceImplUnitTest {
         when(step2Client.exportStep2ByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(mockStep2ExportRead);
         when(step3Client.exportStep3ByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(mockStep3ExportRead);
         when(step4Client.exportStep4ByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(mockStep4ExportRead);
+        when(step4NewClient.exportStep4NewByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(Step4NewExportReadDto.builder().build());
 
         ExportReadDto response = service.exportToJson(mockAnalysisId, mockJwt);
 
@@ -111,7 +128,12 @@ public class ExportServiceImplUnitTest {
     void exportToPdfWhenItIsAGuestWithoutJwtGenerateThePdf() {
         UUID mockAnalysisId = UUID.randomUUID();
 
-        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder().id(mockAnalysisId).build();
+        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder()
+                .id(mockAnalysisId)
+                .name("Test Analysis")
+                .description("Test Description")
+                .userId(UUID.randomUUID())
+                .build();
         Step1ExportReadDto mockStep1ExportRead = assembleStep1Export.get();
         Step2ExportReadDto mockStep2ExportRead = assembleStep2Export.get();
         Step3ExportReadDto mockStep3ExportRead = assembleStep3Export.apply(mockAnalysisId);
@@ -122,6 +144,7 @@ public class ExportServiceImplUnitTest {
         when(step2Client.exportStep2ByAnalysisId(mockAnalysisId)).thenReturn(mockStep2ExportRead);
         when(step3Client.exportStep3ByAnalysisId(mockAnalysisId)).thenReturn(mockStep3ExportRead);
         when(step4Client.exportStep4ByAnalysisId(mockAnalysisId)).thenReturn(mockStep4ExportRead);
+        when(step4NewClient.exportStep4NewByAnalysisId(mockAnalysisId)).thenReturn(Step4NewExportReadDto.builder().build());
 
         assertDoesNotThrow(() -> service.exportToPdf(mockAnalysisId, ""));
     }
@@ -132,7 +155,12 @@ public class ExportServiceImplUnitTest {
         UUID mockAnalysisId = UUID.randomUUID();
         String mockJwt = "guestJwt";
 
-        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder().id(mockAnalysisId).build();
+        AnalysisReadDto mockAnalysis = AnalysisReadDto.builder()
+                .id(mockAnalysisId)
+                .name("Test Analysis")
+                .description("Test Description")
+                .userId(UUID.randomUUID())
+                .build();
         Step1ExportReadDto mockStep1ExportRead = assembleStep1Export.get();
         Step2ExportReadDto mockStep2ExportRead = assembleStep2Export.get();
         Step3ExportReadDto mockStep3ExportRead = assembleStep3Export.apply(mockAnalysisId);
@@ -143,6 +171,7 @@ public class ExportServiceImplUnitTest {
         when(step2Client.exportStep2ByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(mockStep2ExportRead);
         when(step3Client.exportStep3ByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(mockStep3ExportRead);
         when(step4Client.exportStep4ByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(mockStep4ExportRead);
+        when(step4NewClient.exportStep4NewByAnalysisId(mockJwt, mockAnalysisId)).thenReturn(Step4NewExportReadDto.builder().build());
 
         assertDoesNotThrow(() -> service.exportToPdf(mockAnalysisId, mockJwt));
     }

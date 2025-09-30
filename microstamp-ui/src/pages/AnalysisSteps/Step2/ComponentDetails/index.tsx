@@ -1,17 +1,27 @@
 import AnalysisHeader from "@components/AnalysisHeader";
 import Loader from "@components/Loader";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { getComponent } from "@http/Step2/Components";
+import { IAnalysisReadDto } from "@interfaces/IAnalysis";
 import { IComponentType } from "@interfaces/IStep2";
+import { ISteps } from "@interfaces/ISteps";
 import { useQuery } from "@tanstack/react-query";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useOutletContext, useParams } from "react-router-dom";
 import ComponentConnectionsContainer from "./ComponentConnectionsContainer";
 import ResponsibilitiesContainer from "./ResponsibilitiesContainer";
 import VariablesContainer from "./VariablesContainer";
 
 function ComponentDetails() {
-	const { id, componentId } = useParams();
-	if (!id) return <Navigate to="/analyses" />;
-	if (!componentId) return <Navigate to={`/analyses/${id}/control-structure`} />;
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get Analysis
+
+	const analysis: IAnalysisReadDto = useOutletContext();
+
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+	// * Handle Get Component
+
+	const { componentId } = useParams();
+	if (!componentId) return <Navigate to={`/analyses/${analysis.id}/control-structure`} />;
 
 	const {
 		data: component,
@@ -22,16 +32,20 @@ function ComponentDetails() {
 		queryFn: () => getComponent(componentId)
 	});
 
+	/* - - - - - - - - - - - - - - - - - - - - - - */
+
 	if (isLoading) return <Loader />;
-	if (isError || component === undefined) return <h1>Error</h1>;
+	if (isError || component === undefined)
+		return <NoResultsMessage message="Error loading component details." />;
 	return (
 		<>
-			<AnalysisHeader analysisId={id} component={component.name} icon="step2" />
+			<AnalysisHeader analysis={analysis} component={component.name} step={ISteps.STEP_2} />
+
 			{component.type !== IComponentType.ENVIRONMENT && (
-				<ResponsibilitiesContainer analysisId={id} componentId={component.id} />
+				<ResponsibilitiesContainer analysisId={analysis.id} componentId={component.id} />
 			)}
-			<ComponentConnectionsContainer analysisId={id} componentId={component.id} />
 			<VariablesContainer componentId={component.id} variables={component.variables} />
+			<ComponentConnectionsContainer analysisId={analysis.id} componentId={component.id} />
 		</>
 	);
 }

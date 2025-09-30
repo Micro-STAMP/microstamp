@@ -1,6 +1,6 @@
 import Container from "@components/Container";
-import Loader from "@components/Loader";
 import { ModalAnalysis } from "@components/Modal/ModalEntity";
+import NoResultsMessage from "@components/NoResultsMessage";
 import { useAuth } from "@hooks/useAuth";
 import { createAnalysis, getAnalyses } from "@http/Analyses";
 import { IAnalysisFormData, IAnalysisInsertDto } from "@interfaces/IAnalysis";
@@ -46,16 +46,24 @@ function Analyses() {
 		queryFn: () => getAnalyses(user.id)
 	});
 
-	if (isLoading) return <Loader />;
-	if (isError || analyses === undefined) return <h1>Error</h1>;
 	return (
 		<>
-			<Container title="Analyses" onClick={toggleModalCreateAnalysis}>
-				<div className={styles.analyses_container}>
-					{analyses.map(analysis => (
-						<AnalysisCard key={analysis.id} analysis={analysis} />
-					))}
-				</div>
+			<Container
+				title="Analyses"
+				onClick={toggleModalCreateAnalysis}
+				isLoading={isLoading}
+				isError={isError || analyses === undefined}
+				collapsible={false}
+			>
+				{analyses && analyses.length > 0 ? (
+					<div className={styles.analyses_container}>
+						{analyses.map(analysis => (
+							<AnalysisCard key={analysis.id} analysis={analysis} />
+						))}
+					</div>
+				) : (
+					<NoResultsMessage message="No analyses found. Create your first analysis." />
+				)}
 			</Container>
 			<ModalAnalysis
 				open={modalCreateAnalysisOpen}

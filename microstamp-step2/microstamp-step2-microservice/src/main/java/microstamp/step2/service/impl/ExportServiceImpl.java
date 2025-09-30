@@ -13,6 +13,8 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import microstamp.step2.client.MicroStampAuthClient;
+import microstamp.auth.dto.analysis.AnalysisReadDto;
 import microstamp.step2.dto.component.ComponentReadDto;
 import microstamp.step2.dto.connection.ConnectionReadDto;
 import microstamp.step2.dto.interaction.InteractionReadDto;
@@ -38,6 +40,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ExportServiceImpl implements ExportService {
 
+    private final MicroStampAuthClient microStampAuthClient;
+
     private final ComponentService componentService;
 
     private final ConnectionService connectionService;
@@ -60,7 +64,7 @@ public class ExportServiceImpl implements ExportService {
         ExportReadDto exportReadDto = getExportDto(analysisId);
 
         setTitle(document);
-        setAnalysisSection(document, exportReadDto.getAnalysisId());
+        setAnalysisSection(document, analysisId);
         setComponentsSection(document, exportReadDto.getComponents());
         setConnectionsSection(document, exportReadDto.getConnections());
         setImagesSection(document, exportReadDto.getImages());
@@ -92,8 +96,19 @@ public class ExportServiceImpl implements ExportService {
     }
 
     private void setAnalysisSection(Document document, UUID analysisId) {
+        AnalysisReadDto analysis = microStampAuthClient.getAnalysisById(analysisId);
+        
+        com.itextpdf.layout.element.List analysisDetails = new com.itextpdf.layout.element.List();
+        
+        analysisDetails.add("Name: " + analysis.getName());
+        analysisDetails.add("Description: " + analysis.getDescription());
+        
         document.add(new Paragraph("\n"));
-        document.add(new Paragraph("Analysis id: " + analysisId.toString()));
+        document.add(new Paragraph("Analysis")
+                .setBold()
+                .setUnderline());
+        document.add(analysisDetails);
+        document.add(new Paragraph("\n"));
     }
 
     private void setComponentsSection(Document document, List<ComponentReadDto> components) {

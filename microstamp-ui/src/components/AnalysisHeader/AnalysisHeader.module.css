@@ -1,91 +1,209 @@
 .analysis_header {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
 	gap: 1.2rem;
 	width: 100%;
-	border-radius: var(--radius3);
+	padding: 1.8rem;
+	border-radius: var(--radius1);
 	border: var(--border3);
-	box-shadow: var(--shadow25);
 
-	.analysis {
+	max-height: 36rem;
+	overflow-y: auto;
+
+	.step_wrapper {
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		gap: 1.2rem;
-		font-size: 1.6rem;
-		text-shadow: var(--shadow25);
-		padding: 0 1.6rem;
+		flex-wrap: wrap;
+		border-bottom: 2px solid var(--color-gray25);
+		padding-bottom: 1.2rem;
 
-		.analysis_icon {
+		.step_section {
+			display: flex;
+			align-items: center;
+			gap: 0.8rem;
+			font-size: 2.1rem;
+			font-weight: 700;
 			color: var(--color-yellow);
-			font-size: 2rem;
-			min-width: 2rem;
-		}
 
-		.analysis_name {
-			border-left: 3px solid var(--color-dark-yellow);
-			padding: 0.8rem 0 0.8rem 1rem;
-			strong {
+			.step_icon {
+				display: flex;
+				align-items: center;
+				font-size: 2.3rem;
+			}
+
+			.step_label {
+				font-size: 1.6rem;
 				font-weight: 600;
 				color: var(--color-yellow);
+				letter-spacing: 0.01em;
+				text-shadow: var(--shadow25);
 			}
 		}
 
-		.component_name {
-			strong {
-				font-weight: 600;
-				color: var(--color-yellow);
+		.buttons {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 0.6rem;
+
+			.back_button {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				background-color: var(--color-dark-gray);
+				color: var(--color-white);
+				border-radius: var(--radius3);
+				font-weight: 500;
+				padding: 0.6rem 1.2rem 0.6rem 0.8rem;
+				font-size: 1.4rem;
+				flex-shrink: 0;
+				transition: all 0.2s;
+
+				svg {
+					font-size: 1.4rem;
+				}
+
+				&:hover {
+					color: var(--color-yellow);
+				}
+			}
+
+			.step_button {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				background-color: var(--color-dark-gray);
+				color: var(--color-white);
+				border-radius: var(--radius3);
+				font-weight: 500;
+				padding: 0.6rem 1.2rem 0.6rem 0.8rem;
+				font-size: 1.4rem;
+				flex-shrink: 0;
+				transition: all 0.2s;
+
+				svg {
+					font-size: 1.4rem;
+				}
+
+				&:hover {
+					color: var(--color-yellow);
+				}
 			}
 		}
 	}
 
-	.back_button {
+	.analysis_wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 0.6rem;
+		flex-wrap: wrap;
+		border-bottom: 2px solid var(--color-gray25);
+		padding-bottom: 1.2rem;
+
+		.title {
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+			font-size: 1.4rem;
+			font-weight: 500;
+			color: var(--color-light-gray);
+			margin-bottom: 0.6rem;
+
+			svg {
+				opacity: 0.6;
+				font-size: 1.2rem;
+				margin-bottom: 0.2rem;
+			}
+		}
+
+		.analysis_info {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 0.7rem;
+			font-size: 1.5rem;
+			width: fit-content;
+
+			.label {
+				color: var(--color-yellow);
+				font-weight: 600;
+			}
+			.name {
+				color: var(--color-white);
+				font-weight: 400;
+			}
+
+			.change_button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.4rem;
+				border-radius: 50%;
+
+				background: var(--color-dark-gray);
+				color: var(--color-yellow);
+
+				cursor: pointer;
+				font-weight: 600;
+				transition: all 0.2s;
+
+				svg {
+					font-size: 1.6rem;
+				}
+
+				&:hover {
+					background: var(--color-dark);
+					color: var(--color-yellow);
+				}
+			}
+		}
+	}
+
+	.view_wrapper {
 		display: flex;
 		align-items: center;
+		flex-wrap: wrap;
 		gap: 0.8rem;
-		background-color: var(--color-gray);
-		color: var(--color-white);
-		border-radius: var(--radius3);
-		font-weight: 500;
-		padding: 0.8rem 1.4rem;
-		font-size: 1.4rem;
 
-		.icon {
-			font-size: 1.6rem;
-		}
-	}
-}
+		border-bottom: 2px solid var(--color-gray25);
+		padding-bottom: 1.2rem;
 
-@media (max-width: 830px) {
-	.analysis_header {
-		.back_button {
-			span {
-				display: none;
-			}
-		}
-	}
-}
+		.view_description {
+			display: flex;
+			gap: 0.4rem;
+			align-items: center;
+			font-size: 1.2rem;
+			color: var(--color-light-gray);
+			font-style: italic;
 
-@media (max-width: 610px) {
-	.analysis_header {
-		flex-direction: column;
-		align-items: center;
-		padding: 1.2rem 0;
-		.back_button {
-			span {
-				display: flex;
+			svg {
+				opacity: 0.6;
 			}
 		}
 
-		.analysis {
-			width: 100%;
-			flex-wrap: wrap;
-			justify-content: center;
-			text-align: center;
+		.toggle_button {
+			padding: 0.1rem 0.8rem;
 
-			.analysis_name {
-				border-left: 0px solid;
-				padding: 0.8rem 0;
+			opacity: 0.5;
+			border: 0.2rem solid var(--color-gray);
+			border-radius: var(--radius1);
+			font-weight: 500;
+
+			background: transparent;
+			color: var(--color-light-gray);
+			font-size: 1.2rem;
+			transition: all 0.2s;
+
+			&:hover {
+				color: var(--color-yellow);
+			}
+
+			&.active {
+				color: var(--color-dark-yellow);
+				opacity: 1;
 			}
 		}
 	}

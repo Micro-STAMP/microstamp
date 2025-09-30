@@ -1,5 +1,4 @@
 import Container from "@components/Container";
-import Loader from "@components/Loader";
 import { ModalConfirm } from "@components/Modal";
 import { ModalComponent, ModalEnvironment } from "@components/Modal/ModalEntity";
 import {
@@ -45,9 +44,6 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Component created.");
 		},
 		onError: err => {
@@ -79,9 +75,6 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Component updated.");
 		},
 		onError: err => {
@@ -117,9 +110,6 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["analysis-components"] });
 			queryClient.invalidateQueries({ queryKey: ["components-select-options"] });
-			queryClient.invalidateQueries({
-				queryKey: ["control-action-components-select-options"]
-			});
 			toast.success("Component deleted.");
 		},
 		onError: err => {
@@ -148,56 +138,62 @@ function ComponentsContainer({ analysisId }: ComponentsContainerProps) {
 
 	/* - - - - - - - - - - - - - - - - - - - - - - */
 
-	if (isLoading) return <Loader />;
-	if (isError || components === undefined) return <h1>Error</h1>;
 	return (
 		<>
 			<Container
 				title="Components"
 				onOptions={toggleModalEnvironment}
 				onClick={toggleModalCreateComponent}
+				isLoading={isLoading}
+				isError={isError || components === undefined}
 			>
-				<ComponentsList
-					components={components}
-					modalDeleteComponent={toggleModalDeleteComponent}
-					modalUpdateComponent={toggleModalUpdateComponent}
-					selectComponent={setSelectedComponent}
-				/>
+				{components && (
+					<ComponentsList
+						components={components}
+						modalDeleteComponent={toggleModalDeleteComponent}
+						modalUpdateComponent={toggleModalUpdateComponent}
+						selectComponent={setSelectedComponent}
+					/>
+				)}
 			</Container>
-			<ModalComponent
-				open={modalCreateComponentOpen}
-				onClose={toggleModalCreateComponent}
-				onSubmit={handleCreateComponent}
-				isLoading={isCreating}
-				title="Create Component"
-				btnText="Create"
-				components={components}
-			/>
-			<ModalComponent
-				open={modalUpdateComponentOpen}
-				onClose={toggleModalUpdateComponent}
-				onSubmit={handleUpdateComponent}
-				isLoading={isUpdating}
-				title="Update Component"
-				btnText="Update"
-				component={selectedComponent || undefined}
-				components={components}
-			/>
-			<ModalConfirm
-				open={modalDeleteComponentOpen}
-				onClose={toggleModalDeleteComponent}
-				onConfirm={handleDeleteComponent}
-				isLoading={isDeleting}
-				message="Do you want to delete this component?"
-				title="Delete Component"
-				btnText="Delete"
-			/>
-			<ModalEnvironment
-				analysisId={analysisId}
-				components={components}
-				onClose={toggleModalEnvironment}
-				open={modalEnvironmentOpen}
-			/>
+			{components && (
+				<>
+					<ModalComponent
+						open={modalCreateComponentOpen}
+						onClose={toggleModalCreateComponent}
+						onSubmit={handleCreateComponent}
+						isLoading={isCreating}
+						title="Create Component"
+						btnText="Create"
+						components={components}
+					/>
+					<ModalComponent
+						open={modalUpdateComponentOpen}
+						onClose={toggleModalUpdateComponent}
+						onSubmit={handleUpdateComponent}
+						isLoading={isUpdating}
+						title="Update Component"
+						btnText="Update"
+						component={selectedComponent || undefined}
+						components={components}
+					/>
+					<ModalConfirm
+						open={modalDeleteComponentOpen}
+						onClose={toggleModalDeleteComponent}
+						onConfirm={handleDeleteComponent}
+						isLoading={isDeleting}
+						message="Do you want to delete this component?"
+						title="Delete Component"
+						btnText="Delete"
+					/>
+					<ModalEnvironment
+						analysisId={analysisId}
+						components={components}
+						onClose={toggleModalEnvironment}
+						open={modalEnvironmentOpen}
+					/>
+				</>
+			)}
 		</>
 	);
 }
