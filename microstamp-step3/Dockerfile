@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim AS build
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 COPY pom.xml ./
@@ -11,7 +11,7 @@ RUN chmod +x mvnw
 RUN sed -i 's/\r$//' mvnw
 RUN ./mvnw clean package -DskipTests
 
-FROM openjdk:21-jdk
+FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8103
