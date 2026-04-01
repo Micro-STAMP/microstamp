@@ -62,7 +62,10 @@ public class UnsafeControlAction {
 
         String source = controlAction.connection().source().name();
         String typeAndCA = generateTypeAndControlActionTo(controlAction.name(), to);
-        String context = generateContextString(step2Proxy);
+
+        UUID componentId = controlAction.connection().source().id();
+
+        String context = generateContextString(step2Proxy, componentId);
 
         if (to.equals("constraint")) {
             String newTerm = this.type == UCAType.NOT_PROVIDED ? " must " : " must not ";
@@ -88,8 +91,9 @@ public class UnsafeControlAction {
         };
     }
 
-    public String generateContextString(Step2Proxy step2) {
-        List<VariableReadDto> variables = step2.getAllVariables();
+    public String generateContextString(Step2Proxy step2, UUID componentId) {
+        List<VariableReadDto> variables = step2.getVariablesByComponentId(componentId);
+
         List<UUID> contextStatesIds = stateAssociations.stream()
                 .map(UnsafeControlActionState::getStateId)
                 .toList();

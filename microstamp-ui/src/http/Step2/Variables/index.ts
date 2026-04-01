@@ -7,6 +7,17 @@ import {
 
 const VARIABLES_ENDPOINT = "step2/variables";
 
+const getVariablesByComponentId = async (componentId: string) => {
+	try {
+		const res = await http.get<IVariableReadDto[]>(
+			`${VARIABLES_ENDPOINT}/component/${componentId}`
+		);
+		return res.data;
+	} catch (err) {
+		console.error(err);
+		throw new Error("Error fetching variables by component.");
+	}
+};
 const createVariable = async (variable: IVariableInsertDto) => {
 	try {
 		const res = await http.post<IVariableReadDto>(
@@ -40,6 +51,6 @@ const deleteVariable = async (id: string) => {
 	}
 };
 
-export { createVariable, deleteVariable, updateVariable };
+export { createVariable, deleteVariable, updateVariable, getVariablesByComponentId };
 
 /* - - - - - - - - - - - - - - - - - - - - - - */

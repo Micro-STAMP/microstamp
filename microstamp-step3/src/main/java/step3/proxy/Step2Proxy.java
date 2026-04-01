@@ -29,6 +29,9 @@ public interface Step2Proxy {
     @GetMapping("/variables")
     List<VariableReadDto> getAllVariables();
 
+    @GetMapping("/variables/component/{id}")
+    List<VariableReadDto> getVariablesByComponentId(@PathVariable("id") UUID id);
+
     @GetMapping("/control-actions/{id}")
     ControlActionReadDto getControlActionById(@PathVariable UUID id);
 

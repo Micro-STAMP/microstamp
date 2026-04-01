@@ -1,6 +1,7 @@
 package step3.dto.mapper;
 
 import org.springframework.stereotype.Component;
+import step3.dto.step2.ControlActionReadDto;
 import step3.dto.step2.StateReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionFullReadDto;
 import step3.dto.unsafe_control_action.UnsafeControlActionReadDto;
@@ -10,6 +11,7 @@ import step3.proxy.Step1Proxy;
 import step3.proxy.Step2Proxy;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UnsafeControlActionMapper {
@@ -25,6 +27,10 @@ public class UnsafeControlActionMapper {
         String hazardCode = step1Proxy.getHazardById(uca.getHazardId()).code();
         List<StateReadDto> states = getStatesByUca(uca);
 
+        ControlActionReadDto controlAction = step2Proxy.getControlActionById(uca.getControlActionId());
+
+        UUID componentId = controlAction.connection().source().id();
+
         return UnsafeControlActionFullReadDto.builder()
                 .id(uca.getId())
                 .analysis_id(uca.getAnalysisId())
@@ -36,8 +42,8 @@ public class UnsafeControlActionMapper {
                 .states(states)
                 .constraintName(uca.generateNameTo(step2Proxy, "constraint"))
                 .constraint_code(uca.getConstraint().getSafetyConstraintCode())
-                .control_action(step2Proxy.getControlActionById(uca.getControlActionId()))
-                .context(uca.generateContextString(step2Proxy))
+                .control_action(controlAction)
+                .context(uca.generateContextString(step2Proxy, componentId))
                 .build();
     }
 
