@@ -1,33 +1,52 @@
 import { IAnalysisReadDto } from "@interfaces/IAnalysis";
-import { BiImageAlt as ImageIcon } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { BiCalendar, BiEdit, BiTrash, BiImageAlt } from "react-icons/bi";
 import styles from "./AnalysisCard.module.css";
 
 interface AnalysisCardProps {
-	analysis: IAnalysisReadDto;
-}
-function AnalysisCard({ analysis }: AnalysisCardProps) {
-	return (
-		<div className={styles.analysis_card}>
-			<Link to={`/analyses/${analysis.id}`}>
-				<div className={styles.name}>{analysis.name}</div>
-				{analysis.image ? (
-					<div
-						className={styles.image}
-						style={{
-							backgroundImage: `url(data:image/png;base64,${analysis.image.base64})`
-						}}
-					></div>
-				) : (
-					<div className={styles.image_placeholder}>
-						<ImageIcon />
-					</div>
-				)}
-
-				<div className={styles.description}>{analysis.description}</div>
-			</Link>
-		</div>
-	);
+    analysis: IAnalysisReadDto & { type?: "STPA" | "CAST" };
+    onOpen: () => void;
+    onDelete: () => void;
 }
 
-export default AnalysisCard;
+export default function AnalysisCard({ analysis, onOpen, onDelete }: AnalysisCardProps) {
+    const isSTPA = analysis.type !== "CAST";
+
+    return (
+        <div className={styles.card} onClick={onOpen}>
+            <div className={styles.imageContainer}>
+                <div className={styles.imagePlaceholder}>
+                    <BiImageAlt size={40} />
+                </div>
+                <span className={`${styles.badge} ${isSTPA ? styles.badgeSTPA : styles.badgeCAST}`}>
+                    {isSTPA ? "STPA" : "CAST"}
+                </span>
+            </div>
+
+            <div className={styles.content}>
+                <h3 className={styles.title}>{analysis.name}</h3>
+                <p className={styles.description}>{analysis.description}</p>
+
+                <div className={styles.footer}>
+                    <div className={styles.date}>
+                        <BiCalendar size={14} />
+                        <span>Just now</span>
+                    </div>
+                    <div className={styles.actions}>
+                        <button className={styles.actionBtn}>
+                            <BiEdit size={14} /> Edit
+                        </button>
+                        <button 
+                            className={styles.actionBtn}
+                            onClick={(e) => {
+                                e.stopPropagation(); 
+                                onDelete();
+                            }}
+                        >
+                            <BiTrash size={14} /> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

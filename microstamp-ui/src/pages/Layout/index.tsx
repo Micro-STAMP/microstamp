@@ -3,14 +3,14 @@ import { Outlet } from "react-router-dom";
 import styles from "./Layout.module.css";
 
 function Layout() {
-	return (
-		<>
-			<Header />
-			<main className={styles.main}>
-				<Outlet />
-			</main>
-		</>
-	);
+    return (
+        <>
+            <Header />
+            <main className={styles.mainWrapper}>
+                <Outlet />
+            </main>
+        </>
+    );
 }
 
 export default Layout;
