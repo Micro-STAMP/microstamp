@@ -1,0 +1,26 @@
+# BUILD
+/target
+/build
+
+# IDEs
+/.idea
+/.vscode
+/.project
+/.classpath
+/.settings
+
+# LOGS and TEMP
+*.log
+*.class
+*.jar
+
+# OS
+Thumbs.db
+.DS_Store
+
+# GIT
+.git
+.gitignore
+
+# MD
+*.md

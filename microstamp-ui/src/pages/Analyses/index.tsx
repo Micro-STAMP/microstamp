@@ -91,15 +91,15 @@ function Analyses() {
     }, [analysesRaw, activeFilter, searchQuery]);
 
     if (openedAnalysis) {
-        if (openedAnalysis.type === "CAST") {
-            return <CastStepOne analysisName={openedAnalysis.name} onBack={() => setOpenedAnalysis(null)} />;
-        }
-        return (
-            <div style={{ padding: "50px", color: "#9ca3af", textAlign: "center" }}>
-                <h2>STPA Flow: {openedAnalysis.name}</h2>
-                <button onClick={() => setOpenedAnalysis(null)}>Back to Dashboard</button>
-            </div>
-        );
+        // if (openedAnalysis.type === "CAST") {
+            return (
+                <CastStepOne 
+                    analysisId={openedAnalysis.id} 
+                    analysisName={openedAnalysis.name} 
+                    onBack={() => setOpenedAnalysis(null)} 
+                />
+            );
+        // }
     }
 
     return (
@@ -135,6 +135,7 @@ function Analyses() {
                             key={analysis.id} 
                             analysis={analysis} 
                             onOpen={() => setOpenedAnalysis(analysis)}
+                            onEdit={() => alert(`Vamos editar a análise: ${analysis.name}`)}
                             onDelete={() => handleDelete(analysis.id)}
                         />
                     ))}

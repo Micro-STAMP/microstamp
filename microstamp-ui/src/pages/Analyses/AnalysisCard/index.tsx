@@ -5,10 +5,11 @@ import styles from "./AnalysisCard.module.css";
 interface AnalysisCardProps {
     analysis: IAnalysisReadDto & { type?: "STPA" | "CAST" };
     onOpen: () => void;
+    onEdit: () => void; 
     onDelete: () => void;
 }
 
-export default function AnalysisCard({ analysis, onOpen, onDelete }: AnalysisCardProps) {
+export default function AnalysisCard({ analysis, onOpen, onEdit, onDelete }: AnalysisCardProps) {
     const isSTPA = analysis.type !== "CAST";
 
     return (
@@ -32,7 +33,13 @@ export default function AnalysisCard({ analysis, onOpen, onDelete }: AnalysisCar
                         <span>Just now</span>
                     </div>
                     <div className={styles.actions}>
-                        <button className={styles.actionBtn}>
+                        <button 
+                            className={styles.actionBtn}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onEdit();
+                            }}
+                        >
                             <BiEdit size={14} /> Edit
                         </button>
                         <button 
