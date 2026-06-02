@@ -13,6 +13,7 @@ import microstamp.cast.step1.mapper.TimelineEventMapper;
 import microstamp.cast.step1.repository.TimelineEventRepository;
 import microstamp.cast.step1.service.TimelineEventService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Log4j2
-@Component
+@Service
 @AllArgsConstructor
 public class TimelineEventServiceImpl implements TimelineEventService {
 

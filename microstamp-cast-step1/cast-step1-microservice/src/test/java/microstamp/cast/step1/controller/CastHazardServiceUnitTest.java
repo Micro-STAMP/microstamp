@@ -1,4 +1,4 @@
-package microstamp.cast.step1.unit;
+package microstamp.cast.step1.controller;
 
 import microstamp.cast.step1.client.MicroStampClient;
 import microstamp.cast.step1.dto.casthazard.CastHazardInsertDto;
@@ -272,6 +272,8 @@ public class CastHazardServiceUnitTest {
 
         assertAll(
                 () -> verify(castHazardRepository, times(1)).findById(mockId),
+                () -> verify(castHazardRepository, times(1)).deleteAccidentLossEventAssociation(mockId.toString()),
+                () -> verify(castHazardRepository, times(1)).deleteViolatedConstraintAssociation(mockId.toString()),
                 () -> verify(castHazardRepository, times(1)).deleteById(mockId)
         );
     }

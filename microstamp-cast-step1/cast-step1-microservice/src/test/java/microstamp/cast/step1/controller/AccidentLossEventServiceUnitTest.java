@@ -1,4 +1,4 @@
-package microstamp.cast.step1.unit;
+package microstamp.cast.step1.controller;
 
 import microstamp.cast.step1.client.MicroStampClient;
 import microstamp.cast.step1.dto.accidentlossevent.AccidentLossEventInsertDto;
@@ -205,13 +205,12 @@ public class AccidentLossEventServiceUnitTest {
         UUID mockId = UUID.randomUUID();
         AccidentLossEvent mock = assembleAccidentLossEvent.apply(1);
         mock.setId(mockId);
-
         when(accidentLossEventRepository.findById(mockId)).thenReturn(Optional.of(mock));
-
         service.delete(mockId);
 
         assertAll(
                 () -> verify(accidentLossEventRepository, times(1)).findById(mockId),
+                () -> verify(accidentLossEventRepository, times(1)).deleteHazardAssociation(mockId.toString()),
                 () -> verify(accidentLossEventRepository, times(1)).deleteById(mockId)
         );
     }

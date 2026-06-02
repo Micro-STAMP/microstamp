@@ -1,5 +1,6 @@
 package microstamp.cast.step1.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.cast.step1.client.MicroStampClient;
@@ -13,6 +14,7 @@ import microstamp.cast.step1.mapper.AccidentLossEventMapper;
 import microstamp.cast.step1.repository.AccidentLossEventRepository;
 import microstamp.cast.step1.service.AccidentLossEventService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Log4j2
-@Component
+@Service
 @AllArgsConstructor
 public class AccidentLossEventServiceImpl implements AccidentLossEventService {
 
@@ -86,10 +88,15 @@ public class AccidentLossEventServiceImpl implements AccidentLossEventService {
         accidentLossEventRepository.save(accidentLossEvent);
     }
 
+    @Override
+    @Transactional
     public void delete(UUID id) throws Step1NotFoundException {
         log.debug("Finding if there is a CAST accident/loss event with id {} to delete", id);
         AccidentLossEvent accidentLossEvent = accidentLossEventRepository.findById(id)
                 .orElseThrow(() -> new Step1NotFoundException("AccidentLossEvent", id.toString()));
+
+        log.info("Cleaning hazard associations for accident/loss event with id {}", id);
+        accidentLossEventRepository.deleteHazardAssociation(id.toString());
 
         log.info("Deleting the CAST accident/loss event with id {} on the database", accidentLossEvent.getId());
         accidentLossEventRepository.deleteById(accidentLossEvent.getId());

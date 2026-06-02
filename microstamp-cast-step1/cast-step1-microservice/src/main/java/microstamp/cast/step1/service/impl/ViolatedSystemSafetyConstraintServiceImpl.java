@@ -1,5 +1,6 @@
 package microstamp.cast.step1.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.cast.step1.client.MicroStampClient;
@@ -15,6 +16,7 @@ import microstamp.cast.step1.repository.CastHazardRepository;
 import microstamp.cast.step1.repository.ViolatedSystemSafetyConstraintRepository;
 import microstamp.cast.step1.service.ViolatedSystemSafetyConstraintService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,7 +26,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Log4j2
-@Component
+@Service
 @AllArgsConstructor
 public class ViolatedSystemSafetyConstraintServiceImpl implements ViolatedSystemSafetyConstraintService {
 
@@ -106,10 +108,15 @@ public class ViolatedSystemSafetyConstraintServiceImpl implements ViolatedSystem
         violatedSystemSafetyConstraintRepository.save(violatedConstraint);
     }
 
+    @Override
+    @Transactional
     public void delete(UUID id) throws Step1NotFoundException {
         log.debug("Finding if there is a CAST violated system safety constraint with id {} to delete", id);
         ViolatedSystemSafetyConstraint violatedConstraint = violatedSystemSafetyConstraintRepository.findById(id)
                 .orElseThrow(() -> new Step1NotFoundException("ViolatedSystemSafetyConstraint", id.toString()));
+
+        log.info("Cleaning hazard associations for violated system safety constraint with id {}", id);
+        violatedSystemSafetyConstraintRepository.deleteHazardAssociation(id.toString());
 
         log.info("Deleting the CAST violated system safety constraint with id {} on the database", violatedConstraint.getId());
         violatedSystemSafetyConstraintRepository.deleteById(violatedConstraint.getId());

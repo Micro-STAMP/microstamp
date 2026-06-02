@@ -30,9 +30,6 @@ public class TimelineEvent implements Serializable {
 
     private Integer eventOrder;
 
-    //Decidir se compensa adicionar isso aqui, mas eu acho que não, encheção de linguiça desnecessária
-    //private Instant eventDate;
-
     @Column(columnDefinition = "TEXT")
     private String eventDescription;
 

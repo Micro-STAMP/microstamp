@@ -41,8 +41,6 @@ public class CastHazard implements Serializable {
     )
     private List<AccidentLossEvent> accidentLossEvents;
 
-    //Perguntar sobre o código do STPA nessa parte da Entity de Hazard, por que tem um public hazard lá
-
     @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;
 }

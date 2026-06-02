@@ -1,5 +1,6 @@
 package microstamp.cast.step1.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.cast.step1.dto.casthazard.CastHazardInsertDto;
@@ -14,6 +15,7 @@ import microstamp.cast.step1.repository.AccidentLossEventRepository;
 import microstamp.cast.step1.repository.CastHazardRepository;
 import microstamp.cast.step1.service.CastHazardService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,7 +25,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Log4j2
-@Component
+@Service
 @AllArgsConstructor
 public class CastHazardServiceImpl implements CastHazardService {
 
@@ -105,10 +107,18 @@ public class CastHazardServiceImpl implements CastHazardService {
         castHazardRepository.save(castHazard);
     }
 
+    @Override
+    @Transactional
     public void delete(UUID id) throws Step1NotFoundException {
         log.debug("Finding if there is a CAST hazard with id {} to delete", id);
         CastHazard castHazard = castHazardRepository.findById(id)
                 .orElseThrow(() -> new Step1NotFoundException("CastHazard", id.toString()));
+
+        log.info("Cleaning accident/loss event associations for hazard with id {}", id);
+        castHazardRepository.deleteAccidentLossEventAssociation(id.toString());
+
+        log.info("Cleaning violated constraint associations for hazard with id {}", id);
+        castHazardRepository.deleteViolatedConstraintAssociation(id.toString());
 
         log.info("Deleting the CAST hazard with id {} on the database", castHazard.getId());
         castHazardRepository.deleteById(castHazard.getId());

@@ -27,9 +27,6 @@ public class PhysicalLossAnalysis implements Serializable {
 
     private String code;
 
-    //Ver amanhã certinho o que manter e o que tirar, pra manter a análise alinhada com o livro
-    //Talvez adicionar uma conexão aqui com os acidentes em si, pra identificar o que causou cada perda? Uma explosão
-    //e um incêndio podem ocorrer e causar diferentes perdas. Ajudaria a levantar as questões certas.
     @Column(columnDefinition = "TEXT")
     private String physicalLossDescription;
 

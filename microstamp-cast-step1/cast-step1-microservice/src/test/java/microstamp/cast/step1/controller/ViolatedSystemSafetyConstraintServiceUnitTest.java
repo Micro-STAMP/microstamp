@@ -1,4 +1,4 @@
-package microstamp.cast.step1.unit;
+package microstamp.cast.step1.controller;
 
 import microstamp.cast.step1.client.MicroStampClient;
 import microstamp.cast.step1.dto.violatedsystemsafetyconstraint.ViolatedSystemSafetyConstraintInsertDto;
@@ -258,7 +258,7 @@ public class ViolatedSystemSafetyConstraintServiceUnitTest {
     }
 
     @Test
-    @DisplayName("#delete > When violated constraint exists > Delete it")
+    @DisplayName("#delete > When violated constraint does exist > Delete it")
     void deleteWhenViolatedConstraintExistsDeleteIt() {
         UUID mockId = UUID.randomUUID();
         ViolatedSystemSafetyConstraint mock = assembleViolatedConstraint.apply(1);
@@ -270,6 +270,8 @@ public class ViolatedSystemSafetyConstraintServiceUnitTest {
 
         assertAll(
                 () -> verify(violatedSystemSafetyConstraintRepository, times(1)).findById(mockId),
+                () -> verify(violatedSystemSafetyConstraintRepository, times(1)).deleteHazardAssociation(mockId.toString()),
+
                 () -> verify(violatedSystemSafetyConstraintRepository, times(1)).deleteById(mockId)
         );
     }

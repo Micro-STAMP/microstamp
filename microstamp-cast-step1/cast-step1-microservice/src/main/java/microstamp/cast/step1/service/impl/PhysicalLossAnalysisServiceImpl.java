@@ -13,6 +13,7 @@ import microstamp.cast.step1.mapper.PhysicalLossAnalysisMapper;
 import microstamp.cast.step1.repository.PhysicalLossAnalysisRepository;
 import microstamp.cast.step1.service.PhysicalLossAnalysisService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Log4j2
-@Component
+@Service
 @AllArgsConstructor
 public class PhysicalLossAnalysisServiceImpl implements PhysicalLossAnalysisService {
 
