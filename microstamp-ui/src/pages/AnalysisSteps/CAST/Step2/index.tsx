@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { BiGridAlt, BiArrowBack } from 'react-icons/bi';
-import styles from './CastStepOne.module.css';
-
-// forms imports 
-import SystemDescriptionForm from './components/SystemDescriptionForm';
-import AccidentLossEventForm from './components/AccidentLossEventForm';
-import CastHazardForm from './components/CastHazardForm';
-import ViolatedSystemSafetyConstraintForm from './components/ViolatedSystemSafetyConstraintForm';
-import TimelineEventForm from './components/TimelineEventForm';
-import PhysicalLossAnalysisForm from './components/PhysicalLossAnalysisForm';
+import styles from '../Step1/CastStepOne.module.css'; 
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 
-export default function CastStepOne() { 
+import CastComponentsForm from './components/CastComponentsForm';
+import CastConnectionsForm from './components/CastConnectionsForm';
+import CastStructureImageForm from './components/CastStructureImageForm';
+
+
+export default function CastStepTwo() { 
     const { id } = useParams(); 
     const navigate = useNavigate();
     const analysisId = id || ''; 
@@ -32,7 +29,7 @@ export default function CastStepOne() {
                                 <BiGridAlt size={16} /> Analyses / {analysisId} 
                             </span>
                         </div>
-                        <h1 className={styles.pageTitle}>Step 1: Assemble Basic Information</h1>
+                        <h1 className={styles.pageTitle}>Step 2: Model the Control Structure</h1>
                     </div>
 
                     <div className={styles.actions}>
@@ -45,12 +42,7 @@ export default function CastStepOne() {
                     </div>
                 </div>
 
-                <SystemDescriptionForm analysisId={analysisId} />
-                <AccidentLossEventForm analysisId={analysisId} />
-                <CastHazardForm analysisId={analysisId} />
-                <ViolatedSystemSafetyConstraintForm analysisId={analysisId} />
-                <TimelineEventForm analysisId={analysisId} />
-                <PhysicalLossAnalysisForm analysisId={analysisId} />
+                <CastComponentsForm analysisId={analysisId} />
 
             </div>
 
@@ -60,6 +52,8 @@ export default function CastStepOne() {
                 analysisId={analysisId} 
                 analysisType="CAST" 
             />
+            <CastConnectionsForm analysisId={analysisId} />
+            <CastStructureImageForm analysisId={analysisId} />
         </div>
     );
 }

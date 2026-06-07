@@ -12,6 +12,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { FormalScenarios } from "./pages/AnalysisSteps/Step4/Step4New";
 import AnalysisStepsLayout from "./pages/AnalysisSteps/layout";
 
+// imports do CAST 
+import CastStepOne from "./pages/AnalysisSteps/CAST/Step1";
+import CastStepTwo from "@pages/AnalysisSteps/CAST/Step2";
+import CastComponentDetails from "./pages/AnalysisSteps/CAST/Step2/CastComponentDetails";
+
 function AppRoutes() {
 	return (
 		<BrowserRouter>
@@ -30,6 +35,14 @@ function AppRoutes() {
 
 							<Route path=":id">
 								<Route index element={<Analysis />} />
+
+								{/* CAST */}
+                                <Route path="cast">
+                                    <Route path="step1" element={< CastStepOne />} />
+									<Route path="step2" element={<CastStepTwo />} />
+
+									<Route path="step2/component/:componentId" element={<CastComponentDetails />} />
+                                </Route>
 
 								<Route element={<AnalysisStepsLayout />}>
 									{/* STEP 1 */}

@@ -5,12 +5,11 @@ import { createAnalysis, getAnalyses, deleteAnalysis } from "@http/Analyses";
 import { IAnalysisInsertDto, IAnalysisReadDto } from "@interfaces/IAnalysis";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { BiPlus } from "react-icons/bi";
 import AnalysisCard from "./AnalysisCard";
 import AnalysisFilters from "./AnalysisFilters";
-import CastStepOne from "../AnalysisSteps/CAST/Step1";
 import styles from "./Analyses.module.css"; 
 
 interface IAnalysisExt extends IAnalysisReadDto {
@@ -19,13 +18,12 @@ interface IAnalysisExt extends IAnalysisReadDto {
 
 function Analyses() {
     const { user } = useAuth();
-    if (!user) return <Navigate to="/logout" />;
-
+    const navigate = useNavigate();
+    
     const [modalCreateAnalysisOpen, setModalCreateAnalysisOpen] = useState(false);
     const toggleModalCreateAnalysis = () => setModalCreateAnalysisOpen(!modalCreateAnalysisOpen);
     const [activeFilter, setActiveFilter] = useState<"All" | "STPA" | "CAST">("All");
     const [searchQuery, setSearchQuery] = useState("");
-    const [openedAnalysis, setOpenedAnalysis] = useState<IAnalysisExt | null>(null);
 
     const queryClient = useQueryClient();
 
@@ -34,13 +32,13 @@ function Analyses() {
         onSuccess: (data, variables) => {
             queryClient.invalidateQueries({ queryKey: ["user-analyses"] });
             toast.success("Analysis created successfully!");
+            
             const analysisType = (variables as any).type || "STPA";
-            setOpenedAnalysis({
-                id: data?.id || crypto.randomUUID(), 
-                name: variables.name,
-                description: variables.description,
-                type: analysisType
-            } as IAnalysisExt);
+            if (analysisType === "CAST") {
+                navigate(`/analyses/${data.id}/cast/step1`);
+            } else {
+                navigate(`/analyses/${data.id}`);
+            }
         },
         onError: err => toast.error(err.message)
     });
@@ -54,8 +52,19 @@ function Analyses() {
     });
 
     const handleCreateAnalysis = async (analysisData: any) => {
-        const analysis: IAnalysisInsertDto = { ...analysisData, userId: user.id };
-        await requestCreateAnalysis(analysis);
+        if (!user) return; 
+
+        const finalDescription = analysisData.type === "CAST" 
+            ? `[CAST] ${analysisData.description}` 
+            : analysisData.description;
+
+        const analysis: IAnalysisInsertDto = { 
+            name: analysisData.name, 
+            description: finalDescription,
+            userId: user.id 
+        };
+
+        await requestCreateAnalysis({ ...analysis, type: analysisData.type } as any);
     };
 
     const handleDelete = async (id: string) => {
@@ -65,42 +74,41 @@ function Analyses() {
     };
 
     const { data: analysesRaw, isLoading, isError } = useQuery({
-        queryKey: ["user-analyses"],
-        queryFn: () => getAnalyses(user.id)
+        queryKey: ["user-analyses", user?.id],
+        queryFn: () => getAnalyses(user!.id), 
+        enabled: !!user 
     });
 
-    const counts = useMemo(() => {
-        if (!analysesRaw) return { All: 0, STPA: 0, CAST: 0 };
-        const mapped = analysesRaw.map(a => ({ ...a, type: (a as any).type || "STPA" }));
-        return {
-            All: mapped.length,
-            STPA: mapped.filter(a => a.type === "STPA").length,
-            CAST: mapped.filter(a => a.type === "CAST").length,
-        };
+    const processedAnalyses = useMemo(() => {
+        if (!analysesRaw) return [];
+        return analysesRaw.map(a => {
+            const isCast = a.description.startsWith("[CAST] ");
+            return {
+                ...a,
+                description: isCast ? a.description.replace("[CAST] ", "") : a.description,
+                type: isCast ? "CAST" : "STPA"
+            } as IAnalysisExt;
+        });
     }, [analysesRaw]);
 
+    const counts = useMemo(() => {
+        return {
+            All: processedAnalyses.length,
+            STPA: processedAnalyses.filter(a => a.type === "STPA").length,
+            CAST: processedAnalyses.filter(a => a.type === "CAST").length,
+        };
+    }, [processedAnalyses]);
+
     const filteredAnalyses = useMemo(() => {
-        if (!analysesRaw) return [];
-        const analyses = analysesRaw.map(a => ({ ...a, type: (a as any).type || "STPA" })) as IAnalysisExt[];
-        return analyses.filter(a => {
+        return processedAnalyses.filter(a => {
             const matchType = activeFilter === "All" || a.type === activeFilter;
             const matchSearch = a.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                               a.description.toLowerCase().includes(searchQuery.toLowerCase());
             return matchType && matchSearch;
         });
-    }, [analysesRaw, activeFilter, searchQuery]);
+    }, [processedAnalyses, activeFilter, searchQuery]);
 
-    if (openedAnalysis) {
-        // if (openedAnalysis.type === "CAST") {
-            return (
-                <CastStepOne 
-                    analysisId={openedAnalysis.id} 
-                    analysisName={openedAnalysis.name} 
-                    onBack={() => setOpenedAnalysis(null)} 
-                />
-            );
-        // }
-    }
+    if (!user) return <Navigate to="/logout" />;
 
     return (
         <div className={styles.pageContainer}>
@@ -134,7 +142,13 @@ function Analyses() {
                         <AnalysisCard 
                             key={analysis.id} 
                             analysis={analysis} 
-                            onOpen={() => setOpenedAnalysis(analysis)}
+                            onOpen={() => {
+                                if (analysis.type === "CAST") {
+                                    navigate(`/analyses/${analysis.id}/cast/step1`);
+                                } else {
+                                    navigate(`/analyses/${analysis.id}`);
+                                }
+                            }}
                             onEdit={() => alert(`Vamos editar a análise: ${analysis.name}`)}
                             onDelete={() => handleDelete(analysis.id)}
                         />
