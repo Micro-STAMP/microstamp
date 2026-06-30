@@ -26,7 +26,7 @@ export default function CastComponentConnections({ componentId }: Props) {
     });
 
     return (
-        <CastSection title="Component Interfaces" tooltipInfo="Connections where this component is the source or target." hideAddButton={true}>
+        <CastSection title="Connections" tooltipInfo="Connections where this component is the source or target." hideAddButton={true}>
             {isLoading ? (
                 <div style={{ color: '#9ca3af', padding: '10px' }}>Loading interfaces...</div>
             ) : (

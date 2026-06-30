@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BiSave, BiTrash, BiMicrochip } from 'react-icons/bi';
+import { BiSave, BiTrash, BiMicrochip, BiRightArrowAlt } from 'react-icons/bi';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom'; 
@@ -61,7 +61,7 @@ export default function CastComponentsForm({ analysisId }: Props) {
     });
 
     return (
-        <CastSection title="Components" tooltipInfo="List all the physical and human components involved in the control structure." hideAddButton={true}>
+        <CastSection title="Components" tooltipInfo="List all the physical and human components involved in the control structure. Click on 'Analyze Details' to configure their process models and responsibilities." hideAddButton={true}>
             {isLoading ? (
                 <div style={{ color: '#9ca3af', fontSize: '14px', padding: '10px' }}>Loading components...</div>
             ) : (
@@ -71,23 +71,49 @@ export default function CastComponentsForm({ analysisId }: Props) {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             {components.map((comp) => (
                                 <div key={comp.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#374151', padding: '12px 16px', borderRadius: '8px', border: '1px solid #4b5563' }}>
+                                    
+                                    {/* BLOCO DA ESQUERDA: INFORMAÇÕES DO COMPONENTE */}
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                         <BiMicrochip size={20} color="#fb923c" />
                                         
-                                        <span 
-                                            onClick={() => navigate(`/analyses/${analysisId}/cast/step2/component/${comp.id}`)}
-                                            style={{ color: '#60a5fa', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}
-                                        >
-                                            {comp.name}
+                                        {/* O NOME AGORA É APENAS TEXTO, SEM SUBINHA OU ESTILO DE LINK */}
+                                        <span style={{ color: '#f3f4f6', fontWeight: 'bold' }}>
+                                            {comp.code} - {comp.name}
                                         </span>
                                         
                                         <span style={{ backgroundColor: '#1f2937', color: '#9ca3af', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid #4b5563' }}>
                                             {comp.type.replace('_', ' ')}
                                         </span>
                                     </div>
-                                    <button onClick={() => remove(comp.id)} style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Delete Component">
-                                        <BiTrash size={18} />
-                                    </button>
+
+                                    {/* BLOCO DA DIREITA: AÇÕES (BOTÃO EXPLÍCITO) */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                        <button 
+                                            onClick={() => navigate(`/analyses/${analysisId}/cast/step2/component/${comp.id}`)}
+                                            style={{ 
+                                                backgroundColor: '#3b82f6', // Azul para destaque
+                                                color: 'white', 
+                                                border: 'none', 
+                                                padding: '6px 12px', 
+                                                borderRadius: '4px', 
+                                                cursor: 'pointer',
+                                                fontSize: '12px',
+                                                fontWeight: 'bold',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '4px',
+                                                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                            }}
+                                            title="Analyze responsibilities and process model"
+                                        >
+                                            Analyze Details <BiRightArrowAlt size={16} />
+                                        </button>
+
+                                        <button onClick={() => remove(comp.id)} style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Delete Component">
+                                            <BiTrash size={18} />
+                                        </button>
+                                    </div>
+
                                 </div>
                             ))}
                         </div>
