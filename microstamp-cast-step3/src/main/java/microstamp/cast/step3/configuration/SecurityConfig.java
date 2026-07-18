@@ -1,4 +1,4 @@
-package microstamp.cast.step1.configuration;
+package microstamp.cast.step3.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-public class SecurityConfiguration {
+public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger/**",
@@ -26,12 +26,11 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize
+        http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfig()))
-                .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()));
+                .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()));
         return http.build();
     }
 

@@ -200,7 +200,28 @@ services:
             - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/cast_step1?createDatabaseIfNotExist=true
             - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
-            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000,http://localhost:3000
+        networks:
+            - main
+
+    cast-step3:
+        build:
+            context: ./microstamp-cast-step3
+        ports:
+            - "8107:8107"
+        depends_on:
+            service-registry:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f -s -w '%{http_code}%' http://cast-step3:8107 | grep -q '401'"
+            interval: 5s
+            retries: 5
+            start_period: 3s
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/cast_step3?createDatabaseIfNotExist=true
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000,http://localhost:3000
         networks:
             - main
 

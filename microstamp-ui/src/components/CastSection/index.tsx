@@ -8,9 +8,11 @@ interface CastSectionProps {
     children: React.ReactNode;
     defaultOpen?: boolean;
     hideAddButton?: boolean;
+    addButtonLabel?: string;
+    onAddClick?: () => void;
 }
 
-export default function CastSection({ title, tooltipInfo, children, defaultOpen = true , hideAddButton = false}: CastSectionProps) {
+export default function CastSection({ title, tooltipInfo, children, defaultOpen = true, hideAddButton = false, addButtonLabel = "Add Item", onAddClick }: CastSectionProps) {
     const [isOpen, setIsOpen] = useState(defaultOpen);
     const [showInfo, setShowInfo] = useState(false);
 
@@ -34,8 +36,8 @@ export default function CastSection({ title, tooltipInfo, children, defaultOpen 
                 </div>
 
                 {!hideAddButton && (
-                    <button className={styles.addBtn}>
-                        <BiPlus size={14} /> Add Item
+                    <button className={styles.addBtn} onClick={onAddClick} type="button">
+                        <BiPlus size={14} /> {addButtonLabel}
                     </button>
                 )}
             </div>
