@@ -18,6 +18,7 @@
         <module>microstamp-authorization-server</module>
         <module>microstamp-cast-step1/cast-step1-microservice</module>
         <module>microstamp-cast-step3</module>
+        <module>microstamp-cast-step4</module>
         <module>microstamp-step1</module>
         <module>microstamp-step2</module>
         <module>microstamp-step3</module>

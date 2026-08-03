@@ -38,6 +38,13 @@ public class InadequateControlActionServiceImpl implements InadequateControlActi
     }
 
     @Override
+    public InadequateControlActionReadDto findById(UUID id) {
+        return repository.findById(id)
+                .map(mapper::toReadDto)
+                .orElseThrow(() -> new InadequateControlActionNotFoundException("ICA not found"));
+    }
+
+    @Override
     @Transactional
     public InadequateControlActionReadDto update(UUID id, InadequateControlActionUpdateDto dto) {
         InadequateControlAction entity = repository.findById(id)

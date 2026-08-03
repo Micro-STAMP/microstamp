@@ -28,6 +28,11 @@ public class InadequateControlActionController {
         return ResponseEntity.ok(service.findByAnalysisId(analysisId));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<InadequateControlActionReadDto> findById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<InadequateControlActionReadDto> update(@PathVariable UUID id, @RequestBody InadequateControlActionUpdateDto dto) {
         return ResponseEntity.ok(service.update(id, dto));

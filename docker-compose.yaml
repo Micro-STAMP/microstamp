@@ -225,6 +225,29 @@ services:
         networks:
             - main
 
+    cast-step4:
+        build:
+            context: ./microstamp-cast-step4
+        ports:
+            - "8108:8108"
+        depends_on:
+            service-registry:
+                condition: service_healthy
+            cast-step3:
+                condition: service_healthy
+        healthcheck:
+            test: "curl -f -s -w '%{http_code}%' http://cast-step4:8108 | grep -q '401'"
+            interval: 5s
+            retries: 5
+            start_period: 3s
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8002/eureka
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/cast_step4?createDatabaseIfNotExist=true
+            - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://authorization-server:8001
+            - CORS_WHITELIST=http://api-gateway:8000,http://127.0.0.1:3000,http://localhost:3000
+        networks:
+            - main
+
     ui:
         build:
             context: ./microstamp-ui

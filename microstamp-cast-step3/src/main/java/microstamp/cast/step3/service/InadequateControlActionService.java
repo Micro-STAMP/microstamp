@@ -9,6 +9,7 @@ import java.util.UUID;
 public interface InadequateControlActionService {
     InadequateControlActionReadDto create(InadequateControlActionInsertDto dto);
     List<InadequateControlActionReadDto> findByAnalysisId(UUID analysisId);
+    InadequateControlActionReadDto findById(UUID id);
     InadequateControlActionReadDto update(UUID id, InadequateControlActionUpdateDto dto);
     void delete(UUID id);
 }

@@ -17,6 +17,7 @@ import CastStepOne from "./pages/AnalysisSteps/CAST/Step1";
 import CastStepTwo from "@pages/AnalysisSteps/CAST/Step2";
 import CastComponentDetails from "./pages/AnalysisSteps/CAST/Step2/CastComponentDetails";
 import CastStepThree from "@pages/AnalysisSteps/CAST/Step3";
+import CastStepFour from "@pages/AnalysisSteps/CAST/Step4";
 
 function AppRoutes() {
 	return (
@@ -44,6 +45,7 @@ function AppRoutes() {
 
 									<Route path="step2/component/:componentId" element={<CastComponentDetails />} />
 									<Route path="step3" element={<CastStepThree />} />
+									<Route path="step4" element={<CastStepFour />} />
                                 </Route>
 
 								<Route element={<AnalysisStepsLayout />}>

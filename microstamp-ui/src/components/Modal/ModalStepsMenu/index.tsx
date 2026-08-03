@@ -121,6 +121,19 @@ function ModalStepsMenu({ open, onClose, analysisId, analysisType = "STPA" }: Mo
                                 <span className={styles.step_icon}><Step3Icon /></span>
                                 <span className={styles.step_label}>Step 3: Analyze the Inadequate Control</span>
                             </button>
+
+							{/*  step 4 */}
+                            <button
+                                type="button"
+                                className={styles.step_button}
+                                onClick={() => {
+                                    navigate(`/analyses/${analysisId}/cast/step4`);
+                                    onClose();
+                                }}
+                            >
+                                <span className={styles.step_icon}><Step4Icon /></span>
+                                <span className={styles.step_label}>Step 4: Identify Systemic Factors</span>
+                            </button>
                         </>
                     )}
                 </div>
