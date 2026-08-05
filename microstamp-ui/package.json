@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@tanstack/react-query": "^5.51.15",
 		"axios": "^1.7.2",
+		"jspdf": "^4.2.1",
 		"jwt-decode": "^4.0.0",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",

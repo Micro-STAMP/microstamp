@@ -32,6 +32,7 @@ function ModalStepsMenu({ open, onClose, analysisId, analysisType = "STPA" }: Mo
     const Step2Icon = () => <StepIcon step={ISteps.STEP_2} />;
     const Step3Icon = () => <StepIcon step={ISteps.STEP_3} />;
     const Step4Icon = () => <StepIcon step={ISteps.STEP_4} />;
+    const Step5Icon = () => <StepIcon step={ISteps.STEP_5} />;
 
     /* - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -133,6 +134,19 @@ function ModalStepsMenu({ open, onClose, analysisId, analysisType = "STPA" }: Mo
                             >
                                 <span className={styles.step_icon}><Step4Icon /></span>
                                 <span className={styles.step_label}>Step 4: Identify Systemic Factors</span>
+                            </button>
+
+							{/*  step 5 */}
+                            <button
+                                type="button"
+                                className={styles.step_button}
+                                onClick={() => {
+                                    navigate(`/analyses/${analysisId}/cast/step5`);
+                                    onClose();
+                                }}
+                            >
+                                <span className={styles.step_icon}><Step5Icon /></span>
+                                <span className={styles.step_label}>Step 5: Create an Improvement Program</span>
                             </button>
                         </>
                     )}

@@ -1,0 +1,166 @@
+.reportContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+}
+
+.reportBlock {
+    background-color: var(--color-dark-gray);
+    border: 1px solid var(--color-gray);
+    border-radius: var(--radius1);
+    padding: 2rem 2.4rem;
+}
+
+.titleBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.reportMainTitle {
+    color: var(--color-white);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.reportMeta {
+    color: var(--color-light-gray);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.groupTitle {
+    color: var(--color-yellow);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem 0;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--color-gray);
+}
+
+.itemCode {
+    display: inline-block;
+    color: var(--color-yellow);
+    font-weight: 600;
+    font-size: 1.3rem;
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-gray);
+    border-radius: 0.4rem;
+    padding: 0.2rem 0.8rem;
+    margin-bottom: 0.6rem;
+}
+
+.itemTitle {
+    color: var(--color-white);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 0.4rem 0;
+}
+
+.itemField {
+    color: #d1d5db;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    margin: 0 0 0.4rem 0;
+}
+
+.itemFieldLabel {
+    color: var(--color-light-gray);
+    font-weight: 600;
+}
+
+.chipsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+}
+
+.chip {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--color-dark);
+    color: #9ca3af;
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+    border: 1px solid var(--color-gray);
+}
+
+.summaryTextarea {
+    width: 100%;
+    min-height: 10rem;
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-gray);
+    border-radius: var(--radius1);
+    padding: 1.2rem 1.6rem;
+    font-size: 1.4rem;
+    color: var(--color-white);
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.6;
+}
+
+.summaryTextarea::placeholder {
+    color: #8c8e9b;
+}
+
+.summaryTextarea:focus {
+    border-color: var(--color-yellow);
+    outline: none;
+}
+
+.emptyGroupState {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding: 1.2rem 1.6rem;
+    border: 1px dashed var(--color-gray);
+    border-radius: var(--radius1);
+    color: var(--color-light-gray);
+    font-size: 1.3rem;
+}
+
+.editLink {
+    color: var(--color-yellow);
+    font-size: 1.3rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.editLink:hover {
+    text-decoration: underline;
+}
+
+.itemsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.btnDownload {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2rem;
+    border-radius: var(--radius1);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    background-color: var(--color-yellow);
+    border: 1px solid var(--color-yellow);
+    transition: all 0.2s;
+}
+
+.btnDownload:hover {
+    filter: brightness(0.92);
+}
+
+.btnDownload:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

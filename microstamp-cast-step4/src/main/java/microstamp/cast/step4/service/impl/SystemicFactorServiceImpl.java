@@ -36,6 +36,12 @@ public class SystemicFactorServiceImpl implements SystemicFactorService {
     }
 
     @Override
+    public SystemicFactorReadDto findById(UUID id) {
+        return mapper.toReadDto(repository.findById(id)
+                .orElseThrow(() -> new SystemicFactorNotFoundException("Systemic factor not found")));
+    }
+
+    @Override
     public List<SystemicFactorReadDto> findByAnalysisId(UUID analysisId) {
         return repository.findByAnalysisId(analysisId).stream()
                 .map(mapper::toReadDto)

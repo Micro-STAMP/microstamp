@@ -7,7 +7,9 @@ import {
 	TbCircleDashedNumber1 as Number1Icon,
 	TbCircleDashedNumber2 as Number2Icon,
 	TbCircleDashedNumber3 as Number3Icon,
-	TbCircleDashedNumber4 as Number4Icon
+	TbCircleDashedNumber4 as Number4Icon,
+	TbCircleDashedNumber5 as Number5Icon,
+	TbBulb as Step5Icon
 } from "react-icons/tb";
 
 interface StepIconProps {
@@ -41,6 +43,12 @@ function StepIcon({ step, className, icon = "icon" }: StepIconProps) {
 					<Step4Icon className={className} />
 				) : (
 					<Number4Icon className={className} />
+				))}
+			{step === ISteps.STEP_5 &&
+				(icon === "icon" ? (
+					<Step5Icon className={className} />
+				) : (
+					<Number5Icon className={className} />
 				))}
 		</>
 	);

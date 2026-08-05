@@ -1,4 +1,4 @@
-package microstamp.cast.step1.unit;
+package microstamp.cast.step1.controller;
 
 import microstamp.cast.step1.client.MicroStampClient;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventInsertDto;

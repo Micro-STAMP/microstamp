@@ -28,6 +28,11 @@ public class SystemicFactorController {
         return ResponseEntity.ok(service.findByAnalysisId(analysisId));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<SystemicFactorReadDto> findById(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<SystemicFactorReadDto> update(@PathVariable UUID id, @RequestBody SystemicFactorUpdateDto dto) {
         return ResponseEntity.ok(service.update(id, dto));

@@ -1,0 +1,167 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.15s ease-in-out;
+}
+
+.dialog {
+    width: 92%;
+    max-width: 76rem;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-dark-gray);
+    border: 1px solid var(--color-gray);
+    border-radius: var(--radius1);
+    box-shadow: var(--shadow25);
+    overflow: hidden;
+    animation: fall 0.2s ease-in-out;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.6rem 2.4rem;
+    background-color: var(--color-dark);
+    border-bottom: 1px solid var(--color-gray);
+    flex-shrink: 0;
+}
+
+.title {
+    color: var(--color-white);
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+.closeBtn {
+    color: var(--color-light-gray);
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem;
+    border-radius: 0.6rem;
+    transition: all 0.2s;
+}
+
+.closeBtn:hover {
+    color: var(--color-yellow);
+    background-color: var(--color-gray25);
+}
+
+.body {
+    padding: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    overflow-y: auto;
+}
+
+.helperText {
+    margin: 0.6rem 0 0 0;
+    font-size: 1.2rem;
+    color: var(--color-light-gray);
+    line-height: 1.5;
+}
+
+.selectPanelsRow {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+.selectPanelColumn {
+    width: 100%;
+}
+
+.checkboxList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-height: 18rem;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-gray);
+    border-radius: var(--radius1);
+}
+
+.checkboxRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.6rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.checkboxRow input[type="checkbox"] {
+    margin-top: 0.3rem;
+    flex-shrink: 0;
+}
+
+.checkboxRow:hover {
+    background-color: var(--color-gray25);
+}
+
+.checkboxRowActive {
+    background-color: rgba(212, 160, 86, 0.1);
+    border-color: rgba(212, 160, 86, 0.3);
+}
+
+.itemText {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+}
+
+.itemCode {
+    color: var(--color-yellow);
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.itemName {
+    color: var(--color-white);
+    font-size: 1.3rem;
+    line-height: 1.5;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.emptyState {
+    margin: 0;
+    padding: 0.8rem;
+    color: var(--color-light-gray);
+    font-size: 1.3rem;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+    padding: 1.6rem 2.4rem;
+    background-color: var(--color-dark);
+    border-top: 1px solid var(--color-gray);
+    flex-shrink: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fall {
+    from { opacity: 0; transform: translate3d(0, -2rem, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+}

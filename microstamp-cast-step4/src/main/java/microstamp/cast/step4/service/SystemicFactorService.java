@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface SystemicFactorService {
     SystemicFactorReadDto create(SystemicFactorInsertDto dto);
+    SystemicFactorReadDto findById(UUID id);
     List<SystemicFactorReadDto> findByAnalysisId(UUID analysisId);
     SystemicFactorReadDto update(UUID id, SystemicFactorUpdateDto dto);
     void delete(UUID id);
