@@ -12,4 +12,5 @@ public interface RecommendationService {
     List<RecommendationReadDto> findByAnalysisId(UUID analysisId);
     RecommendationReadDto update(UUID id, RecommendationUpdateDto dto);
     void delete(UUID id);
+    RecommendationReadDto findById(UUID id);
 }

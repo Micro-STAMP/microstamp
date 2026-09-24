@@ -4,6 +4,8 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import microstamp.cast.step5.client.CastStep3Client;
 import microstamp.cast.step5.client.CastStep4Client;
+import microstamp.cast.step5.client.InadequateControlActionReadDto;
+import microstamp.cast.step5.client.SystemicFactorReadDto;
 import microstamp.cast.step5.dto.recommendation.RecommendationInsertDto;
 import microstamp.cast.step5.dto.recommendation.RecommendationReadDto;
 import microstamp.cast.step5.dto.recommendation.RecommendationUpdateDto;
@@ -33,13 +35,14 @@ public class RecommendationServiceImpl implements RecommendationService {
     @Override
     @Transactional
     public RecommendationReadDto create(RecommendationInsertDto dto) {
-        validateInadequateControlActionsExist(dto.inadequateControlActionIds());
-        validateSystemicFactorsExist(dto.systemicFactorIds());
+        validateIcasBelongToAnalysis(dto.inadequateControlActionIds(), dto.analysisId());
+        validateSystemicFactorsBelongToAnalysis(dto.systemicFactorIds(), dto.analysisId());
         Recommendation entity = mapper.toEntity(dto);
         return mapper.toReadDto(repository.save(entity));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RecommendationReadDto> findByAnalysisId(UUID analysisId) {
         return repository.findByAnalysisId(analysisId).stream()
                 .map(mapper::toReadDto)
@@ -47,12 +50,20 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public RecommendationReadDto findById(UUID id) {
+        Recommendation entity = repository.findById(id)
+                .orElseThrow(() -> new RecommendationNotFoundException("Recommendation not found: " + id));
+        return mapper.toReadDto(entity);
+    }
+
+    @Override
     @Transactional
     public RecommendationReadDto update(UUID id, RecommendationUpdateDto dto) {
         Recommendation entity = repository.findById(id)
                 .orElseThrow(() -> new RecommendationNotFoundException("Recommendation not found"));
-        validateInadequateControlActionsExist(dto.inadequateControlActionIds());
-        validateSystemicFactorsExist(dto.systemicFactorIds());
+        validateIcasBelongToAnalysis(dto.inadequateControlActionIds(), entity.getAnalysisId());
+        validateSystemicFactorsBelongToAnalysis(dto.systemicFactorIds(), entity.getAnalysisId());
         mapper.updateEntityFromDto(dto, entity);
         return mapper.toReadDto(repository.save(entity));
     }
@@ -63,28 +74,36 @@ public class RecommendationServiceImpl implements RecommendationService {
         repository.deleteById(id);
     }
 
-    private void validateInadequateControlActionsExist(List<UUID> inadequateControlActionIds) {
-        if (inadequateControlActionIds == null) {
-            return;
-        }
-        for (UUID icaId : inadequateControlActionIds) {
+    private void validateIcasBelongToAnalysis(List<UUID> icaIds, UUID expectedAnalysisId) {
+        if (icaIds == null || icaIds.isEmpty()) return;
+        for (UUID icaId : icaIds) {
+            InadequateControlActionReadDto ica;
             try {
-                castStep3Client.readInadequateControlAction(icaId);
+                ica = castStep3Client.readInadequateControlAction(icaId);
             } catch (FeignException.NotFound ex) {
-                throw new InadequateControlActionReferenceNotFoundException("Inadequate Control Action not found: " + icaId);
+                throw new InadequateControlActionReferenceNotFoundException(
+                        "InadequateControlAction not found: " + icaId);
+            }
+            if (!expectedAnalysisId.equals(ica.analysisId())) {
+                throw new InadequateControlActionReferenceNotFoundException(
+                        "InadequateControlAction " + icaId + " belongs to analysis " + ica.analysisId() + " and not to analysis " + expectedAnalysisId);
             }
         }
     }
 
-    private void validateSystemicFactorsExist(List<UUID> systemicFactorIds) {
-        if (systemicFactorIds == null) {
-            return;
-        }
-        for (UUID systemicFactorId : systemicFactorIds) {
+    private void validateSystemicFactorsBelongToAnalysis(List<UUID> sfIds, UUID expectedAnalysisId) {
+        if (sfIds == null || sfIds.isEmpty()) return;
+        for (UUID sfId : sfIds) {
+            SystemicFactorReadDto sf;
             try {
-                castStep4Client.readSystemicFactor(systemicFactorId);
+                sf = castStep4Client.readSystemicFactor(sfId);
             } catch (FeignException.NotFound ex) {
-                throw new SystemicFactorReferenceNotFoundException("Systemic Factor not found: " + systemicFactorId);
+                throw new SystemicFactorReferenceNotFoundException(
+                        "SystemicFactor não encontrado: " + sfId);
+            }
+            if (!expectedAnalysisId.equals(sf.analysisId())) {
+                throw new SystemicFactorReferenceNotFoundException(
+                        "SystemicFactor " + sfId + " belongs to analysis " + sf.analysisId() + " and not to analysis " + expectedAnalysisId);
             }
         }
     }

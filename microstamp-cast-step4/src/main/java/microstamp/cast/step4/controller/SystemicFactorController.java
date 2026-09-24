@@ -1,5 +1,6 @@
 package microstamp.cast.step4.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import microstamp.cast.step4.dto.systemicfactor.SystemicFactorInsertDto;
 import microstamp.cast.step4.dto.systemicfactor.SystemicFactorReadDto;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "CAST - Systemic Factors")
 @RequestMapping("/systemic-factors")
 @RequiredArgsConstructor
 public class SystemicFactorController {
