@@ -1,5 +1,7 @@
 package microstamp.cast.step3.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import microstamp.cast.step3.dto.inadequatecontrolaction.InadequateControlActionInsertDto;
 import microstamp.cast.step3.dto.inadequatecontrolaction.InadequateControlActionReadDto;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "CAST - Inadequate Control Actions")
 @RequestMapping("/inadequate-control-actions")
 @RequiredArgsConstructor
 public class InadequateControlActionController {
@@ -19,22 +22,27 @@ public class InadequateControlActionController {
     private final InadequateControlActionService service;
 
     @PostMapping
-    public ResponseEntity<InadequateControlActionReadDto> create(@RequestBody InadequateControlActionInsertDto dto) {
+    public ResponseEntity<InadequateControlActionReadDto> create(
+            @Valid @RequestBody InadequateControlActionInsertDto dto) {
         return ResponseEntity.ok(service.create(dto));
     }
 
     @GetMapping("/analysis/{analysisId}")
-    public ResponseEntity<List<InadequateControlActionReadDto>> findByAnalysisId(@PathVariable UUID analysisId) {
+    public ResponseEntity<List<InadequateControlActionReadDto>> findByAnalysisId(
+            @PathVariable UUID analysisId) {
         return ResponseEntity.ok(service.findByAnalysisId(analysisId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InadequateControlActionReadDto> findById(@PathVariable UUID id) {
+    public ResponseEntity<InadequateControlActionReadDto> findById(
+            @PathVariable UUID id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InadequateControlActionReadDto> update(@PathVariable UUID id, @RequestBody InadequateControlActionUpdateDto dto) {
+    public ResponseEntity<InadequateControlActionReadDto> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody InadequateControlActionUpdateDto dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
