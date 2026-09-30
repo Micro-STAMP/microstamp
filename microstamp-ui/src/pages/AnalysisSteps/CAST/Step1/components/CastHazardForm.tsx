@@ -1,16 +1,23 @@
 import { useState } from 'react';
-import { BiSave, BiTrash } from 'react-icons/bi';
+import { BiSave, BiTrash, BiShow } from 'react-icons/bi';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getByAnalysisId as getHazards, createHazard, deleteHazard } from '@http/CAST/Step1/Hazards';
 import { getByAnalysisId as getLossEvents } from '@http/CAST/Step1/AccidentLossEvents';
 import CastSection from '@components/CastSection';
+import CastCheckbox from '@components/CastCheckbox';
+import { useRegisterCastSection, useGoToCastSection } from '@components/CastSection/CastSectionNavigator';
+import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
+import { ICastHazardReadDto } from '@interfaces/CAST/ICastHazard';
 import styles from '../CastStepOne.module.css';
 
 interface Props { analysisId: string; }
 
 export default function CastHazardForm({ analysisId }: Props) {
     const queryClient = useQueryClient();
+    const registerHazardsSection = useRegisterCastSection('hazards');
+    const goToSection = useGoToCastSection();
+    const [previewHazard, setPreviewHazard] = useState<ICastHazardReadDto | null>(null);
 
     const { data: hazards, isLoading: isLoadingHazards } = useQuery({
         queryKey: ['hazards', analysisId],
@@ -65,9 +72,10 @@ export default function CastHazardForm({ analysisId }: Props) {
     };
 
     return (
-        <CastSection title="Hazards Involved" tooltipInfo="What unsafe states materialized?" defaultOpen={false} hideAddButton={true}>
+        <>
+        <CastSection ref={registerHazardsSection} title="System Hazards" tooltipInfo="What unsafe states materialized?" defaultOpen={false} hideAddButton={true}>
             {isLoadingHazards ? (
-                <div style={{ color: '#9ca3af', fontSize: '14px', padding: '10px' }}>Loading hazards...</div>
+                <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading hazards...</div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     
@@ -81,8 +89,8 @@ export default function CastHazardForm({ analysisId }: Props) {
                                         justifyContent: 'space-between', 
                                         alignItems: 'flex-start',
                                         padding: '16px', 
-                                        backgroundColor: '#303642', 
-                                        border: '1px solid #4b5563', 
+                                        backgroundColor: 'var(--color-dark-gray)', 
+                                        border: '1px solid var(--color-gray)', 
                                         borderRadius: '8px',
                                         gap: '16px'
                                     }}
@@ -103,7 +111,7 @@ export default function CastHazardForm({ analysisId }: Props) {
                                             <p style={{ 
                                                 margin: 0, 
                                                 fontSize: '14px', 
-                                                color: '#9ca3af', 
+                                                color: 'var(--color-muted-text)', 
                                                 lineHeight: '1.5' 
                                             }}>
                                                 {h.description}
@@ -111,24 +119,42 @@ export default function CastHazardForm({ analysisId }: Props) {
                                         )}
                                     </div>
                                     
-                                    <button 
-                                        onClick={() => remove(h.id)} 
-                                        style={{ 
-                                            background: 'none', 
-                                            border: 'none', 
-                                            color: '#ef4444', 
-                                            cursor: 'pointer',
-                                            padding: '4px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            transition: 'opacity 0.2s',
-                                            marginTop: '-4px' 
-                                        }}
-                                        title="Remove Hazard"
-                                    >
-                                        <BiTrash size={18} />
-                                    </button>
+                                    <div style={{ display: 'flex', gap: '4px', marginTop: '-4px' }}>
+                                        <button
+                                            onClick={() => setPreviewHazard(h)}
+                                            style={{
+                                                background: 'none',
+                                                border: 'none',
+                                                color: 'var(--color-muted-text)',
+                                                cursor: 'pointer',
+                                                padding: '4px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                transition: 'opacity 0.2s'
+                                            }}
+                                            title="View traceability"
+                                        >
+                                            <BiShow size={18} />
+                                        </button>
+                                        <button
+                                            onClick={() => remove(h.id)}
+                                            style={{
+                                                background: 'none',
+                                                border: 'none',
+                                                color: '#ef4444',
+                                                cursor: 'pointer',
+                                                padding: '4px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                transition: 'opacity 0.2s'
+                                            }}
+                                            title="Remove Hazard"
+                                        >
+                                            <BiTrash size={18} />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -139,14 +165,14 @@ export default function CastHazardForm({ analysisId }: Props) {
                     <hr style={{ borderTop: '1px solid #e5e7eb', margin: '10px 0' }} />
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <h4 style={{ margin: 0, fontSize: '14px', color: '#374151' }}>Add New Hazard</h4>
+                        <h4 style={{ margin: 0, fontSize: '14px', color: 'var(--color-white)' }}>Add New Hazard</h4>
                         <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '16px' }}>
                             <div>
                                 <label className={styles.inputLabel}>Code</label>
                                 <input type="text" className={styles.inputField} value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ marginBottom: 0 }} />
                             </div>
                             <div>
-                                <label className={styles.inputLabel}>Hazard Name</label>
+                                <label className={styles.inputLabel}>Hazard Title</label>
                                 <input type="text" placeholder="E.g., High Pressure" className={styles.inputField} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ marginBottom: 0 }} />
                             </div>
                         </div>
@@ -157,12 +183,11 @@ export default function CastHazardForm({ analysisId }: Props) {
 
                         {losses && losses.length > 0 && (
                             <div>
-                                <label className={styles.inputLabel}>Linked Accident / Loss Events</label>
+                                <label className={styles.inputLabel}>Linked Losses</label>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
                                     {losses.map(loss => (
                                         <label key={loss.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', cursor: 'pointer' }}>
-                                            <input 
-                                                type="checkbox" 
+                                            <CastCheckbox
                                                 checked={form.accidentLossEventIds.includes(loss.id)}
                                                 onChange={() => handleLossToggle(loss.id)}
                                             />
@@ -182,5 +207,29 @@ export default function CastHazardForm({ analysisId }: Props) {
                 </div>
             )}
         </CastSection>
+
+        {previewHazard && (
+            <TraceabilityPreviewModal
+                open={!!previewHazard}
+                onClose={() => setPreviewHazard(null)}
+                title="Hazard Details"
+                code={previewHazard.code}
+                name={previewHazard.name}
+                description={previewHazard.description}
+                relatedGroups={[
+                    {
+                        label: 'Linked Losses',
+                        emptyMessage: 'No linked loss events.',
+                        items: (previewHazard.accidentLossEvents ?? []).map(loss => ({
+                            id: loss.id,
+                            code: loss.code,
+                            name: loss.name,
+                            onGoTo: () => goToSection('loss-events')
+                        }))
+                    }
+                ]}
+            />
+        )}
+        </>
     );
 }

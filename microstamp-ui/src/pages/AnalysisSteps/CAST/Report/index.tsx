@@ -19,6 +19,7 @@ import { getByAnalysisId as getRecommendations } from '@http/CAST/Step5/Recommen
 
 import { icaTypeToSelectOption } from '@interfaces/CAST/IStep3/IInadequateControlAction';
 import { systemicFactorCategoryToSelectOption } from '@interfaces/CAST/IStep4/ISystemicFactor';
+import { recommendationPriorityToSelectOption } from '@interfaces/CAST/IStep5/IRecommendation';
 
 import castStyles from '../Step1/CastStepOne.module.css';
 import styles from './CastReport.module.css';
@@ -90,13 +91,17 @@ export default function CastReport(_: Props) {
 
     const getIcaLabel = (icaId: string) => {
         const ica = icas.find(i => i.id === icaId);
-        return ica ? `${ica.code} — ${ica.controlActionName}` : 'Inadequate Control Action not found';
+        return ica ? `${ica.code} — ${ica.controlActionName}` : 'Component Analysis not found';
     };
     const getSystemicFactorLabel = (systemicFactorId: string) => {
         const factor = systemicFactors.find(f => f.id === systemicFactorId);
         return factor
             ? `${systemicFactorCategoryToSelectOption(factor.category).label} — ${factor.description}`
             : 'Systemic Factor not found';
+    };
+    const getComponentLabel = (componentId: string) => {
+        const component = (componentsQuery.data || []).find(c => c.id === componentId);
+        return component ? `${component.code}: ${component.name}` : 'Unknown component';
     };
 
     const editUrl = (path: string) => `${window.location.origin}${path}`;
@@ -109,19 +114,18 @@ export default function CastReport(_: Props) {
                 executiveSummary,
                 sections: [
                     {
-                        title: 'System Description',
+                        title: 'System & System Boundary',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No system description registered yet.',
                         items: (systemDescriptionsQuery.data || []).map(item => ({
-                            code: item.code,
                             paragraphs: [item.description],
                             fields: item.analysisBoundary
-                                ? [{ label: 'Analysis Boundary', value: item.analysisBoundary }]
+                                ? [{ label: 'System Name', value: item.analysisBoundary }]
                                 : []
                         }))
                     },
                     {
-                        title: 'Accident / Loss Events',
+                        title: 'System Losses',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No accident/loss events registered yet.',
                         items: (accidentLossEventsQuery.data || []).map(item => ({
@@ -131,7 +135,7 @@ export default function CastReport(_: Props) {
                         }))
                     },
                     {
-                        title: 'Hazards',
+                        title: 'System Hazards',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No hazards registered yet.',
                         items: (castHazardsQuery.data || []).map(item => ({
@@ -153,7 +157,7 @@ export default function CastReport(_: Props) {
                         }))
                     },
                     {
-                        title: 'Timeline of Events',
+                        title: 'Proximate Events and Questions',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No timeline events registered yet.',
                         items: (timelineEventsQuery.data || []).map(item => ({
@@ -196,23 +200,26 @@ export default function CastReport(_: Props) {
                         }))
                     },
                     {
-                        title: 'Inadequate Control Actions',
+                        title: 'Component Analysis',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step3`),
-                        emptyLabel: 'No Inadequate Control Actions registered yet.',
+                        emptyLabel: 'No Component Analysis registered yet.',
                         items: icas.map(item => ({
                             code: item.code,
                             title: `${item.controlActionName} — ${icaTypeToSelectOption(item.type).label}`,
                             paragraphs: item.description ? [item.description] : [],
                             fields: [
-                                item.context ? { label: 'Context', value: item.context } : null,
+                                item.context ? { label: 'Context / Contextual Factors', value: item.context } : null,
                                 item.processModelFlaw
                                     ? { label: 'Process Model Flaw', value: item.processModelFlaw }
+                                    : null,
+                                item.questions
+                                    ? { label: 'Investigative / Unanswered Questions', value: item.questions }
                                     : null
                             ].filter((field): field is { label: string; value: string } => field !== null)
                         }))
                     },
                     {
-                        title: 'Systemic Factors',
+                        title: 'Control Structure Flaws (Systemic Factors)',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step4`),
                         emptyLabel: 'No Systemic Factors registered yet.',
                         items: systemicFactors.map(item => ({
@@ -227,6 +234,17 @@ export default function CastReport(_: Props) {
                         emptyLabel: 'No Recommendations registered yet.',
                         items: (recommendationsQuery.data || []).map(item => ({
                             paragraphs: [item.description],
+                            fields: [
+                                item.priority
+                                    ? { label: 'Priority / Timeframe', value: recommendationPriorityToSelectOption(item.priority).label }
+                                    : null,
+                                item.componentId
+                                    ? { label: 'Target Controller', value: getComponentLabel(item.componentId) }
+                                    : null,
+                                item.auditMechanism
+                                    ? { label: 'Feedback / Audit Mechanism', value: item.auditMechanism }
+                                    : null
+                            ].filter((field): field is { label: string; value: string } => field !== null),
                             chips: [
                                 ...(item.inadequateControlActionIds || []).map(getIcaLabel),
                                 ...(item.systemicFactorIds || []).map(getSystemicFactorLabel)
@@ -273,7 +291,7 @@ export default function CastReport(_: Props) {
                 </div>
 
                 {isLoading ? (
-                    <div style={{ color: '#9ca3af', fontSize: '14px', padding: '10px' }}>Loading report data...</div>
+                    <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading report data...</div>
                 ) : (
                     <div className={styles.reportContainer}>
 
@@ -296,18 +314,17 @@ export default function CastReport(_: Props) {
                         {/* 1. Purpose of the Analysis (CAST Handbook, Leveson 2019) */}
 
                         <ReportGroup
-                            title="System Description"
+                            title="System & System Boundary"
                             editHref={`/analyses/${analysisId}/cast/step1`}
                             isEmpty={(systemDescriptionsQuery.data || []).length === 0}
                             emptyLabel="No system description registered yet."
                         >
                             {(systemDescriptionsQuery.data || []).map(item => (
                                 <div key={item.id} className={styles.reportBlock}>
-                                    <span className={styles.itemCode}>{item.code}</span>
                                     <p className={styles.itemField}>{item.description}</p>
                                     {item.analysisBoundary && (
                                         <p className={styles.itemField}>
-                                            <span className={styles.itemFieldLabel}>Analysis Boundary: </span>
+                                            <span className={styles.itemFieldLabel}>System Name: </span>
                                             {item.analysisBoundary}
                                         </p>
                                     )}
@@ -316,7 +333,7 @@ export default function CastReport(_: Props) {
                         </ReportGroup>
 
                         <ReportGroup
-                            title="Accident / Loss Events"
+                            title="System Losses"
                             editHref={`/analyses/${analysisId}/cast/step1`}
                             isEmpty={(accidentLossEventsQuery.data || []).length === 0}
                             emptyLabel="No accident/loss events registered yet."
@@ -331,7 +348,7 @@ export default function CastReport(_: Props) {
                         </ReportGroup>
 
                         <ReportGroup
-                            title="Hazards"
+                            title="System Hazards"
                             editHref={`/analyses/${analysisId}/cast/step1`}
                             isEmpty={(castHazardsQuery.data || []).length === 0}
                             emptyLabel="No hazards registered yet."
@@ -379,7 +396,7 @@ export default function CastReport(_: Props) {
                         </ReportGroup>
 
                         <ReportGroup
-                            title="Timeline of Events"
+                            title="Proximate Events and Questions"
                             editHref={`/analyses/${analysisId}/cast/step1`}
                             isEmpty={(timelineEventsQuery.data || []).length === 0}
                             emptyLabel="No timeline events registered yet."
@@ -452,13 +469,13 @@ export default function CastReport(_: Props) {
                             ))}
                         </ReportGroup>
 
-                        {/* 3. Inadequate Control Actions */}
+                        {/* 3. Component Analysis */}
 
                         <ReportGroup
-                            title="Inadequate Control Actions"
+                            title="Component Analysis"
                             editHref={`/analyses/${analysisId}/cast/step3`}
                             isEmpty={icas.length === 0}
-                            emptyLabel="No Inadequate Control Actions registered yet."
+                            emptyLabel="No Component Analysis registered yet."
                         >
                             {icas.map(item => (
                                 <div key={item.id} className={styles.reportBlock}>
@@ -469,7 +486,7 @@ export default function CastReport(_: Props) {
                                     {item.description && <p className={styles.itemField}>{item.description}</p>}
                                     {item.context && (
                                         <p className={styles.itemField}>
-                                            <span className={styles.itemFieldLabel}>Context: </span>
+                                            <span className={styles.itemFieldLabel}>Context / Contextual Factors: </span>
                                             {item.context}
                                         </p>
                                     )}
@@ -479,6 +496,12 @@ export default function CastReport(_: Props) {
                                             {item.processModelFlaw}
                                         </p>
                                     )}
+                                    {item.questions && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Investigative / Unanswered Questions: </span>
+                                            {item.questions}
+                                        </p>
+                                    )}
                                 </div>
                             ))}
                         </ReportGroup>
@@ -486,7 +509,7 @@ export default function CastReport(_: Props) {
                         {/* 4. Systemic Factors */}
 
                         <ReportGroup
-                            title="Systemic Factors"
+                            title="Control Structure Flaws (Systemic Factors)"
                             editHref={`/analyses/${analysisId}/cast/step4`}
                             isEmpty={systemicFactors.length === 0}
                             emptyLabel="No Systemic Factors registered yet."
@@ -519,6 +542,24 @@ export default function CastReport(_: Props) {
                             {(recommendationsQuery.data || []).map(item => (
                                 <div key={item.id} className={styles.reportBlock}>
                                     <p className={styles.itemField}>{item.description}</p>
+                                    {item.priority && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Priority / Timeframe: </span>
+                                            {recommendationPriorityToSelectOption(item.priority).label}
+                                        </p>
+                                    )}
+                                    {item.componentId && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Target Controller: </span>
+                                            {getComponentLabel(item.componentId)}
+                                        </p>
+                                    )}
+                                    {item.auditMechanism && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Feedback / Audit Mechanism: </span>
+                                            {item.auditMechanism}
+                                        </p>
+                                    )}
                                     {(item.inadequateControlActionIds?.length > 0 || item.systemicFactorIds?.length > 0) && (
                                         <div className={styles.chipsRow}>
                                             {item.inadequateControlActionIds?.map(icaId => (

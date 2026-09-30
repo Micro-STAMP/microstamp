@@ -36,6 +36,8 @@ public class TimelineEvent implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String questions;
 
+    private String timeLabel;
+
     @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;
 }

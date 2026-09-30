@@ -15,7 +15,10 @@ public class RecommendationMapper {
                 entity.getAnalysisId(),
                 entity.getDescription(),
                 entity.getInadequateControlActionIds(),
-                entity.getSystemicFactorIds()
+                entity.getSystemicFactorIds(),
+                entity.getComponentId(),
+                entity.getPriority(),
+                entity.getAuditMechanism()
         );
     }
 
@@ -25,6 +28,9 @@ public class RecommendationMapper {
                 .description(dto.description())
                 .inadequateControlActionIds(dto.inadequateControlActionIds())
                 .systemicFactorIds(dto.systemicFactorIds())
+                .componentId(dto.componentId())
+                .priority(dto.priority())
+                .auditMechanism(dto.auditMechanism())
                 .build();
     }
 
@@ -32,5 +38,8 @@ public class RecommendationMapper {
         entity.setDescription(dto.description());
         entity.setInadequateControlActionIds(dto.inadequateControlActionIds());
         entity.setSystemicFactorIds(dto.systemicFactorIds());
+        entity.setComponentId(dto.componentId());
+        entity.setPriority(dto.priority());
+        entity.setAuditMechanism(dto.auditMechanism());
     }
 }

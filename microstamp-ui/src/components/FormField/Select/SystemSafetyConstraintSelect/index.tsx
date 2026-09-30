@@ -6,17 +6,19 @@ interface SystemSafetyConstraintSelectProps {
 	onChange: (value: SelectOption | null) => void;
 	systemSafetyConstraints: SelectOption[];
 	disabled?: boolean;
+	label?: string;
 }
 function SystemSafetyConstraintSelect({
 	value,
 	onChange,
 	systemSafetyConstraints,
-	disabled
+	disabled,
+	label = "System Safety Constraint"
 }: SystemSafetyConstraintSelectProps) {
 	return (
 		<>
 			<Select
-				label="System Safety Constraint"
+				label={label}
 				value={value}
 				options={systemSafetyConstraints}
 				disabled={disabled}

@@ -15,9 +15,6 @@ import java.util.UUID;
 public class SystemDescriptionInsertDto {
 
     @NotBlank
-    private String code;
-
-    @NotBlank
     private String description;
 
     private String analysisBoundary;

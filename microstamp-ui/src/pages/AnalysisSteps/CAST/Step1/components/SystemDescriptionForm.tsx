@@ -17,12 +17,11 @@ export default function SystemDescriptionForm({ analysisId }: Props) {
     });
     const currentSD = data?.[0];
 
-    const [form, setForm] = useState({ code: 'SD-1', description: '', analysisBoundary: '' });
+    const [form, setForm] = useState({ description: '', analysisBoundary: '' });
 
     useEffect(() => {
         if (currentSD) {
             setForm({
-                code: currentSD.code,
                 description: currentSD.description,
                 analysisBoundary: currentSD.analysisBoundary || ''
             });
@@ -33,11 +32,11 @@ export default function SystemDescriptionForm({ analysisId }: Props) {
         mutationFn: async () => {
             if (currentSD) {
                 return await updateSystemDescription(currentSD.id, {
-                    code: form.code, description: form.description, analysisBoundary: form.analysisBoundary
+                    description: form.description, analysisBoundary: form.analysisBoundary
                 });
             } else {
                 return await createSystemDescription({
-                    code: form.code, description: form.description, analysisBoundary: form.analysisBoundary, analysisId
+                    description: form.description, analysisBoundary: form.analysisBoundary, analysisId
                 });
             }
         },
@@ -49,24 +48,18 @@ export default function SystemDescriptionForm({ analysisId }: Props) {
     });
 
     return (
-        <CastSection title="System Description" tooltipInfo="Describe the components and boundaries." hideAddButton={true}>
+        <CastSection title="System & System Boundary" tooltipInfo="Describe the components and boundaries." hideAddButton={true}>
             {isLoading ? (
-                <div style={{ color: '#9ca3af', fontSize: '14px', padding: '10px' }}>Loading data...</div>
+                <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading data...</div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '16px' }}>
-                        <div>
-                            <label className={styles.inputLabel}>Code</label>
-                            <input type="text" className={styles.inputField} value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ marginBottom: 0 }} />
-                        </div>
-                        <div>
-                            <label className={styles.inputLabel}>Analysis Boundary</label>
-                            <input type="text" placeholder="What is inside and outside the scope?" className={styles.inputField} value={form.analysisBoundary} onChange={e => setForm({ ...form, analysisBoundary: e.target.value })} style={{ marginBottom: 0 }} />
-                        </div>
+                    <div>
+                        <label className={styles.inputLabel}>System Name</label>
+                        <input type="text" placeholder="E.g., Immunosuppressive Therapy Management System" className={styles.inputField} value={form.analysisBoundary} onChange={e => setForm({ ...form, analysisBoundary: e.target.value })} style={{ marginBottom: 0 }} />
                     </div>
                     <div>
-                        <label className={styles.inputLabel}>System Description</label>
-                        <textarea rows={4} placeholder="Describe normal operations..." className={styles.inputField} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} style={{ marginBottom: 0 }} />
+                        <label className={styles.inputLabel}>System Boundary</label>
+                        <textarea rows={4} placeholder="Which teams, sectors, and systems are inside/outside the scope? (e.g., ICU, Pharmacy, EHR)" className={styles.inputField} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} style={{ marginBottom: 0 }} />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <button onClick={() => save()} disabled={isPending} className={styles.btnSaveForm}>

@@ -12,5 +12,6 @@ public record InadequateControlActionReadDto(
         IcaType type,
         String description,
         String context,
-        String processModelFlaw
+        String processModelFlaw,
+        String questions
 ) {}

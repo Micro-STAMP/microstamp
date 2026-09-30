@@ -3,6 +3,7 @@ export interface ITimelineEventInsertDto {
     eventOrder?: number;
     eventDescription: string;
     questions?: string;
+    timeLabel?: string;
     analysisId: string;
 }
 
@@ -12,6 +13,7 @@ export interface ITimelineEventReadDto {
     eventOrder?: number;
     eventDescription: string;
     questions?: string;
+    timeLabel?: string;
 }
 
 export interface ITimelineEventUpdateDto {
@@ -19,4 +21,5 @@ export interface ITimelineEventUpdateDto {
     eventOrder?: number;
     eventDescription: string;
     questions?: string;
+    timeLabel?: string;
 }

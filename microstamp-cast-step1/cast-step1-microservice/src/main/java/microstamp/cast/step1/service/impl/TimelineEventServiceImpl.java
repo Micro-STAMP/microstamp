@@ -82,6 +82,7 @@ public class TimelineEventServiceImpl implements TimelineEventService {
         timelineEvent.setEventOrder(timelineEventUpdateDto.getEventOrder());
         timelineEvent.setEventDescription(timelineEventUpdateDto.getEventDescription());
         timelineEvent.setQuestions(timelineEventUpdateDto.getQuestions());
+        timelineEvent.setTimeLabel(timelineEventUpdateDto.getTimeLabel());
 
         log.info("Updating the CAST timeline event with id {}", id);
         timelineEventRepository.save(timelineEvent);

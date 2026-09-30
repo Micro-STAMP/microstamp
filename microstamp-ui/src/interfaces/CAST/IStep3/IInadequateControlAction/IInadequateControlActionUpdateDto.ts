@@ -6,6 +6,7 @@ interface IInadequateControlActionUpdateDto {
 	description?: string;
 	context?: string;
 	processModelFlaw?: string;
+	questions?: string;
 }
 
 export type { IInadequateControlActionUpdateDto };

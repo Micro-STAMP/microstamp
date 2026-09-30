@@ -1,9 +1,9 @@
 package microstamp.step2.dto.responsibility;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -19,7 +19,8 @@ public class ResponsibilityUpdateDto {
     @NotBlank
     private String code;
 
-    @NotNull
     private UUID systemSafetyConstraintId;
+
+    private List<UUID> violatedSystemSafetyConstraintIds;
 
 }

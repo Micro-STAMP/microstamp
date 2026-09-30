@@ -9,6 +9,7 @@ interface IInadequateControlActionInsertDto {
 	description?: string;
 	context?: string;
 	processModelFlaw?: string;
+	questions?: string;
 }
 
 export type { IInadequateControlActionInsertDto };

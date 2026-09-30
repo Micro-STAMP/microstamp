@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BiGridAlt, BiArrowBack } from 'react-icons/bi';
 import styles from '../Step1/CastStepOne.module.css'; 
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
+import CastNextStepButton from '@components/CastNextStepButton';
 
 import CastComponentsForm from './components/CastComponentsForm';
 import CastConnectionsForm from './components/CastConnectionsForm';
@@ -29,7 +30,7 @@ export default function CastStepTwo() {
                                 <BiGridAlt size={16} /> Analyses / {analysisId} 
                             </span>
                         </div>
-                        <h1 className={styles.pageTitle}>Step 2: Model the Control Structure</h1>
+                        <h1 className={styles.pageTitle}>Step 2: Model the Safety Control Structure</h1>
                     </div>
 
                     <div className={styles.actions}>
@@ -46,14 +47,18 @@ export default function CastStepTwo() {
 
             </div>
 
-            <ModalStepsMenu 
-                open={modalStepsMenuOpen} 
-                onClose={toggleModalStepsMenu} 
-                analysisId={analysisId} 
-                analysisType="CAST" 
+            <ModalStepsMenu
+                open={modalStepsMenuOpen}
+                onClose={toggleModalStepsMenu}
+                analysisId={analysisId}
+                analysisType="CAST"
             />
             <CastConnectionsForm analysisId={analysisId} />
             <CastStructureImageForm analysisId={analysisId} />
+
+            <div className={styles.wrapper}>
+                <CastNextStepButton analysisId={analysisId} to="step3" label="Step 3: Analyze Individual Components" />
+            </div>
         </div>
     );
 }

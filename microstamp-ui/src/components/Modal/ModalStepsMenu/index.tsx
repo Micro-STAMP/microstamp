@@ -107,7 +107,7 @@ function ModalStepsMenu({ open, onClose, analysisId, analysisType = "STPA" }: Mo
                                 }}
                             >
                                 <span className={styles.step_icon}><Step2Icon /></span>
-                                <span className={styles.step_label}>Step 2: Model the Control Structure</span>
+                                <span className={styles.step_label}>Step 2: Model the Safety Control Structure</span>
                             </button>
 
 							{/*  step 3 */}
@@ -120,7 +120,7 @@ function ModalStepsMenu({ open, onClose, analysisId, analysisType = "STPA" }: Mo
                                 }}
                             >
                                 <span className={styles.step_icon}><Step3Icon /></span>
-                                <span className={styles.step_label}>Step 3: Analyze the Inadequate Control</span>
+                                <span className={styles.step_label}>Step 3: Analyze Individual Components</span>
                             </button>
 
 							{/*  step 4 */}
@@ -133,7 +133,7 @@ function ModalStepsMenu({ open, onClose, analysisId, analysisType = "STPA" }: Mo
                                 }}
                             >
                                 <span className={styles.step_icon}><Step4Icon /></span>
-                                <span className={styles.step_label}>Step 4: Identify Systemic Factors</span>
+                                <span className={styles.step_label}>Step 4: Identify Control Structure Flaws</span>
                             </button>
 
 							{/*  step 5 */}
@@ -146,7 +146,7 @@ function ModalStepsMenu({ open, onClose, analysisId, analysisType = "STPA" }: Mo
                                 }}
                             >
                                 <span className={styles.step_icon}><Step5Icon /></span>
-                                <span className={styles.step_label}>Step 5: Create an Improvement Program</span>
+                                <span className={styles.step_label}>Step 5: Create Improvement Program</span>
                             </button>
                         </>
                     )}

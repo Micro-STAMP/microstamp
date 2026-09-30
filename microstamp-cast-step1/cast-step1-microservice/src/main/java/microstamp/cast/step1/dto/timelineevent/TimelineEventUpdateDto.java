@@ -3,8 +3,6 @@ package microstamp.cast.step1.dto.timelineevent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.time.Instant;
-
 @Getter
 @Setter
 @Builder
@@ -18,11 +16,10 @@ public class TimelineEventUpdateDto {
 
     private Integer eventOrder;
 
-    //Manter fora
-    //private Instant eventDate;
-
     @NotBlank
     private String eventDescription;
 
     private String questions;
+
+    private String timeLabel;
 }

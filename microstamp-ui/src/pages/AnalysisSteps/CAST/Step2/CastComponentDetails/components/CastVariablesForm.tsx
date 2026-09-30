@@ -58,15 +58,15 @@ export default function CastVariablesForm({ componentId }: Props) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 
                 {variables?.map((v: any) => (
-                    <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#374151', padding: '16px', borderRadius: '8px', border: '1px solid #4b5563' }}>
+                    <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--color-dark-gray)', padding: '16px', borderRadius: '8px', border: '1px solid var(--color-gray)' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ color: 'var(--color-yellow)', fontWeight: 'bold' }}>{v.code}</span>
+                                <span style={{ color: 'var(--color-yellow)', fontWeight: 'bold', fontSize: '14px' }}>{v.code}</span>
                                 <span style={{ color: '#fff', fontSize: '16px' }}>{v.name}</span>
                             </div>
                             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                 {v.states?.map((state: any) => (
-                                    <div key={state.id} style={{ backgroundColor: '#1f2937', border: '1px solid #6b7280', color: '#d1d5db', padding: '2px 8px', borderRadius: '12px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <div key={state.id} style={{ backgroundColor: 'var(--color-dark)', border: '1px solid var(--color-gray)', color: '#d1d5db', padding: '2px 8px', borderRadius: '12px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                         {state.name} 
                                         <span onClick={() => removeState(state.id)} style={{ cursor: 'pointer', color: '#ef4444' }}>×</span>
                                     </div>
@@ -77,7 +77,7 @@ export default function CastVariablesForm({ componentId }: Props) {
                     </div>
                 ))}
 
-                <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '8px', border: '1px dashed #4b5563', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ backgroundColor: 'var(--color-dark)', padding: '16px', borderRadius: '8px', border: '1px dashed var(--color-gray)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#d1d5db' }}>
                         <BiData size={20} /> <h4 style={{ margin: 0, fontSize: '14px' }}>Add Process Model Variable</h4>
                     </div>

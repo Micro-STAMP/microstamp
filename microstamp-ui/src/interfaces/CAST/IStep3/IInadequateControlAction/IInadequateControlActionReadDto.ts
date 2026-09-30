@@ -10,6 +10,7 @@ interface IInadequateControlActionReadDto {
 	description?: string;
 	context?: string;
 	processModelFlaw?: string;
+	questions?: string;
 }
 
 export type { IInadequateControlActionReadDto };

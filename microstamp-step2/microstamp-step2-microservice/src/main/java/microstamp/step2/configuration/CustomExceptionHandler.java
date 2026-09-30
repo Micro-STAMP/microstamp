@@ -140,4 +140,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, errorResponse,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
+    @ExceptionHandler(value = { Step2InvalidResponsibilityConstraintException.class })
+    protected ResponseEntity<Object> handleStep2InvalidResponsibilityConstraintException(Step2InvalidResponsibilityConstraintException ex, WebRequest request) {
+        Step2ErrorResponse errorResponse = new Step2ErrorResponse();
+        errorResponse.addError(new Step2Error(ex.getClass().getSimpleName(),"Step2InvalidResponsibilityConstraintException",ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 }

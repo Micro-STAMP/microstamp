@@ -4,12 +4,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getByAnalysisId, createLossEvent, updateLossEvent } from '@http/CAST/Step1/AccidentLossEvents';
 import CastSection from '@components/CastSection';
+import { useRegisterCastSection } from '@components/CastSection/CastSectionNavigator';
 import styles from '../CastStepOne.module.css';
 
 interface Props { analysisId: string; }
 
 export default function AccidentLossEventForm({ analysisId }: Props) {
     const queryClient = useQueryClient();
+    const registerLossSection = useRegisterCastSection('loss-events');
 
     const { data, isLoading } = useQuery({
         queryKey: ['loss-events', analysisId],
@@ -42,16 +44,16 @@ export default function AccidentLossEventForm({ analysisId }: Props) {
             }
         },
         onSuccess: () => {
-            toast.success("Accident / Loss Event saved successfully!");
+            toast.success("System Loss saved successfully!");
             queryClient.invalidateQueries({ queryKey: ['loss-events', analysisId] });
         },
         onError: (err: any) => toast.error(err.message || "Error saving Loss Event.")
     });
 
     return (
-        <CastSection title="Accident / Loss Event" tooltipInfo="What was the specific loss event?" hideAddButton={true}>
+        <CastSection ref={registerLossSection} title="System Losses" tooltipInfo="What was the specific loss event?" hideAddButton={true}>
             {isLoading ? (
-                <div style={{ color: '#9ca3af', fontSize: '14px', padding: '10px' }}>Loading data...</div>
+                <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading data...</div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '16px' }}>

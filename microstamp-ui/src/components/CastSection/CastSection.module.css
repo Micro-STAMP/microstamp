@@ -117,3 +117,12 @@
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+.sectionHighlighted {
+    animation: sectionHighlightPulse 1.6s ease-out;
+}
+
+@keyframes sectionHighlightPulse {
+    0% { box-shadow: 0 0 0 3px var(--color-yellow); }
+    100% { box-shadow: 0 0 0 3px transparent; }
+}

@@ -62,26 +62,26 @@ export default function CastStructureImageForm({ analysisId }: Props) {
     return (
         <CastSection title="Control Structure Image" tooltipInfo="Upload the final visual diagram of your Control Structure." hideAddButton={true}>
             {isLoading ? (
-                <div style={{ color: '#9ca3af', fontSize: '14px', padding: '10px' }}>Loading image...</div>
+                <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading image...</div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     
                     {!currentImage ? (
                         <div style={{ 
-                            border: '2px dashed #4b5563', 
+                            border: '2px dashed var(--color-gray)', 
                             borderRadius: '8px', 
                             padding: '40px 20px', 
                             textAlign: 'center', 
-                            backgroundColor: '#1f2937',
+                            backgroundColor: 'var(--color-dark)',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                             gap: '12px'
                         }}>
-                            <BiImageAdd size={48} color="#9ca3af" />
+                            <BiImageAdd size={48} color="var(--color-muted-text)" />
                             <div>
                                 <p style={{ margin: 0, color: '#d1d5db', fontWeight: 'bold' }}>No image has been added yet</p>
-                                <p style={{ margin: '4px 0 0 0', color: '#9ca3af', fontSize: '12px' }}>Upload a PNG or JPG of your Control Structure</p>
+                                <p style={{ margin: '4px 0 0 0', color: 'var(--color-muted-text)', fontSize: '12px' }}>Upload a PNG or JPG of your Control Structure</p>
                             </div>
                             
                             <label style={{ 
@@ -110,14 +110,14 @@ export default function CastStructureImageForm({ analysisId }: Props) {
                         </div>
                     ) : (
                         <div style={{ 
-                            border: '1px solid #4b5563', 
+                            border: '1px solid var(--color-gray)', 
                             borderRadius: '8px', 
                             overflow: 'hidden',
-                            backgroundColor: '#111827',
+                            backgroundColor: 'var(--color-dark)',
                             display: 'flex',
                             flexDirection: 'column'
                         }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', backgroundColor: '#1f2937', borderBottom: '1px solid #374151' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', backgroundColor: 'var(--color-dark)', borderBottom: '1px solid var(--color-gray)' }}>
                                 <span style={{ color: '#d1d5db', fontSize: '14px', fontWeight: 'bold' }}>Current Diagram</span>
                                 <button 
                                     onClick={() => removeImage(currentImage.id)} 

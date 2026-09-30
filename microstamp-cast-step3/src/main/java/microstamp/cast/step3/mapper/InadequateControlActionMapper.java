@@ -19,7 +19,8 @@ public class InadequateControlActionMapper {
                 entity.getType(),
                 entity.getDescription(),
                 entity.getContext(),
-                entity.getProcessModelFlaw()
+                entity.getProcessModelFlaw(),
+                entity.getQuestions()
         );
     }
 
@@ -33,6 +34,7 @@ public class InadequateControlActionMapper {
                 .description(dto.description())
                 .context(dto.context())
                 .processModelFlaw(dto.processModelFlaw())
+                .questions(dto.questions())
                 .build();
     }
 
@@ -42,5 +44,6 @@ public class InadequateControlActionMapper {
         entity.setDescription(dto.description());
         entity.setContext(dto.context());
         entity.setProcessModelFlaw(dto.processModelFlaw());
+        entity.setQuestions(dto.questions());
     }
 }

@@ -5,8 +5,10 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom'; 
 import { createComponent, deleteComponent, getComponents } from '@http/Step2/Components';
 import { IComponentInsertDto, IComponentType } from '@interfaces/IStep2';
+import { componentTypeSelectOptions } from '@interfaces/IStep2/IComponent/Enums';
 
 import CastSection from '@components/CastSection';
+import Select from '@components/FormField/Select';
 import styles from '../../Step1/CastStepOne.module.css';
 
 interface Props { analysisId: string; }
@@ -63,53 +65,52 @@ export default function CastComponentsForm({ analysisId }: Props) {
     return (
         <CastSection title="Components" tooltipInfo="List all the physical and human components involved in the control structure. Click on 'Analyze Details' to configure their process models and responsibilities." hideAddButton={true}>
             {isLoading ? (
-                <div style={{ color: '#9ca3af', fontSize: '14px', padding: '10px' }}>Loading components...</div>
+                <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading components...</div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     
                     {components && components.length > 0 && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             {components.map((comp) => (
-                                <div key={comp.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#374151', padding: '12px 16px', borderRadius: '8px', border: '1px solid #4b5563' }}>
+                                <div key={comp.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--color-dark-gray)', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--color-gray)' }}>
                                     
                                     {/* BLOCO DA ESQUERDA: INFORMAÇÕES DO COMPONENTE */}
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                         <BiMicrochip size={20} color="#fb923c" />
                                         
                                         {/* O NOME AGORA É APENAS TEXTO, SEM SUBINHA OU ESTILO DE LINK */}
-                                        <span style={{ color: '#f3f4f6', fontWeight: 'bold' }}>
+                                        <span style={{ color: '#f3f4f6', fontWeight: 'bold', fontSize: '15px' }}>
                                             {comp.code} - {comp.name}
                                         </span>
                                         
-                                        <span style={{ backgroundColor: '#1f2937', color: '#9ca3af', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid #4b5563' }}>
+                                        <span style={{ backgroundColor: 'var(--color-dark)', color: 'var(--color-muted-text)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)' }}>
                                             {comp.type.replace('_', ' ')}
                                         </span>
                                     </div>
 
                                     {/* BLOCO DA DIREITA: AÇÕES (BOTÃO EXPLÍCITO) */}
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                                        <button 
+                                        <button
                                             onClick={() => navigate(`/analyses/${analysisId}/cast/step2/component/${comp.id}`)}
-                                            style={{ 
-                                                backgroundColor: '#3b82f6', // Azul para destaque
-                                                color: 'white', 
-                                                border: 'none', 
-                                                padding: '6px 12px', 
-                                                borderRadius: '4px', 
+                                            style={{
+                                                backgroundColor: 'transparent',
+                                                color: 'var(--color-info)',
+                                                border: '1px solid var(--color-info)',
+                                                padding: '6px 12px',
+                                                borderRadius: 'var(--radius1)',
                                                 cursor: 'pointer',
                                                 fontSize: '12px',
                                                 fontWeight: 'bold',
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: '4px',
-                                                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                                gap: '4px'
                                             }}
                                             title="Analyze responsibilities and process model"
                                         >
                                             Analyze Details <BiRightArrowAlt size={16} />
                                         </button>
 
-                                        <button onClick={() => remove(comp.id)} style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Delete Component">
+                                        <button onClick={() => remove(comp.id)} style={{ background: 'transparent', border: 'none', color: 'var(--color-danger)', cursor: 'pointer' }} title="Delete Component">
                                             <BiTrash size={18} />
                                         </button>
                                     </div>
@@ -119,8 +120,8 @@ export default function CastComponentsForm({ analysisId }: Props) {
                         </div>
                     )}
 
-                    <div style={{ backgroundColor: '#1f2937', padding: '16px', borderRadius: '8px', border: '1px dashed #4b5563', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <h4 style={{ margin: 0, color: '#d1d5db', fontSize: '14px' }}>Add New Component</h4>
+                    <div style={{ backgroundColor: 'var(--color-dark)', padding: '16px', borderRadius: '8px', border: '1px dashed var(--color-gray)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <h4 style={{ margin: 0, color: 'var(--color-white)', fontSize: '14px' }}>Add New Component</h4>
                         
                         <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', gap: '16px' }}>
                             <div>
@@ -146,18 +147,13 @@ export default function CastComponentsForm({ analysisId }: Props) {
                                 />
                             </div>
                             <div>
-                                <label className={styles.inputLabel}>Type</label>
-                                <select 
-                                    className={styles.inputField} 
-                                    value={form.componentType} 
-                                    onChange={e => setForm({ ...form, componentType: e.target.value as IComponentType })} 
-                                    style={{ marginBottom: 0, cursor: 'pointer' }}
-                                >
-                                    <option value={IComponentType.CONTROLLER}>Controller</option>
-                                    <option value={IComponentType.CONTROLLED_PROCESS}>Controlled Process</option>
-                                    <option value={IComponentType.SENSOR}>Sensor</option>
-                                    <option value={IComponentType.ACTUATOR}>Actuator</option>
-                                </select>
+                                <Select
+                                    label="Type"
+                                    options={componentTypeSelectOptions}
+                                    value={componentTypeSelectOptions.find(o => o.value === form.componentType) || null}
+                                    onChange={opt => setForm({ ...form, componentType: (opt?.value as IComponentType) ?? IComponentType.CONTROLLER })}
+                                    required
+                                />
                             </div>
                         </div>
 

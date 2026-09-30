@@ -18,9 +18,6 @@ public class SystemDescriptionReadDto {
     private UUID id;
 
     @NotBlank
-    private String code;
-
-    @NotBlank
     private String description;
 
     private String analysisBoundary;

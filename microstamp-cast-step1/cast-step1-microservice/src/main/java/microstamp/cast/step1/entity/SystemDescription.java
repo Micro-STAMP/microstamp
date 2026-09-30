@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "SystemDescription")
 @Table(name = "cast_system_descriptions", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "code", "analysis_id" })
+        @UniqueConstraint(columnNames = { "analysis_id" })
 })
 public class SystemDescription implements Serializable {
 
@@ -24,8 +24,6 @@ public class SystemDescription implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
-
-    private String code;
 
     @Column(columnDefinition = "TEXT")
     private String description;

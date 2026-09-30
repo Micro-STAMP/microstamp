@@ -9,6 +9,8 @@ import castStyles from "@pages/AnalysisSteps/CAST/Step1/CastStepOne.module.css";
 import { useEffect, useState } from "react";
 import { BiSave, BiX } from "react-icons/bi";
 import { toast } from "sonner";
+import CastCheckbox from "@components/CastCheckbox";
+import Select from "@components/FormField/Select";
 import styles from "./ModalSystemicFactor.module.css";
 
 interface IcaOption {
@@ -110,19 +112,13 @@ export default function ModalSystemicFactor({
 
                 <div className={styles.body}>
                     <div>
-                        <label className={castStyles.inputLabel}>Category</label>
-                        <select
-                            className={castStyles.inputField}
-                            style={{ marginBottom: 0, cursor: "pointer" }}
-                            value={form.category}
-                            onChange={e => setForm({ ...form, category: e.target.value as ISystemicFactorCategory })}
-                        >
-                            {systemicFactorCategorySelectOptions.map(option => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
+                        <Select
+                            label="Category"
+                            options={systemicFactorCategorySelectOptions}
+                            value={systemicFactorCategorySelectOptions.find(o => o.value === form.category) || null}
+                            onChange={opt => setForm({ ...form, category: (opt?.value as ISystemicFactorCategory) ?? ISystemicFactorCategory.COMMUNICATION_AND_COORDINATION })}
+                            required
+                        />
                         <p className={styles.helperText}>
                             Systemic factors span the individual components of the safety control structure (CAST Handbook, Leveson 2019).
                         </p>
@@ -140,10 +136,10 @@ export default function ModalSystemicFactor({
                     </div>
 
                     <div>
-                        <label className={castStyles.inputLabel}>Linked Inadequate Control Actions</label>
+                        <label className={castStyles.inputLabel}>Linked Component Analyses</label>
                         <div className={styles.icaCheckboxList}>
                             {icaOptions.length === 0 ? (
-                                <p className={styles.icaEmptyState}>No Inadequate Control Actions registered in Step 3 yet.</p>
+                                <p className={styles.icaEmptyState}>No Component Analysis registered in Step 3 yet.</p>
                             ) : (
                                 icaOptions.map(ica => {
                                     const checked = form.inadequateControlActionIds.includes(ica.id);
@@ -152,8 +148,7 @@ export default function ModalSystemicFactor({
                                             key={ica.id}
                                             className={`${styles.icaCheckboxRow} ${checked ? styles.icaCheckboxRowActive : ""}`}
                                         >
-                                            <input
-                                                type="checkbox"
+                                            <CastCheckbox
                                                 checked={checked}
                                                 onChange={() => toggleIca(ica.id)}
                                             />
@@ -165,7 +160,7 @@ export default function ModalSystemicFactor({
                             )}
                         </div>
                         <p className={styles.helperText}>
-                            Select every Inadequate Control Action (Step 3) that this systemic factor helps explain.
+                            Select every Component Analysis (Step 3) that this systemic factor helps explain.
                         </p>
                     </div>
                 </div>

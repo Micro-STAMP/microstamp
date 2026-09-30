@@ -13,6 +13,7 @@ public class TimelineEventMapper {
                 .eventOrder(entity.getEventOrder())
                 .eventDescription(entity.getEventDescription())
                 .questions(entity.getQuestions())
+                .timeLabel(entity.getTimeLabel())
                 .build();
     }
 
@@ -22,6 +23,7 @@ public class TimelineEventMapper {
                 .eventOrder(dto.getEventOrder())
                 .eventDescription(dto.getEventDescription())
                 .questions(dto.getQuestions())
+                .timeLabel(dto.getTimeLabel())
                 .analysisId(dto.getAnalysisId())
                 .build();
     }

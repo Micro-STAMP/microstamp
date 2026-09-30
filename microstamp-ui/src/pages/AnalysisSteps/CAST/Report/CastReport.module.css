@@ -82,7 +82,7 @@
     align-items: center;
     gap: 0.4rem;
     background-color: var(--color-dark);
-    color: #9ca3af;
+    color: var(--color-muted-text);
     padding: 0.2rem 0.8rem;
     border-radius: 0.4rem;
     font-size: 1.2rem;

@@ -18,7 +18,7 @@ const getStepLabel = (step: ISteps) => {
 		case ISteps.STEP_4:
 			return "Identify Loss Scenarios";
 		case ISteps.STEP_5:
-			return "Create an Improvement Program";
+			return "Create Improvement Program";
 	}
 };
 export { getStepLabel };
@@ -34,7 +34,7 @@ const getStepFullLabel = (step: ISteps) => {
 		case ISteps.STEP_4:
 			return "Step 4: Identify Loss Scenarios";
 		case ISteps.STEP_5:
-			return "Step 5: Create an Improvement Program";
+			return "Step 5: Create Improvement Program";
 	}
 };
 export { getStepFullLabel };

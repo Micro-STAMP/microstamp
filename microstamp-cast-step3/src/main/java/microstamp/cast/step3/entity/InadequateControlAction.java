@@ -42,4 +42,7 @@ public class InadequateControlAction {
 
     @Column(name = "process_model_flaw", columnDefinition = "TEXT")
     private String processModelFlaw;
+
+    @Column(columnDefinition = "TEXT")
+    private String questions;
 }

@@ -6,10 +6,13 @@ import {
     IInadequateControlActionUpdateDto
 } from "@interfaces/CAST/IStep3/IInadequateControlAction";
 import { SelectOption } from "@components/FormField/Templates";
+import Select from "@components/FormField/Select";
 import castStyles from "@pages/AnalysisSteps/CAST/Step1/CastStepOne.module.css";
 import { useEffect, useState } from "react";
-import { BiSave, BiX } from "react-icons/bi";
+import { useQuery } from "@tanstack/react-query";
+import { BiSave, BiX, BiCheckShield } from "react-icons/bi";
 import { toast } from "sonner";
+import { getResponsibilities } from "@http/Step2/Responsibilities";
 import styles from "./ModalInadequateControlAction.module.css";
 
 interface ModalInadequateControlActionProps {
@@ -30,7 +33,8 @@ const EMPTY_FORM = {
     type: IIcaType.NOT_PROVIDED,
     description: "",
     context: "",
-    processModelFlaw: ""
+    processModelFlaw: "",
+    questions: ""
 };
 
 export default function ModalInadequateControlAction({
@@ -46,6 +50,12 @@ export default function ModalInadequateControlAction({
     const isEditMode = !!ica;
     const [form, setForm] = useState(EMPTY_FORM);
 
+    const { data: responsibilities, isLoading: isLoadingResponsibilities } = useQuery({
+        queryKey: ['component-responsibilities', form.componentId],
+        queryFn: () => getResponsibilities(form.componentId),
+        enabled: !!form.componentId
+    });
+
     useEffect(() => {
         if (!open) return;
 
@@ -57,7 +67,8 @@ export default function ModalInadequateControlAction({
                 type: ica.type,
                 description: ica.description || "",
                 context: ica.context || "",
-                processModelFlaw: ica.processModelFlaw || ""
+                processModelFlaw: ica.processModelFlaw || "",
+                questions: ica.questions || ""
             });
         } else {
             setForm({ ...EMPTY_FORM, componentId: componentOptions[0]?.value || "" });
@@ -78,7 +89,8 @@ export default function ModalInadequateControlAction({
                 type: form.type,
                 description: form.description,
                 context: form.context,
-                processModelFlaw: form.processModelFlaw
+                processModelFlaw: form.processModelFlaw,
+                questions: form.questions
             });
         } else {
             if (!form.componentId || !form.code.trim()) {
@@ -93,7 +105,8 @@ export default function ModalInadequateControlAction({
                 type: form.type,
                 description: form.description,
                 context: form.context,
-                processModelFlaw: form.processModelFlaw
+                processModelFlaw: form.processModelFlaw,
+                questions: form.questions
             });
         }
 
@@ -105,7 +118,7 @@ export default function ModalInadequateControlAction({
             <div className={styles.dialog} onClick={e => e.stopPropagation()}>
                 <div className={styles.header}>
                     <h3 className={styles.title}>
-                        {isEditMode ? "Edit Inadequate Control Action" : "New Inadequate Control Action"}
+                        {isEditMode ? "Edit Component Analysis" : "New Component Analysis"}
                     </h3>
                     <button className={styles.closeBtn} onClick={onClose} type="button">
                         <BiX size={22} />
@@ -115,27 +128,20 @@ export default function ModalInadequateControlAction({
                 <div className={styles.body}>
                     <div className={`${styles.row} ${styles.double}`}>
                         <div>
-                            <label className={castStyles.inputLabel}>Component</label>
-                            <select
-                                className={castStyles.inputField}
-                                style={{ marginBottom: 0, cursor: isEditMode ? "default" : "pointer" }}
-                                value={form.componentId}
+                            <Select
+                                label="Component"
+                                options={componentOptions}
+                                value={componentOptions.find(o => o.value === form.componentId) || null}
+                                onChange={opt => setForm({ ...form, componentId: opt?.value || "" })}
                                 disabled={isEditMode}
-                                onChange={e => setForm({ ...form, componentId: e.target.value })}
-                            >
-                                {componentOptions.length === 0 && <option value="">No components available</option>}
-                                {componentOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                                required
+                            />
                         </div>
                         <div>
                             <label className={castStyles.inputLabel}>Code</label>
                             <input
                                 type="text"
-                                placeholder="ICA-1"
+                                placeholder="CA-1"
                                 className={castStyles.inputField}
                                 style={{ marginBottom: 0 }}
                                 value={form.code}
@@ -144,6 +150,32 @@ export default function ModalInadequateControlAction({
                             />
                         </div>
                     </div>
+
+                    {form.componentId && (
+                        <div>
+                            <label className={castStyles.inputLabel}>Safety-Related Responsibilities</label>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', backgroundColor: 'var(--color-dark)', border: '1px solid var(--color-gray)', borderRadius: '8px', padding: '12px' }}>
+                                {isLoadingResponsibilities ? (
+                                    <span style={{ color: 'var(--color-muted-text)', fontSize: '13px' }}>Loading responsibilities...</span>
+                                ) : responsibilities && responsibilities.length > 0 ? (
+                                    responsibilities.map(resp => (
+                                        <div key={resp.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                                            <BiCheckShield size={16} color="var(--color-yellow)" style={{ marginTop: '2px', flexShrink: 0 }} />
+                                            <span style={{ fontSize: '13px', color: '#d1d5db', lineHeight: '1.5' }}>
+                                                <strong style={{ color: 'var(--color-yellow)' }}>{resp.code}: </strong>
+                                                {resp.responsibility}
+                                            </span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <span style={{ color: 'var(--color-muted-text)', fontSize: '13px' }}>No Safety-Related Responsibilities registered for this component in Step 2 yet.</span>
+                                )}
+                            </div>
+                            <p className={styles.helperText}>
+                                What this component was supposed to do, as registered in Step 2 — use it to compare against its actual contribution below.
+                            </p>
+                        </div>
+                    )}
 
                     <div className={`${styles.row} ${styles.double}`}>
                         <div>
@@ -158,24 +190,18 @@ export default function ModalInadequateControlAction({
                             />
                         </div>
                         <div>
-                            <label className={castStyles.inputLabel}>ICA Type</label>
-                            <select
-                                className={castStyles.inputField}
-                                style={{ marginBottom: 0, cursor: "pointer" }}
-                                value={form.type}
-                                onChange={e => setForm({ ...form, type: e.target.value as IIcaType })}
-                            >
-                                {icaTypeSelectOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                            <Select
+                                label="Control Action Category"
+                                options={icaTypeSelectOptions}
+                                value={icaTypeSelectOptions.find(o => o.value === form.type) || null}
+                                onChange={opt => setForm({ ...form, type: (opt?.value as IIcaType) ?? IIcaType.NOT_PROVIDED })}
+                                required
+                            />
                         </div>
                     </div>
 
                     <div>
-                        <label className={castStyles.inputLabel}>Description</label>
+                        <label className={castStyles.inputLabel}>Contribution / Description</label>
                         <textarea
                             rows={2}
                             className={castStyles.inputField}
@@ -183,10 +209,13 @@ export default function ModalInadequateControlAction({
                             value={form.description}
                             onChange={e => setForm({ ...form, description: e.target.value })}
                         />
+                        <p className={styles.helperText}>
+                            Describe how this component's behavior contributed to the hazardous state.
+                        </p>
                     </div>
 
                     <div>
-                        <label className={castStyles.inputLabel}>Context</label>
+                        <label className={castStyles.inputLabel}>Context / Contextual Factors</label>
                         <textarea
                             rows={3}
                             className={castStyles.inputField}
@@ -212,6 +241,20 @@ export default function ModalInadequateControlAction({
                             What was wrong or incomplete in the controller's process/mental model that led to this control action?
                         </p>
                     </div>
+
+                    <div>
+                        <label className={castStyles.inputLabel}>Investigative / Unanswered Questions</label>
+                        <textarea
+                            rows={3}
+                            className={castStyles.inputField}
+                            style={{ marginBottom: 0 }}
+                            value={form.questions}
+                            onChange={e => setForm({ ...form, questions: e.target.value })}
+                        />
+                        <p className={styles.helperText}>
+                            Open questions this component-level analysis couldn't resolve — e.g., organizational, managerial, or regulatory causes to pick up in Step 4 (Systemic Factors).
+                        </p>
+                    </div>
                 </div>
 
                 <div className={styles.footer}>
@@ -224,7 +267,7 @@ export default function ModalInadequateControlAction({
                         disabled={isLoading || !form.controlActionName.trim()}
                         type="button"
                     >
-                        <BiSave size={18} /> {isLoading ? "Saving..." : isEditMode ? "Save Changes" : "Add ICA"}
+                        <BiSave size={18} /> {isLoading ? "Saving..." : isEditMode ? "Save Changes" : "Add Component Analysis"}
                     </button>
                 </div>
             </div>

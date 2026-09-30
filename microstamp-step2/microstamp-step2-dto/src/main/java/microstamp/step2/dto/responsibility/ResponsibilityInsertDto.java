@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -22,7 +23,8 @@ public class ResponsibilityInsertDto {
     @NotNull
     private UUID componentId;
 
-    @NotNull
     private UUID systemSafetyConstraintId;
+
+    private List<UUID> violatedSystemSafetyConstraintIds;
 
 }

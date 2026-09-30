@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -31,5 +32,10 @@ public class Responsibility {
 
     @JdbcTypeCode(Types.VARCHAR)
     private UUID systemSafetyConstraintId;
+
+    @ElementCollection
+    @CollectionTable(name = "responsibility_violated_constraints", joinColumns = @JoinColumn(name = "responsibility_id"))
+    @Column(name = "violated_system_safety_constraint_id")
+    private List<UUID> violatedSystemSafetyConstraintIds;
 
 }

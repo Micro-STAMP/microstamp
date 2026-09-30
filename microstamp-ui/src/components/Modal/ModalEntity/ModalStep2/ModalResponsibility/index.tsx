@@ -66,7 +66,7 @@ function ModalResponsibility({
 		responsibility: responsibility?.responsibility || "",
 		code: responsibility?.code || "",
 		systemSafetyConstraint: responsibility
-			? systemSafetyConstraintToSelectOption(responsibility.systemSafetyConstraint)
+			? systemSafetyConstraintToSelectOption(responsibility.systemSafetyConstraint!)
 			: sscOptions[0]
 	});
 
@@ -76,7 +76,7 @@ function ModalResponsibility({
 				responsibility: responsibility.responsibility,
 				code: responsibility.code,
 				systemSafetyConstraint: systemSafetyConstraintToSelectOption(
-					responsibility.systemSafetyConstraint
+					responsibility.systemSafetyConstraint!
 				)
 			});
 		} else {
@@ -105,7 +105,7 @@ function ModalResponsibility({
 			responsibility: responsibility?.responsibility || "",
 			code: responsibility?.code || "",
 			systemSafetyConstraint: responsibility
-				? systemSafetyConstraintToSelectOption(responsibility.systemSafetyConstraint)
+				? systemSafetyConstraintToSelectOption(responsibility.systemSafetyConstraint!)
 				: sscOptions[0]
 		});
 		onClose();

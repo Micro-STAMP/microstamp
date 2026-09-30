@@ -23,7 +23,7 @@ const createLossEvent = async (data: IAccidentLossEventInsertDto) => {
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error creating Accident/Loss Event.");
+        throw new Error("Error creating System Loss.");
     }
 };
 
@@ -33,7 +33,7 @@ const updateLossEvent = async (id: string, data: IAccidentLossEventUpdateDto) =>
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error updating Accident/Loss Event.");
+        throw new Error("Error updating System Loss.");
     }
 };
 
@@ -42,7 +42,7 @@ const deleteLossEvent = async (id: string) => {
         await http.delete(`${ENDPOINT}/${id}`);
     } catch (err) {
         console.error(err);
-        throw new Error("Error deleting Accident/Loss Event.");
+        throw new Error("Error deleting System Loss.");
     }
 };
 

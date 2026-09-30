@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { BiPlus, BiChevronDown, BiChevronRight, BiHelpCircle, BiInfoCircle } from 'react-icons/bi';
 import styles from './CastSection.module.css';
+
+export interface CastSectionHandle {
+    openAndScrollTo: () => void;
+}
 
 interface CastSectionProps {
     title: string;
@@ -12,12 +16,26 @@ interface CastSectionProps {
     onAddClick?: () => void;
 }
 
-export default function CastSection({ title, tooltipInfo, children, defaultOpen = true, hideAddButton = false, addButtonLabel = "Add Item", onAddClick }: CastSectionProps) {
+const CastSection = forwardRef<CastSectionHandle, CastSectionProps>(function CastSection(
+    { title, tooltipInfo, children, defaultOpen = true, hideAddButton = false, addButtonLabel = "Add Item", onAddClick },
+    ref
+) {
     const [isOpen, setIsOpen] = useState(defaultOpen);
     const [showInfo, setShowInfo] = useState(false);
+    const [highlighted, setHighlighted] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        openAndScrollTo: () => {
+            setIsOpen(true);
+            containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setHighlighted(true);
+            window.setTimeout(() => setHighlighted(false), 1600);
+        }
+    }));
 
     return (
-        <div className={styles.section}>
+        <div ref={containerRef} className={`${styles.section} ${highlighted ? styles.sectionHighlighted : ''}`}>
             <div className={styles.header}>
                 <div className={styles.titleGroup}>
                     <button onClick={() => setIsOpen(!isOpen)} className={styles.toggleBtn}>
@@ -52,4 +70,6 @@ export default function CastSection({ title, tooltipInfo, children, defaultOpen 
             {isOpen && <div className={styles.content}>{children}</div>}
         </div>
     );
-}
+});
+
+export default CastSection;

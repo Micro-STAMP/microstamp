@@ -11,5 +11,6 @@ public record InadequateControlActionInsertDto(
         IcaType type,
         String description,
         String context,
-        String processModelFlaw
+        String processModelFlaw,
+        String questions
 ) {}

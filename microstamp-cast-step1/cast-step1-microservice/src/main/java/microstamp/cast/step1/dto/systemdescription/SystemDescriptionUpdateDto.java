@@ -12,9 +12,6 @@ import lombok.*;
 public class SystemDescriptionUpdateDto {
 
     @NotBlank
-    private String code;
-
-    @NotBlank
     private String description;
 
     private String analysisBoundary;

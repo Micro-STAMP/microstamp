@@ -26,7 +26,7 @@ export default function CastStepFive() {
                                 <BiGridAlt size={16} /> Analyses / {analysisId}
                             </span>
                         </div>
-                        <h1 className={styles.pageTitle}>Step 5: Create an Improvement Program</h1>
+                        <h1 className={styles.pageTitle}>Step 5: Create Improvement Program</h1>
                     </div>
 
                     <div className={styles.actions}>

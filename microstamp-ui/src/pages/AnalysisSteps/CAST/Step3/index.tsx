@@ -5,6 +5,7 @@ import styles from '../Step1/CastStepOne.module.css';
 
 import InadequateControlActionsSection from './components/InadequateControlActionsSection';
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
+import CastNextStepButton from '@components/CastNextStepButton';
 
 export default function CastStepThree() {
     const { id } = useParams();
@@ -26,7 +27,7 @@ export default function CastStepThree() {
                                 <BiGridAlt size={16} /> Analyses / {analysisId}
                             </span>
                         </div>
-                        <h1 className={styles.pageTitle}>Step 3: Analyze the Inadequate Control</h1>
+                        <h1 className={styles.pageTitle}>Step 3: Analyze Individual Components</h1>
                     </div>
 
                     <div className={styles.actions}>
@@ -40,6 +41,8 @@ export default function CastStepThree() {
                 </div>
 
                 <InadequateControlActionsSection analysisId={analysisId} />
+
+                <CastNextStepButton analysisId={analysisId} to="step4" label="Step 4: Identify Control Structure Flaws" />
 
             </div>
 

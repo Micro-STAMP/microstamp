@@ -246,3 +246,30 @@
     cursor: not-allowed;
     opacity: 0.7;
 }
+
+.nextStepBar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2.4rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid var(--color-gray);
+}
+
+.btnNextStep {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem 2.4rem;
+    border-radius: var(--radius1);
+    font-size: 1.4rem;
+    font-weight: 600;
+    background-color: var(--color-yellow);
+    color: var(--color-dark);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btnNextStep:hover {
+    opacity: 0.85;
+}

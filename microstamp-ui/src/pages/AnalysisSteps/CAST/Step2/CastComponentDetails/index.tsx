@@ -37,6 +37,9 @@ export default function CastComponentDetails() {
                         <h1 className={styles.pageTitle} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <BiMicrochip color="#fb923c" /> {componentName}
                         </h1>
+                        <p style={{ margin: '8px 0 0 0', fontSize: '14px', color: 'var(--color-muted-text)' }}>
+                            Analyze the specific responsibilities and the process model (variables and states) for this controller.
+                        </p>
                     </div>
 
                     <div className={styles.actions}>
@@ -46,10 +49,6 @@ export default function CastComponentDetails() {
                     </div>
                 </div>
 
-                <div style={{ padding: '16px', backgroundColor: '#1f2937', color: '#9ca3af', borderRadius: '8px', border: '1px solid #374151' }}>
-                    <p style={{ margin: 0 }}>Analyze the specific responsibilities and the process model (variables and states) for this controller.</p>
-                </div>
-                
                 <CastResponsibilitiesForm componentId={componentId!} analysisId={analysisId} />
                 <CastVariablesForm componentId={componentId!} analysisId={analysisId} />
                 <CastComponentConnections componentId={componentId!} analysisId={analysisId} />

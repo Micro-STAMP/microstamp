@@ -2,6 +2,7 @@ package microstamp.cast.step5.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import microstamp.cast.step5.entity.enums.RecommendationPriority;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,4 +35,13 @@ public class Recommendation {
     @CollectionTable(name = "recommendation_systemic_factors", joinColumns = @JoinColumn(name = "recommendation_id"))
     @Column(name = "systemic_factor_id")
     private List<UUID> systemicFactorIds;
+
+    @Column(name = "component_id")
+    private UUID componentId;
+
+    @Enumerated(EnumType.STRING)
+    private RecommendationPriority priority;
+
+    @Column(name = "audit_mechanism", columnDefinition = "TEXT")
+    private String auditMechanism;
 }

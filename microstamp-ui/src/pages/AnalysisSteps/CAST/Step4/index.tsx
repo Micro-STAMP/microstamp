@@ -5,6 +5,7 @@ import styles from '../Step1/CastStepOne.module.css';
 
 import SystemicFactorsSection from './components/SystemicFactorsSection';
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
+import CastNextStepButton from '@components/CastNextStepButton';
 
 export default function CastStepFour() {
     const { id } = useParams();
@@ -26,7 +27,7 @@ export default function CastStepFour() {
                                 <BiGridAlt size={16} /> Analyses / {analysisId}
                             </span>
                         </div>
-                        <h1 className={styles.pageTitle}>Step 4: Identify Systemic Factors</h1>
+                        <h1 className={styles.pageTitle}>Step 4: Identify Control Structure Flaws</h1>
                     </div>
 
                     <div className={styles.actions}>
@@ -40,6 +41,8 @@ export default function CastStepFour() {
                 </div>
 
                 <SystemicFactorsSection analysisId={analysisId} />
+
+                <CastNextStepButton analysisId={analysisId} to="step5" label="Step 5: Create Improvement Program" />
 
             </div>
 

@@ -14,7 +14,6 @@ import microstamp.cast.step1.repository.SystemDescriptionRepository;
 import microstamp.cast.step1.service.SystemDescriptionService;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -34,7 +33,6 @@ public class SystemDescriptionServiceImpl implements SystemDescriptionService {
         log.info("Finding all CAST system descriptions");
         return systemDescriptionRepository.findAll().stream()
                 .map(SystemDescriptionMapper::toDto)
-                .sorted(Comparator.comparing(SystemDescriptionReadDto::getCode))
                 .toList();
     }
 
@@ -50,7 +48,6 @@ public class SystemDescriptionServiceImpl implements SystemDescriptionService {
         log.info("Finding CAST system descriptions by analysis id: {}", id);
         return systemDescriptionRepository.findByAnalysisId(id).stream()
                 .map(SystemDescriptionMapper::toDto)
-                .sorted(Comparator.comparing(SystemDescriptionReadDto::getCode))
                 .toList();
     }
 
@@ -84,7 +81,6 @@ public class SystemDescriptionServiceImpl implements SystemDescriptionService {
         SystemDescription systemDescription = systemDescriptionRepository.findById(id)
                 .orElseThrow(() -> new Step1NotFoundException("SystemDescription", id.toString()));
 
-        systemDescription.setCode(systemDescriptionUpdateDto.getCode());
         systemDescription.setDescription(systemDescriptionUpdateDto.getDescription());
         systemDescription.setAnalysisBoundary(systemDescriptionUpdateDto.getAnalysisBoundary());
 

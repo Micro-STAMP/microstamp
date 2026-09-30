@@ -3,8 +3,10 @@ package microstamp.step2.dto.responsibility;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import microstamp.cast.step1.dto.violatedsystemsafetyconstraint.ViolatedSystemSafetyConstraintReadDto;
 import microstamp.step1.dto.systemsafetyconstraint.SystemSafetyConstraintReadDto;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -24,5 +26,7 @@ public class ResponsibilityReadDto {
     private String code;
 
     private SystemSafetyConstraintReadDto systemSafetyConstraint;
+
+    private List<ViolatedSystemSafetyConstraintReadDto> violatedSystemSafetyConstraints;
 
 }

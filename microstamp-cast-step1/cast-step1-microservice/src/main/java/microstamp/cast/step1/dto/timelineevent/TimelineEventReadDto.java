@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -23,11 +22,10 @@ public class TimelineEventReadDto {
 
     private Integer eventOrder;
 
-    //Manter fora
-    //private Instant eventDate;
-
     @NotBlank
     private String eventDescription;
 
     private String questions;
+
+    private String timeLabel;
 }

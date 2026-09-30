@@ -28,7 +28,7 @@ export default function CastComponentConnections({ componentId }: Props) {
     return (
         <CastSection title="Connections" tooltipInfo="Connections where this component is the source or target." hideAddButton={true}>
             {isLoading ? (
-                <div style={{ color: '#9ca3af', padding: '10px' }}>Loading interfaces...</div>
+                <div style={{ color: 'var(--color-muted-text)', padding: '10px' }}>Loading interfaces...</div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {deps?.connections.map((conn: any) => {
@@ -36,19 +36,19 @@ export default function CastComponentConnections({ componentId }: Props) {
                         const isSource = conn.source.id === componentId;
 
                         return (
-                            <div key={conn.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: '#374151', padding: '12px 16px', borderRadius: '8px', border: '1px solid #4b5563' }}>
+                            <div key={conn.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--color-dark-gray)', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--color-gray)' }}>
                                 <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '16px' }}>
-                                    <span style={{ color: isSource ? '#fb923c' : '#60a5fa', fontWeight: 'bold' }}>
+                                    <span style={{ color: isSource ? '#fb923c' : '#60a5fa', fontWeight: 'bold', fontSize: '12px' }}>
                                         {isSource ? 'OUT' : 'IN'}
                                     </span>
-                                    
+
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <span>{conn.source.name}</span>
-                                        <BiRightArrowAlt color="#9ca3af" />
-                                        <span>{conn.target.name}</span>
+                                        <span style={{ color: '#fff', fontSize: '15px', fontWeight: 'bold' }}>{conn.source.name}</span>
+                                        <BiRightArrowAlt color="var(--color-muted-text)" />
+                                        <span style={{ color: '#fff', fontSize: '15px', fontWeight: 'bold' }}>{conn.target.name}</span>
                                     </div>
                                     
-                                    <span style={{ fontSize: '12px', color: '#9ca3af' }}>
+                                    <span style={{ fontSize: '12px', color: 'var(--color-muted-text)' }}>
                                         ({interaction?.name || 'Interaction'})
                                     </span>
                                 </div>
@@ -58,7 +58,7 @@ export default function CastComponentConnections({ componentId }: Props) {
                             </div>
                         );
                     })}
-                    {!deps?.connections.length && <p style={{ color: '#6b7280', fontSize: '14px' }}>No interfaces defined for this component.</p>}
+                    {!deps?.connections.length && <p style={{ color: 'var(--color-muted-text)', fontSize: '14px' }}>No interfaces defined for this component.</p>}
                 </div>
             )}
         </CastSection>
