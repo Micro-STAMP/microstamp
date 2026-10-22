@@ -104,6 +104,12 @@
     margin-bottom: 1.2rem;
 }
 
+textarea.inputField {
+    resize: vertical;
+    min-height: 4.4rem;
+    line-height: 1.5;
+}
+
 .inputField::placeholder {
     color: #8c8e9b;
 }

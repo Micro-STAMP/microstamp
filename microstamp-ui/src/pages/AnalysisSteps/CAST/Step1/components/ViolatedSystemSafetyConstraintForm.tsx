@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { BiSave, BiTrash, BiShow } from 'react-icons/bi';
+import { BiSave, BiX } from 'react-icons/bi';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { getByAnalysisId as getConstraints, createConstraint, deleteConstraint } from '@http/CAST/Step1/Constraints';
+import { getByAnalysisId as getConstraints, createConstraint, updateConstraint, deleteConstraint } from '@http/CAST/Step1/Constraints';
 import { getByAnalysisId as getHazards } from '@http/CAST/Step1/Hazards';
 import CastSection from '@components/CastSection';
 import CastCheckbox from '@components/CastCheckbox';
 import LinkBadge from '@components/LinkBadge';
+import CastTextarea from '@components/CastTextarea';
+import CastItemActions from '@components/CastItemActions';
+import { useCastConfirm } from '@components/CastConfirm';
+import { nextCode } from '@utils/castCodes';
 import { useGoToCastSection, useRegisterCastSection } from '@components/CastSection/CastSectionNavigator';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
 import { IViolatedSystemSafetyConstraintReadDto } from '@interfaces/CAST/IViolatedSystemSafetyConstraint';
@@ -19,6 +23,7 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
     const goToSection = useGoToCastSection();
     const registerConstraintsSection = useRegisterCastSection('constraints');
     const [previewConstraint, setPreviewConstraint] = useState<IViolatedSystemSafetyConstraintReadDto | null>(null);
+    const { confirmDelete, confirmDialog } = useCastConfirm();
 
     const { data: constraints, isLoading: isLoadingConstraints } = useQuery({
         queryKey: ['constraints', analysisId],
@@ -30,38 +35,62 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
         queryFn: () => getHazards(analysisId)
     });
 
-    const [form, setForm] = useState({ 
-        code: 'SC-1', 
-        name: '', 
-        description: '', 
-        hazardIds: [] as string[] 
-    });
+    const EMPTY_FORM = { code: '', name: '', description: '', hazardIds: [] as string[] };
+    const [form, setForm] = useState(EMPTY_FORM);
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const code = form.code || nextCode('SC', (constraints ?? []).map(c => c.code));
+
+    const resetForm = () => {
+        setForm(EMPTY_FORM);
+        setEditingId(null);
+    };
+
+    const invalidate = () => {
+        queryClient.invalidateQueries({ queryKey: ['constraints', analysisId] });
+        queryClient.invalidateQueries({ queryKey: ['violated-ssc-select-options', analysisId] });
+    };
 
     const { mutateAsync: save, isPending } = useMutation({
         mutationFn: async () => {
-            return await createConstraint({
-                code: form.code,
-                name: form.name,
+            const data = {
+                code: code.trim(),
+                name: form.name.trim(),
                 description: form.description,
-                hazardIds: form.hazardIds,
-                analysisId
-            });
+                hazardIds: form.hazardIds
+            };
+            return editingId ? await updateConstraint(editingId, data) : await createConstraint({ ...data, analysisId });
         },
         onSuccess: () => {
-            toast.success("Constraint added successfully!");
-            setForm({ code: `SC-${(constraints?.length || 0) + 2}`, name: '', description: '', hazardIds: [] });
-            queryClient.invalidateQueries({ queryKey: ['constraints', analysisId] });
+            toast.success(editingId ? "Constraint updated!" : "Constraint added successfully!");
+            resetForm();
+            invalidate();
         },
         onError: (err: any) => toast.error(err.message || "Error saving Constraint.")
     });
 
     const { mutateAsync: remove } = useMutation({
         mutationFn: async (id: string) => await deleteConstraint(id),
-        onSuccess: () => {
+        onSuccess: (_, id) => {
             toast.success("Constraint removed.");
-            queryClient.invalidateQueries({ queryKey: ['constraints', analysisId] });
-        }
+            if (id === editingId) resetForm();
+            invalidate();
+        },
+        onError: (err: any) => toast.error(err.message || "Error deleting Constraint.")
     });
+
+    const startEdit = (constraint: IViolatedSystemSafetyConstraintReadDto) => {
+        setEditingId(constraint.id);
+        setForm({
+            code: constraint.code,
+            name: constraint.name,
+            description: constraint.description || '',
+            hazardIds: (constraint.hazards ?? []).map(h => h.id)
+        });
+    };
+
+    const handleDelete = async (constraint: IViolatedSystemSafetyConstraintReadDto) => {
+        if (await confirmDelete(`Safety Constraint ${constraint.code}`)) await remove(constraint.id);
+    };
 
     const handleHazardToggle = (hazardId: string) => {
         setForm(prev => ({
@@ -83,7 +112,7 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
                     {constraints && constraints.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             {constraints.map(c => (
-                                <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '16px', backgroundColor: 'var(--color-dark-gray)', border: '1px solid var(--color-gray)', borderRadius: '8px', gap: '16px' }}>
+                                <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '16px', backgroundColor: 'var(--color-dark-gray)', border: `1px solid ${c.id === editingId ? 'var(--color-yellow)' : 'var(--color-gray)'}`, borderRadius: '8px', gap: '16px' }}>
                                     <div style={{ flex: 1 }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
                                             <span style={{ color: 'var(--color-yellow)', fontWeight: 600, fontSize: '14px' }}>
@@ -100,14 +129,7 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
                                             </p>
                                         )}
                                     </div>
-                                    <div style={{ display: 'flex', gap: '4px', marginTop: '-4px' }}>
-                                        <button onClick={() => setPreviewConstraint(c)} style={{ background: 'none', border: 'none', color: 'var(--color-muted-text)', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 0.2s' }} title="View traceability">
-                                            <BiShow size={18} />
-                                        </button>
-                                        <button onClick={() => remove(c.id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 0.2s' }} title="Remove Constraint">
-                                            <BiTrash size={18} />
-                                        </button>
-                                    </div>
+                                    <CastItemActions itemLabel="Constraint" onPreview={() => setPreviewConstraint(c)} onEdit={() => startEdit(c)} onDelete={() => handleDelete(c)} />
                                 </div>
                             ))}
                         </div>
@@ -118,11 +140,11 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
                     <hr style={{ borderTop: '1px solid #e5e7eb', margin: '10px 0' }} />
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <h4 style={{ margin: 0, fontSize: '14px', color: 'var(--color-white)' }}>Add New Safety Constraint</h4>
+                        <h4 style={{ margin: 0, fontSize: '14px', color: 'var(--color-white)' }}>{editingId ? `Edit Safety Constraint ${code}` : 'Add New Safety Constraint'}</h4>
                         <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '16px' }}>
                             <div>
                                 <label className={styles.inputLabel}>Code</label>
-                                <input type="text" className={styles.inputField} value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ marginBottom: 0 }} />
+                                <input type="text" className={styles.inputField} value={code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ marginBottom: 0 }} />
                             </div>
                             <div>
                                 <label className={styles.inputLabel}>Constraint Name</label>
@@ -131,7 +153,7 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
                         </div>
                         <div>
                             <label className={styles.inputLabel}>Description</label>
-                            <textarea rows={2} className={styles.inputField} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} style={{ marginBottom: 0 }} />
+                            <CastTextarea rows={2} className={styles.inputField} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} style={{ marginBottom: 0 }} />
                         </div>
 
                         {hazards && hazards.length > 0 && (
@@ -151,14 +173,20 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
                             </div>
                         )}
 
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <button onClick={() => save()} disabled={isPending || !form.name} className={styles.btnSaveForm}>
-                                <BiSave size={18} /> {isPending ? 'Adding...' : 'Add Constraint'}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                            {editingId && (
+                                <button onClick={resetForm} className={styles.btnBack} type="button">
+                                    <BiX size={18} /> Cancel
+                                </button>
+                            )}
+                            <button onClick={() => save()} disabled={isPending || !form.name.trim() || !code.trim()} className={styles.btnSaveForm}>
+                                <BiSave size={18} /> {isPending ? 'Saving...' : editingId ? 'Save Changes' : 'Add Constraint'}
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+            {confirmDialog}
         </CastSection>
 
         {previewConstraint && (

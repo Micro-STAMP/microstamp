@@ -29,8 +29,11 @@ public class SystemicFactor {
     private UUID analysisId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private SystemicFactorCategory category;
+
+    @Column(name = "custom_category", length = 120)
+    private String customCategory;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;

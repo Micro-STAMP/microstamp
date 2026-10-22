@@ -10,6 +10,7 @@ public record SystemicFactorReadDto(
         UUID id,
         UUID analysisId,
         SystemicFactorCategory category,
+        String customCategory,
         String description,
         List<UUID> controlActionContributionIds,
         Instant createdAt,

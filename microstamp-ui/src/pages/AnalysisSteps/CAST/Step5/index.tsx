@@ -7,6 +7,7 @@ import RecommendationsSection from './components/RecommendationsSection';
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastLastUpdated from '@components/CastLastUpdated';
 import CastCreatedAt from '@components/CastCreatedAt';
+import CastQuestionsRaised from '@components/CastQuestionsRaised';
 
 export default function CastStepFive() {
     const { id } = useParams();
@@ -53,6 +54,7 @@ export default function CastStepFive() {
                 </div>
 
                 <RecommendationsSection analysisId={analysisId} />
+                <CastQuestionsRaised analysisId={analysisId} step={5} />
 
             </div>
 

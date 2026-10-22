@@ -8,6 +8,7 @@ import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastNextStepButton from '@components/CastNextStepButton';
 import CastLastUpdated from '@components/CastLastUpdated';
 import CastCreatedAt from '@components/CastCreatedAt';
+import CastQuestionsRaised from '@components/CastQuestionsRaised';
 
 export default function CastStepFour() {
     const { id } = useParams();
@@ -48,6 +49,7 @@ export default function CastStepFour() {
                 </div>
 
                 <SystemicFactorsSection analysisId={analysisId} />
+                <CastQuestionsRaised analysisId={analysisId} step={4} />
 
                 <CastNextStepButton analysisId={analysisId} to="step5" label="Step 5: Create Improvement Program" />
 

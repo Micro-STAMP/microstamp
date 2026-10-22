@@ -15,6 +15,7 @@ import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastNextStepButton from '@components/CastNextStepButton';
 import CastLastUpdated from '@components/CastLastUpdated';
 import CastCreatedAt from '@components/CastCreatedAt';
+import CastQuestionsRaised from '@components/CastQuestionsRaised';
 import { CastSectionNavigatorProvider, useGoToCastSection } from '@components/CastSection/CastSectionNavigator';
 
 function ScrollToSectionOnMount() {
@@ -80,6 +81,7 @@ export default function CastStepOne() {
                     <ViolatedSystemSafetyConstraintForm analysisId={analysisId} />
                     <TimelineEventForm analysisId={analysisId} />
                     <PhysicalLossAnalysisForm analysisId={analysisId} />
+                    <CastQuestionsRaised analysisId={analysisId} step={1} />
                     <ScrollToSectionOnMount />
                 </CastSectionNavigatorProvider>
 

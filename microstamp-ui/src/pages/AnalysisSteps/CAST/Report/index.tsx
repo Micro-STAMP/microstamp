@@ -16,9 +16,10 @@ import { getComponents } from '@http/Step2/Components';
 import { getByAnalysisId as getCacs } from '@http/CAST/Step3/ControlActionContributions';
 import { getByAnalysisId as getSystemicFactors } from '@http/CAST/Step4/SystemicFactors';
 import { getByAnalysisId as getRecommendations } from '@http/CAST/Step5/Recommendations';
+import { getByAnalysisId as getQuestionsRaised } from '@http/CAST/QuestionsRaised';
 
 import { icaTypeToSelectOption } from '@interfaces/CAST/IStep3/IControlActionContribution';
-import { systemicFactorCategoryToSelectOption } from '@interfaces/CAST/IStep4/ISystemicFactor';
+import { systemicFactorCategoryLabel } from '@interfaces/CAST/IStep4/ISystemicFactor';
 import {
     recommendationPriorityToSelectOption,
     recommendationStatusToSelectOption,
@@ -26,11 +27,34 @@ import {
     recommendationScopeCategoryToSelectOption
 } from '@interfaces/CAST/IStep5/IRecommendation';
 import { formatDateBR } from '@services/date';
+import CastTextarea from '@components/CastTextarea';
 
 import castStyles from '../Step1/CastStepOne.module.css';
 import styles from './CastReport.module.css';
 
 interface Props {}
+
+const CAST_STEP_TITLES: Record<number, string> = {
+    1: 'Step 1 — Assemble Basic Information',
+    2: 'Step 2 — Model the Safety Control Structure',
+    3: 'Step 3 — Analyze Each Component in the Loss',
+    4: 'Step 4 — Identify Control Structure Flaws',
+    5: 'Step 5 — Create an Improvement Program'
+};
+
+const numberedText = (items?: string[]) => (items ?? []).map((item, i) => `${i + 1}. ${item}`).join('\n');
+
+function ReportList({ label, items }: { label: string; items?: string[] }) {
+    if (!items || items.length === 0) return null;
+    return (
+        <div className={styles.itemField}>
+            <span className={styles.itemFieldLabel}>{label}: </span>
+            <ol style={{ margin: '4px 0 0 0', paddingLeft: '20px' }}>
+                {items.map((item, i) => <li key={i}>{item}</li>)}
+            </ol>
+        </div>
+    );
+}
 
 export default function CastReport(_: Props) {
     const { id } = useParams();
@@ -80,6 +104,10 @@ export default function CastReport(_: Props) {
         queryKey: ['recommendations', analysisId],
         queryFn: () => getRecommendations(analysisId)
     });
+    const questionsRaisedQuery = useQuery({
+        queryKey: ['questions-raised', analysisId],
+        queryFn: () => getQuestionsRaised(analysisId)
+    });
 
     const isLoading = systemDescriptionsQuery.isLoading
         || accidentLossEventsQuery.isLoading
@@ -90,10 +118,13 @@ export default function CastReport(_: Props) {
         || componentsQuery.isLoading
         || cacsQuery.isLoading
         || systemicFactorsQuery.isLoading
-        || recommendationsQuery.isLoading;
+        || recommendationsQuery.isLoading
+        || questionsRaisedQuery.isLoading;
 
     const cacs = cacsQuery.data || [];
     const systemicFactors = systemicFactorsQuery.data || [];
+    const questionsRaised = questionsRaisedQuery.data || [];
+    const questionSteps = Array.from(new Set(questionsRaised.map(q => q.castStep))).sort();
 
     const getCacLabel = (cacId: string) => {
         const cac = cacs.find(i => i.id === cacId);
@@ -102,7 +133,7 @@ export default function CastReport(_: Props) {
     const getSystemicFactorLabel = (systemicFactorId: string) => {
         const factor = systemicFactors.find(f => f.id === systemicFactorId);
         return factor
-            ? `${systemicFactorCategoryToSelectOption(factor.category).label} — ${factor.description}`
+            ? `${systemicFactorCategoryLabel(factor)} — ${factor.description}`
             : 'Systemic Factor not found';
     };
     const getComponentLabel = (componentId: string) => {
@@ -164,13 +195,13 @@ export default function CastReport(_: Props) {
                         }))
                     },
                     {
-                        title: 'Proximate Events and Questions',
+                        title: 'Proximate Events and Questions Raised',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No timeline events registered yet.',
                         items: (timelineEventsQuery.data || []).map(item => ({
                             code: item.code,
                             paragraphs: [item.eventDescription],
-                            fields: item.questions ? [{ label: 'Questions', value: item.questions }] : []
+                            fields: (item.questions ?? []).length > 0 ? [{ label: 'Questions Raised', value: numberedText(item.questions) }] : []
                         }))
                     },
                     {
@@ -215,12 +246,14 @@ export default function CastReport(_: Props) {
                             title: `${item.controlActionName} — ${icaTypeToSelectOption(item.type).label}`,
                             paragraphs: item.description ? [item.description] : [],
                             fields: [
-                                item.context ? { label: 'Context / Contextual Factors', value: item.context } : null,
-                                item.processModelFlaw
-                                    ? { label: 'Process Model Flaw', value: item.processModelFlaw }
+                                (item.context ?? []).length > 0
+                                    ? { label: 'Context / Contextual Factors', value: numberedText(item.context) }
                                     : null,
-                                item.questions
-                                    ? { label: 'Investigative / Unanswered Questions', value: item.questions }
+                                (item.processModelFlaw ?? []).length > 0
+                                    ? { label: 'Process / Mental Model Flaws', value: numberedText(item.processModelFlaw) }
+                                    : null,
+                                (item.questions ?? []).length > 0
+                                    ? { label: 'Questions Raised', value: numberedText(item.questions) }
                                     : null
                             ].filter((field): field is { label: string; value: string } => field !== null)
                         }))
@@ -230,7 +263,7 @@ export default function CastReport(_: Props) {
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step4`),
                         emptyLabel: 'No Systemic Factors registered yet.',
                         items: systemicFactors.map(item => ({
-                            code: systemicFactorCategoryToSelectOption(item.category).label,
+                            code: systemicFactorCategoryLabel(item),
                             paragraphs: [item.description],
                             chips: (item.controlActionContributionIds || []).map(getCacLabel)
                         }))
@@ -274,6 +307,17 @@ export default function CastReport(_: Props) {
                                 ...(item.controlActionContributionIds || []).map(getCacLabel),
                                 ...(item.systemicFactorIds || []).map(getSystemicFactorLabel)
                             ]
+                        }))
+                    },
+                    {
+                        title: 'Questions Raised',
+                        editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
+                        emptyLabel: 'No Questions Raised registered yet.',
+                        items: questionSteps.map(step => ({
+                            title: CAST_STEP_TITLES[step],
+                            paragraphs: questionsRaised
+                                .filter(q => q.castStep === step)
+                                .map(q => `${q.code}: ${q.question}`)
                         }))
                     }
                 ]
@@ -328,7 +372,7 @@ export default function CastReport(_: Props) {
 
                         <div className={styles.reportBlock}>
                             <h3 className={styles.groupTitle}>Executive Summary</h3>
-                            <textarea
+                            <CastTextarea
                                 className={styles.summaryTextarea}
                                 placeholder="Optional free-text synthesis of the analysis, written by the analyst for this report."
                                 value={executiveSummary}
@@ -427,7 +471,7 @@ export default function CastReport(_: Props) {
                         </ReportGroup>
 
                         <ReportGroup
-                            title="Proximate Events and Questions"
+                            title="Proximate Events and Questions Raised"
                             editHref={`/analyses/${analysisId}/cast/step1`}
                             isEmpty={(timelineEventsQuery.data || []).length === 0}
                             emptyLabel="No timeline events registered yet."
@@ -436,12 +480,7 @@ export default function CastReport(_: Props) {
                                 <div key={item.id} className={styles.reportBlock}>
                                     <span className={styles.itemCode}>{item.code}</span>
                                     <p className={styles.itemField}>{item.eventDescription}</p>
-                                    {item.questions && (
-                                        <p className={styles.itemField}>
-                                            <span className={styles.itemFieldLabel}>Questions: </span>
-                                            {item.questions}
-                                        </p>
-                                    )}
+                                    <ReportList label="Questions Raised" items={item.questions} />
                                 </div>
                             ))}
                         </ReportGroup>
@@ -515,24 +554,9 @@ export default function CastReport(_: Props) {
                                         {item.controlActionName} — {icaTypeToSelectOption(item.type).label}
                                     </h4>
                                     {item.description && <p className={styles.itemField}>{item.description}</p>}
-                                    {item.context && (
-                                        <p className={styles.itemField}>
-                                            <span className={styles.itemFieldLabel}>Context / Contextual Factors: </span>
-                                            {item.context}
-                                        </p>
-                                    )}
-                                    {item.processModelFlaw && (
-                                        <p className={styles.itemField}>
-                                            <span className={styles.itemFieldLabel}>Process Model Flaw: </span>
-                                            {item.processModelFlaw}
-                                        </p>
-                                    )}
-                                    {item.questions && (
-                                        <p className={styles.itemField}>
-                                            <span className={styles.itemFieldLabel}>Investigative / Unanswered Questions: </span>
-                                            {item.questions}
-                                        </p>
-                                    )}
+                                    <ReportList label="Context / Contextual Factors" items={item.context} />
+                                    <ReportList label="Process / Mental Model Flaws" items={item.processModelFlaw} />
+                                    <ReportList label="Questions Raised" items={item.questions} />
                                 </div>
                             ))}
                         </ReportGroup>
@@ -547,7 +571,7 @@ export default function CastReport(_: Props) {
                         >
                             {systemicFactors.map(item => (
                                 <div key={item.id} className={styles.reportBlock}>
-                                    <span className={styles.itemCode}>{systemicFactorCategoryToSelectOption(item.category).label}</span>
+                                    <span className={styles.itemCode}>{systemicFactorCategoryLabel(item)}</span>
                                     <p className={styles.itemField}>{item.description}</p>
                                     {item.controlActionContributionIds && item.controlActionContributionIds.length > 0 && (
                                         <div className={styles.chipsRow}>
@@ -641,6 +665,25 @@ export default function CastReport(_: Props) {
                                             ))}
                                         </div>
                                     )}
+                                </div>
+                            ))}
+                        </ReportGroup>
+
+
+                        <ReportGroup
+                            title="Questions Raised"
+                            editHref={`/analyses/${analysisId}/cast/step1`}
+                            isEmpty={questionsRaised.length === 0}
+                            emptyLabel="No Questions Raised registered yet."
+                        >
+                            {questionSteps.map(step => (
+                                <div key={step} className={styles.reportBlock}>
+                                    <h4 className={styles.itemTitle}>{CAST_STEP_TITLES[step]}</h4>
+                                    {questionsRaised.filter(q => q.castStep === step).map(q => (
+                                        <p key={q.id} className={styles.itemField}>
+                                            <span className={styles.itemCode}>{q.code}</span> {q.question}
+                                        </p>
+                                    ))}
                                 </div>
                             ))}
                         </ReportGroup>

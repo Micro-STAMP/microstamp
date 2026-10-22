@@ -1,5 +1,6 @@
 package microstamp.cast.step5.client;
 
+import java.util.List;
 import java.util.UUID;
 
 public record ControlActionContributionReadDto(
@@ -10,6 +11,6 @@ public record ControlActionContributionReadDto(
         String controlActionName,
         String type,
         String description,
-        String context,
-        String processModelFlaw
+        List<String> context,
+        List<String> processModelFlaw
 ) {}

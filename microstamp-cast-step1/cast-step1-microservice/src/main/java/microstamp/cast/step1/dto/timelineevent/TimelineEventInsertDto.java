@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -23,7 +24,7 @@ public class TimelineEventInsertDto {
     @NotBlank
     private String eventDescription;
 
-    private String questions;
+    private List<String> questions;
 
     private String timeLabel;
 

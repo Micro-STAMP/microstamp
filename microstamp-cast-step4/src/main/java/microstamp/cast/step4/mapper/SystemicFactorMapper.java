@@ -14,6 +14,7 @@ public class SystemicFactorMapper {
                 entity.getId(),
                 entity.getAnalysisId(),
                 entity.getCategory(),
+                entity.getCustomCategory(),
                 entity.getDescription(),
                 entity.getControlActionContributionIds(),
                 entity.getCreatedAt(),
@@ -24,15 +25,21 @@ public class SystemicFactorMapper {
     public SystemicFactor toEntity(SystemicFactorInsertDto dto) {
         return SystemicFactor.builder()
                 .analysisId(dto.analysisId())
-                .category(dto.category())
+                .category(isCustom(dto.customCategory()) ? null : dto.category())
+                .customCategory(isCustom(dto.customCategory()) ? dto.customCategory().trim() : null)
                 .description(dto.description())
                 .controlActionContributionIds(dto.controlActionContributionIds())
                 .build();
     }
 
     public void updateEntityFromDto(SystemicFactorUpdateDto dto, SystemicFactor entity) {
-        entity.setCategory(dto.category());
+        entity.setCategory(isCustom(dto.customCategory()) ? null : dto.category());
+        entity.setCustomCategory(isCustom(dto.customCategory()) ? dto.customCategory().trim() : null);
         entity.setDescription(dto.description());
         entity.setControlActionContributionIds(dto.controlActionContributionIds());
+    }
+
+    private boolean isCustom(String customCategory) {
+        return customCategory != null && !customCategory.isBlank();
     }
 }

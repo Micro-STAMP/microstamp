@@ -6,9 +6,10 @@ interface Props {
     code: string;
     tooltip?: string;
     icon?: ReactNode;
+    onClick?: () => void;
 }
 
-export default function LinkBadge({ code, tooltip, icon }: Props) {
+export default function LinkBadge({ code, tooltip, icon, onClick }: Props) {
     const [hovered, setHovered] = useState(false);
     const badgeRef = useRef<HTMLSpanElement>(null);
     const [position, setPosition] = useState({ top: 0, left: 0 });
@@ -26,7 +27,9 @@ export default function LinkBadge({ code, tooltip, icon }: Props) {
     return (
         <span
             ref={badgeRef}
-            className={`${styles.badge} ${tooltip ? styles.badgeWithTooltip : ''}`}
+            className={`${styles.badge} ${tooltip ? styles.badgeWithTooltip : ''} ${onClick ? styles.badgeClickable : ''}`}
+            onClick={onClick}
+            role={onClick ? 'button' : undefined}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >

@@ -4,11 +4,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { deleteSystemBoundaryImage, getSystemBoundaryImages, saveSystemBoundaryImage } from '@http/CAST/Step1/SystemBoundaryImage';
 import CastSection from '@components/CastSection';
+import { useCastConfirm } from '@components/CastConfirm';
 
 interface Props { analysisId: string; }
 
 export default function SystemBoundaryImageForm({ analysisId }: Props) {
     const queryClient = useQueryClient();
+    const { confirmDelete, confirmDialog } = useCastConfirm();
 
     const { data: images, isLoading } = useQuery({
         queryKey: ['system-boundary-images', analysisId],
@@ -30,18 +32,13 @@ export default function SystemBoundaryImageForm({ analysisId }: Props) {
 
     const { mutateAsync: removeImage, isPending: isDeleting } = useMutation({
         mutationFn: async (id: string) => {
-            if (window.confirm("Are you sure you want to remove the boundary diagram?")) {
-                return await deleteSystemBoundaryImage(id);
-            }
-            return Promise.reject(new Error("Cancelled"));
+            return await deleteSystemBoundaryImage(id);
         },
         onSuccess: () => {
             toast.success("Image removed.");
             queryClient.invalidateQueries({ queryKey: ['system-boundary-images', analysisId] });
         },
-        onError: (err: any) => {
-            if (err.message !== "Cancelled") toast.error(err.message);
-        }
+        onError: (err: any) => toast.error(err.message)
     });
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +116,7 @@ export default function SystemBoundaryImageForm({ analysisId }: Props) {
                             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', backgroundColor: 'var(--color-dark)', borderBottom: '1px solid var(--color-gray)' }}>
                                 <span style={{ color: '#d1d5db', fontSize: '14px', fontWeight: 'bold' }}>Current Boundary Diagram</span>
                                 <button
-                                    onClick={() => removeImage(currentImage.id)}
+                                    onClick={async () => { if (await confirmDelete('the System Boundary diagram')) removeImage(currentImage.id); }}
                                     disabled={isDeleting}
                                     style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: isDeleting ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px' }}
                                 >
@@ -139,6 +136,7 @@ export default function SystemBoundaryImageForm({ analysisId }: Props) {
 
                 </div>
             )}
+            {confirmDialog}
         </CastSection>
     );
 }

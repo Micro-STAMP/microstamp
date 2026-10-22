@@ -1,6 +1,6 @@
 package microstamp.cast.step1.controller;
 
-import microstamp.cast.step1.client.MicroStampClient;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.dto.physicallossanalysis.PhysicalLossAnalysisInsertDto;
 import microstamp.cast.step1.dto.physicallossanalysis.PhysicalLossAnalysisReadDto;
 import microstamp.cast.step1.dto.physicallossanalysis.PhysicalLossAnalysisUpdateDto;
@@ -37,7 +37,7 @@ public class PhysicalLossAnalysisServiceUnitTest {
     private PhysicalLossAnalysisRepository physicalLossAnalysisRepository;
 
     @Mock
-    private MicroStampClient microStampClient;
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no physical loss analysis is found > Return an empty list")
@@ -144,7 +144,6 @@ public class PhysicalLossAnalysisServiceUnitTest {
     void insertWhenInputIsValidCreatePhysicalLossAnalysis() {
         PhysicalLossAnalysisInsertDto insertDto = assemblePhysicalLossAnalysisInsertDto.get();
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(physicalLossAnalysisRepository.save(any(PhysicalLossAnalysis.class))).thenAnswer(answer -> answer.getArguments()[0]);
 
         PhysicalLossAnalysisReadDto response = service.insert(insertDto);
@@ -158,7 +157,6 @@ public class PhysicalLossAnalysisServiceUnitTest {
                 () -> assertEquals(insertDto.getFailuresAndUnsafeInteractions(), response.getFailuresAndUnsafeInteractions()),
                 () -> assertEquals(insertDto.getMissingOrInadequateControls(), response.getMissingOrInadequateControls()),
                 () -> assertEquals(insertDto.getContextualFactors(), response.getContextualFactors()),
-                () -> verify(microStampClient, times(1)).getAnalysisById(insertDto.getAnalysisId()),
                 () -> verify(physicalLossAnalysisRepository, times(1)).save(any(PhysicalLossAnalysis.class))
         );
     }

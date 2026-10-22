@@ -1,6 +1,6 @@
 package microstamp.cast.step1.controller;
 
-import microstamp.cast.step1.client.MicroStampClient;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.dto.casthazard.CastHazardInsertDto;
 import microstamp.cast.step1.dto.casthazard.CastHazardReadDto;
 import microstamp.cast.step1.dto.casthazard.CastHazardUpdateDto;
@@ -43,7 +43,7 @@ public class CastHazardServiceUnitTest {
     private AccidentLossEventRepository accidentLossEventRepository;
 
     @Mock
-    private MicroStampClient microStampClient;
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no CAST hazard is found > Return an empty list")
@@ -145,7 +145,6 @@ public class CastHazardServiceUnitTest {
     void insertWhenAssociatedAccidentLossEventIsNotFoundThrowAnException() {
         CastHazardInsertDto insertDto = assembleCastHazardInsertDto.get();
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(accidentLossEventRepository.findById(insertDto.getAccidentLossEventIds().getFirst())).thenReturn(Optional.empty());
 
         assertThrows(Step1NotFoundException.class, () -> service.insert(insertDto));
@@ -158,7 +157,6 @@ public class CastHazardServiceUnitTest {
         UUID firstEventId = insertDto.getAccidentLossEventIds().getFirst();
         UUID secondEventId = insertDto.getAccidentLossEventIds().get(1);
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(accidentLossEventRepository.findById(firstEventId)).thenReturn(Optional.of(assembleAccidentLossEvent.apply(firstEventId, 1)));
         when(accidentLossEventRepository.findById(secondEventId)).thenReturn(Optional.of(assembleAccidentLossEvent.apply(secondEventId, 2)));
         when(castHazardRepository.save(any(CastHazard.class))).thenAnswer(answer -> answer.getArguments()[0]);
@@ -182,7 +180,6 @@ public class CastHazardServiceUnitTest {
         CastHazardInsertDto insertDto = assembleCastHazardInsertDto.get();
         insertDto.setAccidentLossEventIds(null);
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(castHazardRepository.save(any(CastHazard.class))).thenAnswer(answer -> answer.getArguments()[0]);
 
         CastHazardReadDto response = service.insert(insertDto);

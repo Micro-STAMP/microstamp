@@ -6,11 +6,13 @@ import { getComponentDependencies } from '@http/Step2/Components';
 import { deleteConnection } from '@http/Step2/Connections';
 
 import CastSection from '@components/CastSection';
+import { useCastConfirm } from '@components/CastConfirm';
 
 interface Props { componentId: string; analysisId: string; }
 
 export default function CastComponentConnections({ componentId }: Props) {
     const queryClient = useQueryClient();
+    const { confirmDelete, confirmDialog } = useCastConfirm();
 
     const { data: deps, isLoading } = useQuery({
         queryKey: ['component-dependencies', componentId],
@@ -22,7 +24,9 @@ export default function CastComponentConnections({ componentId }: Props) {
         onSuccess: () => {
             toast.success("Connection removed.");
             queryClient.invalidateQueries({ queryKey: ['component-dependencies', componentId] });
-        }
+            queryClient.invalidateQueries({ queryKey: ['analysis-connections'] });
+        },
+        onError: (err: any) => toast.error(err.message || "Error deleting Connection.")
     });
 
     return (
@@ -32,7 +36,6 @@ export default function CastComponentConnections({ componentId }: Props) {
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {deps?.connections.map((conn: any) => {
-                        const interaction = conn.interactions?.[0];
                         const isSource = conn.source.id === componentId;
 
                         return (
@@ -49,10 +52,10 @@ export default function CastComponentConnections({ componentId }: Props) {
                                     </div>
                                     
                                     <span style={{ fontSize: '12px', color: 'var(--color-muted-text)' }}>
-                                        ({interaction?.name || 'Interaction'})
+                                        ({(conn.interactions ?? []).map((i: any) => i.name).join(', ') || 'Interaction'})
                                     </span>
                                 </div>
-                                <button onClick={() => remove(conn.id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}>
+                                <button onClick={async () => { if (await confirmDelete(`connection ${conn.code}`)) remove(conn.id); }} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="Delete connection">
                                     <BiTrash />
                                 </button>
                             </div>
@@ -61,6 +64,7 @@ export default function CastComponentConnections({ componentId }: Props) {
                     {!deps?.connections.length && <p style={{ color: 'var(--color-muted-text)', fontSize: '14px' }}>No interfaces defined for this component.</p>}
                 </div>
             )}
+            {confirmDialog}
         </CastSection>
     );
 }

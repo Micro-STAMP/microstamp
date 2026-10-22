@@ -42,7 +42,7 @@ export default function TraceabilityPreviewModal({
                     {name && <strong style={{ color: '#ffffff', fontSize: '15px' }}>{name}</strong>}
                 </div>
                 {description && (
-                    <p style={{ margin: 0, fontSize: '14px', color: 'var(--color-muted-text)', lineHeight: '1.5' }}>{description}</p>
+                    <p style={{ margin: 0, fontSize: '14px', color: 'var(--color-muted-text)', lineHeight: '1.5', whiteSpace: 'pre-wrap' }}>{description}</p>
                 )}
             </div>
 

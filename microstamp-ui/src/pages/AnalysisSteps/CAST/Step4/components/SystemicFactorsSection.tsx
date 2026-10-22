@@ -11,10 +11,11 @@ import {
 } from '@http/CAST/Step4/SystemicFactors';
 import { getByAnalysisId as getCacsByAnalysisId } from '@http/CAST/Step3/ControlActionContributions';
 import {
-    systemicFactorCategoryToSelectOption,
+    systemicFactorCategoryLabel,
     ISystemicFactorReadDto
 } from '@interfaces/CAST/IStep4/ISystemicFactor';
 import CastSection from '@components/CastSection';
+import { useCastConfirm } from '@components/CastConfirm';
 import LinkBadge from '@components/LinkBadge';
 import ModalSystemicFactor from '@components/Modal/ModalEntity/ModalStep4/ModalSystemicFactor';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
@@ -24,6 +25,7 @@ interface Props { analysisId: string; }
 
 export default function SystemicFactorsSection({ analysisId }: Props) {
     const queryClient = useQueryClient();
+    const { confirmDelete, confirmDialog } = useCastConfirm();
     const navigate = useNavigate();
     const [previewFactor, setPreviewFactor] = useState<ISystemicFactorReadDto | null>(null);
 
@@ -74,18 +76,13 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
 
     const { mutateAsync: remove } = useMutation({
         mutationFn: async (id: string) => {
-            if (window.confirm("Are you sure you want to delete this Systemic Factor?")) {
-                return await deleteSystemicFactor(id);
-            }
-            return Promise.reject(new Error("Cancelled"));
+            return await deleteSystemicFactor(id);
         },
         onSuccess: () => {
             toast.success("Systemic Factor removed.");
             queryClient.invalidateQueries({ queryKey: ['systemic-factors', analysisId] });
         },
-        onError: (err: any) => {
-            if (err.message !== "Cancelled") toast.error(err.message);
-        }
+        onError: (err: any) => toast.error(err.message)
     });
 
     return (
@@ -117,7 +114,7 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                             <div style={{ flex: 1 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
                                     <span style={{ backgroundColor: 'var(--color-dark)', color: 'var(--color-yellow)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)', fontWeight: 600 }}>
-                                        {systemicFactorCategoryToSelectOption(factor.category).label}
+                                        {systemicFactorCategoryLabel(factor)}
                                     </span>
                                 </div>
 
@@ -157,7 +154,7 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                                     <BiPencil size={18} />
                                 </button>
                                 <button
-                                    onClick={() => remove(factor.id)}
+                                    onClick={async () => { if (await confirmDelete('this Systemic Factor', 'Recommendations linked to it will lose this link.')) remove(factor.id); }}
                                     style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}
                                     title="Delete Systemic Factor"
                                 >
@@ -176,11 +173,13 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                 onClose={closeModal}
                 analysisId={analysisId}
                 cacOptions={cacOptions}
+                customCategories={Array.from(new Set((systemicFactors ?? []).map(f => f.customCategory).filter((c): c is string => !!c)))}
                 systemicFactor={editingFactor}
                 isLoading={isCreating || isUpdating}
                 onCreate={async data => { await create(data); }}
                 onUpdate={async (id, data) => { await update({ id, data }); }}
             />
+            {confirmDialog}
         </CastSection>
 
         {previewFactor && (
@@ -188,7 +187,7 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                 open={!!previewFactor}
                 onClose={() => setPreviewFactor(null)}
                 title="Systemic Factor Details"
-                code={systemicFactorCategoryToSelectOption(previewFactor.category).label}
+                code={systemicFactorCategoryLabel(previewFactor)}
                 description={previewFactor.description}
                 relatedGroups={[
                     {

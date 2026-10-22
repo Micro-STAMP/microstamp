@@ -6,6 +6,7 @@ import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastNextStepButton from '@components/CastNextStepButton';
 import CastLastUpdated from '@components/CastLastUpdated';
 import CastCreatedAt from '@components/CastCreatedAt';
+import CastQuestionsRaised from '@components/CastQuestionsRaised';
 
 import CastComponentsForm from './components/CastComponentsForm';
 import CastConnectionsForm from './components/CastConnectionsForm';
@@ -64,6 +65,7 @@ export default function CastStepTwo() {
             <CastStructureImageForm analysisId={analysisId} />
 
             <div className={styles.wrapper}>
+                <CastQuestionsRaised analysisId={analysisId} step={2} />
                 <CastNextStepButton analysisId={analysisId} to="step3" label="Step 3: Analyze Individual Components" />
             </div>
         </div>

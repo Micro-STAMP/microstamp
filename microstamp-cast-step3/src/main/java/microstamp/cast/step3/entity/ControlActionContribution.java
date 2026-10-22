@@ -2,12 +2,14 @@ package microstamp.cast.step3.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import microstamp.cast.step3.converter.StringListConverter;
 import microstamp.cast.step3.entity.enums.IcaType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,14 +45,17 @@ public class ControlActionContribution {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Convert(converter = StringListConverter.class)
     @Column(columnDefinition = "TEXT")
-    private String context;
+    private List<String> context;
 
+    @Convert(converter = StringListConverter.class)
     @Column(name = "process_model_flaw", columnDefinition = "TEXT")
-    private String processModelFlaw;
+    private List<String> processModelFlaw;
 
+    @Convert(converter = StringListConverter.class)
     @Column(columnDefinition = "TEXT")
-    private String questions;
+    private List<String> questions;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

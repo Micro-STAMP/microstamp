@@ -2,6 +2,7 @@ package microstamp.cast.step1.service;
 
 import microstamp.cast.step1.dto.timelineevent.TimelineEventInsertDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventReadDto;
+import microstamp.cast.step1.dto.timelineevent.TimelineEventReorderDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventUpdateDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,8 @@ public interface TimelineEventService {
     void update(UUID id, TimelineEventUpdateDto timelineEventUpdateDto);
 
     void delete(UUID id);
+
+    List<TimelineEventReadDto> reorder(UUID analysisId, TimelineEventReorderDto timelineEventReorderDto);
 
     TimelineEventReadDto uploadImage(UUID id, MultipartFile file) throws Exception;
 

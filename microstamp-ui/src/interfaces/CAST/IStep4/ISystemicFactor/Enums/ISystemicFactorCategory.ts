@@ -40,3 +40,11 @@ const systemicFactorCategoryToSelectOption = (category: ISystemicFactorCategory)
 };
 
 export { systemicFactorCategoryToSelectOption };
+
+
+const systemicFactorCategoryLabel = (factor: { category?: ISystemicFactorCategory | null; customCategory?: string | null }): string => {
+	if (factor.customCategory) return factor.customCategory;
+	return factor.category ? systemicFactorCategoryToSelectOptionMap[factor.category].label : "Uncategorized";
+};
+
+export { systemicFactorCategoryLabel };

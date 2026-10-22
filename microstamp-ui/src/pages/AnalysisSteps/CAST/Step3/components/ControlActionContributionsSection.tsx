@@ -17,14 +17,28 @@ import {
     IControlActionContributionReadDto
 } from '@interfaces/CAST/IStep3/IControlActionContribution';
 import CastSection from '@components/CastSection';
+import { useCastConfirm } from '@components/CastConfirm';
 import ModalControlActionContribution from '@components/Modal/ModalEntity/ModalStep3/ModalControlActionContribution';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
 import styles from '../../Step1/CastStepOne.module.css';
 
 interface Props { analysisId: string; }
 
+function CacListField({ label, items }: { label: string; items?: string[] }) {
+    if (!items || items.length === 0) return null;
+    return (
+        <div style={{ margin: '0 0 6px 0', fontSize: '13px', color: 'var(--color-muted-text)', lineHeight: '1.5' }}>
+            <strong style={{ color: '#d1d5db' }}>{label}:</strong>
+            <ul style={{ margin: '2px 0 0 0', paddingLeft: '18px' }}>
+                {items.map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+        </div>
+    );
+}
+
 export default function ControlActionContributionsSection({ analysisId }: Props) {
     const queryClient = useQueryClient();
+    const { confirmDelete, confirmDialog } = useCastConfirm();
     const navigate = useNavigate();
     const [previewCac, setPreviewCac] = useState<IControlActionContributionReadDto | null>(null);
 
@@ -85,18 +99,13 @@ export default function ControlActionContributionsSection({ analysisId }: Props)
 
     const { mutateAsync: remove } = useMutation({
         mutationFn: async (id: string) => {
-            if (window.confirm("Are you sure you want to delete this CAC?")) {
-                return await deleteControlActionContribution(id);
-            }
-            return Promise.reject(new Error("Cancelled"));
+            return await deleteControlActionContribution(id);
         },
         onSuccess: () => {
             toast.success("CAC removed.");
             queryClient.invalidateQueries({ queryKey: ['control-action-contributions', analysisId] });
         },
-        onError: (err: any) => {
-            if (err.message !== "Cancelled") toast.error(err.message);
-        }
+        onError: (err: any) => toast.error(err.message)
     });
 
     return (
@@ -144,22 +153,17 @@ export default function ControlActionContributionsSection({ analysisId }: Props)
                                         {cac.description}
                                     </p>
                                 )}
-                                {cac.context && (
-                                    <p style={{ margin: '0 0 4px 0', fontSize: '13px', color: 'var(--color-muted-text)', lineHeight: '1.5' }}>
-                                        <strong style={{ color: '#d1d5db' }}>Context / Contextual Factors: </strong>{cac.context}
-                                    </p>
-                                )}
-                                {cac.processModelFlaw && (
-                                    <p style={{ margin: '0 0 4px 0', fontSize: '13px', color: 'var(--color-muted-text)', lineHeight: '1.5' }}>
-                                        <strong style={{ color: '#d1d5db' }}>Process Model Flaw: </strong>{cac.processModelFlaw}
-                                    </p>
-                                )}
-                                {cac.questions && (
+                                <CacListField label="Context / Contextual Factors" items={cac.context} />
+                                <CacListField label="Process / Mental Model Flaws" items={cac.processModelFlaw} />
+                                {(cac.questions ?? []).length > 0 && (
                                     <div style={{ marginTop: '8px', backgroundColor: 'var(--color-dark-gray)', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid var(--color-yellow)', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                                         <BiQuestionMark size={18} color="var(--color-yellow)" style={{ marginTop: '2px', flexShrink: 0 }} />
-                                        <p style={{ margin: 0, fontSize: '13px', color: '#d1d5db', fontStyle: 'italic' }}>
-                                            {cac.questions}
-                                        </p>
+                                        <div>
+                                            <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-yellow)', marginBottom: '4px' }}>Questions Raised</div>
+                                            <ol style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', color: '#d1d5db', fontStyle: 'italic', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                                {cac.questions!.map((q, i) => <li key={i}>{q}</li>)}
+                                            </ol>
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -180,7 +184,7 @@ export default function ControlActionContributionsSection({ analysisId }: Props)
                                     <BiPencil size={18} />
                                 </button>
                                 <button
-                                    onClick={() => remove(cac.id)}
+                                    onClick={async () => { if (await confirmDelete(`CAC ${cac.code}`, 'Systemic Factors and Recommendations linked to it will lose this link.')) remove(cac.id); }}
                                     style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}
                                     title="Delete CAC"
                                 >
@@ -199,11 +203,13 @@ export default function ControlActionContributionsSection({ analysisId }: Props)
                 onClose={closeModal}
                 analysisId={analysisId}
                 componentOptions={componentOptions}
+                existingCodes={(cacs ?? []).map(c => c.code)}
                 cac={editingCac}
                 isLoading={isCreating || isUpdating}
                 onCreate={async data => { await create(data); }}
                 onUpdate={async (id, data) => { await update({ id, data }); }}
             />
+            {confirmDialog}
         </CastSection>
 
         {previewCac && (

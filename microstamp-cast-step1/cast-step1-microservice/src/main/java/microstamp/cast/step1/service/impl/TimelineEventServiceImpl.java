@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 //import microstamp.cast.step1.client.MicroStampClient;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventInsertDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventReadDto;
+import microstamp.cast.step1.dto.timelineevent.TimelineEventReorderDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventUpdateDto;
 import microstamp.cast.step1.entity.TimelineEvent;
 import microstamp.cast.step1.exception.Step1IllegalArgumentException;
@@ -15,12 +16,16 @@ import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.service.TimelineEventService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -102,6 +107,33 @@ public class TimelineEventServiceImpl implements TimelineEventService {
 
         log.info("Deleting the CAST timeline event with id {} on the database", timelineEvent.getId());
         timelineEventRepository.deleteById(timelineEvent.getId());
+    }
+
+    @Transactional
+    public List<TimelineEventReadDto> reorder(UUID analysisId, TimelineEventReorderDto timelineEventReorderDto) {
+        log.debug("Verifying if the CAST timeline reorder for analysis {} is valid", analysisId);
+        if (Objects.isNull(timelineEventReorderDto) || Objects.isNull(timelineEventReorderDto.orderedIds())) {
+            throw new Step1IllegalArgumentException("Unable to reorder the timeline because the provided TimelineEventReorderDto is null.");
+        }
+
+        Map<UUID, TimelineEvent> eventsById = timelineEventRepository.findByAnalysisId(analysisId).stream()
+                .collect(Collectors.toMap(TimelineEvent::getId, Function.identity()));
+
+        List<UUID> orderedIds = timelineEventReorderDto.orderedIds();
+        if (orderedIds.size() != eventsById.size() || !eventsById.keySet().containsAll(orderedIds)) {
+            throw new Step1IllegalArgumentException("The provided order must contain exactly the timeline events of analysis " + analysisId + ".");
+        }
+
+        for (int i = 0; i < orderedIds.size(); i++) {
+            eventsById.get(orderedIds.get(i)).setEventOrder(i + 1);
+        }
+
+        log.info("Reordering the {} CAST timeline events of analysis {}", orderedIds.size(), analysisId);
+        timelineEventRepository.saveAll(eventsById.values());
+
+        auditLogService.record(analysisId, "Step 1", "Timeline order");
+
+        return findByAnalysisId(analysisId);
     }
 
     public TimelineEventReadDto uploadImage(UUID id, MultipartFile file) throws Exception {

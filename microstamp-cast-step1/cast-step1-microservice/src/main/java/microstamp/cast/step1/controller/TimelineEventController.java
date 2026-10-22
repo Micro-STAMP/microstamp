@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventInsertDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventReadDto;
+import microstamp.cast.step1.dto.timelineevent.TimelineEventReorderDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventUpdateDto;
 import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.service.TimelineEventService;
@@ -57,6 +58,13 @@ public class TimelineEventController {
         log.info("Request received to update CAST timeline event with id {} with information {}", id, timelineEventUpdateDto);
         service.update(id, timelineEventUpdateDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/analysis/{id}/order")
+    public ResponseEntity<List<TimelineEventReadDto>> reorder(@PathVariable(name = "id") UUID analysisId,
+                                                              @Valid @RequestBody TimelineEventReorderDto timelineEventReorderDto) {
+        log.info("Request received to reorder the CAST timeline events of analysis id {} to {}", analysisId, timelineEventReorderDto);
+        return new ResponseEntity<>(service.reorder(analysisId, timelineEventReorderDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

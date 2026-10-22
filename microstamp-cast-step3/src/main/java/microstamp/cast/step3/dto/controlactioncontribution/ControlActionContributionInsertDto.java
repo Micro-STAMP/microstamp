@@ -3,6 +3,8 @@ package microstamp.cast.step3.dto.controlactioncontribution;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import microstamp.cast.step3.entity.enums.IcaType;
+
+import java.util.List;
 import java.util.UUID;
 
 public record ControlActionContributionInsertDto(
@@ -23,7 +25,7 @@ public record ControlActionContributionInsertDto(
         IcaType type,
 
         String description,
-        String context,
-        String processModelFlaw,
-        String questions
+        List<String> context,
+        List<String> processModelFlaw,
+        List<String> questions
 ) {}

@@ -15,6 +15,15 @@
     cursor: help;
 }
 
+.badgeClickable {
+    cursor: pointer;
+}
+
+.badgeClickable:hover {
+    color: var(--color-yellow);
+    border-color: var(--color-yellow);
+}
+
 .tooltip {
     position: fixed;
     transform: translate(-50%, calc(-100% - 8px));

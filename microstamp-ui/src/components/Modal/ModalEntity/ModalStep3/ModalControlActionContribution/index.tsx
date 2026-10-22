@@ -13,6 +13,10 @@ import { useQuery } from "@tanstack/react-query";
 import { BiSave, BiX, BiCheckShield } from "react-icons/bi";
 import { toast } from "sonner";
 import { getResponsibilities } from "@http/Step2/Responsibilities";
+import CastTextarea from "@components/CastTextarea";
+import CastListInput from "@components/CastListInput";
+import { nextCode } from "@utils/castCodes";
+import { cleanList } from "@utils/castList";
 import styles from "./ModalControlActionContribution.module.css";
 
 interface ModalControlActionContributionProps {
@@ -20,6 +24,7 @@ interface ModalControlActionContributionProps {
     onClose: () => void;
     analysisId: string;
     componentOptions: SelectOption[];
+    existingCodes: string[];
     cac?: IControlActionContributionReadDto | null;
     isLoading?: boolean;
     onCreate: (data: IControlActionContributionInsertDto) => Promise<void>;
@@ -32,9 +37,9 @@ const EMPTY_FORM = {
     controlActionName: "",
     type: IIcaType.NOT_PROVIDED,
     description: "",
-    context: "",
-    processModelFlaw: "",
-    questions: ""
+    context: [] as string[],
+    processModelFlaw: [] as string[],
+    questions: [] as string[]
 };
 
 export default function ModalControlActionContribution({
@@ -42,6 +47,7 @@ export default function ModalControlActionContribution({
     onClose,
     analysisId,
     componentOptions,
+    existingCodes,
     cac,
     isLoading = false,
     onCreate,
@@ -66,12 +72,12 @@ export default function ModalControlActionContribution({
                 controlActionName: cac.controlActionName,
                 type: cac.type,
                 description: cac.description || "",
-                context: cac.context || "",
-                processModelFlaw: cac.processModelFlaw || "",
-                questions: cac.questions || ""
+                context: cac.context ?? [],
+                processModelFlaw: cac.processModelFlaw ?? [],
+                questions: cac.questions ?? []
             });
         } else {
-            setForm({ ...EMPTY_FORM, componentId: componentOptions[0]?.value || "" });
+            setForm({ ...EMPTY_FORM, componentId: componentOptions[0]?.value || "", code: nextCode("CAC", existingCodes) });
         }
     }, [open, cac, componentOptions]);
 
@@ -88,9 +94,9 @@ export default function ModalControlActionContribution({
                 controlActionName: form.controlActionName,
                 type: form.type,
                 description: form.description,
-                context: form.context,
-                processModelFlaw: form.processModelFlaw,
-                questions: form.questions
+                context: cleanList(form.context),
+                processModelFlaw: cleanList(form.processModelFlaw),
+                questions: cleanList(form.questions)
             });
         } else {
             if (!form.componentId || !form.code.trim()) {
@@ -104,9 +110,9 @@ export default function ModalControlActionContribution({
                 controlActionName: form.controlActionName,
                 type: form.type,
                 description: form.description,
-                context: form.context,
-                processModelFlaw: form.processModelFlaw,
-                questions: form.questions
+                context: cleanList(form.context),
+                processModelFlaw: cleanList(form.processModelFlaw),
+                questions: cleanList(form.questions)
             });
         }
 
@@ -202,7 +208,7 @@ export default function ModalControlActionContribution({
 
                     <div>
                         <label className={castStyles.inputLabel}>Contribution / Description</label>
-                        <textarea
+                        <CastTextarea
                             rows={2}
                             className={castStyles.inputField}
                             style={{ marginBottom: 0 }}
@@ -214,47 +220,35 @@ export default function ModalControlActionContribution({
                         </p>
                     </div>
 
-                    <div>
-                        <label className={castStyles.inputLabel}>Context / Contextual Factors</label>
-                        <textarea
-                            rows={3}
-                            className={castStyles.inputField}
-                            style={{ marginBottom: 0 }}
-                            value={form.context}
-                            onChange={e => setForm({ ...form, context: e.target.value })}
-                        />
-                        <p className={styles.helperText}>
-                            Why did it make sense for the controller to act this way at the time of the accident?
-                        </p>
-                    </div>
+                    <CastListInput
+                        label="Context / Contextual Factors"
+                        items={form.context}
+                        onChange={context => setForm({ ...form, context })}
+                        placeholder="E.g., The alarm had been sounding falsely for weeks"
+                        addLabel="Add contextual factor"
+                        helperText="Why did it make sense for the controller to act this way at the time of the accident? Add one factor per item."
+                        helperClassName={styles.helperText}
+                    />
 
-                    <div>
-                        <label className={castStyles.inputLabel}>Process Model Flaw</label>
-                        <textarea
-                            rows={3}
-                            className={castStyles.inputField}
-                            style={{ marginBottom: 0 }}
-                            value={form.processModelFlaw}
-                            onChange={e => setForm({ ...form, processModelFlaw: e.target.value })}
-                        />
-                        <p className={styles.helperText}>
-                            What was wrong or incomplete in the controller's process/mental model that led to this control action?
-                        </p>
-                    </div>
+                    <CastListInput
+                        label="Process / Mental Model Flaws"
+                        items={form.processModelFlaw}
+                        onChange={processModelFlaw => setForm({ ...form, processModelFlaw })}
+                        placeholder="E.g., Believed the pump was configured for the adult dose"
+                        addLabel="Add model flaw"
+                        helperText="What was wrong or incomplete in the controller's model of the controlled process — its mental model (human controller) or process model (automated controller)? Add one flaw per item."
+                        helperClassName={styles.helperText}
+                    />
 
-                    <div>
-                        <label className={castStyles.inputLabel}>Investigative / Unanswered Questions</label>
-                        <textarea
-                            rows={3}
-                            className={castStyles.inputField}
-                            style={{ marginBottom: 0 }}
-                            value={form.questions}
-                            onChange={e => setForm({ ...form, questions: e.target.value })}
-                        />
-                        <p className={styles.helperText}>
-                            Open questions this component-level analysis couldn't resolve — e.g., organizational, managerial, or regulatory causes to pick up in Step 4 (Systemic Factors).
-                        </p>
-                    </div>
+                    <CastListInput
+                        label="Questions Raised"
+                        items={form.questions}
+                        onChange={questions => setForm({ ...form, questions })}
+                        placeholder="E.g., Why was the dosage never double-checked by pharmacy?"
+                        addLabel="Add question"
+                        helperText="Open questions this component-level analysis couldn't resolve — e.g., organizational, managerial, or regulatory causes to pick up in Step 4 (Systemic Factors)."
+                        helperClassName={styles.helperText}
+                    />
                 </div>
 
                 <div className={styles.footer}>

@@ -1,6 +1,6 @@
 package microstamp.cast.step1.controller;
 
-import microstamp.cast.step1.client.MicroStampClient;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventInsertDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventReadDto;
 import microstamp.cast.step1.dto.timelineevent.TimelineEventUpdateDto;
@@ -38,7 +38,7 @@ public class TimelineEventServiceUnitTest {
     private TimelineEventRepository timelineEventRepository;
 
     @Mock
-    private MicroStampClient microStampClient;
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no timeline event is found > Return an empty list")
@@ -143,7 +143,6 @@ public class TimelineEventServiceUnitTest {
     void insertWhenInputIsValidCreateTimelineEvent() {
         TimelineEventInsertDto insertDto = assembleTimelineEventInsertDto.get();
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(timelineEventRepository.save(any(TimelineEvent.class))).thenAnswer(answer -> answer.getArguments()[0]);
 
         TimelineEventReadDto response = service.insert(insertDto);
@@ -153,7 +152,6 @@ public class TimelineEventServiceUnitTest {
                 () -> assertEquals(insertDto.getEventOrder(), response.getEventOrder()),
                 () -> assertEquals(insertDto.getEventDescription(), response.getEventDescription()),
                 () -> assertEquals(insertDto.getQuestions(), response.getQuestions()),
-                () -> verify(microStampClient, times(1)).getAnalysisById(insertDto.getAnalysisId()),
                 () -> verify(timelineEventRepository, times(1)).save(any(TimelineEvent.class))
         );
     }
@@ -226,7 +224,7 @@ public class TimelineEventServiceUnitTest {
             .code("TE-" + index)
             .eventOrder(index)
             .eventDescription("Timeline event " + index)
-            .questions("Question " + index)
+            .questions(List.of("Question " + index))
             .analysisId(UUID.randomUUID())
             .build();
 
@@ -234,7 +232,7 @@ public class TimelineEventServiceUnitTest {
             .code("TE-1")
             .eventOrder(1)
             .eventDescription("Timeline event")
-            .questions("Questions")
+            .questions(List.of("Questions"))
             .analysisId(UUID.randomUUID())
             .build();
 
@@ -242,6 +240,6 @@ public class TimelineEventServiceUnitTest {
             .code("TE-U")
             .eventOrder(10)
             .eventDescription("Updated timeline event")
-            .questions("Updated questions")
+            .questions(List.of("Updated questions"))
             .build();
 }

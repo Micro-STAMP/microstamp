@@ -1,6 +1,6 @@
 package microstamp.cast.step1.controller;
 
-import microstamp.cast.step1.client.MicroStampClient;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.dto.violatedsystemsafetyconstraint.ViolatedSystemSafetyConstraintInsertDto;
 import microstamp.cast.step1.dto.violatedsystemsafetyconstraint.ViolatedSystemSafetyConstraintReadDto;
 import microstamp.cast.step1.dto.violatedsystemsafetyconstraint.ViolatedSystemSafetyConstraintUpdateDto;
@@ -43,7 +43,7 @@ public class ViolatedSystemSafetyConstraintServiceUnitTest {
     private CastHazardRepository castHazardRepository;
 
     @Mock
-    private MicroStampClient microStampClient;
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no violated constraint is found > Return an empty list")
@@ -145,7 +145,6 @@ public class ViolatedSystemSafetyConstraintServiceUnitTest {
     void insertWhenAssociatedCastHazardIsNotFoundThrowAnException() {
         ViolatedSystemSafetyConstraintInsertDto insertDto = assembleViolatedConstraintInsertDto.get();
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(castHazardRepository.findById(insertDto.getHazardIds().getFirst())).thenReturn(Optional.empty());
 
         assertThrows(Step1NotFoundException.class, () -> service.insert(insertDto));
@@ -158,7 +157,6 @@ public class ViolatedSystemSafetyConstraintServiceUnitTest {
         UUID firstHazardId = insertDto.getHazardIds().getFirst();
         UUID secondHazardId = insertDto.getHazardIds().get(1);
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(castHazardRepository.findById(firstHazardId)).thenReturn(Optional.of(assembleCastHazard.apply(firstHazardId, 1)));
         when(castHazardRepository.findById(secondHazardId)).thenReturn(Optional.of(assembleCastHazard.apply(secondHazardId, 2)));
         when(violatedSystemSafetyConstraintRepository.save(any(ViolatedSystemSafetyConstraint.class))).thenAnswer(answer -> answer.getArguments()[0]);
@@ -180,7 +178,6 @@ public class ViolatedSystemSafetyConstraintServiceUnitTest {
         ViolatedSystemSafetyConstraintInsertDto insertDto = assembleViolatedConstraintInsertDto.get();
         insertDto.setHazardIds(null);
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(violatedSystemSafetyConstraintRepository.save(any(ViolatedSystemSafetyConstraint.class))).thenAnswer(answer -> answer.getArguments()[0]);
 
         ViolatedSystemSafetyConstraintReadDto response = service.insert(insertDto);

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class TimelineEventUpdateDto {
     @NotBlank
     private String eventDescription;
 
-    private String questions;
+    private List<String> questions;
 
     private String timeLabel;
 

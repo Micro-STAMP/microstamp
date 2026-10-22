@@ -1,11 +1,26 @@
 import { useState } from 'react';
-import { BiSave, BiTrash, BiQuestionMark, BiImageAdd, BiUpload } from 'react-icons/bi';
+import { BiSave, BiTrash, BiQuestionMark, BiImageAdd, BiUpload, BiX, BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { getByAnalysisId as getEvents, createTimelineEvent, deleteTimelineEvent, uploadTimelineEventImage, deleteTimelineEventImage } from '@http/CAST/Step1/Timeline';
+import {
+    getByAnalysisId as getEvents,
+    createTimelineEvent,
+    updateTimelineEvent,
+    deleteTimelineEvent,
+    reorderTimelineEvents,
+    uploadTimelineEventImage,
+    deleteTimelineEventImage
+} from '@http/CAST/Step1/Timeline';
+import { ITimelineEventReadDto } from '@interfaces/CAST/ITimelineEvent';
 import CastSection from '@components/CastSection';
 import CastCheckbox from '@components/CastCheckbox';
+import CastTextarea from '@components/CastTextarea';
+import CastListInput from '@components/CastListInput';
+import CastItemActions from '@components/CastItemActions';
+import { useCastConfirm } from '@components/CastConfirm';
 import { formatDateTimeBR } from '@services/date';
+import { nextCode } from '@utils/castCodes';
+import { cleanList } from '@utils/castList';
 import styles from '../CastStepOne.module.css';
 
 function toIsoDateTime(date: string, time: string): string | undefined {
@@ -20,11 +35,25 @@ function eventTimeDisplay(ev: { exactDateTime?: string; timeLabel?: string }): s
 
 interface Props { analysisId: string; }
 
+const EMPTY_FORM = {
+    code: '',
+    eventDescription: '',
+    questions: [] as string[],
+    timeLabel: '',
+    useExactDate: false,
+    exactDate: '',
+    exactTime: ''
+};
+
+const arrowBtn = { background: 'none', border: '1px solid var(--color-gray)', borderRadius: '6px', color: 'var(--color-muted-text)', cursor: 'pointer', padding: '4px 8px', display: 'flex', alignItems: 'center', gap: '2px', fontSize: '12px' } as const;
+
 export default function TimelineEventForm({ analysisId }: Props) {
     const queryClient = useQueryClient();
+    const queryKey = ['timeline-events', analysisId];
+    const { confirmDelete, confirmDialog } = useCastConfirm();
 
     const { data: events, isLoading } = useQuery({
-        queryKey: ['timeline-events', analysisId],
+        queryKey,
         queryFn: () => getEvents(analysisId)
     });
 
@@ -32,52 +61,87 @@ export default function TimelineEventForm({ analysisId }: Props) {
 
     const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
     const expandedEvent = sortedEvents.find(ev => ev.id === expandedEventId) || null;
+    const expandedIndex = expandedEvent ? sortedEvents.indexOf(expandedEvent) : -1;
 
-    const EMPTY_FORM = {
-        code: 'T-1',
-        eventDescription: '',
-        questions: '',
-        timeLabel: '',
-        useExactDate: false,
-        exactDate: '',
-        exactTime: ''
-    };
     const [form, setForm] = useState(EMPTY_FORM);
+    const [editingEvent, setEditingEvent] = useState<ITimelineEventReadDto | null>(null);
+    const code = form.code || nextCode('T', sortedEvents.map(ev => ev.code));
+
+    const [draggedId, setDraggedId] = useState<string | null>(null);
+
+    const resetForm = () => {
+        setForm(EMPTY_FORM);
+        setEditingEvent(null);
+    };
 
     const { mutateAsync: save, isPending } = useMutation({
         mutationFn: async () => {
-            return await createTimelineEvent({
-                code: form.code,
+            const data = {
+                code: code.trim(),
                 eventDescription: form.eventDescription,
-                questions: form.questions,
+                questions: cleanList(form.questions),
                 timeLabel: form.useExactDate ? undefined : form.timeLabel,
-                exactDateTime: form.useExactDate ? toIsoDateTime(form.exactDate, form.exactTime) : undefined,
-                eventOrder: sortedEvents.length + 1,
-                analysisId
-            });
+                exactDateTime: form.useExactDate ? toIsoDateTime(form.exactDate, form.exactTime) : undefined
+            };
+            return editingEvent
+                ? await updateTimelineEvent(editingEvent.id, { ...data, eventOrder: editingEvent.eventOrder })
+                : await createTimelineEvent({ ...data, eventOrder: sortedEvents.length + 1, analysisId });
         },
         onSuccess: () => {
-            toast.success("Event added to timeline!");
-            setForm({ ...EMPTY_FORM, code: `T-${sortedEvents.length + 2}` });
-            queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
+            toast.success(editingEvent ? "Event updated!" : "Event added to timeline!");
+            resetForm();
+            queryClient.invalidateQueries({ queryKey });
         },
         onError: (err: any) => toast.error(err.message || "Error saving Timeline Event.")
     });
 
     const { mutateAsync: remove } = useMutation({
         mutationFn: async (id: string) => await deleteTimelineEvent(id),
-        onSuccess: () => {
+        onSuccess: (_, id) => {
             toast.success("Event removed from timeline.");
             setExpandedEventId(null);
-            queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
-        }
+            if (editingEvent?.id === id) resetForm();
+            queryClient.invalidateQueries({ queryKey });
+        },
+        onError: (err: any) => toast.error(err.message || "Error deleting Timeline Event.")
     });
+
+    const { mutate: reorder } = useMutation({
+        mutationFn: (orderedIds: string[]) => reorderTimelineEvents(analysisId, orderedIds),
+        onMutate: async (orderedIds: string[]) => {
+            await queryClient.cancelQueries({ queryKey });
+            const previous = queryClient.getQueryData<ITimelineEventReadDto[]>(queryKey);
+            queryClient.setQueryData<ITimelineEventReadDto[]>(queryKey, old =>
+                old?.map(ev => ({ ...ev, eventOrder: orderedIds.indexOf(ev.id) + 1 }))
+            );
+            return { previous };
+        },
+        onError: (err: any, _ids, context) => {
+            if (context?.previous) queryClient.setQueryData(queryKey, context.previous);
+            toast.error(err.message || "Error reordering the timeline.");
+        },
+        onSettled: () => queryClient.invalidateQueries({ queryKey })
+    });
+
+    const moveEvent = (fromIndex: number, toIndex: number) => {
+        if (toIndex < 0 || toIndex >= sortedEvents.length || fromIndex === toIndex) return;
+        const ids = sortedEvents.map(ev => ev.id);
+        const [moved] = ids.splice(fromIndex, 1);
+        ids.splice(toIndex, 0, moved);
+        reorder(ids);
+    };
+
+    const handleDrop = (targetId: string) => {
+        if (!draggedId) return;
+        moveEvent(sortedEvents.findIndex(ev => ev.id === draggedId), sortedEvents.findIndex(ev => ev.id === targetId));
+        setDraggedId(null);
+    };
 
     const { mutateAsync: uploadImage, isPending: isUploadingImage } = useMutation({
         mutationFn: async ({ id, file }: { id: string; file: File }) => await uploadTimelineEventImage(id, file),
         onSuccess: () => {
             toast.success("Event image uploaded!");
-            queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
+            queryClient.invalidateQueries({ queryKey });
         },
         onError: (err: any) => toast.error(err.message || "Error uploading event image.")
     });
@@ -86,7 +150,7 @@ export default function TimelineEventForm({ analysisId }: Props) {
         mutationFn: async (id: string) => await deleteTimelineEventImage(id),
         onSuccess: () => {
             toast.success("Event image removed.");
-            queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
+            queryClient.invalidateQueries({ queryKey });
         },
         onError: (err: any) => toast.error(err.message || "Error removing event image.")
     });
@@ -104,8 +168,29 @@ export default function TimelineEventForm({ analysisId }: Props) {
         e.target.value = '';
     };
 
+    const startEdit = (ev: ITimelineEventReadDto) => {
+        setEditingEvent(ev);
+        setForm({
+            code: ev.code,
+            eventDescription: ev.eventDescription,
+            questions: ev.questions ?? [],
+            timeLabel: ev.timeLabel || '',
+            useExactDate: !!ev.exactDateTime,
+            exactDate: ev.exactDateTime ? ev.exactDateTime.slice(0, 10) : '',
+            exactTime: ev.exactDateTime ? ev.exactDateTime.slice(11, 16) : ''
+        });
+    };
+
+    const handleDelete = async (ev: ITimelineEventReadDto) => {
+        if (await confirmDelete(`event ${ev.code}`)) await remove(ev.id);
+    };
+
+    const handleRemoveImage = async (ev: ITimelineEventReadDto) => {
+        if (await confirmDelete(`the image of event ${ev.code}`)) await removeImage(ev.id);
+    };
+
     return (
-        <CastSection title="Proximate Events and Questions" tooltipInfo="Chronological summary of proximate events." defaultOpen={false} hideAddButton={true}>
+        <CastSection title="Proximate Events and Questions Raised" tooltipInfo="Chronological summary of the proximate events. For each event, record the questions it raises — they guide the rest of the analysis. Drag the events (or use the arrows) to fix their sequence." defaultOpen={false} hideAddButton={true}>
             {isLoading ? (
                 <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading timeline...</div>
             ) : (
@@ -117,13 +202,20 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '48px', position: 'relative', paddingTop: '8px', minWidth: 'fit-content' }}>
                                     <div style={{ position: 'absolute', top: '17px', left: '9px', right: '9px', height: '2px', backgroundColor: 'var(--color-gray)', zIndex: 0 }} />
 
-                                    {sortedEvents.map(ev => {
+                                    {sortedEvents.map((ev, index) => {
                                         const isExpanded = ev.id === expandedEventId;
+                                        const isDragTarget = draggedId !== null && draggedId !== ev.id;
                                         return (
                                             <button
                                                 key={ev.id}
+                                                draggable
+                                                onDragStart={() => setDraggedId(ev.id)}
+                                                onDragEnd={() => setDraggedId(null)}
+                                                onDragOver={e => { if (isDragTarget) e.preventDefault(); }}
+                                                onDrop={() => handleDrop(ev.id)}
                                                 onClick={() => setExpandedEventId(isExpanded ? null : ev.id)}
-                                                style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, minWidth: '90px' }}
+                                                title="Click to see details · drag to reorder"
+                                                style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'grab', padding: 0, minWidth: '90px', opacity: draggedId === ev.id ? 0.4 : 1 }}
                                             >
                                                 <div style={{
                                                     width: '18px',
@@ -133,6 +225,7 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                                     border: `4px solid ${isExpanded ? 'var(--color-dark)' : 'var(--color-yellow)'}`
                                                 }} />
                                                 <div style={{ textAlign: 'center' }}>
+                                                    <div style={{ color: 'var(--color-muted-text)', fontSize: '10px' }}>#{index + 1}</div>
                                                     <div style={{ color: 'var(--color-yellow)', fontWeight: 600, fontSize: '13px' }}>{ev.code}</div>
                                                     {eventTimeDisplay(ev) && (
                                                         <div style={{ color: 'var(--color-muted-text)', fontSize: '11px' }}>{eventTimeDisplay(ev)}</div>
@@ -145,9 +238,9 @@ export default function TimelineEventForm({ analysisId }: Props) {
                             </div>
 
                             {expandedEvent && (
-                                <div style={{ backgroundColor: 'var(--color-dark-gray)', border: '1px solid var(--color-gray)', borderRadius: '8px', padding: '16px', display: 'flex', justifyContent: 'space-between' }}>
+                                <div style={{ backgroundColor: 'var(--color-dark-gray)', border: '1px solid var(--color-gray)', borderRadius: '8px', padding: '16px', display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
                                     <div style={{ flex: 1 }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
                                             <span style={{ color: 'var(--color-yellow)', fontWeight: 600, fontSize: '14px' }}>
                                                 {expandedEvent.code}
                                             </span>
@@ -156,18 +249,29 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                                     {eventTimeDisplay(expandedEvent)}
                                                 </span>
                                             )}
+                                            <div style={{ display: 'flex', gap: '6px', marginLeft: 'auto' }}>
+                                                <button type="button" style={{ ...arrowBtn, opacity: expandedIndex <= 0 ? 0.4 : 1 }} onClick={() => moveEvent(expandedIndex, expandedIndex - 1)} disabled={expandedIndex <= 0} title="Move earlier in the sequence">
+                                                    <BiChevronLeft size={16} /> Earlier
+                                                </button>
+                                                <button type="button" style={{ ...arrowBtn, opacity: expandedIndex >= sortedEvents.length - 1 ? 0.4 : 1 }} onClick={() => moveEvent(expandedIndex, expandedIndex + 1)} disabled={expandedIndex >= sortedEvents.length - 1} title="Move later in the sequence">
+                                                    Later <BiChevronRight size={16} />
+                                                </button>
+                                            </div>
                                         </div>
 
-                                        <p style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#ffffff', lineHeight: '1.5' }}>
+                                        <p style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#ffffff', lineHeight: '1.5', whiteSpace: 'pre-wrap' }}>
                                             {expandedEvent.eventDescription}
                                         </p>
 
-                                        {expandedEvent.questions && (
+                                        {(expandedEvent.questions ?? []).length > 0 && (
                                             <div style={{ backgroundColor: 'var(--color-dark-gray)', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid var(--color-yellow)', display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '12px' }}>
                                                 <BiQuestionMark size={18} color="var(--color-yellow)" style={{ marginTop: '2px', flexShrink: 0 }} />
-                                                <p style={{ margin: 0, fontSize: '14px', color: '#d1d5db', fontStyle: 'italic' }}>
-                                                    {expandedEvent.questions}
-                                                </p>
+                                                <div>
+                                                    <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-yellow)', marginBottom: '4px' }}>Questions Raised</div>
+                                                    <ol style={{ margin: 0, paddingLeft: '18px', fontSize: '14px', color: '#d1d5db', fontStyle: 'italic', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                        {expandedEvent.questions!.map((q, i) => <li key={i}>{q}</li>)}
+                                                    </ol>
+                                                </div>
                                             </div>
                                         )}
 
@@ -176,7 +280,7 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderBottom: '1px solid var(--color-gray)' }}>
                                                     <span style={{ color: '#d1d5db', fontSize: '12px', fontWeight: 'bold' }}>Event Image</span>
                                                     <button
-                                                        onClick={() => removeImage(expandedEvent.id)}
+                                                        onClick={() => handleRemoveImage(expandedEvent)}
                                                         disabled={isRemovingImage}
                                                         style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: isRemovingImage ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px' }}
                                                     >
@@ -206,9 +310,7 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                             </label>
                                         )}
                                     </div>
-                                    <button onClick={() => remove(expandedEvent.id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px', height: 'fit-content' }} title="Remove Event">
-                                        <BiTrash size={18} />
-                                    </button>
+                                    <CastItemActions itemLabel="Event" onEdit={() => startEdit(expandedEvent)} onDelete={() => handleDelete(expandedEvent)} />
                                 </div>
                             )}
                         </div>
@@ -219,11 +321,13 @@ export default function TimelineEventForm({ analysisId }: Props) {
                     <hr style={{ borderTop: '1px solid #e5e7eb', margin: '0' }} />
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <h4 style={{ margin: 0, fontSize: '14px', color: 'var(--color-white)' }}>Add Next Event</h4>
+                        <h4 style={{ margin: 0, fontSize: '14px', color: 'var(--color-white)' }}>
+                            {editingEvent ? `Edit Event ${code}` : 'Add Next Event'}
+                        </h4>
                         <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '16px' }}>
                             <div>
                                 <label className={styles.inputLabel}>Code</label>
-                                <input type="text" className={styles.inputField} value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ marginBottom: 0 }} />
+                                <input type="text" className={styles.inputField} value={code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ marginBottom: 0 }} />
                             </div>
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -262,21 +366,30 @@ export default function TimelineEventForm({ analysisId }: Props) {
                         </div>
                         <div>
                             <label className={styles.inputLabel}>Proximate Event</label>
-                            <textarea rows={2} placeholder="What happened?" className={styles.inputField} value={form.eventDescription} onChange={e => setForm({ ...form, eventDescription: e.target.value })} style={{ marginBottom: 0 }} />
+                            <CastTextarea rows={2} placeholder="What happened?" className={styles.inputField} value={form.eventDescription} onChange={e => setForm({ ...form, eventDescription: e.target.value })} style={{ marginBottom: 0 }} />
                         </div>
-                        <div>
-                            <label className={styles.inputLabel}>Questions Generated</label>
-                            <textarea rows={2} placeholder="Why did this happen? (e.g., Why was the alert ignored?)" className={styles.inputField} value={form.questions} onChange={e => setForm({ ...form, questions: e.target.value })} style={{ marginBottom: 0 }} />
-                        </div>
+                        <CastListInput
+                            label="Questions Raised"
+                            items={form.questions}
+                            onChange={questions => setForm({ ...form, questions })}
+                            placeholder="E.g., Why was the alert ignored?"
+                            addLabel="Add question"
+                        />
 
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <button onClick={() => save()} disabled={isPending || !form.eventDescription} className={styles.btnSaveForm}>
-                                <BiSave size={18} /> {isPending ? 'Adding...' : 'Add to Timeline'}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                            {editingEvent && (
+                                <button onClick={resetForm} className={styles.btnBack} type="button">
+                                    <BiX size={18} /> Cancel
+                                </button>
+                            )}
+                            <button onClick={() => save()} disabled={isPending || !form.eventDescription.trim() || !code.trim()} className={styles.btnSaveForm}>
+                                <BiSave size={18} /> {isPending ? 'Saving...' : editingEvent ? 'Save Changes' : 'Add to Timeline'}
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+            {confirmDialog}
         </CastSection>
     );
 }

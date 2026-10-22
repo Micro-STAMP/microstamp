@@ -2,6 +2,7 @@ package microstamp.cast.step1.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import microstamp.cast.step1.converter.StringListConverter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 import java.sql.Types;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -38,8 +40,9 @@ public class TimelineEvent implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String eventDescription;
 
+    @Convert(converter = StringListConverter.class)
     @Column(columnDefinition = "TEXT")
-    private String questions;
+    private List<String> questions;
 
     private String timeLabel;
 

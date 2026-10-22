@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getByAnalysisId, createSystemDescription, updateSystemDescription } from '@http/CAST/Step1/SystemDescription';
 import CastSection from '@components/CastSection';
+import CastTextarea from '@components/CastTextarea';
 import styles from '../CastStepOne.module.css';
 
 interface Props { analysisId: string; }
@@ -60,14 +61,14 @@ export default function SystemDescriptionForm({ analysisId }: Props) {
                     </div>
                     <div>
                         <label className={styles.inputLabel}>System Description</label>
-                        <textarea rows={3} placeholder="What is the system's purpose and how does it normally operate?" className={styles.inputField} value={form.generalDescription} onChange={e => setForm({ ...form, generalDescription: e.target.value })} style={{ marginBottom: 0 }} />
+                        <CastTextarea rows={3} placeholder="What is the system's purpose and how does it normally operate?" className={styles.inputField} value={form.generalDescription} onChange={e => setForm({ ...form, generalDescription: e.target.value })} style={{ marginBottom: 0 }} />
                     </div>
                     <div>
-                        <label className={styles.inputLabel}>System Boundary</label>
-                        <textarea rows={4} placeholder="Which teams, sectors, and systems are inside/outside the scope? (e.g., ICU, Pharmacy, EHR)" className={styles.inputField} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} style={{ marginBottom: 0 }} />
+                        <label className={styles.inputLabel}>System Boundary *</label>
+                        <CastTextarea rows={4} placeholder="Which teams, sectors, and systems are inside/outside the scope? (e.g., ICU, Pharmacy, EHR)" className={styles.inputField} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} style={{ marginBottom: 0 }} />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <button onClick={() => save()} disabled={isPending} className={styles.btnSaveForm}>
+                        <button onClick={() => save()} disabled={isPending || !form.description.trim()} className={styles.btnSaveForm} title={!form.description.trim() ? 'The System Boundary is required.' : undefined}>
                             <BiSave size={18} /> {isPending ? 'Saving...' : 'Save Description'}
                         </button>
                     </div>

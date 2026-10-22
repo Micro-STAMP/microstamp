@@ -46,6 +46,16 @@ const deleteTimelineEvent = async (id: string) => {
     }
 };
 
+const reorderTimelineEvents = async (analysisId: string, orderedIds: string[]) => {
+    try {
+        const res = await http.put<ITimelineEventReadDto[]>(`${ENDPOINT}/analysis/${analysisId}/order`, { orderedIds });
+        return res.data;
+    } catch (err) {
+        console.error(err);
+        throw new Error("Error reordering the timeline.");
+    }
+};
+
 const uploadTimelineEventImage = async (id: string, image: File) => {
     const data = new FormData();
     data.append("file", image);
@@ -77,6 +87,7 @@ export {
     createTimelineEvent,
     updateTimelineEvent,
     deleteTimelineEvent,
+    reorderTimelineEvents,
     uploadTimelineEventImage,
     deleteTimelineEventImage
 };

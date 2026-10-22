@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { BiSave, BiX } from "react-icons/bi";
 import { toast } from "sonner";
 import CastCheckbox from "@components/CastCheckbox";
+import CastTextarea from "@components/CastTextarea";
 import styles from "./ModalRecommendation.module.css";
 
 interface CacOption {
@@ -168,7 +169,7 @@ export default function ModalRecommendation({
                 <div className={styles.body}>
                     <div>
                         <label className={castStyles.inputLabel}>Description</label>
-                        <textarea
+                        <CastTextarea
                             rows={4}
                             className={castStyles.inputField}
                             style={{ marginBottom: 0 }}
@@ -274,7 +275,7 @@ export default function ModalRecommendation({
 
                     <div>
                         <label className={castStyles.inputLabel}>Feedback / Audit Mechanism</label>
-                        <textarea
+                        <CastTextarea
                             rows={2}
                             className={castStyles.inputField}
                             style={{ marginBottom: 0 }}
@@ -291,7 +292,7 @@ export default function ModalRecommendation({
                             Audit Findings / Effectiveness Evidence
                             {form.status === IRecommendationStatus.EFFECTIVE && " *"}
                         </label>
-                        <textarea
+                        <CastTextarea
                             rows={2}
                             className={castStyles.inputField}
                             style={{ marginBottom: 0 }}

@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import microstamp.cast.step3.entity.enums.IcaType;
 
+import java.util.List;
+
 public record ControlActionContributionUpdateDto(
 
         @NotBlank
@@ -13,7 +15,7 @@ public record ControlActionContributionUpdateDto(
         IcaType type,
 
         String description,
-        String context,
-        String processModelFlaw,
-        String questions
+        List<String> context,
+        List<String> processModelFlaw,
+        List<String> questions
 ) {}

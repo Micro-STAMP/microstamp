@@ -1,7 +1,8 @@
 import { ISystemicFactorCategory } from "./Enums";
 
 interface ISystemicFactorUpdateDto {
-	category: ISystemicFactorCategory;
+	category: ISystemicFactorCategory | null;
+	customCategory?: string | null;
 	description: string;
 	controlActionContributionIds: string[];
 }

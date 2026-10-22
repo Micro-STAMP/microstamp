@@ -1,6 +1,6 @@
 package microstamp.cast.step1.controller;
 
-import microstamp.cast.step1.client.MicroStampClient;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.dto.accidentlossevent.AccidentLossEventInsertDto;
 import microstamp.cast.step1.dto.accidentlossevent.AccidentLossEventReadDto;
 import microstamp.cast.step1.dto.accidentlossevent.AccidentLossEventUpdateDto;
@@ -37,7 +37,7 @@ public class AccidentLossEventServiceUnitTest {
     private AccidentLossEventRepository accidentLossEventRepository;
 
     @Mock
-    private MicroStampClient microStampClient;
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no accident/loss event is found > Return an empty list")
@@ -140,7 +140,6 @@ public class AccidentLossEventServiceUnitTest {
     void insertWhenInputIsValidCreateAccidentLossEvent() {
         AccidentLossEventInsertDto insertDto = assembleAccidentLossEventInsertDto.get();
 
-        when(microStampClient.getAnalysisById(insertDto.getAnalysisId())).thenReturn(null);
         when(accidentLossEventRepository.save(any(AccidentLossEvent.class))).thenAnswer(answer -> answer.getArguments()[0]);
 
         AccidentLossEventReadDto response = service.insert(insertDto);
@@ -149,7 +148,6 @@ public class AccidentLossEventServiceUnitTest {
                 () -> assertEquals(insertDto.getCode(), response.getCode()),
                 () -> assertEquals(insertDto.getName(), response.getName()),
                 () -> assertEquals(insertDto.getDescription(), response.getDescription()),
-                () -> verify(microStampClient, times(1)).getAnalysisById(insertDto.getAnalysisId()),
                 () -> verify(accidentLossEventRepository, times(1)).save(any(AccidentLossEvent.class))
         );
     }

@@ -11,6 +11,7 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,6 +46,9 @@ class SystemDescriptionControllerTest {
     @MockBean
     private SystemDescriptionService service;
 
+    @MockBean
+    private JpaMetamodelMappingContext jpaMetamodelMappingContext;
+
     @Test
     @WithMockUser
     @DisplayName("GET /cast/system-descriptions deve retornar todas as descrições do sistema")
@@ -53,7 +57,6 @@ class SystemDescriptionControllerTest {
 
         SystemDescriptionReadDto readDto = SystemDescriptionReadDto.builder()
                 .id(id)
-                .code("SD-001")
                 .description("Descrição do sistema")
                 .analysisBoundary("Fronteira da análise")
                 .build();
@@ -64,7 +67,6 @@ class SystemDescriptionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id").value(id.toString()))
-                .andExpect(jsonPath("$[0].code").value("SD-001"))
                 .andExpect(jsonPath("$[0].description").value("Descrição do sistema"))
                 .andExpect(jsonPath("$[0].analysisBoundary").value("Fronteira da análise"));
 
@@ -79,7 +81,6 @@ class SystemDescriptionControllerTest {
 
         SystemDescriptionReadDto readDto = SystemDescriptionReadDto.builder()
                 .id(id)
-                .code("SD-002")
                 .description("Descrição encontrada por ID")
                 .analysisBoundary("Boundary")
                 .build();
@@ -89,7 +90,6 @@ class SystemDescriptionControllerTest {
         mockMvc.perform(get(BASE_URL + "/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id.toString()))
-                .andExpect(jsonPath("$.code").value("SD-002"))
                 .andExpect(jsonPath("$.description").value("Descrição encontrada por ID"))
                 .andExpect(jsonPath("$.analysisBoundary").value("Boundary"));
 
@@ -105,7 +105,6 @@ class SystemDescriptionControllerTest {
 
         SystemDescriptionReadDto readDto = SystemDescriptionReadDto.builder()
                 .id(systemDescriptionId)
-                .code("SD-003")
                 .description("Descrição vinculada à análise")
                 .analysisBoundary("Escopo da análise")
                 .build();
@@ -116,7 +115,6 @@ class SystemDescriptionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id").value(systemDescriptionId.toString()))
-                .andExpect(jsonPath("$[0].code").value("SD-003"))
                 .andExpect(jsonPath("$[0].description").value("Descrição vinculada à análise"))
                 .andExpect(jsonPath("$[0].analysisBoundary").value("Escopo da análise"));
 
@@ -131,7 +129,6 @@ class SystemDescriptionControllerTest {
         UUID systemDescriptionId = UUID.randomUUID();
 
         SystemDescriptionInsertDto insertDto = SystemDescriptionInsertDto.builder()
-                .code("SD-004")
                 .description("Nova descrição")
                 .analysisBoundary("Nova fronteira")
                 .analysisId(analysisId)
@@ -139,7 +136,6 @@ class SystemDescriptionControllerTest {
 
         SystemDescriptionReadDto readDto = SystemDescriptionReadDto.builder()
                 .id(systemDescriptionId)
-                .code("SD-004")
                 .description("Nova descrição")
                 .analysisBoundary("Nova fronteira")
                 .build();
@@ -152,7 +148,6 @@ class SystemDescriptionControllerTest {
                         .content(objectMapper.writeValueAsString(insertDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(systemDescriptionId.toString()))
-                .andExpect(jsonPath("$.code").value("SD-004"))
                 .andExpect(jsonPath("$.description").value("Nova descrição"))
                 .andExpect(jsonPath("$.analysisBoundary").value("Nova fronteira"));
 
@@ -166,7 +161,6 @@ class SystemDescriptionControllerTest {
         UUID id = UUID.randomUUID();
 
         SystemDescriptionUpdateDto updateDto = SystemDescriptionUpdateDto.builder()
-                .code("SD-005")
                 .description("Descrição atualizada")
                 .analysisBoundary("Fronteira atualizada")
                 .build();
@@ -202,7 +196,6 @@ class SystemDescriptionControllerTest {
     @DisplayName("POST /cast/system-descriptions deve retornar 400 quando campos obrigatórios forem inválidos")
     void insertShouldReturnBadRequestWhenBodyIsInvalid() throws Exception {
         SystemDescriptionInsertDto invalidDto = SystemDescriptionInsertDto.builder()
-                .code("")
                 .description("")
                 .analysisId(null)
                 .build();
@@ -221,7 +214,6 @@ class SystemDescriptionControllerTest {
         UUID id = UUID.randomUUID();
 
         SystemDescriptionUpdateDto invalidDto = SystemDescriptionUpdateDto.builder()
-                .code("")
                 .description("")
                 .build();
 

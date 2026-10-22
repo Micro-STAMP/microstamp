@@ -20,9 +20,10 @@ import {
     recommendationTypeToSelectOption,
     recommendationScopeCategoryToSelectOption
 } from '@interfaces/CAST/IStep5/IRecommendation';
-import { systemicFactorCategoryToSelectOption } from '@interfaces/CAST/IStep4/ISystemicFactor';
+import { systemicFactorCategoryLabel } from '@interfaces/CAST/IStep4/ISystemicFactor';
 import { formatDateBR } from '@services/date';
 import CastSection from '@components/CastSection';
+import { useCastConfirm } from '@components/CastConfirm';
 import LinkBadge from '@components/LinkBadge';
 import ModalRecommendation from '@components/Modal/ModalEntity/ModalStep5/ModalRecommendation';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
@@ -32,6 +33,7 @@ interface Props { analysisId: string; }
 
 export default function RecommendationsSection({ analysisId }: Props) {
     const queryClient = useQueryClient();
+    const { confirmDelete, confirmDialog } = useCastConfirm();
     const navigate = useNavigate();
     const [previewRecommendation, setPreviewRecommendation] = useState<IRecommendationReadDto | null>(null);
 
@@ -68,7 +70,7 @@ export default function RecommendationsSection({ analysisId }: Props) {
     const systemicFactorOptions = systemicFactors
         ? systemicFactors.map(factor => ({
             id: factor.id,
-            categoryLabel: systemicFactorCategoryToSelectOption(factor.category).label,
+            categoryLabel: systemicFactorCategoryLabel(factor),
             description: factor.description
         }))
         : [];
@@ -108,18 +110,13 @@ export default function RecommendationsSection({ analysisId }: Props) {
 
     const { mutateAsync: remove } = useMutation({
         mutationFn: async (id: string) => {
-            if (window.confirm("Are you sure you want to delete this Recommendation?")) {
-                return await deleteRecommendation(id);
-            }
-            return Promise.reject(new Error("Cancelled"));
+            return await deleteRecommendation(id);
         },
         onSuccess: () => {
             toast.success("Recommendation removed.");
             queryClient.invalidateQueries({ queryKey: ['recommendations', analysisId] });
         },
-        onError: (err: any) => {
-            if (err.message !== "Cancelled") toast.error(err.message);
-        }
+        onError: (err: any) => toast.error(err.message)
     });
 
     const isLoading = isLoadingRecommendations || isLoadingCacs || isLoadingSystemicFactors || isLoadingComponents;
@@ -247,7 +244,7 @@ export default function RecommendationsSection({ analysisId }: Props) {
                                     <BiPencil size={18} />
                                 </button>
                                 <button
-                                    onClick={() => remove(recommendation.id)}
+                                    onClick={async () => { if (await confirmDelete('this Recommendation')) remove(recommendation.id); }}
                                     style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}
                                     title="Delete Recommendation"
                                 >
@@ -273,6 +270,7 @@ export default function RecommendationsSection({ analysisId }: Props) {
                 onCreate={async data => { await create(data); }}
                 onUpdate={async (id, data) => { await update({ id, data }); }}
             />
+            {confirmDialog}
         </CastSection>
 
         {previewRecommendation && (
