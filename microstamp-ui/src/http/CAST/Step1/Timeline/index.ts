@@ -46,9 +46,37 @@ const deleteTimelineEvent = async (id: string) => {
     }
 };
 
+const uploadTimelineEventImage = async (id: string, image: File) => {
+    const data = new FormData();
+    data.append("file", image);
+    try {
+        const res = await http.request<ITimelineEventReadDto>({
+            url: `${ENDPOINT}/${id}/image`,
+            method: "POST",
+            headers: { "Content-Type": "multipart/form-data" },
+            data: data
+        });
+        return res.data;
+    } catch (err) {
+        console.error(err);
+        throw new Error("Error uploading event image.");
+    }
+};
+
+const deleteTimelineEventImage = async (id: string) => {
+    try {
+        await http.delete(`${ENDPOINT}/${id}/image`);
+    } catch (err) {
+        console.error(err);
+        throw new Error("Error deleting event image.");
+    }
+};
+
 export {
     getByAnalysisId,
     createTimelineEvent,
     updateTimelineEvent,
-    deleteTimelineEvent
+    deleteTimelineEvent,
+    uploadTimelineEventImage,
+    deleteTimelineEventImage
 };

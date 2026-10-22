@@ -20,6 +20,8 @@ public class CastHazardMapper {
                         .sorted(Comparator.comparing(accident -> accident.getCode()))
                         .toList()
                         : null)
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

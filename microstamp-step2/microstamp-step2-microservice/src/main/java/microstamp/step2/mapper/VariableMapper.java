@@ -22,6 +22,8 @@ public class VariableMapper {
                     .sorted(Comparator.comparing(StateReadDto::getCode))
                     .toList()
                 : null)
+                .createdAt(variable.getCreatedAt())
+                .updatedAt(variable.getUpdatedAt())
                 .build();
     }
 
@@ -30,6 +32,8 @@ public class VariableMapper {
                 .id(variable.getId())
                 .name(variable.getName())
                 .code(variable.getCode())
+                .createdAt(variable.getCreatedAt())
+                .updatedAt(variable.getUpdatedAt())
                 .build();
     }
 

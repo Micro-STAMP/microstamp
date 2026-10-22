@@ -10,6 +10,6 @@ import java.util.UUID;
 @FeignClient(name = "MICROSTAMP-CAST-STEP3", configuration = FeignClientConfiguration.class)
 public interface CastStep3Client {
 
-    @GetMapping("inadequate-control-actions/{id}")
-    InadequateControlActionReadDto readInadequateControlAction(@PathVariable("id") UUID id);
+    @GetMapping("control-action-contributions/{id}")
+    ControlActionContributionReadDto readControlActionContribution(@PathVariable("id") UUID id);
 }

@@ -33,6 +33,8 @@ public class ComponentMapper {
                         .sorted(Comparator.comparing(VariableFullReadDto::getCode))
                         .toList()
                     : null)
+                .createdAt(component.getCreatedAt())
+                .updatedAt(component.getUpdatedAt())
                 .build();
     }
 

@@ -20,6 +20,8 @@ public class ViolatedSystemSafetyConstraintMapper {
                         .sorted(Comparator.comparing(hazard -> hazard.getCode()))
                         .toList()
                         : null)
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

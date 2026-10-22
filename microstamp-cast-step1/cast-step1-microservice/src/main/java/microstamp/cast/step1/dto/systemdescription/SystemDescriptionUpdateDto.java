@@ -15,4 +15,6 @@ public class SystemDescriptionUpdateDto {
     private String description;
 
     private String analysisBoundary;
+
+    private String generalDescription;
 }

@@ -11,6 +11,7 @@ import microstamp.cast.step1.exception.Step1IllegalArgumentException;
 import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.mapper.SystemDescriptionMapper;
 import microstamp.cast.step1.repository.SystemDescriptionRepository;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.service.SystemDescriptionService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class SystemDescriptionServiceImpl implements SystemDescriptionService {
 
     private final SystemDescriptionRepository systemDescriptionRepository;
+
+    private final AuditLogService auditLogService;
 
     //Será adicionado um private microstampclient aqui
 
@@ -83,9 +86,12 @@ public class SystemDescriptionServiceImpl implements SystemDescriptionService {
 
         systemDescription.setDescription(systemDescriptionUpdateDto.getDescription());
         systemDescription.setAnalysisBoundary(systemDescriptionUpdateDto.getAnalysisBoundary());
+        systemDescription.setGeneralDescription(systemDescriptionUpdateDto.getGeneralDescription());
 
         log.info("Updating the CAST system description with id {}", id);
         systemDescriptionRepository.save(systemDescription);
+
+        auditLogService.record(systemDescription.getAnalysisId(), "Step 1", "System & System Boundary");
     }
 
     @Override

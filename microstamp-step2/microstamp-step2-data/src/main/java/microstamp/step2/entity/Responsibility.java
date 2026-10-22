@@ -3,8 +3,12 @@ package microstamp.step2.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Types;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Responsibility")
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "responsibilities", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "component_id" }) })
 public class Responsibility {
 
@@ -37,5 +42,13 @@ public class Responsibility {
     @CollectionTable(name = "responsibility_violated_constraints", joinColumns = @JoinColumn(name = "responsibility_id"))
     @Column(name = "violated_system_safety_constraint_id")
     private List<UUID> violatedSystemSafetyConstraintIds;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
 }

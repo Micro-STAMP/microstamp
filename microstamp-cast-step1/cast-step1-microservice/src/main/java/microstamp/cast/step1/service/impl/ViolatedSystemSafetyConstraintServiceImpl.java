@@ -14,6 +14,7 @@ import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.mapper.ViolatedSystemSafetyConstraintMapper;
 import microstamp.cast.step1.repository.CastHazardRepository;
 import microstamp.cast.step1.repository.ViolatedSystemSafetyConstraintRepository;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.service.ViolatedSystemSafetyConstraintService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class ViolatedSystemSafetyConstraintServiceImpl implements ViolatedSystem
     private final ViolatedSystemSafetyConstraintRepository violatedSystemSafetyConstraintRepository;
 
     private final CastHazardRepository castHazardRepository;
+
+    private final AuditLogService auditLogService;
 
     //private final MicroStampClient microStampClient;
 
@@ -106,6 +109,8 @@ public class ViolatedSystemSafetyConstraintServiceImpl implements ViolatedSystem
 
         log.info("Updating the CAST violated system safety constraint with id {}", id);
         violatedSystemSafetyConstraintRepository.save(violatedConstraint);
+
+        auditLogService.record(violatedConstraint.getAnalysisId(), "Step 1", "Violated Safety Constraint " + violatedConstraint.getCode());
     }
 
     @Override

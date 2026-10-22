@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -21,4 +22,10 @@ public class SystemDescriptionReadDto {
     private String description;
 
     private String analysisBoundary;
+
+    private String generalDescription;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 }

@@ -11,8 +11,8 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(InadequateControlActionNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(InadequateControlActionNotFoundException ex) {
+    @ExceptionHandler(ControlActionContributionNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFound(ControlActionContributionNotFoundException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", Instant.now().toString());
         body.put("status", HttpStatus.NOT_FOUND.value());

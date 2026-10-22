@@ -25,6 +25,9 @@ public class VariableServiceImpl implements VariableService {
     @Autowired
     private ComponentRepository componentRepository;
 
+    @Autowired
+    private microstamp.step2.service.AuditLogService auditLogService;
+
     public List<VariableFullReadDto> findAll() {
         return variableRepository.findAll().stream()
                 .map(VariableMapper::toFullDto)
@@ -71,6 +74,8 @@ public class VariableServiceImpl implements VariableService {
         variable.setCode(variableUpdateDto.getCode());
 
         variableRepository.save(variable);
+
+        auditLogService.record(variable.getComponent().getAnalysisId(), "Step 2", "Variable " + variable.getCode());
     }
 
     public void delete(UUID id) throws Step2NotFoundException {

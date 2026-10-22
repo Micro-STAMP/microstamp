@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import microstamp.step2.dto.state.StateReadDto;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,5 +26,9 @@ public class VariableFullReadDto {
     private String code;
 
     private List<StateReadDto> states;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 
 }

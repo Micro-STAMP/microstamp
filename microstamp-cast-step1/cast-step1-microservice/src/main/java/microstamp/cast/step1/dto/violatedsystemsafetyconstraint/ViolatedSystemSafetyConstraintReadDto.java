@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import microstamp.cast.step1.dto.casthazard.CastHazardReadDto;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,4 +29,8 @@ public class ViolatedSystemSafetyConstraintReadDto {
     private String description;
 
     private List<CastHazardReadDto> hazards;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 }

@@ -11,6 +11,9 @@ public class SystemDescriptionMapper {
                 .id(entity.getId())
                 .description(entity.getDescription())
                 .analysisBoundary(entity.getAnalysisBoundary())
+                .generalDescription(entity.getGeneralDescription())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
@@ -18,6 +21,7 @@ public class SystemDescriptionMapper {
         return SystemDescription.builder()
                 .description(dto.getDescription())
                 .analysisBoundary(dto.getAnalysisBoundary())
+                .generalDescription(dto.getGeneralDescription())
                 .analysisId(dto.getAnalysisId())
                 .build();
     }

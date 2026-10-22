@@ -13,6 +13,8 @@ public class InteractionMapper {
                 .name(interaction.getName())
                 .code(interaction.getCode())
                 .interactionType(interaction.getInteractionType())
+                .createdAt(interaction.getCreatedAt())
+                .updatedAt(interaction.getUpdatedAt())
                 .build();
     }
 

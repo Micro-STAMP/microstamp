@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BiGridAlt, BiArrowBack } from 'react-icons/bi';
 import styles from '../Step1/CastStepOne.module.css';
 
-import InadequateControlActionsSection from './components/InadequateControlActionsSection';
+import ControlActionContributionsSection from './components/ControlActionContributionsSection';
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastNextStepButton from '@components/CastNextStepButton';
+import CastLastUpdated from '@components/CastLastUpdated';
+import CastCreatedAt from '@components/CastCreatedAt';
 
 export default function CastStepThree() {
     const { id } = useParams();
@@ -28,6 +30,11 @@ export default function CastStepThree() {
                             </span>
                         </div>
                         <h1 className={styles.pageTitle}>Step 3: Analyze Individual Components</h1>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '0.8rem' }}>
+                            <CastCreatedAt analysisId={analysisId} />
+                            <span style={{ color: 'var(--color-gray)' }}>&middot;</span>
+                            <CastLastUpdated analysisId={analysisId} />
+                        </div>
                     </div>
 
                     <div className={styles.actions}>
@@ -40,7 +47,7 @@ export default function CastStepThree() {
                     </div>
                 </div>
 
-                <InadequateControlActionsSection analysisId={analysisId} />
+                <ControlActionContributionsSection analysisId={analysisId} />
 
                 <CastNextStepButton analysisId={analysisId} to="step4" label="Step 4: Identify Control Structure Flaws" />
 

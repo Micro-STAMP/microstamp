@@ -17,13 +17,14 @@ export default function SystemDescriptionForm({ analysisId }: Props) {
     });
     const currentSD = data?.[0];
 
-    const [form, setForm] = useState({ description: '', analysisBoundary: '' });
+    const [form, setForm] = useState({ description: '', analysisBoundary: '', generalDescription: '' });
 
     useEffect(() => {
         if (currentSD) {
             setForm({
                 description: currentSD.description,
-                analysisBoundary: currentSD.analysisBoundary || ''
+                analysisBoundary: currentSD.analysisBoundary || '',
+                generalDescription: currentSD.generalDescription || ''
             });
         }
     }, [currentSD]);
@@ -32,11 +33,11 @@ export default function SystemDescriptionForm({ analysisId }: Props) {
         mutationFn: async () => {
             if (currentSD) {
                 return await updateSystemDescription(currentSD.id, {
-                    description: form.description, analysisBoundary: form.analysisBoundary
+                    description: form.description, analysisBoundary: form.analysisBoundary, generalDescription: form.generalDescription
                 });
             } else {
                 return await createSystemDescription({
-                    description: form.description, analysisBoundary: form.analysisBoundary, analysisId
+                    description: form.description, analysisBoundary: form.analysisBoundary, generalDescription: form.generalDescription, analysisId
                 });
             }
         },
@@ -56,6 +57,10 @@ export default function SystemDescriptionForm({ analysisId }: Props) {
                     <div>
                         <label className={styles.inputLabel}>System Name</label>
                         <input type="text" placeholder="E.g., Immunosuppressive Therapy Management System" className={styles.inputField} value={form.analysisBoundary} onChange={e => setForm({ ...form, analysisBoundary: e.target.value })} style={{ marginBottom: 0 }} />
+                    </div>
+                    <div>
+                        <label className={styles.inputLabel}>System Description</label>
+                        <textarea rows={3} placeholder="What is the system's purpose and how does it normally operate?" className={styles.inputField} value={form.generalDescription} onChange={e => setForm({ ...form, generalDescription: e.target.value })} style={{ marginBottom: 0 }} />
                     </div>
                     <div>
                         <label className={styles.inputLabel}>System Boundary</label>

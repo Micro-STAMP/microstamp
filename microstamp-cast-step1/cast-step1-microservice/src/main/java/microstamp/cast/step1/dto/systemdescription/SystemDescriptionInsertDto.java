@@ -19,6 +19,8 @@ public class SystemDescriptionInsertDto {
 
     private String analysisBoundary;
 
+    private String generalDescription;
+
     @NotNull
     private UUID analysisId;
 }

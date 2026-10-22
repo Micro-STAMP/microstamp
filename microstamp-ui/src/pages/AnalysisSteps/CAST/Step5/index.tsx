@@ -5,6 +5,8 @@ import styles from '../Step1/CastStepOne.module.css';
 
 import RecommendationsSection from './components/RecommendationsSection';
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
+import CastLastUpdated from '@components/CastLastUpdated';
+import CastCreatedAt from '@components/CastCreatedAt';
 
 export default function CastStepFive() {
     const { id } = useParams();
@@ -27,6 +29,11 @@ export default function CastStepFive() {
                             </span>
                         </div>
                         <h1 className={styles.pageTitle}>Step 5: Create Improvement Program</h1>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '0.8rem' }}>
+                            <CastCreatedAt analysisId={analysisId} />
+                            <span style={{ color: 'var(--color-gray)' }}>&middot;</span>
+                            <CastLastUpdated analysisId={analysisId} />
+                        </div>
                     </div>
 
                     <div className={styles.actions}>

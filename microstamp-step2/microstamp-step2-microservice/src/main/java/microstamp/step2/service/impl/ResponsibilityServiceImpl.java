@@ -41,6 +41,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     @Autowired
     private ComponentRepository componentRepository;
 
+    @Autowired
+    private microstamp.step2.service.AuditLogService auditLogService;
+
     public List<ResponsibilityReadDto> findAll() {
         return responsibilityRepository.findAll().stream()
                 .map(this::toDtoWithConstraints)
@@ -110,6 +113,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         responsibility.setViolatedSystemSafetyConstraintIds(responsibilityUpdateDto.getViolatedSystemSafetyConstraintIds());
 
         responsibilityRepository.save(responsibility);
+
+        auditLogService.record(responsibility.getComponent().getAnalysisId(), "Step 2", "Responsibility " + responsibility.getCode());
     }
 
     public void delete(UUID id) throws Step2NotFoundException {

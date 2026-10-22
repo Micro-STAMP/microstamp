@@ -29,6 +29,9 @@ public class InteractionServiceImpl implements InteractionService {
     @Autowired
     private ConnectionRepository connectionRepository;
 
+    @Autowired
+    private microstamp.step2.service.AuditLogService auditLogService;
+
     public List<InteractionReadDto> findAll() {
         return interactionRepository.findAll().stream()
                 .map(InteractionMapper::toDto)
@@ -71,6 +74,8 @@ public class InteractionServiceImpl implements InteractionService {
         interaction.setInteractionType(interactionUpdateDto.getInteractionType());
 
         interactionRepository.save(interaction);
+
+        auditLogService.record(interaction.getConnection().getAnalysisId(), "Step 2", "Interaction " + interaction.getCode());
     }
 
     public void delete(UUID id) throws Step2NotFoundException {

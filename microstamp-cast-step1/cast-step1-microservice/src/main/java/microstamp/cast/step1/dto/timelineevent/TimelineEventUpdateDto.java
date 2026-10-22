@@ -3,6 +3,8 @@ package microstamp.cast.step1.dto.timelineevent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Builder
@@ -22,4 +24,6 @@ public class TimelineEventUpdateDto {
     private String questions;
 
     private String timeLabel;
+
+    private Instant exactDateTime;
 }

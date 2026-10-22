@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BiTrash, BiPencil, BiLinkAlt, BiUserCheck, BiShow } from 'react-icons/bi';
+import { BiTrash, BiPencil, BiLinkAlt, BiUserCheck, BiShow, BiCalendar } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -9,13 +9,21 @@ import {
     updateRecommendation,
     deleteRecommendation
 } from '@http/CAST/Step5/Recommendations';
-import { getByAnalysisId as getIcasByAnalysisId } from '@http/CAST/Step3/InadequateControlActions';
+import { getByAnalysisId as getCacsByAnalysisId } from '@http/CAST/Step3/ControlActionContributions';
 import { getByAnalysisId as getSystemicFactorsByAnalysisId } from '@http/CAST/Step4/SystemicFactors';
 import { getComponents } from '@http/Step2/Components';
 import { componentsToSelectOptions } from '@interfaces/IStep2/IComponent';
-import { IRecommendationReadDto, recommendationPriorityToSelectOption } from '@interfaces/CAST/IStep5/IRecommendation';
+import {
+    IRecommendationReadDto,
+    recommendationPriorityToSelectOption,
+    recommendationStatusToSelectOption,
+    recommendationTypeToSelectOption,
+    recommendationScopeCategoryToSelectOption
+} from '@interfaces/CAST/IStep5/IRecommendation';
 import { systemicFactorCategoryToSelectOption } from '@interfaces/CAST/IStep4/ISystemicFactor';
+import { formatDateBR } from '@services/date';
 import CastSection from '@components/CastSection';
+import LinkBadge from '@components/LinkBadge';
 import ModalRecommendation from '@components/Modal/ModalEntity/ModalStep5/ModalRecommendation';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
 import styles from '../../Step1/CastStepOne.module.css';
@@ -32,9 +40,9 @@ export default function RecommendationsSection({ analysisId }: Props) {
         queryFn: () => getByAnalysisId(analysisId)
     });
 
-    const { data: icas, isLoading: isLoadingIcas } = useQuery({
-        queryKey: ['inadequate-control-actions', analysisId],
-        queryFn: () => getIcasByAnalysisId(analysisId)
+    const { data: cacs, isLoading: isLoadingCacs } = useQuery({
+        queryKey: ['control-action-contributions', analysisId],
+        queryFn: () => getCacsByAnalysisId(analysisId)
     });
 
     const { data: systemicFactors, isLoading: isLoadingSystemicFactors } = useQuery({
@@ -54,11 +62,8 @@ export default function RecommendationsSection({ analysisId }: Props) {
     };
     const getComponent = (componentId: string) => components?.find(c => c.id === componentId) || null;
 
-    const icaOptions = icas ? icas.map(ica => ({ id: ica.id, code: ica.code, controlActionName: ica.controlActionName })) : [];
-    const getIcaLabel = (icaId: string) => {
-        const ica = icaOptions.find(i => i.id === icaId);
-        return ica ? `${ica.code} — ${ica.controlActionName}` : 'Component Analysis not found';
-    };
+    const cacOptions = cacs ? cacs.map(cac => ({ id: cac.id, code: cac.code, controlActionName: cac.controlActionName })) : [];
+    const getCac = (cacId: string) => cacOptions.find(i => i.id === cacId) ?? null;
 
     const systemicFactorOptions = systemicFactors
         ? systemicFactors.map(factor => ({
@@ -67,10 +72,7 @@ export default function RecommendationsSection({ analysisId }: Props) {
             description: factor.description
         }))
         : [];
-    const getSystemicFactorLabel = (systemicFactorId: string) => {
-        const factor = systemicFactorOptions.find(f => f.id === systemicFactorId);
-        return factor ? `${factor.categoryLabel} — ${factor.description}` : 'Systemic Factor not found';
-    };
+    const getSystemicFactor = (systemicFactorId: string) => systemicFactorOptions.find(f => f.id === systemicFactorId) ?? null;
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingRecommendation, setEditingRecommendation] = useState<IRecommendationReadDto | null>(null);
@@ -120,13 +122,13 @@ export default function RecommendationsSection({ analysisId }: Props) {
         }
     });
 
-    const isLoading = isLoadingRecommendations || isLoadingIcas || isLoadingSystemicFactors || isLoadingComponents;
+    const isLoading = isLoadingRecommendations || isLoadingCacs || isLoadingSystemicFactors || isLoadingComponents;
 
     return (
         <>
         <CastSection
             title="Recommendations"
-            tooltipInfo="The final step of CAST is to create an improvement program: generate recommendations that address the identified Component Analyses (Step 3) and Systemic Factors (Step 4), improving the safety control structure as a whole rather than simply assigning blame (CAST Handbook, Leveson 2019)."
+            tooltipInfo="The final step of CAST is to create an improvement program: generate recommendations that address the identified Control Action Contributions (Step 3) and Systemic Factors (Step 4), improving the safety control structure as a whole rather than simply assigning blame (CAST Handbook, Leveson 2019)."
             onAddClick={openCreateModal}
             addButtonLabel="Add Recommendation"
         >
@@ -149,16 +151,41 @@ export default function RecommendationsSection({ analysisId }: Props) {
                             }}
                         >
                             <div style={{ flex: 1 }}>
-                                {(recommendation.priority || recommendation.componentId) && (
+                                {(recommendation.status || recommendation.priority || recommendation.recommendationType || recommendation.scopeCategory || recommendation.componentId || recommendation.assignee || recommendation.dueDate) && (
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                                        {recommendation.status && (
+                                            <span style={{ backgroundColor: 'var(--color-dark)', color: '#4ade80', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)', fontWeight: 600 }}>
+                                                {recommendationStatusToSelectOption(recommendation.status).label}
+                                            </span>
+                                        )}
                                         {recommendation.priority && (
                                             <span style={{ backgroundColor: 'var(--color-dark)', color: 'var(--color-yellow)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)', fontWeight: 600 }}>
                                                 {recommendationPriorityToSelectOption(recommendation.priority).label}
                                             </span>
                                         )}
+                                        {recommendation.recommendationType && (
+                                            <span style={{ backgroundColor: 'var(--color-dark)', color: '#d1d5db', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)' }}>
+                                                {recommendationTypeToSelectOption(recommendation.recommendationType).label}
+                                            </span>
+                                        )}
+                                        {recommendation.scopeCategory && (
+                                            <span style={{ backgroundColor: 'var(--color-dark)', color: '#d1d5db', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)' }}>
+                                                {recommendationScopeCategoryToSelectOption(recommendation.scopeCategory).label}
+                                            </span>
+                                        )}
                                         {recommendation.componentId && (
                                             <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-muted-text)', fontSize: '12px' }}>
                                                 <BiUserCheck size={14} color="#60a5fa" /> {getComponentLabel(recommendation.componentId)}
+                                            </span>
+                                        )}
+                                        {recommendation.assignee && (
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-muted-text)', fontSize: '12px' }}>
+                                                <BiUserCheck size={14} color="#60a5fa" /> {recommendation.assignee}
+                                            </span>
+                                        )}
+                                        {recommendation.dueDate && (
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-muted-text)', fontSize: '12px' }}>
+                                                <BiCalendar size={14} /> Due {formatDateBR(recommendation.dueDate)}
                                             </span>
                                         )}
                                     </div>
@@ -176,23 +203,29 @@ export default function RecommendationsSection({ analysisId }: Props) {
                                     </p>
                                 )}
 
-                                {(recommendation.inadequateControlActionIds?.length > 0 || recommendation.systemicFactorIds?.length > 0) && (
+                                {recommendation.effectivenessEvidence && (
+                                    <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: 'var(--color-muted-text)', lineHeight: '1.5' }}>
+                                        <strong style={{ color: '#d1d5db' }}>Audit Findings / Effectiveness Evidence: </strong>{recommendation.effectivenessEvidence}
+                                    </p>
+                                )}
+
+                                {(recommendation.controlActionContributionIds?.length > 0 || recommendation.systemicFactorIds?.length > 0) && (
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                        {recommendation.inadequateControlActionIds?.map(icaId => (
-                                            <span
-                                                key={icaId}
-                                                style={{ display: 'flex', alignItems: 'flex-start', gap: '4px', textAlign: 'left', backgroundColor: 'var(--color-dark)', color: 'var(--color-muted-text)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)' }}
-                                            >
-                                                <BiLinkAlt size={12} /> {getIcaLabel(icaId)}
-                                            </span>
+                                        {recommendation.controlActionContributionIds?.map(cacId => (
+                                            <LinkBadge
+                                                key={cacId}
+                                                icon={<BiLinkAlt size={12} />}
+                                                code={getCac(cacId)?.code ?? '—'}
+                                                tooltip={getCac(cacId)?.controlActionName}
+                                            />
                                         ))}
                                         {recommendation.systemicFactorIds?.map(systemicFactorId => (
-                                            <span
+                                            <LinkBadge
                                                 key={systemicFactorId}
-                                                style={{ display: 'flex', alignItems: 'flex-start', gap: '4px', textAlign: 'left', backgroundColor: 'var(--color-dark)', color: 'var(--color-yellow)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)' }}
-                                            >
-                                                <BiLinkAlt size={12} /> {getSystemicFactorLabel(systemicFactorId)}
-                                            </span>
+                                                icon={<BiLinkAlt size={12} />}
+                                                code={getSystemicFactor(systemicFactorId)?.categoryLabel ?? '—'}
+                                                tooltip={getSystemicFactor(systemicFactorId)?.description}
+                                            />
                                         ))}
                                     </div>
                                 )}
@@ -232,7 +265,7 @@ export default function RecommendationsSection({ analysisId }: Props) {
                 open={modalOpen}
                 onClose={closeModal}
                 analysisId={analysisId}
-                icaOptions={icaOptions}
+                cacOptions={cacOptions}
                 systemicFactorOptions={systemicFactorOptions}
                 componentOptions={componentOptions}
                 recommendation={editingRecommendation}
@@ -251,14 +284,14 @@ export default function RecommendationsSection({ analysisId }: Props) {
                 description={previewRecommendation.description}
                 relatedGroups={[
                     {
-                        label: 'Linked Component Analyses (Step 3)',
-                        emptyMessage: 'No Component Analysis linked.',
-                        items: (previewRecommendation.inadequateControlActionIds ?? []).map(icaId => {
-                            const ica = icaOptions.find(i => i.id === icaId);
+                        label: 'Linked CACs (Step 3)',
+                        emptyMessage: 'No CACs linked.',
+                        items: (previewRecommendation.controlActionContributionIds ?? []).map(cacId => {
+                            const cac = cacOptions.find(i => i.id === cacId);
                             return {
-                                id: icaId,
-                                code: ica?.code ?? '—',
-                                name: ica?.controlActionName ?? 'Component Analysis not found',
+                                id: cacId,
+                                code: cac?.code ?? '—',
+                                name: cac?.controlActionName ?? 'CAC not found',
                                 onGoTo: () => navigate(`/analyses/${analysisId}/cast/step3`)
                             };
                         })

@@ -33,6 +33,9 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Autowired
     private InteractionService interactionService;
 
+    @Autowired
+    private microstamp.step2.service.AuditLogService auditLogService;
+
     public List<ConnectionReadDto> findAll() {
         return connectionRepository.findAll().stream()
                 .map(ConnectionMapper::toDto)
@@ -86,6 +89,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 interactionService.validate(connection, interaction.getInteractionType()));
 
         connectionRepository.save(connection);
+
+        auditLogService.record(connection.getAnalysisId(), "Step 2", "Connection " + connection.getCode());
     }
 
     public void delete(UUID id) throws Step2NotFoundException {

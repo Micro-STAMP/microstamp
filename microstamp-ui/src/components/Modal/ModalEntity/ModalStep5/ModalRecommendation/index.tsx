@@ -3,7 +3,13 @@ import {
     IRecommendationReadDto,
     IRecommendationUpdateDto,
     IRecommendationPriority,
-    recommendationPrioritySelectOptions
+    recommendationPrioritySelectOptions,
+    IRecommendationStatus,
+    recommendationStatusSelectOptions,
+    IRecommendationType,
+    recommendationTypeSelectOptions,
+    IRecommendationScopeCategory,
+    recommendationScopeCategorySelectOptions
 } from "@interfaces/CAST/IStep5/IRecommendation";
 import { SelectOption } from "@components/FormField/Templates";
 import Select from "@components/FormField/Select";
@@ -14,7 +20,7 @@ import { toast } from "sonner";
 import CastCheckbox from "@components/CastCheckbox";
 import styles from "./ModalRecommendation.module.css";
 
-interface IcaOption {
+interface CacOption {
     id: string;
     code: string;
     controlActionName: string;
@@ -30,7 +36,7 @@ interface ModalRecommendationProps {
     open: boolean;
     onClose: () => void;
     analysisId: string;
-    icaOptions: IcaOption[];
+    cacOptions: CacOption[];
     systemicFactorOptions: SystemicFactorOption[];
     componentOptions: SelectOption[];
     recommendation?: IRecommendationReadDto | null;
@@ -41,18 +47,24 @@ interface ModalRecommendationProps {
 
 const EMPTY_FORM = {
     description: "",
-    inadequateControlActionIds: [] as string[],
+    controlActionContributionIds: [] as string[],
     systemicFactorIds: [] as string[],
     componentId: "",
     priority: IRecommendationPriority.IMMEDIATE,
-    auditMechanism: ""
+    auditMechanism: "",
+    assignee: "",
+    dueDate: "",
+    status: IRecommendationStatus.PROPOSED,
+    recommendationType: "" as IRecommendationType | "",
+    scopeCategory: "" as IRecommendationScopeCategory | "",
+    effectivenessEvidence: ""
 };
 
 export default function ModalRecommendation({
     open,
     onClose,
     analysisId,
-    icaOptions,
+    cacOptions,
     systemicFactorOptions,
     componentOptions,
     recommendation,
@@ -69,11 +81,17 @@ export default function ModalRecommendation({
         if (recommendation) {
             setForm({
                 description: recommendation.description || "",
-                inadequateControlActionIds: recommendation.inadequateControlActionIds || [],
+                controlActionContributionIds: recommendation.controlActionContributionIds || [],
                 systemicFactorIds: recommendation.systemicFactorIds || [],
                 componentId: recommendation.componentId || "",
                 priority: recommendation.priority || IRecommendationPriority.IMMEDIATE,
-                auditMechanism: recommendation.auditMechanism || ""
+                auditMechanism: recommendation.auditMechanism || "",
+                assignee: recommendation.assignee || "",
+                dueDate: recommendation.dueDate || "",
+                status: recommendation.status || IRecommendationStatus.PROPOSED,
+                recommendationType: recommendation.recommendationType || "",
+                scopeCategory: recommendation.scopeCategory || "",
+                effectivenessEvidence: recommendation.effectivenessEvidence || ""
             });
         } else {
             setForm(EMPTY_FORM);
@@ -82,12 +100,12 @@ export default function ModalRecommendation({
 
     if (!open) return null;
 
-    const toggleIca = (icaId: string) => {
+    const toggleCac = (cacId: string) => {
         setForm(prev => ({
             ...prev,
-            inadequateControlActionIds: prev.inadequateControlActionIds.includes(icaId)
-                ? prev.inadequateControlActionIds.filter(id => id !== icaId)
-                : [...prev.inadequateControlActionIds, icaId]
+            controlActionContributionIds: prev.controlActionContributionIds.includes(cacId)
+                ? prev.controlActionContributionIds.filter(id => id !== cacId)
+                : [...prev.controlActionContributionIds, cacId]
         }));
     };
 
@@ -106,25 +124,30 @@ export default function ModalRecommendation({
             return;
         }
 
+        if (form.status === IRecommendationStatus.EFFECTIVE && !form.effectivenessEvidence.trim()) {
+            toast.warning("Describe the audit findings / effectiveness evidence before marking this Recommendation as Effective.");
+            return;
+        }
+
+        const payload = {
+            description: form.description,
+            controlActionContributionIds: form.controlActionContributionIds,
+            systemicFactorIds: form.systemicFactorIds,
+            componentId: form.componentId || undefined,
+            priority: form.priority,
+            auditMechanism: form.auditMechanism,
+            assignee: form.assignee || undefined,
+            dueDate: form.dueDate || undefined,
+            status: form.status,
+            recommendationType: form.recommendationType || undefined,
+            scopeCategory: form.scopeCategory || undefined,
+            effectivenessEvidence: form.effectivenessEvidence || undefined
+        };
+
         if (isEditMode && recommendation) {
-            await onUpdate(recommendation.id, {
-                description: form.description,
-                inadequateControlActionIds: form.inadequateControlActionIds,
-                systemicFactorIds: form.systemicFactorIds,
-                componentId: form.componentId || undefined,
-                priority: form.priority,
-                auditMechanism: form.auditMechanism
-            });
+            await onUpdate(recommendation.id, payload);
         } else {
-            await onCreate({
-                analysisId,
-                description: form.description,
-                inadequateControlActionIds: form.inadequateControlActionIds,
-                systemicFactorIds: form.systemicFactorIds,
-                componentId: form.componentId || undefined,
-                priority: form.priority,
-                auditMechanism: form.auditMechanism
-            });
+            await onCreate({ analysisId, ...payload });
         }
 
         onClose();
@@ -183,6 +206,72 @@ export default function ModalRecommendation({
                         </div>
                     </div>
 
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div>
+                            <label className={castStyles.inputLabel}>Assignee</label>
+                            <input
+                                type="text"
+                                className={castStyles.inputField}
+                                placeholder="e.g. Maintenance Management / Eng. Silva"
+                                value={form.assignee}
+                                onChange={e => setForm({ ...form, assignee: e.target.value })}
+                            />
+                            <p className={styles.helperText}>
+                                Who (person/role) is accountable for carrying out this recommendation within the deadline below.
+                            </p>
+                        </div>
+                        <div>
+                            <label className={castStyles.inputLabel}>Due Date</label>
+                            <input
+                                type="date"
+                                className={castStyles.inputField}
+                                value={form.dueDate}
+                                onChange={e => setForm({ ...form, dueDate: e.target.value })}
+                            />
+                            <p className={styles.helperText}>
+                                Established deadline for implementation (CAST Handbook — Assigning Responsibility for Implementation).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div>
+                            <Select
+                                label="Implementation Status"
+                                options={recommendationStatusSelectOptions}
+                                value={recommendationStatusSelectOptions.find(o => o.value === form.status) || null}
+                                onChange={opt => setForm({ ...form, status: (opt?.value as IRecommendationStatus) ?? IRecommendationStatus.PROPOSED })}
+                                required
+                            />
+                            <p className={styles.helperText}>
+                                Track whether the recommendation is still on paper or has been verified as effective.
+                            </p>
+                        </div>
+                        <div>
+                            <Select
+                                label="Recommendation Type"
+                                options={recommendationTypeSelectOptions}
+                                value={recommendationTypeSelectOptions.find(o => o.value === form.recommendationType) || null}
+                                onChange={opt => setForm({ ...form, recommendationType: (opt?.value as IRecommendationType) ?? "" })}
+                            />
+                            <p className={styles.helperText}>
+                                Nature of the change, independent of its urgency (short-term fix, long-term structural change, or re-evaluating a failed design assumption).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <Select
+                            label="Systemic Scope"
+                            options={recommendationScopeCategorySelectOptions}
+                            value={recommendationScopeCategorySelectOptions.find(o => o.value === form.scopeCategory) || null}
+                            onChange={opt => setForm({ ...form, scopeCategory: (opt?.value as IRecommendationScopeCategory) ?? "" })}
+                        />
+                        <p className={styles.helperText}>
+                            Where in the sociotechnical control structure this recommendation acts (CAST Handbook — Systemic Scope).
+                        </p>
+                    </div>
+
                     <div>
                         <label className={castStyles.inputLabel}>Feedback / Audit Mechanism</label>
                         <textarea
@@ -197,27 +286,44 @@ export default function ModalRecommendation({
                         </p>
                     </div>
 
+                    <div>
+                        <label className={castStyles.inputLabel}>
+                            Audit Findings / Effectiveness Evidence
+                            {form.status === IRecommendationStatus.EFFECTIVE && " *"}
+                        </label>
+                        <textarea
+                            rows={2}
+                            className={castStyles.inputField}
+                            style={{ marginBottom: 0 }}
+                            value={form.effectivenessEvidence}
+                            onChange={e => setForm({ ...form, effectivenessEvidence: e.target.value })}
+                        />
+                        <p className={styles.helperText}>
+                            Evidence (audit findings, leading indicators, inspections) proving the change actually strengthened the safety control structure. Required once the status is set to "Effective".
+                        </p>
+                    </div>
+
                     <div className={styles.selectPanelsRow}>
                         <div className={styles.selectPanelColumn}>
-                            <label className={castStyles.inputLabel}>Linked Component Analyses</label>
+                            <label className={castStyles.inputLabel}>Linked CACs</label>
                             <div className={styles.checkboxList}>
-                                {icaOptions.length === 0 ? (
-                                    <p className={styles.emptyState}>No Component Analysis registered in Step 3 yet.</p>
+                                {cacOptions.length === 0 ? (
+                                    <p className={styles.emptyState}>No CACs registered in Step 3 yet.</p>
                                 ) : (
-                                    icaOptions.map(ica => {
-                                        const checked = form.inadequateControlActionIds.includes(ica.id);
+                                    cacOptions.map(cac => {
+                                        const checked = form.controlActionContributionIds.includes(cac.id);
                                         return (
                                             <label
-                                                key={ica.id}
+                                                key={cac.id}
                                                 className={`${styles.checkboxRow} ${checked ? styles.checkboxRowActive : ""}`}
                                             >
                                                 <CastCheckbox
                                                     checked={checked}
-                                                    onChange={() => toggleIca(ica.id)}
+                                                    onChange={() => toggleCac(cac.id)}
                                                 />
                                                 <span className={styles.itemText}>
-                                                    <span className={styles.itemCode}>{ica.code}</span>
-                                                    <span className={styles.itemName}>{ica.controlActionName}</span>
+                                                    <span className={styles.itemCode}>{cac.code}</span>
+                                                    <span className={styles.itemName}>{cac.controlActionName}</span>
                                                 </span>
                                             </label>
                                         );
@@ -225,7 +331,7 @@ export default function ModalRecommendation({
                                 )}
                             </div>
                             <p className={styles.helperText}>
-                                Select every Component Analysis (Step 3) this recommendation addresses.
+                                Select every CAC (Step 3) this recommendation addresses.
                             </p>
                         </div>
 

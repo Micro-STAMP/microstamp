@@ -10,6 +10,7 @@ import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.mapper.StateMapper;
 import microstamp.step2.repository.StateRepository;
 import microstamp.step2.repository.VariableRepository;
+import microstamp.step2.service.AuditLogService;
 import microstamp.step2.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,8 @@ public class StateServiceImpl implements StateService {
     private final StateRepository stateRepository;
 
     private final VariableRepository variableRepository;
+
+    private final AuditLogService auditLogService;
 
     public List<StateReadDto> findAll() {
         return stateRepository.findAll().stream()
@@ -56,6 +59,8 @@ public class StateServiceImpl implements StateService {
         state.setCode(stateUpdateDto.getCode());
 
         stateRepository.save(state);
+
+        auditLogService.record(state.getVariable().getComponent().getAnalysisId(), "Step 2", "State " + state.getCode());
     }
 
     public void delete(UUID id) throws Step2NotFoundException {

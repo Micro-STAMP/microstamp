@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import microstamp.step2.enumeration.InteractionType;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -25,5 +26,9 @@ public class InteractionReadDto {
 
     @NotNull
     private InteractionType interactionType;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 
 }

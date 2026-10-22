@@ -1,14 +1,20 @@
-import { IRecommendationPriority } from "./Enums";
+import { IRecommendationPriority, IRecommendationStatus, IRecommendationType, IRecommendationScopeCategory } from "./Enums";
 
 interface IRecommendationReadDto {
 	id: string;
 	analysisId: string;
 	description: string;
-	inadequateControlActionIds: string[];
+	controlActionContributionIds: string[];
 	systemicFactorIds: string[];
 	componentId?: string;
 	priority?: IRecommendationPriority;
 	auditMechanism?: string;
+	assignee?: string;
+	dueDate?: string;
+	status?: IRecommendationStatus;
+	recommendationType?: IRecommendationType;
+	scopeCategory?: IRecommendationScopeCategory;
+	effectivenessEvidence?: string;
 }
 
 export type { IRecommendationReadDto };

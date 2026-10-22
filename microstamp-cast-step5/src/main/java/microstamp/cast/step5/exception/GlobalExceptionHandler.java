@@ -17,8 +17,8 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler(InadequateControlActionReferenceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleInadequateControlActionReferenceNotFound(InadequateControlActionReferenceNotFoundException ex) {
+    @ExceptionHandler(ControlActionContributionReferenceNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleControlActionContributionReferenceNotFound(ControlActionContributionReferenceNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 

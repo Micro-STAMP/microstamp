@@ -46,6 +46,9 @@ public class ComponentServiceImpl implements ComponentService {
     @Autowired
     private VariableRepository variableRepository;
 
+    @Autowired
+    private microstamp.step2.service.AuditLogService auditLogService;
+
     public List<ComponentReadDto> findAll() {
         return componentRepository.findAll().stream()
                 .map(ComponentMapper::toDto)
@@ -212,6 +215,8 @@ public class ComponentServiceImpl implements ComponentService {
 
         String componentTypeName = componentUpdateDto.getType().getFormattedName();
         componentRepository.updateType(component.getId().toString(), componentTypeName);
+
+        auditLogService.record(component.getAnalysisId(), "Step 2", "Component " + component.getCode());
     }
 
     private void deleteComponent(UUID id){

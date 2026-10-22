@@ -18,5 +18,5 @@ public record SystemicFactorInsertDto(
         @NotBlank
         String description,
 
-        List<UUID> inadequateControlActionIds
+        List<UUID> controlActionContributionIds
 ) {}

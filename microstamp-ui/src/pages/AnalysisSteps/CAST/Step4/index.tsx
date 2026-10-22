@@ -6,6 +6,8 @@ import styles from '../Step1/CastStepOne.module.css';
 import SystemicFactorsSection from './components/SystemicFactorsSection';
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastNextStepButton from '@components/CastNextStepButton';
+import CastLastUpdated from '@components/CastLastUpdated';
+import CastCreatedAt from '@components/CastCreatedAt';
 
 export default function CastStepFour() {
     const { id } = useParams();
@@ -28,6 +30,11 @@ export default function CastStepFour() {
                             </span>
                         </div>
                         <h1 className={styles.pageTitle}>Step 4: Identify Control Structure Flaws</h1>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '0.8rem' }}>
+                            <CastCreatedAt analysisId={analysisId} />
+                            <span style={{ color: 'var(--color-gray)' }}>&middot;</span>
+                            <CastLastUpdated analysisId={analysisId} />
+                        </div>
                     </div>
 
                     <div className={styles.actions}>

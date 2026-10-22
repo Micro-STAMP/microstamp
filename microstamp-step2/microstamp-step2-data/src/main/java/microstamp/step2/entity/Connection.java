@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import microstamp.step2.enumeration.Style;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Types;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Connection")
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "connections", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "analysis_id" }) })
 public class Connection {
 
@@ -41,5 +46,13 @@ public class Connection {
 
     @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
 }

@@ -15,5 +15,5 @@ public record SystemicFactorUpdateDto(
         @NotBlank
         String description,
 
-        List<UUID> inadequateControlActionIds
+        List<UUID> controlActionContributionIds
 ) {}

@@ -112,6 +112,11 @@
     border-color: var(--color-yellow);
 }
 
+.inputField[type="date"],
+.inputField[type="time"] {
+    color-scheme: dark;
+}
+
 .emptyState {
     display: flex;
     align-items: center;

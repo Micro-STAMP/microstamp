@@ -7,6 +7,7 @@ import microstamp.step2.dto.responsibility.ResponsibilityReadDto;
 import microstamp.step2.dto.variable.VariableFullReadDto;
 import microstamp.step2.enumeration.Style;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,5 +38,9 @@ public class ComponentReadDto {
     private List<ResponsibilityReadDto> responsibilities;
 
     private List<VariableFullReadDto> variables;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 
 }

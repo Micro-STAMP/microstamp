@@ -9,12 +9,13 @@ import {
     updateSystemicFactor,
     deleteSystemicFactor
 } from '@http/CAST/Step4/SystemicFactors';
-import { getByAnalysisId as getIcasByAnalysisId } from '@http/CAST/Step3/InadequateControlActions';
+import { getByAnalysisId as getCacsByAnalysisId } from '@http/CAST/Step3/ControlActionContributions';
 import {
     systemicFactorCategoryToSelectOption,
     ISystemicFactorReadDto
 } from '@interfaces/CAST/IStep4/ISystemicFactor';
 import CastSection from '@components/CastSection';
+import LinkBadge from '@components/LinkBadge';
 import ModalSystemicFactor from '@components/Modal/ModalEntity/ModalStep4/ModalSystemicFactor';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
 import styles from '../../Step1/CastStepOne.module.css';
@@ -31,16 +32,13 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
         queryFn: () => getByAnalysisId(analysisId)
     });
 
-    const { data: icas, isLoading: isLoadingIcas } = useQuery({
-        queryKey: ['inadequate-control-actions', analysisId],
-        queryFn: () => getIcasByAnalysisId(analysisId)
+    const { data: cacs, isLoading: isLoadingCacs } = useQuery({
+        queryKey: ['control-action-contributions', analysisId],
+        queryFn: () => getCacsByAnalysisId(analysisId)
     });
 
-    const icaOptions = icas ? icas.map(ica => ({ id: ica.id, code: ica.code, controlActionName: ica.controlActionName })) : [];
-    const getIcaLabel = (icaId: string) => {
-        const ica = icaOptions.find(i => i.id === icaId);
-        return ica ? `${ica.code} — ${ica.controlActionName}` : 'Component Analysis not found';
-    };
+    const cacOptions = cacs ? cacs.map(cac => ({ id: cac.id, code: cac.code, controlActionName: cac.controlActionName })) : [];
+    const getCac = (cacId: string) => cacOptions.find(i => i.id === cacId) ?? null;
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingFactor, setEditingFactor] = useState<ISystemicFactorReadDto | null>(null);
@@ -98,7 +96,7 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
             onAddClick={openCreateModal}
             addButtonLabel="Add Systemic Factor"
         >
-            {isLoadingFactors || isLoadingIcas ? (
+            {isLoadingFactors || isLoadingCacs ? (
                 <div style={{ color: 'var(--color-muted-text)', fontSize: '14px', padding: '10px' }}>Loading Systemic Factors...</div>
             ) : systemicFactors && systemicFactors.length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -129,15 +127,15 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                                     </p>
                                 )}
 
-                                {factor.inadequateControlActionIds && factor.inadequateControlActionIds.length > 0 && (
+                                {factor.controlActionContributionIds && factor.controlActionContributionIds.length > 0 && (
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                        {factor.inadequateControlActionIds.map(icaId => (
-                                            <span
-                                                key={icaId}
-                                                style={{ display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: 'var(--color-dark)', color: 'var(--color-muted-text)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', border: '1px solid var(--color-gray)' }}
-                                            >
-                                                <BiLinkAlt size={12} /> {getIcaLabel(icaId)}
-                                            </span>
+                                        {factor.controlActionContributionIds.map(cacId => (
+                                            <LinkBadge
+                                                key={cacId}
+                                                icon={<BiLinkAlt size={12} />}
+                                                code={getCac(cacId)?.code ?? '—'}
+                                                tooltip={getCac(cacId)?.controlActionName}
+                                            />
                                         ))}
                                     </div>
                                 )}
@@ -177,7 +175,7 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                 open={modalOpen}
                 onClose={closeModal}
                 analysisId={analysisId}
-                icaOptions={icaOptions}
+                cacOptions={cacOptions}
                 systemicFactor={editingFactor}
                 isLoading={isCreating || isUpdating}
                 onCreate={async data => { await create(data); }}
@@ -194,14 +192,14 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                 description={previewFactor.description}
                 relatedGroups={[
                     {
-                        label: 'Linked Component Analyses (Step 3)',
-                        emptyMessage: 'No Component Analysis linked.',
-                        items: (previewFactor.inadequateControlActionIds ?? []).map(icaId => {
-                            const ica = icaOptions.find(i => i.id === icaId);
+                        label: 'Linked CACs (Step 3)',
+                        emptyMessage: 'No CACs linked.',
+                        items: (previewFactor.controlActionContributionIds ?? []).map(cacId => {
+                            const cac = cacOptions.find(i => i.id === cacId);
                             return {
-                                id: icaId,
-                                code: ica?.code ?? '—',
-                                name: ica?.controlActionName ?? 'Component Analysis not found',
+                                id: cacId,
+                                code: cac?.code ?? '—',
+                                name: cac?.controlActionName ?? 'CAC not found',
                                 onGoTo: () => navigate(`/analyses/${analysisId}/cast/step3`)
                             };
                         })

@@ -26,6 +26,8 @@ public class ResponsibilityMapper {
                 .code(responsibility.getCode())
                 .systemSafetyConstraint(systemSafetyConstraintReadDto)
                 .violatedSystemSafetyConstraints(violatedSystemSafetyConstraintReadDtos)
+                .createdAt(responsibility.getCreatedAt())
+                .updatedAt(responsibility.getUpdatedAt())
                 .build();
     }
 

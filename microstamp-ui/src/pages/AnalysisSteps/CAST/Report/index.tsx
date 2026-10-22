@@ -13,13 +13,19 @@ import { getByAnalysisId as getViolatedConstraints } from '@http/CAST/Step1/Cons
 import { getByAnalysisId as getTimelineEvents } from '@http/CAST/Step1/Timeline';
 import { getByAnalysisId as getPhysicalLossAnalyses } from '@http/CAST/Step1/PhysicalLoss';
 import { getComponents } from '@http/Step2/Components';
-import { getByAnalysisId as getIcas } from '@http/CAST/Step3/InadequateControlActions';
+import { getByAnalysisId as getCacs } from '@http/CAST/Step3/ControlActionContributions';
 import { getByAnalysisId as getSystemicFactors } from '@http/CAST/Step4/SystemicFactors';
 import { getByAnalysisId as getRecommendations } from '@http/CAST/Step5/Recommendations';
 
-import { icaTypeToSelectOption } from '@interfaces/CAST/IStep3/IInadequateControlAction';
+import { icaTypeToSelectOption } from '@interfaces/CAST/IStep3/IControlActionContribution';
 import { systemicFactorCategoryToSelectOption } from '@interfaces/CAST/IStep4/ISystemicFactor';
-import { recommendationPriorityToSelectOption } from '@interfaces/CAST/IStep5/IRecommendation';
+import {
+    recommendationPriorityToSelectOption,
+    recommendationStatusToSelectOption,
+    recommendationTypeToSelectOption,
+    recommendationScopeCategoryToSelectOption
+} from '@interfaces/CAST/IStep5/IRecommendation';
+import { formatDateBR } from '@services/date';
 
 import castStyles from '../Step1/CastStepOne.module.css';
 import styles from './CastReport.module.css';
@@ -62,9 +68,9 @@ export default function CastReport(_: Props) {
         queryKey: ['cast-report-components', analysisId],
         queryFn: () => getComponents(analysisId)
     });
-    const icasQuery = useQuery({
-        queryKey: ['inadequate-control-actions', analysisId],
-        queryFn: () => getIcas(analysisId)
+    const cacsQuery = useQuery({
+        queryKey: ['control-action-contributions', analysisId],
+        queryFn: () => getCacs(analysisId)
     });
     const systemicFactorsQuery = useQuery({
         queryKey: ['systemic-factors', analysisId],
@@ -82,16 +88,16 @@ export default function CastReport(_: Props) {
         || timelineEventsQuery.isLoading
         || physicalLossAnalysesQuery.isLoading
         || componentsQuery.isLoading
-        || icasQuery.isLoading
+        || cacsQuery.isLoading
         || systemicFactorsQuery.isLoading
         || recommendationsQuery.isLoading;
 
-    const icas = icasQuery.data || [];
+    const cacs = cacsQuery.data || [];
     const systemicFactors = systemicFactorsQuery.data || [];
 
-    const getIcaLabel = (icaId: string) => {
-        const ica = icas.find(i => i.id === icaId);
-        return ica ? `${ica.code} — ${ica.controlActionName}` : 'Component Analysis not found';
+    const getCacLabel = (cacId: string) => {
+        const cac = cacs.find(i => i.id === cacId);
+        return cac ? `${cac.code} — ${cac.controlActionName}` : 'CAC not found';
     };
     const getSystemicFactorLabel = (systemicFactorId: string) => {
         const factor = systemicFactors.find(f => f.id === systemicFactorId);
@@ -118,10 +124,11 @@ export default function CastReport(_: Props) {
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No system description registered yet.',
                         items: (systemDescriptionsQuery.data || []).map(item => ({
-                            paragraphs: [item.description],
-                            fields: item.analysisBoundary
-                                ? [{ label: 'System Name', value: item.analysisBoundary }]
-                                : []
+                            paragraphs: item.generalDescription ? [item.generalDescription] : [],
+                            fields: [
+                                item.analysisBoundary ? { label: 'System Name', value: item.analysisBoundary } : null,
+                                item.description ? { label: 'System Boundary', value: item.description } : null
+                            ].filter((field): field is { label: string; value: string } => field !== null)
                         }))
                     },
                     {
@@ -200,10 +207,10 @@ export default function CastReport(_: Props) {
                         }))
                     },
                     {
-                        title: 'Component Analysis',
+                        title: 'Control Action Contribution (CAC)',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step3`),
-                        emptyLabel: 'No Component Analysis registered yet.',
-                        items: icas.map(item => ({
+                        emptyLabel: 'No CACs registered yet.',
+                        items: cacs.map(item => ({
                             code: item.code,
                             title: `${item.controlActionName} — ${icaTypeToSelectOption(item.type).label}`,
                             paragraphs: item.description ? [item.description] : [],
@@ -225,7 +232,7 @@ export default function CastReport(_: Props) {
                         items: systemicFactors.map(item => ({
                             code: systemicFactorCategoryToSelectOption(item.category).label,
                             paragraphs: [item.description],
-                            chips: (item.inadequateControlActionIds || []).map(getIcaLabel)
+                            chips: (item.controlActionContributionIds || []).map(getCacLabel)
                         }))
                     },
                     {
@@ -235,18 +242,36 @@ export default function CastReport(_: Props) {
                         items: (recommendationsQuery.data || []).map(item => ({
                             paragraphs: [item.description],
                             fields: [
+                                item.status
+                                    ? { label: 'Implementation Status', value: recommendationStatusToSelectOption(item.status).label }
+                                    : null,
                                 item.priority
                                     ? { label: 'Priority / Timeframe', value: recommendationPriorityToSelectOption(item.priority).label }
+                                    : null,
+                                item.recommendationType
+                                    ? { label: 'Recommendation Type', value: recommendationTypeToSelectOption(item.recommendationType).label }
+                                    : null,
+                                item.scopeCategory
+                                    ? { label: 'Systemic Scope', value: recommendationScopeCategoryToSelectOption(item.scopeCategory).label }
                                     : null,
                                 item.componentId
                                     ? { label: 'Target Controller', value: getComponentLabel(item.componentId) }
                                     : null,
+                                item.assignee
+                                    ? { label: 'Assignee', value: item.assignee }
+                                    : null,
+                                item.dueDate
+                                    ? { label: 'Due Date', value: formatDateBR(item.dueDate) }
+                                    : null,
                                 item.auditMechanism
                                     ? { label: 'Feedback / Audit Mechanism', value: item.auditMechanism }
+                                    : null,
+                                item.effectivenessEvidence
+                                    ? { label: 'Audit Findings / Effectiveness Evidence', value: item.effectivenessEvidence }
                                     : null
                             ].filter((field): field is { label: string; value: string } => field !== null),
                             chips: [
-                                ...(item.inadequateControlActionIds || []).map(getIcaLabel),
+                                ...(item.controlActionContributionIds || []).map(getCacLabel),
                                 ...(item.systemicFactorIds || []).map(getSystemicFactorLabel)
                             ]
                         }))
@@ -321,11 +346,17 @@ export default function CastReport(_: Props) {
                         >
                             {(systemDescriptionsQuery.data || []).map(item => (
                                 <div key={item.id} className={styles.reportBlock}>
-                                    <p className={styles.itemField}>{item.description}</p>
+                                    {item.generalDescription && <p className={styles.itemField}>{item.generalDescription}</p>}
                                     {item.analysisBoundary && (
                                         <p className={styles.itemField}>
                                             <span className={styles.itemFieldLabel}>System Name: </span>
                                             {item.analysisBoundary}
+                                        </p>
+                                    )}
+                                    {item.description && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>System Boundary: </span>
+                                            {item.description}
                                         </p>
                                     )}
                                 </div>
@@ -469,15 +500,15 @@ export default function CastReport(_: Props) {
                             ))}
                         </ReportGroup>
 
-                        {/* 3. Component Analysis */}
+                        {/* 3. Control Action Contribution (CAC) */}
 
                         <ReportGroup
-                            title="Component Analysis"
+                            title="Control Action Contribution (CAC)"
                             editHref={`/analyses/${analysisId}/cast/step3`}
-                            isEmpty={icas.length === 0}
-                            emptyLabel="No Component Analysis registered yet."
+                            isEmpty={cacs.length === 0}
+                            emptyLabel="No CACs registered yet."
                         >
-                            {icas.map(item => (
+                            {cacs.map(item => (
                                 <div key={item.id} className={styles.reportBlock}>
                                     <span className={styles.itemCode}>{item.code}</span>
                                     <h4 className={styles.itemTitle}>
@@ -518,11 +549,11 @@ export default function CastReport(_: Props) {
                                 <div key={item.id} className={styles.reportBlock}>
                                     <span className={styles.itemCode}>{systemicFactorCategoryToSelectOption(item.category).label}</span>
                                     <p className={styles.itemField}>{item.description}</p>
-                                    {item.inadequateControlActionIds && item.inadequateControlActionIds.length > 0 && (
+                                    {item.controlActionContributionIds && item.controlActionContributionIds.length > 0 && (
                                         <div className={styles.chipsRow}>
-                                            {item.inadequateControlActionIds.map(icaId => (
-                                                <span key={icaId} className={styles.chip}>
-                                                    <BiLinkAlt size={12} /> {getIcaLabel(icaId)}
+                                            {item.controlActionContributionIds.map(cacId => (
+                                                <span key={cacId} className={styles.chip}>
+                                                    <BiLinkAlt size={12} /> {getCacLabel(cacId)}
                                                 </span>
                                             ))}
                                         </div>
@@ -542,10 +573,28 @@ export default function CastReport(_: Props) {
                             {(recommendationsQuery.data || []).map(item => (
                                 <div key={item.id} className={styles.reportBlock}>
                                     <p className={styles.itemField}>{item.description}</p>
+                                    {item.status && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Implementation Status: </span>
+                                            {recommendationStatusToSelectOption(item.status).label}
+                                        </p>
+                                    )}
                                     {item.priority && (
                                         <p className={styles.itemField}>
                                             <span className={styles.itemFieldLabel}>Priority / Timeframe: </span>
                                             {recommendationPriorityToSelectOption(item.priority).label}
+                                        </p>
+                                    )}
+                                    {item.recommendationType && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Recommendation Type: </span>
+                                            {recommendationTypeToSelectOption(item.recommendationType).label}
+                                        </p>
+                                    )}
+                                    {item.scopeCategory && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Systemic Scope: </span>
+                                            {recommendationScopeCategoryToSelectOption(item.scopeCategory).label}
                                         </p>
                                     )}
                                     {item.componentId && (
@@ -554,17 +603,35 @@ export default function CastReport(_: Props) {
                                             {getComponentLabel(item.componentId)}
                                         </p>
                                     )}
+                                    {item.assignee && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Assignee: </span>
+                                            {item.assignee}
+                                        </p>
+                                    )}
+                                    {item.dueDate && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Due Date: </span>
+                                            {formatDateBR(item.dueDate)}
+                                        </p>
+                                    )}
                                     {item.auditMechanism && (
                                         <p className={styles.itemField}>
                                             <span className={styles.itemFieldLabel}>Feedback / Audit Mechanism: </span>
                                             {item.auditMechanism}
                                         </p>
                                     )}
-                                    {(item.inadequateControlActionIds?.length > 0 || item.systemicFactorIds?.length > 0) && (
+                                    {item.effectivenessEvidence && (
+                                        <p className={styles.itemField}>
+                                            <span className={styles.itemFieldLabel}>Audit Findings / Effectiveness Evidence: </span>
+                                            {item.effectivenessEvidence}
+                                        </p>
+                                    )}
+                                    {(item.controlActionContributionIds?.length > 0 || item.systemicFactorIds?.length > 0) && (
                                         <div className={styles.chipsRow}>
-                                            {item.inadequateControlActionIds?.map(icaId => (
-                                                <span key={icaId} className={styles.chip}>
-                                                    <BiLinkAlt size={12} /> {getIcaLabel(icaId)}
+                                            {item.controlActionContributionIds?.map(cacId => (
+                                                <span key={cacId} className={styles.chip}>
+                                                    <BiLinkAlt size={12} /> {getCacLabel(cacId)}
                                                 </span>
                                             ))}
                                             {item.systemicFactorIds?.map(systemicFactorId => (

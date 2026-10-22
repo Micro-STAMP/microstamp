@@ -23,6 +23,8 @@ public class ConnectionMapper {
                             .sorted(Comparator.comparing(InteractionReadDto::getCode))
                             .toList()
                         : null)
+                .createdAt(connection.getCreatedAt())
+                .updatedAt(connection.getUpdatedAt())
                 .build();
     }
 

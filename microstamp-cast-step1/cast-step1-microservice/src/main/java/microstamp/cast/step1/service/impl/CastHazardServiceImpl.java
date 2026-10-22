@@ -13,6 +13,7 @@ import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.mapper.CastHazardMapper;
 import microstamp.cast.step1.repository.AccidentLossEventRepository;
 import microstamp.cast.step1.repository.CastHazardRepository;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.service.CastHazardService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class CastHazardServiceImpl implements CastHazardService {
     private final CastHazardRepository castHazardRepository;
 
     private final AccidentLossEventRepository accidentLossEventRepository;
+
+    private final AuditLogService auditLogService;
 
     //private final MicroStampClient microStampClient;
 
@@ -105,6 +108,8 @@ public class CastHazardServiceImpl implements CastHazardService {
 
         log.info("Updating the CAST hazard with id {}", id);
         castHazardRepository.save(castHazard);
+
+        auditLogService.record(castHazard.getAnalysisId(), "Step 1", "System Hazard " + castHazard.getCode());
     }
 
     @Override

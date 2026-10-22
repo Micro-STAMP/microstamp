@@ -4,7 +4,7 @@ interface ISystemicFactorInsertDto {
 	analysisId: string;
 	category: ISystemicFactorCategory;
 	description: string;
-	inadequateControlActionIds: string[];
+	controlActionContributionIds: string[];
 }
 
 export type { ISystemicFactorInsertDto };

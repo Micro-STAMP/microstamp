@@ -6,6 +6,7 @@ import { getByAnalysisId as getHazards, createHazard, deleteHazard } from '@http
 import { getByAnalysisId as getLossEvents } from '@http/CAST/Step1/AccidentLossEvents';
 import CastSection from '@components/CastSection';
 import CastCheckbox from '@components/CastCheckbox';
+import LinkBadge from '@components/LinkBadge';
 import { useRegisterCastSection, useGoToCastSection } from '@components/CastSection/CastSectionNavigator';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
 import { ICastHazardReadDto } from '@interfaces/CAST/ICastHazard';
@@ -96,17 +97,20 @@ export default function CastHazardForm({ analysisId }: Props) {
                                     }}
                                 >
                                     <div style={{ flex: 1 }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                            <span style={{ 
-                                                color: 'var(--color-yellow)', 
-                                                fontWeight: 600, 
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                                            <span style={{
+                                                color: 'var(--color-yellow)',
+                                                fontWeight: 600,
                                                 fontSize: '14px'
                                             }}>
                                                 {h.code}
                                             </span>
                                             <strong style={{ color: '#ffffff', fontSize: '15px' }}>{h.name}</strong>
+                                            {(h.accidentLossEvents ?? []).map(loss => (
+                                                <LinkBadge key={loss.id} code={loss.code} tooltip={loss.name} />
+                                            ))}
                                         </div>
-                                        
+
                                         {h.description && (
                                             <p style={{ 
                                                 margin: 0, 

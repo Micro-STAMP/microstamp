@@ -1,10 +1,22 @@
 import { useState } from 'react';
-import { BiSave, BiTrash, BiQuestionMark } from 'react-icons/bi';
+import { BiSave, BiTrash, BiQuestionMark, BiImageAdd, BiUpload } from 'react-icons/bi';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { getByAnalysisId as getEvents, createTimelineEvent, deleteTimelineEvent } from '@http/CAST/Step1/Timeline';
+import { getByAnalysisId as getEvents, createTimelineEvent, deleteTimelineEvent, uploadTimelineEventImage, deleteTimelineEventImage } from '@http/CAST/Step1/Timeline';
 import CastSection from '@components/CastSection';
+import CastCheckbox from '@components/CastCheckbox';
+import { formatDateTimeBR } from '@services/date';
 import styles from '../CastStepOne.module.css';
+
+function toIsoDateTime(date: string, time: string): string | undefined {
+    if (!date) return undefined;
+    return `${date}T${time || '00:00'}:00.000Z`;
+}
+
+function eventTimeDisplay(ev: { exactDateTime?: string; timeLabel?: string }): string | null {
+    if (ev.exactDateTime) return formatDateTimeBR(ev.exactDateTime);
+    return ev.timeLabel || null;
+}
 
 interface Props { analysisId: string; }
 
@@ -21,12 +33,16 @@ export default function TimelineEventForm({ analysisId }: Props) {
     const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
     const expandedEvent = sortedEvents.find(ev => ev.id === expandedEventId) || null;
 
-    const [form, setForm] = useState({
+    const EMPTY_FORM = {
         code: 'T-1',
         eventDescription: '',
         questions: '',
-        timeLabel: ''
-    });
+        timeLabel: '',
+        useExactDate: false,
+        exactDate: '',
+        exactTime: ''
+    };
+    const [form, setForm] = useState(EMPTY_FORM);
 
     const { mutateAsync: save, isPending } = useMutation({
         mutationFn: async () => {
@@ -34,14 +50,15 @@ export default function TimelineEventForm({ analysisId }: Props) {
                 code: form.code,
                 eventDescription: form.eventDescription,
                 questions: form.questions,
-                timeLabel: form.timeLabel,
+                timeLabel: form.useExactDate ? undefined : form.timeLabel,
+                exactDateTime: form.useExactDate ? toIsoDateTime(form.exactDate, form.exactTime) : undefined,
                 eventOrder: sortedEvents.length + 1,
                 analysisId
             });
         },
         onSuccess: () => {
             toast.success("Event added to timeline!");
-            setForm({ code: `T-${sortedEvents.length + 2}`, eventDescription: '', questions: '', timeLabel: '' });
+            setForm({ ...EMPTY_FORM, code: `T-${sortedEvents.length + 2}` });
             queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
         },
         onError: (err: any) => toast.error(err.message || "Error saving Timeline Event.")
@@ -55,6 +72,37 @@ export default function TimelineEventForm({ analysisId }: Props) {
             queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
         }
     });
+
+    const { mutateAsync: uploadImage, isPending: isUploadingImage } = useMutation({
+        mutationFn: async ({ id, file }: { id: string; file: File }) => await uploadTimelineEventImage(id, file),
+        onSuccess: () => {
+            toast.success("Event image uploaded!");
+            queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
+        },
+        onError: (err: any) => toast.error(err.message || "Error uploading event image.")
+    });
+
+    const { mutateAsync: removeImage, isPending: isRemovingImage } = useMutation({
+        mutationFn: async (id: string) => await deleteTimelineEventImage(id),
+        onSuccess: () => {
+            toast.success("Event image removed.");
+            queryClient.invalidateQueries({ queryKey: ['timeline-events', analysisId] });
+        },
+        onError: (err: any) => toast.error(err.message || "Error removing event image.")
+    });
+
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>, eventId: string) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            toast.error("Please upload a valid image file (PNG, JPG).");
+            return;
+        }
+
+        await uploadImage({ id: eventId, file });
+        e.target.value = '';
+    };
 
     return (
         <CastSection title="Proximate Events and Questions" tooltipInfo="Chronological summary of proximate events." defaultOpen={false} hideAddButton={true}>
@@ -86,8 +134,8 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                                 }} />
                                                 <div style={{ textAlign: 'center' }}>
                                                     <div style={{ color: 'var(--color-yellow)', fontWeight: 600, fontSize: '13px' }}>{ev.code}</div>
-                                                    {ev.timeLabel && (
-                                                        <div style={{ color: 'var(--color-muted-text)', fontSize: '11px' }}>{ev.timeLabel}</div>
+                                                    {eventTimeDisplay(ev) && (
+                                                        <div style={{ color: 'var(--color-muted-text)', fontSize: '11px' }}>{eventTimeDisplay(ev)}</div>
                                                     )}
                                                 </div>
                                             </button>
@@ -103,9 +151,9 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                             <span style={{ color: 'var(--color-yellow)', fontWeight: 600, fontSize: '14px' }}>
                                                 {expandedEvent.code}
                                             </span>
-                                            {expandedEvent.timeLabel && (
+                                            {eventTimeDisplay(expandedEvent) && (
                                                 <span style={{ fontSize: '12px', color: 'var(--color-muted-text)', backgroundColor: 'var(--color-dark)', padding: '2px 8px', borderRadius: '12px' }}>
-                                                    {expandedEvent.timeLabel}
+                                                    {eventTimeDisplay(expandedEvent)}
                                                 </span>
                                             )}
                                         </div>
@@ -115,12 +163,47 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                         </p>
 
                                         {expandedEvent.questions && (
-                                            <div style={{ backgroundColor: 'var(--color-dark-gray)', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid var(--color-yellow)', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                                            <div style={{ backgroundColor: 'var(--color-dark-gray)', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid var(--color-yellow)', display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '12px' }}>
                                                 <BiQuestionMark size={18} color="var(--color-yellow)" style={{ marginTop: '2px', flexShrink: 0 }} />
                                                 <p style={{ margin: 0, fontSize: '14px', color: '#d1d5db', fontStyle: 'italic' }}>
                                                     {expandedEvent.questions}
                                                 </p>
                                             </div>
+                                        )}
+
+                                        {expandedEvent.imageBase64 ? (
+                                            <div style={{ border: '1px solid var(--color-gray)', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'var(--color-dark)' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderBottom: '1px solid var(--color-gray)' }}>
+                                                    <span style={{ color: '#d1d5db', fontSize: '12px', fontWeight: 'bold' }}>Event Image</span>
+                                                    <button
+                                                        onClick={() => removeImage(expandedEvent.id)}
+                                                        disabled={isRemovingImage}
+                                                        style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: isRemovingImage ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px' }}
+                                                    >
+                                                        <BiTrash size={14} /> {isRemovingImage ? 'Removing...' : 'Remove'}
+                                                    </button>
+                                                </div>
+                                                <div style={{ padding: '12px', display: 'flex', justifyContent: 'center' }}>
+                                                    <img
+                                                        src={expandedEvent.imageBase64.startsWith('data:image') ? expandedEvent.imageBase64 : `data:image/png;base64,${expandedEvent.imageBase64}`}
+                                                        alt={`Event ${expandedEvent.code}`}
+                                                        style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain', borderRadius: '4px' }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--color-muted-text)', border: '1px dashed var(--color-gray)', borderRadius: '6px', padding: '6px 10px', cursor: isUploadingImage ? 'not-allowed' : 'pointer', width: 'fit-content' }}>
+                                                <BiImageAdd size={16} />
+                                                {isUploadingImage ? 'Uploading...' : 'Add Event Image (optional)'}
+                                                <input
+                                                    type="file"
+                                                    accept="image/png, image/jpeg"
+                                                    style={{ display: 'none' }}
+                                                    onChange={e => handleImageChange(e, expandedEvent.id)}
+                                                    disabled={isUploadingImage}
+                                                />
+                                                <BiUpload size={14} />
+                                            </label>
                                         )}
                                     </div>
                                     <button onClick={() => remove(expandedEvent.id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px', height: 'fit-content' }} title="Remove Event">
@@ -143,8 +226,38 @@ export default function TimelineEventForm({ analysisId }: Props) {
                                 <input type="text" className={styles.inputField} value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} style={{ marginBottom: 0 }} />
                             </div>
                             <div>
-                                <label className={styles.inputLabel}>Time Label (optional)</label>
-                                <input type="text" placeholder="e.g. 21:00, T+10min, the next morning" className={styles.inputField} value={form.timeLabel} onChange={e => setForm({ ...form, timeLabel: e.target.value })} style={{ marginBottom: 0 }} />
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <label className={styles.inputLabel}>
+                                        {form.useExactDate ? 'Exact Date & Time' : 'Time Label (optional)'}
+                                    </label>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--color-muted-text)', cursor: 'pointer', marginBottom: '6px' }}>
+                                        <CastCheckbox
+                                            checked={form.useExactDate}
+                                            onChange={() => setForm({ ...form, useExactDate: !form.useExactDate })}
+                                        />
+                                        I have the exact date
+                                    </label>
+                                </div>
+                                {form.useExactDate ? (
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <input
+                                            type="date"
+                                            className={styles.inputField}
+                                            value={form.exactDate}
+                                            onChange={e => setForm({ ...form, exactDate: e.target.value })}
+                                            style={{ marginBottom: 0, flex: 1 }}
+                                        />
+                                        <input
+                                            type="time"
+                                            className={styles.inputField}
+                                            value={form.exactTime}
+                                            onChange={e => setForm({ ...form, exactTime: e.target.value })}
+                                            style={{ marginBottom: 0, width: '110px' }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <input type="text" placeholder="e.g. 21:00, T+10min, the next morning" className={styles.inputField} value={form.timeLabel} onChange={e => setForm({ ...form, timeLabel: e.target.value })} style={{ marginBottom: 0 }} />
+                                )}
                             </div>
                         </div>
                         <div>

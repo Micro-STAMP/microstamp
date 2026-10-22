@@ -6,6 +6,7 @@ import lombok.*;
 import microstamp.cast.step1.dto.violatedsystemsafetyconstraint.ViolatedSystemSafetyConstraintReadDto;
 import microstamp.step1.dto.systemsafetyconstraint.SystemSafetyConstraintReadDto;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,5 +29,9 @@ public class ResponsibilityReadDto {
     private SystemSafetyConstraintReadDto systemSafetyConstraint;
 
     private List<ViolatedSystemSafetyConstraintReadDto> violatedSystemSafetyConstraints;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 
 }

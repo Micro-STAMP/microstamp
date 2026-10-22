@@ -8,6 +8,7 @@ import microstamp.step2.dto.interaction.InteractionReadDto;
 import microstamp.step2.enumeration.InteractionType;
 import microstamp.step2.enumeration.Style;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,5 +34,9 @@ public class ConnectionReadDto {
     private Style style;
 
     private List<InteractionReadDto> interactions;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 
 }

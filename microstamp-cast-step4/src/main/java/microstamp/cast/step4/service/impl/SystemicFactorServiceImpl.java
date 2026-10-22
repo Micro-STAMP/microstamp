@@ -7,10 +7,11 @@ import microstamp.cast.step4.dto.systemicfactor.SystemicFactorInsertDto;
 import microstamp.cast.step4.dto.systemicfactor.SystemicFactorReadDto;
 import microstamp.cast.step4.dto.systemicfactor.SystemicFactorUpdateDto;
 import microstamp.cast.step4.entity.SystemicFactor;
-import microstamp.cast.step4.exception.InadequateControlActionReferenceNotFoundException;
+import microstamp.cast.step4.exception.ControlActionContributionReferenceNotFoundException;
 import microstamp.cast.step4.exception.SystemicFactorNotFoundException;
 import microstamp.cast.step4.mapper.SystemicFactorMapper;
 import microstamp.cast.step4.repository.SystemicFactorRepository;
+import microstamp.cast.step4.service.AuditLogService;
 import microstamp.cast.step4.service.SystemicFactorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +27,12 @@ public class SystemicFactorServiceImpl implements SystemicFactorService {
     private final SystemicFactorRepository repository;
     private final SystemicFactorMapper mapper;
     private final CastStep3Client castStep3Client;
+    private final AuditLogService auditLogService;
 
     @Override
     @Transactional
     public SystemicFactorReadDto create(SystemicFactorInsertDto dto) {
-        validateInadequateControlActionsExist(dto.inadequateControlActionIds());
+        validateControlActionContributionsExist(dto.controlActionContributionIds());
         SystemicFactor entity = mapper.toEntity(dto);
         return mapper.toReadDto(repository.save(entity));
     }
@@ -53,9 +55,11 @@ public class SystemicFactorServiceImpl implements SystemicFactorService {
     public SystemicFactorReadDto update(UUID id, SystemicFactorUpdateDto dto) {
         SystemicFactor entity = repository.findById(id)
                 .orElseThrow(() -> new SystemicFactorNotFoundException("Systemic factor not found"));
-        validateInadequateControlActionsExist(dto.inadequateControlActionIds());
+        validateControlActionContributionsExist(dto.controlActionContributionIds());
         mapper.updateEntityFromDto(dto, entity);
-        return mapper.toReadDto(repository.save(entity));
+        SystemicFactor saved = repository.save(entity);
+        auditLogService.record(saved.getAnalysisId(), "Step 4", "Systemic Factor " + saved.getCategory());
+        return mapper.toReadDto(saved);
     }
 
     @Override
@@ -64,15 +68,15 @@ public class SystemicFactorServiceImpl implements SystemicFactorService {
         repository.deleteById(id);
     }
 
-    private void validateInadequateControlActionsExist(List<UUID> inadequateControlActionIds) {
-        if (inadequateControlActionIds == null) {
+    private void validateControlActionContributionsExist(List<UUID> controlActionContributionIds) {
+        if (controlActionContributionIds == null) {
             return;
         }
-        for (UUID icaId : inadequateControlActionIds) {
+        for (UUID cacId : controlActionContributionIds) {
             try {
-                castStep3Client.readInadequateControlAction(icaId);
+                castStep3Client.readControlActionContribution(cacId);
             } catch (FeignException.NotFound ex) {
-                throw new InadequateControlActionReferenceNotFoundException("Inadequate Control Action not found: " + icaId);
+                throw new ControlActionContributionReferenceNotFoundException("Control Action Contribution not found: " + cacId);
             }
         }
     }

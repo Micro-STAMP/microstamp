@@ -11,6 +11,7 @@ import microstamp.cast.step1.exception.Step1IllegalArgumentException;
 import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.mapper.PhysicalLossAnalysisMapper;
 import microstamp.cast.step1.repository.PhysicalLossAnalysisRepository;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.service.PhysicalLossAnalysisService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ import java.util.UUID;
 public class PhysicalLossAnalysisServiceImpl implements PhysicalLossAnalysisService {
 
     private final PhysicalLossAnalysisRepository physicalLossAnalysisRepository;
+
+    private final AuditLogService auditLogService;
 
     //private final MicroStampClient microStampClient;
 
@@ -89,6 +92,8 @@ public class PhysicalLossAnalysisServiceImpl implements PhysicalLossAnalysisServ
 
         log.info("Updating the CAST physical loss analysis with id {}", id);
         physicalLossAnalysisRepository.save(physicalLossAnalysis);
+
+        auditLogService.record(physicalLossAnalysis.getAnalysisId(), "Step 1", "Physical Loss Analysis " + physicalLossAnalysis.getCode());
     }
 
     public void delete(UUID id) throws Step1NotFoundException {

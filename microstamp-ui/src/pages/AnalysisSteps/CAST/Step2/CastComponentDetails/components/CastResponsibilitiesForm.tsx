@@ -7,6 +7,7 @@ import { getResponsibilities, createResponsibility, deleteResponsibility } from 
 import { getByAnalysisId as getConstraints } from '@http/CAST/Step1/Constraints';
 import CastCheckbox from '@components/CastCheckbox';
 import CastSection from '@components/CastSection';
+import LinkBadge from '@components/LinkBadge';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
 import { IResponsibilityReadDto } from '@interfaces/IStep2';
 import styles from '../../../Step1/CastStepOne.module.css';
@@ -72,9 +73,7 @@ export default function CastResponsibilitiesForm({ componentId, analysisId }: Pr
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
                                 <span style={{ color: 'var(--color-yellow)', fontWeight: 'bold', fontSize: '14px' }}>{resp.code}</span>
                                 {(resp.violatedSystemSafetyConstraints ?? []).map(constraint => (
-                                    <span key={constraint.id} style={{ backgroundColor: 'var(--color-dark)', color: 'var(--color-muted-text)', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', border: '1px solid var(--color-gray)' }}>
-                                        {constraint.code}
-                                    </span>
+                                    <LinkBadge key={constraint.id} code={constraint.code} tooltip={constraint.name} />
                                 ))}
                             </div>
                             <span style={{ color: '#fff', fontSize: '15px' }}>{resp.responsibility}</span>

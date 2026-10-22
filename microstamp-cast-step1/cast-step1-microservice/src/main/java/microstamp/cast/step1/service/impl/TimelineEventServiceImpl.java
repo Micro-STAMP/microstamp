@@ -11,9 +11,11 @@ import microstamp.cast.step1.exception.Step1IllegalArgumentException;
 import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.mapper.TimelineEventMapper;
 import microstamp.cast.step1.repository.TimelineEventRepository;
+import microstamp.cast.step1.service.AuditLogService;
 import microstamp.cast.step1.service.TimelineEventService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Comparator;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.UUID;
 public class TimelineEventServiceImpl implements TimelineEventService {
 
     private final TimelineEventRepository timelineEventRepository;
+
+    private final AuditLogService auditLogService;
 
     //private final MicroStampClient microStampClient;
 
@@ -83,9 +87,12 @@ public class TimelineEventServiceImpl implements TimelineEventService {
         timelineEvent.setEventDescription(timelineEventUpdateDto.getEventDescription());
         timelineEvent.setQuestions(timelineEventUpdateDto.getQuestions());
         timelineEvent.setTimeLabel(timelineEventUpdateDto.getTimeLabel());
+        timelineEvent.setExactDateTime(timelineEventUpdateDto.getExactDateTime());
 
         log.info("Updating the CAST timeline event with id {}", id);
         timelineEventRepository.save(timelineEvent);
+
+        auditLogService.record(timelineEvent.getAnalysisId(), "Step 1", "Timeline Event " + timelineEvent.getCode());
     }
 
     public void delete(UUID id) throws Step1NotFoundException {
@@ -95,6 +102,33 @@ public class TimelineEventServiceImpl implements TimelineEventService {
 
         log.info("Deleting the CAST timeline event with id {} on the database", timelineEvent.getId());
         timelineEventRepository.deleteById(timelineEvent.getId());
+    }
+
+    public TimelineEventReadDto uploadImage(UUID id, MultipartFile file) throws Exception {
+        if (file.isEmpty())
+            throw new Exception("MultipartFile is empty");
+
+        log.debug("Finding if there is a CAST timeline event with id {} to attach an image to", id);
+        TimelineEvent timelineEvent = timelineEventRepository.findById(id)
+                .orElseThrow(() -> new Step1NotFoundException("TimelineEvent", id.toString()));
+
+        timelineEvent.setImage(file.getBytes());
+
+        log.info("Updating the CAST timeline event with id {} with a new image", id);
+        timelineEventRepository.save(timelineEvent);
+
+        return TimelineEventMapper.toDto(timelineEvent);
+    }
+
+    public void deleteImage(UUID id) {
+        log.debug("Finding if there is a CAST timeline event with id {} to remove the image from", id);
+        TimelineEvent timelineEvent = timelineEventRepository.findById(id)
+                .orElseThrow(() -> new Step1NotFoundException("TimelineEvent", id.toString()));
+
+        timelineEvent.setImage(null);
+
+        log.info("Removing the image from the CAST timeline event with id {}", id);
+        timelineEventRepository.save(timelineEvent);
     }
 
     private Comparator<TimelineEventReadDto> getTimelineEventComparator() {

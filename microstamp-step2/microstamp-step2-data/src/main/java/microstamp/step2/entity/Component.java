@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import microstamp.step2.enumeration.Style;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Types;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Component")
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "components", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "analysis_id" }) })
 public abstract class Component {
 
@@ -44,5 +49,13 @@ public abstract class Component {
 
     @JdbcTypeCode(Types.VARCHAR)
     private UUID analysisId;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
 }

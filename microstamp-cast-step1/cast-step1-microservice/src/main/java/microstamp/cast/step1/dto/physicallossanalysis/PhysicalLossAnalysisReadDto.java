@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -33,4 +34,8 @@ public class PhysicalLossAnalysisReadDto {
     private String missingOrInadequateControls;
 
     private String contextualFactors;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 }

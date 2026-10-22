@@ -5,6 +5,7 @@ import styles from './CastStepOne.module.css';
 
 // forms imports
 import SystemDescriptionForm from './components/SystemDescriptionForm';
+import SystemBoundaryImageForm from './components/SystemBoundaryImageForm';
 import AccidentLossEventForm from './components/AccidentLossEventForm';
 import CastHazardForm from './components/CastHazardForm';
 import ViolatedSystemSafetyConstraintForm from './components/ViolatedSystemSafetyConstraintForm';
@@ -12,6 +13,8 @@ import TimelineEventForm from './components/TimelineEventForm';
 import PhysicalLossAnalysisForm from './components/PhysicalLossAnalysisForm';
 import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastNextStepButton from '@components/CastNextStepButton';
+import CastLastUpdated from '@components/CastLastUpdated';
+import CastCreatedAt from '@components/CastCreatedAt';
 import { CastSectionNavigatorProvider, useGoToCastSection } from '@components/CastSection/CastSectionNavigator';
 
 function ScrollToSectionOnMount() {
@@ -52,6 +55,11 @@ export default function CastStepOne() {
                             </span>
                         </div>
                         <h1 className={styles.pageTitle}>Step 1: Assemble Basic Information</h1>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '0.8rem' }}>
+                            <CastCreatedAt analysisId={analysisId} />
+                            <span style={{ color: 'var(--color-gray)' }}>&middot;</span>
+                            <CastLastUpdated analysisId={analysisId} />
+                        </div>
                     </div>
 
                     <div className={styles.actions}>
@@ -66,6 +74,7 @@ export default function CastStepOne() {
 
                 <CastSectionNavigatorProvider>
                     <SystemDescriptionForm analysisId={analysisId} />
+                    <SystemBoundaryImageForm analysisId={analysisId} />
                     <AccidentLossEventForm analysisId={analysisId} />
                     <CastHazardForm analysisId={analysisId} />
                     <ViolatedSystemSafetyConstraintForm analysisId={analysisId} />

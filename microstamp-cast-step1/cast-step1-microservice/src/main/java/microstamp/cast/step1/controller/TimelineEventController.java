@@ -10,8 +10,10 @@ import microstamp.cast.step1.dto.timelineevent.TimelineEventUpdateDto;
 import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.service.TimelineEventService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,6 +63,19 @@ public class TimelineEventController {
     public ResponseEntity<Void> delete(@PathVariable(name = "id") UUID id) throws Step1NotFoundException {
         log.info("Request received to delete CAST timeline event with id {}", id);
         service.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<TimelineEventReadDto> uploadImage(@PathVariable(name = "id") UUID id, @RequestParam("file") MultipartFile file) throws Exception {
+        log.info("Request received to upload an image for CAST timeline event with id {}", id);
+        return new ResponseEntity<>(service.uploadImage(id, file), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}/image")
+    public ResponseEntity<Void> deleteImage(@PathVariable(name = "id") UUID id) throws Step1NotFoundException {
+        log.info("Request received to remove the image from CAST timeline event with id {}", id);
+        service.deleteImage(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -15,7 +15,9 @@ public class SystemicFactorMapper {
                 entity.getAnalysisId(),
                 entity.getCategory(),
                 entity.getDescription(),
-                entity.getInadequateControlActionIds()
+                entity.getControlActionContributionIds(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
         );
     }
 
@@ -24,13 +26,13 @@ public class SystemicFactorMapper {
                 .analysisId(dto.analysisId())
                 .category(dto.category())
                 .description(dto.description())
-                .inadequateControlActionIds(dto.inadequateControlActionIds())
+                .controlActionContributionIds(dto.controlActionContributionIds())
                 .build();
     }
 
     public void updateEntityFromDto(SystemicFactorUpdateDto dto, SystemicFactor entity) {
         entity.setCategory(dto.category());
         entity.setDescription(dto.description());
-        entity.setInadequateControlActionIds(dto.inadequateControlActionIds());
+        entity.setControlActionContributionIds(dto.controlActionContributionIds());
     }
 }

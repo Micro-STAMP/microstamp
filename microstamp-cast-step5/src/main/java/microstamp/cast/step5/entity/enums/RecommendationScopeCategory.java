@@ -1,0 +1,11 @@
+package microstamp.cast.step5.entity.enums;
+
+public enum RecommendationScopeCategory {
+    PHYSICAL_DESIGN,
+    SOFTWARE_AUTOMATION,
+    WORK_INSTRUCTIONS_PROCEDURES,
+    MANAGEMENT_OF_CHANGE_MOC,
+    SAFETY_INFORMATION_SYSTEM_SIS,
+    SAFETY_CULTURE,
+    REGULATION_OVERSIGHT
+}

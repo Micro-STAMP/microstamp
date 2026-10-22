@@ -13,6 +13,7 @@ import microstamp.cast.step1.exception.Step1NotFoundException;
 import microstamp.cast.step1.mapper.AccidentLossEventMapper;
 import microstamp.cast.step1.repository.AccidentLossEventRepository;
 import microstamp.cast.step1.service.AccidentLossEventService;
+import microstamp.cast.step1.service.AuditLogService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ import java.util.UUID;
 public class AccidentLossEventServiceImpl implements AccidentLossEventService {
 
     private final AccidentLossEventRepository accidentLossEventRepository;
+
+    private final AuditLogService auditLogService;
 
     //Mesma coisa das outras coisas, precisa implementar o microstampclient
     //private final MicroStampClient microStampClient;
@@ -86,6 +89,8 @@ public class AccidentLossEventServiceImpl implements AccidentLossEventService {
 
         log.info("Updating the CAST accident/loss event with id {}", id);
         accidentLossEventRepository.save(accidentLossEvent);
+
+        auditLogService.record(accidentLossEvent.getAnalysisId(), "Step 1", "System Loss " + accidentLossEvent.getCode());
     }
 
     @Override

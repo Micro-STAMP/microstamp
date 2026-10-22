@@ -4,17 +4,18 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import microstamp.cast.step5.client.CastStep3Client;
 import microstamp.cast.step5.client.CastStep4Client;
-import microstamp.cast.step5.client.InadequateControlActionReadDto;
+import microstamp.cast.step5.client.ControlActionContributionReadDto;
 import microstamp.cast.step5.client.SystemicFactorReadDto;
 import microstamp.cast.step5.dto.recommendation.RecommendationInsertDto;
 import microstamp.cast.step5.dto.recommendation.RecommendationReadDto;
 import microstamp.cast.step5.dto.recommendation.RecommendationUpdateDto;
 import microstamp.cast.step5.entity.Recommendation;
-import microstamp.cast.step5.exception.InadequateControlActionReferenceNotFoundException;
+import microstamp.cast.step5.exception.ControlActionContributionReferenceNotFoundException;
 import microstamp.cast.step5.exception.RecommendationNotFoundException;
 import microstamp.cast.step5.exception.SystemicFactorReferenceNotFoundException;
 import microstamp.cast.step5.mapper.RecommendationMapper;
 import microstamp.cast.step5.repository.RecommendationRepository;
+import microstamp.cast.step5.service.AuditLogService;
 import microstamp.cast.step5.service.RecommendationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,11 +32,12 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final RecommendationMapper mapper;
     private final CastStep3Client castStep3Client;
     private final CastStep4Client castStep4Client;
+    private final AuditLogService auditLogService;
 
     @Override
     @Transactional
     public RecommendationReadDto create(RecommendationInsertDto dto) {
-        validateIcasBelongToAnalysis(dto.inadequateControlActionIds(), dto.analysisId());
+        validateControlActionContributionsBelongToAnalysis(dto.controlActionContributionIds(), dto.analysisId());
         validateSystemicFactorsBelongToAnalysis(dto.systemicFactorIds(), dto.analysisId());
         Recommendation entity = mapper.toEntity(dto);
         return mapper.toReadDto(repository.save(entity));
@@ -62,10 +64,15 @@ public class RecommendationServiceImpl implements RecommendationService {
     public RecommendationReadDto update(UUID id, RecommendationUpdateDto dto) {
         Recommendation entity = repository.findById(id)
                 .orElseThrow(() -> new RecommendationNotFoundException("Recommendation not found"));
-        validateIcasBelongToAnalysis(dto.inadequateControlActionIds(), entity.getAnalysisId());
+        validateControlActionContributionsBelongToAnalysis(dto.controlActionContributionIds(), entity.getAnalysisId());
         validateSystemicFactorsBelongToAnalysis(dto.systemicFactorIds(), entity.getAnalysisId());
         mapper.updateEntityFromDto(dto, entity);
-        return mapper.toReadDto(repository.save(entity));
+        Recommendation saved = repository.save(entity);
+        String descriptionPreview = saved.getDescription().length() > 40
+                ? saved.getDescription().substring(0, 40) + "..."
+                : saved.getDescription();
+        auditLogService.record(saved.getAnalysisId(), "Step 5", "Recommendation: " + descriptionPreview);
+        return mapper.toReadDto(saved);
     }
 
     @Override
@@ -74,19 +81,19 @@ public class RecommendationServiceImpl implements RecommendationService {
         repository.deleteById(id);
     }
 
-    private void validateIcasBelongToAnalysis(List<UUID> icaIds, UUID expectedAnalysisId) {
-        if (icaIds == null || icaIds.isEmpty()) return;
-        for (UUID icaId : icaIds) {
-            InadequateControlActionReadDto ica;
+    private void validateControlActionContributionsBelongToAnalysis(List<UUID> cacIds, UUID expectedAnalysisId) {
+        if (cacIds == null || cacIds.isEmpty()) return;
+        for (UUID cacId : cacIds) {
+            ControlActionContributionReadDto cac;
             try {
-                ica = castStep3Client.readInadequateControlAction(icaId);
+                cac = castStep3Client.readControlActionContribution(cacId);
             } catch (FeignException.NotFound ex) {
-                throw new InadequateControlActionReferenceNotFoundException(
-                        "InadequateControlAction not found: " + icaId);
+                throw new ControlActionContributionReferenceNotFoundException(
+                        "ControlActionContribution not found: " + cacId);
             }
-            if (!expectedAnalysisId.equals(ica.analysisId())) {
-                throw new InadequateControlActionReferenceNotFoundException(
-                        "InadequateControlAction " + icaId + " belongs to analysis " + ica.analysisId() + " and not to analysis " + expectedAnalysisId);
+            if (!expectedAnalysisId.equals(cac.analysisId())) {
+                throw new ControlActionContributionReferenceNotFoundException(
+                        "ControlActionContribution " + cacId + " belongs to analysis " + cac.analysisId() + " and not to analysis " + expectedAnalysisId);
             }
         }
     }

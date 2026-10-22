@@ -12,6 +12,8 @@ public class AccidentLossEventMapper {
                 .code(entity.getCode())
                 .name(entity.getName())
                 .description(entity.getDescription())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

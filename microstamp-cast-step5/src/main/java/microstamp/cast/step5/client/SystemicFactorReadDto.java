@@ -8,5 +8,5 @@ public record SystemicFactorReadDto(
         UUID analysisId,
         String category,
         String description,
-        List<UUID> inadequateControlActionIds
+        List<UUID> controlActionContributionIds
 ) {}

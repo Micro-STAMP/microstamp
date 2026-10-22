@@ -4,6 +4,7 @@ export interface ITimelineEventInsertDto {
     eventDescription: string;
     questions?: string;
     timeLabel?: string;
+    exactDateTime?: string;
     analysisId: string;
 }
 
@@ -14,6 +15,8 @@ export interface ITimelineEventReadDto {
     eventDescription: string;
     questions?: string;
     timeLabel?: string;
+    exactDateTime?: string;
+    imageBase64?: string;
 }
 
 export interface ITimelineEventUpdateDto {
@@ -22,4 +25,5 @@ export interface ITimelineEventUpdateDto {
     eventDescription: string;
     questions?: string;
     timeLabel?: string;
+    exactDateTime?: string;
 }

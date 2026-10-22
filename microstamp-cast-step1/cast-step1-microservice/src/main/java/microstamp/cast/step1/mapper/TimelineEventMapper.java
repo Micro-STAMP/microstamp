@@ -14,6 +14,10 @@ public class TimelineEventMapper {
                 .eventDescription(entity.getEventDescription())
                 .questions(entity.getQuestions())
                 .timeLabel(entity.getTimeLabel())
+                .exactDateTime(entity.getExactDateTime())
+                .imageBase64(entity.getImageBase64())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
@@ -24,6 +28,7 @@ public class TimelineEventMapper {
                 .eventDescription(dto.getEventDescription())
                 .questions(dto.getQuestions())
                 .timeLabel(dto.getTimeLabel())
+                .exactDateTime(dto.getExactDateTime())
                 .analysisId(dto.getAnalysisId())
                 .build();
     }

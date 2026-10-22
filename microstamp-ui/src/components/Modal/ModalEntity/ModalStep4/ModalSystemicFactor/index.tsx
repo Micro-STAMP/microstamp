@@ -13,7 +13,7 @@ import CastCheckbox from "@components/CastCheckbox";
 import Select from "@components/FormField/Select";
 import styles from "./ModalSystemicFactor.module.css";
 
-interface IcaOption {
+interface CacOption {
     id: string;
     code: string;
     controlActionName: string;
@@ -23,7 +23,7 @@ interface ModalSystemicFactorProps {
     open: boolean;
     onClose: () => void;
     analysisId: string;
-    icaOptions: IcaOption[];
+    cacOptions: CacOption[];
     systemicFactor?: ISystemicFactorReadDto | null;
     isLoading?: boolean;
     onCreate: (data: ISystemicFactorInsertDto) => Promise<void>;
@@ -33,14 +33,14 @@ interface ModalSystemicFactorProps {
 const EMPTY_FORM = {
     category: ISystemicFactorCategory.COMMUNICATION_AND_COORDINATION,
     description: "",
-    inadequateControlActionIds: [] as string[]
+    controlActionContributionIds: [] as string[]
 };
 
 export default function ModalSystemicFactor({
     open,
     onClose,
     analysisId,
-    icaOptions,
+    cacOptions,
     systemicFactor,
     isLoading = false,
     onCreate,
@@ -56,7 +56,7 @@ export default function ModalSystemicFactor({
             setForm({
                 category: systemicFactor.category,
                 description: systemicFactor.description || "",
-                inadequateControlActionIds: systemicFactor.inadequateControlActionIds || []
+                controlActionContributionIds: systemicFactor.controlActionContributionIds || []
             });
         } else {
             setForm(EMPTY_FORM);
@@ -65,12 +65,12 @@ export default function ModalSystemicFactor({
 
     if (!open) return null;
 
-    const toggleIca = (icaId: string) => {
+    const toggleCac = (cacId: string) => {
         setForm(prev => ({
             ...prev,
-            inadequateControlActionIds: prev.inadequateControlActionIds.includes(icaId)
-                ? prev.inadequateControlActionIds.filter(id => id !== icaId)
-                : [...prev.inadequateControlActionIds, icaId]
+            controlActionContributionIds: prev.controlActionContributionIds.includes(cacId)
+                ? prev.controlActionContributionIds.filter(id => id !== cacId)
+                : [...prev.controlActionContributionIds, cacId]
         }));
     };
 
@@ -84,14 +84,14 @@ export default function ModalSystemicFactor({
             await onUpdate(systemicFactor.id, {
                 category: form.category,
                 description: form.description,
-                inadequateControlActionIds: form.inadequateControlActionIds
+                controlActionContributionIds: form.controlActionContributionIds
             });
         } else {
             await onCreate({
                 analysisId,
                 category: form.category,
                 description: form.description,
-                inadequateControlActionIds: form.inadequateControlActionIds
+                controlActionContributionIds: form.controlActionContributionIds
             });
         }
 
@@ -136,31 +136,31 @@ export default function ModalSystemicFactor({
                     </div>
 
                     <div>
-                        <label className={castStyles.inputLabel}>Linked Component Analyses</label>
-                        <div className={styles.icaCheckboxList}>
-                            {icaOptions.length === 0 ? (
-                                <p className={styles.icaEmptyState}>No Component Analysis registered in Step 3 yet.</p>
+                        <label className={castStyles.inputLabel}>Linked CACs</label>
+                        <div className={styles.cacCheckboxList}>
+                            {cacOptions.length === 0 ? (
+                                <p className={styles.cacEmptyState}>No CACs registered in Step 3 yet.</p>
                             ) : (
-                                icaOptions.map(ica => {
-                                    const checked = form.inadequateControlActionIds.includes(ica.id);
+                                cacOptions.map(cac => {
+                                    const checked = form.controlActionContributionIds.includes(cac.id);
                                     return (
                                         <label
-                                            key={ica.id}
-                                            className={`${styles.icaCheckboxRow} ${checked ? styles.icaCheckboxRowActive : ""}`}
+                                            key={cac.id}
+                                            className={`${styles.cacCheckboxRow} ${checked ? styles.cacCheckboxRowActive : ""}`}
                                         >
                                             <CastCheckbox
                                                 checked={checked}
-                                                onChange={() => toggleIca(ica.id)}
+                                                onChange={() => toggleCac(cac.id)}
                                             />
-                                            <span className={styles.icaCode}>{ica.code}</span>
-                                            <span className={styles.icaName}>{ica.controlActionName}</span>
+                                            <span className={styles.cacCode}>{cac.code}</span>
+                                            <span className={styles.cacName}>{cac.controlActionName}</span>
                                         </label>
                                     );
                                 })
                             )}
                         </div>
                         <p className={styles.helperText}>
-                            Select every Component Analysis (Step 3) that this systemic factor helps explain.
+                            Select every CAC (Step 3) that this systemic factor helps explain.
                         </p>
                     </div>
                 </div>

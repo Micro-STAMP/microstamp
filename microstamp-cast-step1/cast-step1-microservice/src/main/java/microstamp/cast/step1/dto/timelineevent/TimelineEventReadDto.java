@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -28,4 +29,12 @@ public class TimelineEventReadDto {
     private String questions;
 
     private String timeLabel;
+
+    private Instant exactDateTime;
+
+    private String imageBase64;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 }

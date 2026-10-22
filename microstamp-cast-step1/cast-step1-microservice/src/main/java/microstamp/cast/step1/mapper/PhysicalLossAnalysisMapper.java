@@ -17,6 +17,8 @@ public class PhysicalLossAnalysisMapper {
                 .failuresAndUnsafeInteractions(entity.getFailuresAndUnsafeInteractions())
                 .missingOrInadequateControls(entity.getMissingOrInadequateControls())
                 .contextualFactors(entity.getContextualFactors())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

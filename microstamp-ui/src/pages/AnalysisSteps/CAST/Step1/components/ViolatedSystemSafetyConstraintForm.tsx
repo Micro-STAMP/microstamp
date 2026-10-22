@@ -6,6 +6,7 @@ import { getByAnalysisId as getConstraints, createConstraint, deleteConstraint }
 import { getByAnalysisId as getHazards } from '@http/CAST/Step1/Hazards';
 import CastSection from '@components/CastSection';
 import CastCheckbox from '@components/CastCheckbox';
+import LinkBadge from '@components/LinkBadge';
 import { useGoToCastSection, useRegisterCastSection } from '@components/CastSection/CastSectionNavigator';
 import TraceabilityPreviewModal from '@components/Modal/ModalTraceability/TraceabilityPreviewModal';
 import { IViolatedSystemSafetyConstraintReadDto } from '@interfaces/CAST/IViolatedSystemSafetyConstraint';
@@ -84,11 +85,14 @@ export default function ViolatedSystemSafetyConstraintForm({ analysisId }: Props
                             {constraints.map(c => (
                                 <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '16px', backgroundColor: 'var(--color-dark-gray)', border: '1px solid var(--color-gray)', borderRadius: '8px', gap: '16px' }}>
                                     <div style={{ flex: 1 }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
                                             <span style={{ color: 'var(--color-yellow)', fontWeight: 600, fontSize: '14px' }}>
                                                 {c.code}
                                             </span>
                                             <strong style={{ color: '#ffffff', fontSize: '15px' }}>{c.name}</strong>
+                                            {(c.hazards ?? []).map(hazard => (
+                                                <LinkBadge key={hazard.id} code={hazard.code} tooltip={hazard.name} />
+                                            ))}
                                         </div>
                                         {c.description && (
                                             <p style={{ margin: 0, fontSize: '14px', color: 'var(--color-muted-text)', lineHeight: '1.5' }}>
