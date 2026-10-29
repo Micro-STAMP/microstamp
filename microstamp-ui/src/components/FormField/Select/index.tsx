@@ -4,6 +4,9 @@ import { createPortal } from "react-dom";
 import { BiChevronDown as ArrowDown, BiChevronUp as ArrowUp } from "react-icons/bi";
 import styles from "./Select.module.css";
 
+const VIEWPORT_MARGIN = 16;
+const MIN_OPTIONS_HEIGHT = 200;
+
 interface SelectProps {
 	label: string;
 	options: SelectOption[];
@@ -25,7 +28,13 @@ function Select({
 	const [isOpen, setIsOpen] = useState(false);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const optionsRef = useRef<HTMLUListElement>(null);
-	const [coords, setCoords] = useState<{ top: number; left: number; width: number } | null>(null);
+	const [coords, setCoords] = useState<{
+		top: number;
+		left: number;
+		width: number;
+		maxHeight: number;
+		placement: "top" | "bottom";
+	} | null>(null);
 
 	useEffect(() => {
 		if (required && !value) {
@@ -40,10 +49,18 @@ function Select({
 		const updateCoords = () => {
 			if (!buttonRef.current) return;
 			const rect = buttonRef.current.getBoundingClientRect();
+			// Use all the free space on the preferred side; flip only when it is too small and the other side has more room.
+			const spaceBelow = window.innerHeight - rect.bottom - VIEWPORT_MARGIN;
+			const spaceAbove = rect.top - VIEWPORT_MARGIN;
+			let placement = optionsPosition;
+			if (placement === "bottom" && spaceBelow < MIN_OPTIONS_HEIGHT && spaceAbove > spaceBelow) placement = "top";
+			else if (placement === "top" && spaceAbove < MIN_OPTIONS_HEIGHT && spaceBelow > spaceAbove) placement = "bottom";
 			setCoords({
-				top: optionsPosition === "top" ? rect.top : rect.bottom,
+				top: placement === "top" ? rect.top : rect.bottom,
 				left: rect.left,
-				width: rect.width
+				width: rect.width,
+				maxHeight: Math.max(placement === "top" ? spaceAbove : spaceBelow, 0),
+				placement
 			});
 		};
 
@@ -69,11 +86,12 @@ function Select({
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [isOpen]);
 
+	const placement = coords?.placement ?? optionsPosition;
 	const options_class = `${styles.options} ${
-		optionsPosition === "top" ? styles.options_top : ""
+		placement === "top" ? styles.options_top : ""
 	}`;
 	const select_class = `${styles.select} ${
-		isOpen ? (optionsPosition === "top" ? styles.open_top : styles.open_bottom) : ""
+		isOpen ? (placement === "top" ? styles.open_top : styles.open_bottom) : ""
 	}`;
 
 	const handleSelect = (op: SelectOption | null) => {
@@ -109,10 +127,11 @@ function Select({
 						className={options_class}
 						style={{
 							position: "fixed",
-							top: optionsPosition === "top" ? undefined : coords.top,
-							bottom: optionsPosition === "top" ? window.innerHeight - coords.top : undefined,
+							top: placement === "top" ? undefined : coords.top,
+							bottom: placement === "top" ? window.innerHeight - coords.top : undefined,
 							left: coords.left,
-							width: coords.width
+							width: coords.width,
+							maxHeight: coords.maxHeight
 						}}
 					>
 						{!required && (
