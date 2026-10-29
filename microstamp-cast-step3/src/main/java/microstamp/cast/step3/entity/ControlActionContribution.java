@@ -4,17 +4,21 @@ import jakarta.persistence.*;
 import lombok.*;
 import microstamp.cast.step3.converter.StringListConverter;
 import microstamp.cast.step3.entity.enums.IcaType;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.sql.Types;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "control_action_contributions")
+@Table(name = "control_action_contributions", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "code", "analysis_id" })
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,11 +28,14 @@ public class ControlActionContribution {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
+    @JdbcTypeCode(Types.VARCHAR)
     @Column(name = "analysis_id", nullable = false)
     private UUID analysisId;
 
+    @JdbcTypeCode(Types.VARCHAR)
     @Column(name = "component_id", nullable = false)
     private UUID componentId;
 

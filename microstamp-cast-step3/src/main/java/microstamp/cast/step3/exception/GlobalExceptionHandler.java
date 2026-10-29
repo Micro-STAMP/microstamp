@@ -1,5 +1,6 @@
 package microstamp.cast.step3.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,5 +20,18 @@ public class GlobalExceptionHandler {
         body.put("error", "Not Found");
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String cause = ex.getMostSpecificCause().getMessage();
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", Instant.now().toString());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("error", "Conflict");
+        body.put("message", cause != null && cause.contains("Duplicate entry")
+                ? "This code is already in use in this analysis."
+                : cause);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 }

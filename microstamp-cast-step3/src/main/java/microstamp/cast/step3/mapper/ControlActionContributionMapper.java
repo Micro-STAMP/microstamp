@@ -41,6 +41,7 @@ public class ControlActionContributionMapper {
     }
 
     public void updateEntityFromDto(ControlActionContributionUpdateDto dto, ControlActionContribution entity) {
+        entity.setCode(dto.code());
         entity.setControlActionName(dto.controlActionName());
         entity.setType(dto.type());
         entity.setDescription(dto.description());

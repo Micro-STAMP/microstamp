@@ -9,6 +9,9 @@ import java.util.List;
 public record ControlActionContributionUpdateDto(
 
         @NotBlank
+        String code,
+
+        @NotBlank
         String controlActionName,
 
         @NotNull

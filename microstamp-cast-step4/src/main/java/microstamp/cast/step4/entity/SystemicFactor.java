@@ -3,10 +3,12 @@ package microstamp.cast.step4.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import microstamp.cast.step4.entity.enums.SystemicFactorCategory;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.sql.Types;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -23,8 +25,10 @@ public class SystemicFactor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
+    @JdbcTypeCode(Types.VARCHAR)
     @Column(name = "analysis_id", nullable = false)
     private UUID analysisId;
 
@@ -41,6 +45,7 @@ public class SystemicFactor {
     @ElementCollection
     @CollectionTable(name = "systemic_factor_control_action_contributions", joinColumns = @JoinColumn(name = "systemic_factor_id"))
     @Column(name = "control_action_contribution_id")
+    @JdbcTypeCode(Types.VARCHAR)
     private List<UUID> controlActionContributionIds;
 
     @CreatedDate

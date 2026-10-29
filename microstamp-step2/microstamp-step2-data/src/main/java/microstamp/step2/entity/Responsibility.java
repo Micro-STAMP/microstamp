@@ -41,6 +41,7 @@ public class Responsibility {
     @ElementCollection
     @CollectionTable(name = "responsibility_violated_constraints", joinColumns = @JoinColumn(name = "responsibility_id"))
     @Column(name = "violated_system_safety_constraint_id")
+    @JdbcTypeCode(Types.VARCHAR)
     private List<UUID> violatedSystemSafetyConstraintIds;
 
     @CreatedDate
