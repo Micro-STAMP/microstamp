@@ -245,6 +245,37 @@ public class ViolatedSystemSafetyConstraintServiceUnitTest {
     }
 
     @Test
+    @DisplayName("#update > When only the code changes > Keep the id and the hazard associations")
+    void updateWhenOnlyTheCodeChangesKeepTheIdAndTheHazardAssociations() {
+        UUID constraintId = UUID.randomUUID();
+        UUID hazardId = UUID.randomUUID();
+        CastHazard hazard = assembleCastHazard.apply(hazardId, 1);
+
+        ViolatedSystemSafetyConstraint mock = assembleViolatedConstraint.apply(1);
+        mock.setId(constraintId);
+        mock.setHazards(List.of(hazard));
+
+        ViolatedSystemSafetyConstraintUpdateDto updateDto = ViolatedSystemSafetyConstraintUpdateDto.builder()
+                .code("X-1")
+                .name(mock.getName())
+                .description(mock.getDescription())
+                .hazardIds(List.of(hazardId))
+                .build();
+
+        when(violatedSystemSafetyConstraintRepository.findById(constraintId)).thenReturn(Optional.of(mock));
+        when(castHazardRepository.findById(hazardId)).thenReturn(Optional.of(hazard));
+
+        service.update(constraintId, updateDto);
+
+        assertAll(
+                () -> assertEquals("X-1", mock.getCode()),
+                () -> assertEquals(constraintId, mock.getId()),
+                () -> assertEquals(List.of(hazardId), mock.getHazards().stream().map(CastHazard::getId).toList()),
+                () -> verify(violatedSystemSafetyConstraintRepository, times(1)).save(mock)
+        );
+    }
+
+    @Test
     @DisplayName("#delete > When violated constraint does not exist > Throw an exception")
     void deleteWhenViolatedConstraintDoesNotExistThrowAnException() {
         UUID mockId = UUID.randomUUID();

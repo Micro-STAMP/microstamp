@@ -247,6 +247,38 @@ public class CastHazardServiceUnitTest {
     }
 
     @Test
+    @DisplayName("#update > When only the code changes > Keep the id and the accident/loss event associations")
+    void updateWhenOnlyTheCodeChangesKeepTheIdAndTheAccidentLossEventAssociations() {
+        UUID hazardId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+        AccidentLossEvent event = assembleAccidentLossEvent.apply(eventId, 1);
+
+        CastHazard mock = assembleCastHazard.apply(1);
+        mock.setId(hazardId);
+        mock.setAccidentLossEvents(List.of(event));
+
+        CastHazardUpdateDto updateDto = CastHazardUpdateDto.builder()
+                .code("X-1")
+                .name(mock.getName())
+                .description(mock.getDescription())
+                .accidentLossEventIds(List.of(eventId))
+                .build();
+
+        when(castHazardRepository.findById(hazardId)).thenReturn(Optional.of(mock));
+        when(accidentLossEventRepository.findById(eventId)).thenReturn(Optional.of(event));
+
+        service.update(hazardId, updateDto);
+
+        assertAll(
+                () -> assertEquals("X-1", mock.getCode()),
+                () -> assertEquals(hazardId, mock.getId()),
+                () -> assertEquals(List.of(eventId), mock.getAccidentLossEvents().stream().map(AccidentLossEvent::getId).toList()),
+                () -> assertEquals("ALE-1", mock.getAccidentLossEvents().getFirst().getCode()),
+                () -> verify(castHazardRepository, times(1)).save(mock)
+        );
+    }
+
+    @Test
     @DisplayName("#delete > When CAST hazard does not exist > Throw an exception")
     void deleteWhenCastHazardDoesNotExistThrowAnException() {
         UUID mockId = UUID.randomUUID();
