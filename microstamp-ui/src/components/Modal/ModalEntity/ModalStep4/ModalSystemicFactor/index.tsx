@@ -116,19 +116,20 @@ export default function ModalSystemicFactor({
             category: isCustom ? null : (form.categoryValue as ISystemicFactorCategory),
             customCategory: isCustom ? form.categoryValue.slice(CUSTOM_PREFIX.length) : null
         };
+        const controlActionContributionIds = form.controlActionContributionIds.filter(id => cacOptions.some(cac => cac.id === id));
 
         if (isEditMode && systemicFactor) {
             await onUpdate(systemicFactor.id, {
                 ...categoryData,
                 description: form.description,
-                controlActionContributionIds: form.controlActionContributionIds
+                controlActionContributionIds
             });
         } else {
             await onCreate({
                 analysisId,
                 ...categoryData,
                 description: form.description,
-                controlActionContributionIds: form.controlActionContributionIds
+                controlActionContributionIds
             });
         }
 

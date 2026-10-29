@@ -1,4 +1,5 @@
 import { http } from "@http/AxiosConfig";
+import { castRequestError } from "@utils/castHttpError";
 import { 
     ITimelineEventInsertDto, 
     ITimelineEventReadDto, 
@@ -23,7 +24,7 @@ const createTimelineEvent = async (data: ITimelineEventInsertDto) => {
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error creating Timeline Event.");
+        throw castRequestError(err, "Error creating Timeline Event.");
     }
 };
 
@@ -33,7 +34,7 @@ const updateTimelineEvent = async (id: string, data: ITimelineEventUpdateDto) =>
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error updating Timeline Event.");
+        throw castRequestError(err, "Error updating Timeline Event.");
     }
 };
 

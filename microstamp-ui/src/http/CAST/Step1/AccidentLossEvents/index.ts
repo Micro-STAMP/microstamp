@@ -1,4 +1,5 @@
 import { http } from "@http/AxiosConfig";
+import { castRequestError } from "@utils/castHttpError";
 import { 
     IAccidentLossEventInsertDto, 
     IAccidentLossEventReadDto, 
@@ -23,7 +24,7 @@ const createLossEvent = async (data: IAccidentLossEventInsertDto) => {
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error creating System Loss.");
+        throw castRequestError(err, "Error creating System Loss.");
     }
 };
 
@@ -33,7 +34,7 @@ const updateLossEvent = async (id: string, data: IAccidentLossEventUpdateDto) =>
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error updating System Loss.");
+        throw castRequestError(err, "Error updating System Loss.");
     }
 };
 

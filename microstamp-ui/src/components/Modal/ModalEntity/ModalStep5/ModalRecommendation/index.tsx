@@ -132,8 +132,8 @@ export default function ModalRecommendation({
 
         const payload = {
             description: form.description,
-            controlActionContributionIds: form.controlActionContributionIds,
-            systemicFactorIds: form.systemicFactorIds,
+            controlActionContributionIds: form.controlActionContributionIds.filter(id => cacOptions.some(cac => cac.id === id)),
+            systemicFactorIds: form.systemicFactorIds.filter(id => systemicFactorOptions.some(factor => factor.id === id)),
             componentId: form.componentId || undefined,
             priority: form.priority,
             auditMechanism: form.auditMechanism,

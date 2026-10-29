@@ -1,4 +1,5 @@
 import { http } from "@http/AxiosConfig";
+import { castRequestError } from "@utils/castHttpError";
 import { 
     IPhysicalLossAnalysisInsertDto, 
     IPhysicalLossAnalysisReadDto, 
@@ -24,7 +25,7 @@ const createPhysicalLoss = async (data: IPhysicalLossAnalysisInsertDto) => {
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error creating Physical Loss Analysis.");
+        throw castRequestError(err, "Error creating Physical Loss Analysis.");
     }
 };
 
@@ -34,7 +35,7 @@ const updatePhysicalLoss = async (id: string, data: IPhysicalLossAnalysisUpdateD
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error updating Physical Loss Analysis.");
+        throw castRequestError(err, "Error updating Physical Loss Analysis.");
     }
 };
 

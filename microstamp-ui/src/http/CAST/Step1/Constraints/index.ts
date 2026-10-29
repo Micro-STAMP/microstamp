@@ -1,4 +1,5 @@
 import { http } from "@http/AxiosConfig";
+import { castRequestError } from "@utils/castHttpError";
 import { 
     IViolatedSystemSafetyConstraintInsertDto, 
     IViolatedSystemSafetyConstraintReadDto, 
@@ -23,7 +24,7 @@ const createConstraint = async (data: IViolatedSystemSafetyConstraintInsertDto) 
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error creating Constraint.");
+        throw castRequestError(err, "Error creating Constraint.");
     }
 };
 
@@ -33,7 +34,7 @@ const updateConstraint = async (id: string, data: IViolatedSystemSafetyConstrain
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error updating Constraint.");
+        throw castRequestError(err, "Error updating Constraint.");
     }
 };
 

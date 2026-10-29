@@ -1,4 +1,5 @@
 import { http } from "@http/AxiosConfig";
+import { castRequestError } from "@utils/castHttpError";
 import { 
     ICastHazardInsertDto, 
     ICastHazardReadDto, 
@@ -23,7 +24,7 @@ const createHazard = async (data: ICastHazardInsertDto) => {
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error creating Hazard.");
+        throw castRequestError(err, "Error creating Hazard.");
     }
 };
 
@@ -33,7 +34,7 @@ const updateHazard = async (id: string, data: ICastHazardUpdateDto) => {
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error updating Hazard.");
+        throw castRequestError(err, "Error updating Hazard.");
     }
 };
 

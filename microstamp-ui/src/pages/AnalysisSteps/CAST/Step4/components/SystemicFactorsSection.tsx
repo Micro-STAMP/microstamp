@@ -130,8 +130,8 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                                             <LinkBadge
                                                 key={cacId}
                                                 icon={<BiLinkAlt size={12} />}
-                                                code={getCac(cacId)?.code ?? '—'}
-                                                tooltip={getCac(cacId)?.controlActionName}
+                                                code={getCac(cacId)?.code ?? 'Removed'}
+                                                tooltip={getCac(cacId)?.controlActionName ?? 'This CAC was deleted in Step 3. The link will be cleared when this factor is saved.'}
                                             />
                                         ))}
                                     </div>
@@ -197,8 +197,8 @@ export default function SystemicFactorsSection({ analysisId }: Props) {
                             const cac = cacOptions.find(i => i.id === cacId);
                             return {
                                 id: cacId,
-                                code: cac?.code ?? '—',
-                                name: cac?.controlActionName ?? 'CAC not found',
+                                code: cac?.code ?? 'Removed',
+                                name: cac?.controlActionName ?? 'CAC deleted in Step 3',
                                 onGoTo: () => navigate(`/analyses/${analysisId}/cast/step3`)
                             };
                         })

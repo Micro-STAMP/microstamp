@@ -1,4 +1,5 @@
 import { http } from "@http/AxiosConfig";
+import { castRequestError } from "@utils/castHttpError";
 import {
     IQuestionRaisedInsertDto,
     IQuestionRaisedReadDto,
@@ -23,7 +24,7 @@ const createQuestionRaised = async (data: IQuestionRaisedInsertDto) => {
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error creating Question Raised.");
+        throw castRequestError(err, "Error creating Question Raised.");
     }
 };
 
@@ -33,7 +34,7 @@ const updateQuestionRaised = async (id: string, data: IQuestionRaisedUpdateDto) 
         return res.data;
     } catch (err) {
         console.error(err);
-        throw new Error("Error updating Question Raised.");
+        throw castRequestError(err, "Error updating Question Raised.");
     }
 };
 

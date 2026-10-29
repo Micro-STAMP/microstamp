@@ -212,16 +212,16 @@ export default function RecommendationsSection({ analysisId }: Props) {
                                             <LinkBadge
                                                 key={cacId}
                                                 icon={<BiLinkAlt size={12} />}
-                                                code={getCac(cacId)?.code ?? '—'}
-                                                tooltip={getCac(cacId)?.controlActionName}
+                                                code={getCac(cacId)?.code ?? 'Removed'}
+                                                tooltip={getCac(cacId)?.controlActionName ?? 'This CAC was deleted in Step 3. The link will be cleared when this recommendation is saved.'}
                                             />
                                         ))}
                                         {recommendation.systemicFactorIds?.map(systemicFactorId => (
                                             <LinkBadge
                                                 key={systemicFactorId}
                                                 icon={<BiLinkAlt size={12} />}
-                                                code={getSystemicFactor(systemicFactorId)?.categoryLabel ?? '—'}
-                                                tooltip={getSystemicFactor(systemicFactorId)?.description}
+                                                code={getSystemicFactor(systemicFactorId)?.categoryLabel ?? 'Removed'}
+                                                tooltip={getSystemicFactor(systemicFactorId)?.description ?? 'This Systemic Factor was deleted in Step 4. The link will be cleared when this recommendation is saved.'}
                                             />
                                         ))}
                                     </div>
@@ -288,8 +288,8 @@ export default function RecommendationsSection({ analysisId }: Props) {
                             const cac = cacOptions.find(i => i.id === cacId);
                             return {
                                 id: cacId,
-                                code: cac?.code ?? '—',
-                                name: cac?.controlActionName ?? 'CAC not found',
+                                code: cac?.code ?? 'Removed',
+                                name: cac?.controlActionName ?? 'CAC deleted in Step 3',
                                 onGoTo: () => navigate(`/analyses/${analysisId}/cast/step3`)
                             };
                         })
@@ -301,8 +301,8 @@ export default function RecommendationsSection({ analysisId }: Props) {
                             const factor = systemicFactorOptions.find(f => f.id === systemicFactorId);
                             return {
                                 id: systemicFactorId,
-                                code: factor?.categoryLabel ?? '—',
-                                name: factor?.description ?? 'Systemic Factor not found',
+                                code: factor?.categoryLabel ?? 'Removed',
+                                name: factor?.description ?? 'Systemic Factor deleted in Step 4',
                                 onGoTo: () => navigate(`/analyses/${analysisId}/cast/step4`)
                             };
                         })

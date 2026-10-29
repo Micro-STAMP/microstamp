@@ -1,4 +1,5 @@
 import { http } from "@http/AxiosConfig";
+import { castRequestError } from "@utils/castHttpError";
 import {
 	IControlActionContributionInsertDto,
 	IControlActionContributionReadDto,
@@ -25,7 +26,7 @@ const createControlActionContribution = async (data: IControlActionContributionI
 		return res.data;
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error creating Control Action Contribution.");
+		throw castRequestError(err, "Error creating Control Action Contribution.");
 	}
 };
 
@@ -38,7 +39,7 @@ const updateControlActionContribution = async (
 		return res.data;
 	} catch (err) {
 		console.error(err);
-		throw new Error("Error updating Control Action Contribution.");
+		throw castRequestError(err, "Error updating Control Action Contribution.");
 	}
 };
 

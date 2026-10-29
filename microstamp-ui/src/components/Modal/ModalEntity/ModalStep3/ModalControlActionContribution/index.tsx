@@ -90,7 +90,12 @@ export default function ModalControlActionContribution({
         }
 
         if (isEditMode && cac) {
+            if (!form.code.trim()) {
+                toast.warning("Fill in the code.");
+                return;
+            }
             await onUpdate(cac.id, {
+                code: form.code,
                 controlActionName: form.controlActionName,
                 type: form.type,
                 description: form.description,
@@ -151,7 +156,6 @@ export default function ModalControlActionContribution({
                                 className={castStyles.inputField}
                                 style={{ marginBottom: 0 }}
                                 value={form.code}
-                                disabled={isEditMode}
                                 onChange={e => setForm({ ...form, code: e.target.value })}
                             />
                         </div>
