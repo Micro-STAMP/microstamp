@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { BiGridAlt, BiArrowBack, BiDownload, BiLinkAlt } from 'react-icons/bi';
 
-import { generateCastReportPdf } from '@utils/castReportPdf';
+import { generateCastReportPdf, PdfRef } from '@utils/castReportPdf';
+import { IRecommendationReadDto } from '@interfaces/CAST/IStep5/IRecommendation';
 
 import { getByAnalysisId as getSystemDescriptions } from '@http/CAST/Step1/SystemDescription';
 import { getByAnalysisId as getAccidentLossEvents } from '@http/CAST/Step1/AccidentLossEvents';
@@ -43,6 +44,9 @@ const CAST_STEP_TITLES: Record<number, string> = {
 };
 
 const numberedText = (items?: string[]) => (items ?? []).map((item, i) => `${i + 1}. ${item}`).join('\n');
+const truncate = (text: string, max: number) => (text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text);
+const uniqueById = <T extends { id: string }>(items: T[]) => Array.from(new Map(items.map(i => [i.id, i])).values());
+const refField = (label: string, ref: PdfRef) => ({ label, value: ref.label, target: ref.target });
 
 function ReportList({ label, items }: { label: string; items?: string[] }) {
     if (!items || items.length === 0) return null;
@@ -146,6 +150,52 @@ export default function CastReport(_: Props) {
     const handleDownloadPdf = async () => {
         setIsGeneratingPdf(true);
         try {
+            const hazards = castHazardsQuery.data || [];
+            const violatedConstraints = violatedConstraintsQuery.data || [];
+            const components = componentsQuery.data || [];
+            const recommendations = recommendationsQuery.data || [];
+
+            // Every reference is resolved by id, so renaming a code never breaks a link in the PDF.
+            const cacRef = (cacId: string): PdfRef => ({
+                label: getCacLabel(cacId),
+                target: cacs.some(c => c.id === cacId) ? cacId : undefined
+            });
+            const systemicFactorRef = (systemicFactorId: string): PdfRef => ({
+                label: getSystemicFactorLabel(systemicFactorId),
+                target: systemicFactors.some(f => f.id === systemicFactorId) ? systemicFactorId : undefined
+            });
+            const componentRef = (componentId: string): PdfRef => ({
+                label: getComponentLabel(componentId),
+                target: components.some(c => c.id === componentId) ? componentId : undefined
+            });
+            const recommendationRef = (rec: IRecommendationReadDto): PdfRef => ({
+                label: `Recommendation — ${truncate(rec.description, 70)}`,
+                target: rec.id
+            });
+
+            const hazardsByLoss = (lossId: string) => hazards
+                .filter(h => (h.accidentLossEvents || []).some(e => e.id === lossId))
+                .map(h => ({ label: `${h.code} — ${h.name}`, target: h.id }));
+            const constraintsByHazard = (hazardId: string) => violatedConstraints
+                .filter(c => (c.hazards || []).some(h => h.id === hazardId))
+                .map(c => ({ label: `${c.code} — ${c.name}`, target: c.id }));
+            const responsibilitiesByConstraint = (constraintId: string) => components.flatMap(component =>
+                (component.responsibilities || [])
+                    .filter(r => (r.violatedSystemSafetyConstraints || []).some(c => c.id === constraintId))
+                    .map(r => ({ label: `${component.code} / ${r.code}: ${truncate(r.responsibility, 60)}`, target: component.id }))
+            );
+            const usagesByComponent = (componentId: string) => [
+                ...cacs.filter(c => c.componentId === componentId).map(c => cacRef(c.id)),
+                ...recommendations.filter(r => r.componentId === componentId).map(recommendationRef)
+            ];
+            const usagesByCac = (cacId: string) => [
+                ...systemicFactors.filter(f => (f.controlActionContributionIds || []).includes(cacId)).map(f => systemicFactorRef(f.id)),
+                ...recommendations.filter(r => (r.controlActionContributionIds || []).includes(cacId)).map(recommendationRef)
+            ];
+            const recommendationsBySystemicFactor = (systemicFactorId: string) => recommendations
+                .filter(r => (r.systemicFactorIds || []).includes(systemicFactorId))
+                .map(recommendationRef);
+
             generateCastReportPdf({
                 analysisId,
                 executiveSummary,
@@ -167,31 +217,43 @@ export default function CastReport(_: Props) {
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No accident/loss events registered yet.',
                         items: (accidentLossEventsQuery.data || []).map(item => ({
+                            anchor: item.id,
                             code: item.code,
                             title: item.name,
-                            paragraphs: item.description ? [item.description] : []
+                            paragraphs: item.description ? [item.description] : [],
+                            referencedBy: hazardsByLoss(item.id)
                         }))
                     },
                     {
                         title: 'System Hazards',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No hazards registered yet.',
-                        items: (castHazardsQuery.data || []).map(item => ({
+                        items: hazards.map(item => ({
+                            anchor: item.id,
                             code: item.code,
                             title: item.name,
                             paragraphs: item.description ? [item.description] : [],
-                            chips: (item.accidentLossEvents || []).map(event => `${event.code} — ${event.name}`)
+                            links: [{
+                                label: 'Accident / Loss Events',
+                                refs: (item.accidentLossEvents || []).map(event => ({ label: `${event.code} — ${event.name}`, target: event.id }))
+                            }],
+                            referencedBy: constraintsByHazard(item.id)
                         }))
                     },
                     {
                         title: 'Violated System Safety Constraints',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step1`),
                         emptyLabel: 'No violated system safety constraints registered yet.',
-                        items: (violatedConstraintsQuery.data || []).map(item => ({
+                        items: violatedConstraints.map(item => ({
+                            anchor: item.id,
                             code: item.code,
                             title: item.name,
                             paragraphs: item.description ? [item.description] : [],
-                            chips: (item.hazards || []).map(hazard => `${hazard.code} — ${hazard.name}`)
+                            links: [{
+                                label: 'Hazards',
+                                refs: (item.hazards || []).map(hazard => ({ label: `${hazard.code} — ${hazard.name}`, target: hazard.id }))
+                            }],
+                            referencedBy: responsibilitiesByConstraint(item.id)
                         }))
                     },
                     {
@@ -231,10 +293,23 @@ export default function CastReport(_: Props) {
                         title: 'Safety Control Structure',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step2`),
                         emptyLabel: 'No components modeled yet.',
-                        items: (componentsQuery.data || []).map(item => ({
+                        items: components.map(item => ({
+                            anchor: item.id,
                             code: item.code,
                             title: item.name,
-                            fields: [{ label: 'Type', value: item.type }]
+                            fields: [
+                                { label: 'Type', value: item.type },
+                                item.father ? refField('Parent Component', componentRef(item.father.id)) : null,
+                                (item.responsibilities || []).length > 0
+                                    ? { label: 'Responsibilities', value: item.responsibilities.map(r => `${r.code}: ${r.responsibility}`).join('\n') }
+                                    : null
+                            ].filter((field): field is { label: string; value: string; target?: string } => field !== null),
+                            links: [{
+                                label: 'Violated Safety Constraints',
+                                refs: uniqueById((item.responsibilities || []).flatMap(r => r.violatedSystemSafetyConstraints || []))
+                                    .map(c => ({ label: `${c.code} — ${c.name}`, target: c.id }))
+                            }],
+                            referencedBy: usagesByComponent(item.id)
                         }))
                     },
                     {
@@ -242,10 +317,13 @@ export default function CastReport(_: Props) {
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step3`),
                         emptyLabel: 'No CACs registered yet.',
                         items: cacs.map(item => ({
+                            anchor: item.id,
                             code: item.code,
                             title: `${item.controlActionName} — ${icaTypeToSelectOption(item.type).label}`,
                             paragraphs: item.description ? [item.description] : [],
+                            referencedBy: usagesByCac(item.id),
                             fields: [
+                                refField('Controller', componentRef(item.componentId)),
                                 (item.context ?? []).length > 0
                                     ? { label: 'Context / Contextual Factors', value: numberedText(item.context) }
                                     : null,
@@ -255,7 +333,7 @@ export default function CastReport(_: Props) {
                                 (item.questions ?? []).length > 0
                                     ? { label: 'Questions Raised', value: numberedText(item.questions) }
                                     : null
-                            ].filter((field): field is { label: string; value: string } => field !== null)
+                            ].filter((field): field is { label: string; value: string; target?: string } => field !== null)
                         }))
                     },
                     {
@@ -263,16 +341,21 @@ export default function CastReport(_: Props) {
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step4`),
                         emptyLabel: 'No Systemic Factors registered yet.',
                         items: systemicFactors.map(item => ({
+                            anchor: item.id,
                             code: systemicFactorCategoryLabel(item),
+                            bookmark: `${systemicFactorCategoryLabel(item)} — ${truncate(item.description, 50)}`,
                             paragraphs: [item.description],
-                            chips: (item.controlActionContributionIds || []).map(getCacLabel)
+                            links: [{ label: 'Control Action Contributions', refs: (item.controlActionContributionIds || []).map(cacRef) }],
+                            referencedBy: recommendationsBySystemicFactor(item.id)
                         }))
                     },
                     {
                         title: 'Recommendations',
                         editUrl: editUrl(`/analyses/${analysisId}/cast/step5`),
                         emptyLabel: 'No Recommendations registered yet.',
-                        items: (recommendationsQuery.data || []).map(item => ({
+                        items: recommendations.map(item => ({
+                            anchor: item.id,
+                            bookmark: truncate(item.description, 60),
                             paragraphs: [item.description],
                             fields: [
                                 item.status
@@ -288,7 +371,7 @@ export default function CastReport(_: Props) {
                                     ? { label: 'Systemic Scope', value: recommendationScopeCategoryToSelectOption(item.scopeCategory).label }
                                     : null,
                                 item.componentId
-                                    ? { label: 'Target Controller', value: getComponentLabel(item.componentId) }
+                                    ? refField('Target Controller', componentRef(item.componentId))
                                     : null,
                                 item.assignee
                                     ? { label: 'Assignee', value: item.assignee }
@@ -302,10 +385,10 @@ export default function CastReport(_: Props) {
                                 item.effectivenessEvidence
                                     ? { label: 'Audit Findings / Effectiveness Evidence', value: item.effectivenessEvidence }
                                     : null
-                            ].filter((field): field is { label: string; value: string } => field !== null),
-                            chips: [
-                                ...(item.controlActionContributionIds || []).map(getCacLabel),
-                                ...(item.systemicFactorIds || []).map(getSystemicFactorLabel)
+                            ].filter((field): field is { label: string; value: string; target?: string } => field !== null),
+                            links: [
+                                { label: 'Control Action Contributions', refs: (item.controlActionContributionIds || []).map(cacRef) },
+                                { label: 'Systemic Factors', refs: (item.systemicFactorIds || []).map(systemicFactorRef) }
                             ]
                         }))
                     },
