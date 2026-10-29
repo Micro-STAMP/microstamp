@@ -8,7 +8,6 @@ import ModalStepsMenu from '@components/Modal/ModalStepsMenu';
 import CastNextStepButton from '@components/CastNextStepButton';
 import CastLastUpdated from '@components/CastLastUpdated';
 import CastCreatedAt from '@components/CastCreatedAt';
-import CastQuestionsRaised from '@components/CastQuestionsRaised';
 
 export default function CastStepThree() {
     const { id } = useParams();
@@ -49,7 +48,6 @@ export default function CastStepThree() {
                 </div>
 
                 <ControlActionContributionsSection analysisId={analysisId} />
-                <CastQuestionsRaised analysisId={analysisId} step={3} />
 
                 <CastNextStepButton analysisId={analysisId} to="step4" label="Step 4: Identify Control Structure Flaws" />
 
