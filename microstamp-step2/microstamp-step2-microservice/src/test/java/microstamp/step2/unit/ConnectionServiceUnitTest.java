@@ -11,6 +11,7 @@ import microstamp.step2.enumeration.Style;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.ConnectionRepository;
+import microstamp.step2.service.AuditLogService;
 import microstamp.step2.service.InteractionService;
 import microstamp.step2.service.impl.ConnectionServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +47,9 @@ public class ConnectionServiceUnitTest {
 
     @Mock
     private InteractionService interactionService;
+
+    @Mock
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no connection are found > Return an empty list")

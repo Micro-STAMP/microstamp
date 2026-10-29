@@ -9,6 +9,7 @@ import microstamp.step2.exception.Step2InvalidInteractionException;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.InteractionRepository;
 import microstamp.step2.repository.ConnectionRepository;
+import microstamp.step2.service.AuditLogService;
 import microstamp.step2.service.impl.InteractionServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,9 @@ public class InteractionServiceUnitTest {
 
     @Mock
     private ConnectionRepository connectionRepository;
+
+    @Mock
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no interaction are found > Return an empty list")

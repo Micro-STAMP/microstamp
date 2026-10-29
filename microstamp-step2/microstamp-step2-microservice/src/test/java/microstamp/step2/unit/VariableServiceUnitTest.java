@@ -9,6 +9,7 @@ import microstamp.step2.entity.Variable;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.ComponentRepository;
 import microstamp.step2.repository.VariableRepository;
+import microstamp.step2.service.AuditLogService;
 import microstamp.step2.service.impl.VariableServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,9 @@ public class VariableServiceUnitTest {
 
     @Mock
     private ComponentRepository componentRepository;
+
+    @Mock
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no variables are found > Return an empty list")
@@ -213,7 +217,7 @@ public class VariableServiceUnitTest {
             .id(UUID.randomUUID())
             .code("Code")
             .name("Name")
-            .component(null)
+            .component(new Controller())
             .states(List.of())
             .build();
 

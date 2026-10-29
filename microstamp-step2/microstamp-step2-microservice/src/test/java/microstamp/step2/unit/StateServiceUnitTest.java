@@ -3,11 +3,13 @@ package microstamp.step2.unit;
 import microstamp.step2.dto.state.StateInsertDto;
 import microstamp.step2.dto.state.StateReadDto;
 import microstamp.step2.dto.state.StateUpdateDto;
+import microstamp.step2.entity.Controller;
 import microstamp.step2.entity.State;
 import microstamp.step2.entity.Variable;
 import microstamp.step2.exception.Step2NotFoundException;
 import microstamp.step2.repository.StateRepository;
 import microstamp.step2.repository.VariableRepository;
+import microstamp.step2.service.AuditLogService;
 import microstamp.step2.service.impl.StateServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,9 @@ public class StateServiceUnitTest {
 
     @Mock
     private VariableRepository variableRepository;
+
+    @Mock
+    private AuditLogService auditLogService;
 
     @Test
     @DisplayName("#findAll > When no state are found > Return an empty list")
@@ -159,7 +164,7 @@ public class StateServiceUnitTest {
             .id(UUID.randomUUID())
             .code("Code")
             .name("Name")
-            .variable(Variable.builder().build())
+            .variable(Variable.builder().component(new Controller()).build())
             .build();
 
     private final Supplier<StateInsertDto> assembleStateInsert = () -> StateInsertDto.builder()
