@@ -123,7 +123,7 @@ export default function CastConnectionsForm({ analysisId }: Props) {
     };
 
     const handleDelete = async (conn: IConnectionReadDto) => {
-        if (await confirmDelete(`connection ${conn.code}`, 'All actions/feedbacks of this connection will also be removed.')) await remove(conn.id);
+        if (await confirmDelete(`connection ${conn.code}`, 'All actions/feedback of this connection will also be removed.')) await remove(conn.id);
     };
 
     const componentSelectOptions: SelectOption[] = (availableComponents ?? []).map(c => ({ label: `${c.code} - ${c.name}`, value: c.id }));
@@ -177,7 +177,7 @@ export default function CastConnectionsForm({ analysisId }: Props) {
 
                                         {interactions.length > 0 && (
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                                                <span style={{ fontSize: '12px', color: 'var(--color-muted-text)', marginRight: '4px' }}>Actions / Feedbacks:</span>
+                                                <span style={{ fontSize: '12px', color: 'var(--color-muted-text)', marginRight: '4px' }}>Actions / Feedback:</span>
                                                 {interactions.map(interaction => (
                                                     <span key={interaction.id} title={interaction.code} style={{ fontSize: '12px', color: '#e5e7eb', backgroundColor: 'var(--color-dark)', border: `1px solid ${color}`, borderRadius: '12px', padding: '2px 10px' }}>
                                                         {interaction.name}
@@ -230,7 +230,7 @@ export default function CastConnectionsForm({ analysisId }: Props) {
                         </div>
 
                         <CastListInput
-                            label="Actions / Feedbacks"
+                            label="Actions / Feedback"
                             items={form.actions}
                             onChange={actions => setForm({ ...form, actions })}
                             placeholder={isFeedbackForm ? 'E.g., Infusion pump alarm, Lab results' : 'E.g., Prescribe dosage, Release brakes'}
